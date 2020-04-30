@@ -1,6 +1,6 @@
 // Mixin for generating new styles
 @mixin btn-styles($btn-color, $btn-states-color) {
-    background-color: $btn-color;
+   // background-color: $btn-color;
 
     &:hover,
     &:focus,
@@ -13,7 +13,7 @@
     .show > &.dropdown-toggle,
     .show > &.dropdown-toggle:focus,
     .show > &.dropdown-toggle:hover {
-        background-color: $btn-states-color !important;
+      //  background-color: $btn-states-color !important;
         color: $white-color !important;
         box-shadow: none !important;
     }

@@ -370,7 +370,8 @@
             }
 
             &:after{
-              border-right: 17px solid $default-body-bg;
+              border-right: 17px solid #f08a64;
+              //border-right: 17px solid $default-body-bg;
               border-top: 17px solid transparent;
               border-bottom: 17px solid transparent;
               content: "";

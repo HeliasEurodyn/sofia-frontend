@@ -1,14 +1,7 @@
 
 <div class="sidebar-wrapper">
   <div class="logo">
-    <a href="http://www.creative-tim.com" class="simple-text logo-mini">
-      <div class="logo-image-small">
-        <img src="assets/img/angular2-logo.png">
-      </div>
-    </a>
-    <a href="https://www.creative-tim.com" class="simple-text logo-normal">
-      Creative Tim
-    </a>
+    <div class="logo-image-small"><img src="assets/img/angular2-logo.png"></div>
   </div>
     <ul class="nav">
         <li *ngFor="let menuItem of menuItems" routerLinkActive="active" class="{{menuItem.class}}">
@@ -17,5 +10,37 @@
                 <p>{{menuItem.title}}</p>
             </a>
         </li>
+
+      <li routerlinkactive="" class="active">
+
+        <a data-toggle="collapse" href="#formsbb22" class="collapsed" aria-expanded="false" aria-controls="formsbb22" >
+          <i class="nc-icon nc-ruler-pencil"></i>
+          <p>Forms<b class="caret"></b></p>
+        </a>
+
+        <div class="" id="formsbb22" style="">
+          <ul class="nav">
+            <li routerlinkactive="active" ><a href="#/forms/regular"><span class="sidebar-mini-icon">RF</span><span class="sidebar-normal">Regular Forms</span></a></li>
+            <li routerlinkactive="active" class=""><a href="#/forms/extended"><span class="sidebar-mini-icon">EF</span><span class="sidebar-normal">Extended Forms</span></a></li>
+            <li routerlinkactive="active" class=""><a href="#/forms/validation"><span class="sidebar-mini-icon">VF</span><span class="sidebar-normal">Validation Forms</span></a></li>
+            <li routerlinkactive="active"><a href="#/forms/wizard"><span class="sidebar-mini-icon">W</span><span class="sidebar-normal">Wizard</span></a></li>
+          </ul>
+        </div>
+      </li>
+
+      <p>
+        <button type="button" class="btn btn-outline-primary" (click)="isCollapsed = !isCollapsed"
+                [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample">
+          Collapse Toggle
+        </button>
+      </p>
+      <div id="collapseExample" [ngbCollapse]="isCollapsed">
+        <div class="card">
+          <div class="card-body">
+            You can collapse this card by clicking Toggle Button. This is example from ItSolutionStuff.com.
+          </div>
+        </div>
+      </div>
+
     </ul>
 </div>

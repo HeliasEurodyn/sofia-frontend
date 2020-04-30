@@ -1,7 +1,15 @@
-
 <nav class="navbar navbar-expand-lg navbar-absolute fixed-top navbar-transparent">
   <div class="container-fluid">
     <div class="navbar-wrapper">
+
+      <div class="navbar-minimize">
+        <button class="btn btn-icon btn-round showHideSidemenuBtn" id="minimizeSidebar" (click)="updateToggle()"  style="box-shadow: 0 2px 2px 0 rgba(53, 53, 53, 0.2), 0 3px 1px -2px rgba(153, 153, 153, 0.2), 0 1px 5px 0 rgba(153, 153, 153, 0.12) !important;">
+<!--          <i class="nc-icon nc-minimal-right text-center visible-on-sidebar-mini"></i>-->
+          <i class="fa fa-ellipsis-v text-center visible-on-sidebar-regular" style="color: #636262;"></i>
+        </button>
+      </div>
+
+
       <div class="navbar-toggle">
         <button type="button" class="navbar-toggler" (click)="sidebarToggle()">
           <span class="navbar-toggler-bar bar1"></span>
