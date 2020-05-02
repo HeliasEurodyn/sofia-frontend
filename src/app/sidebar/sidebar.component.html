@@ -1,46 +1,74 @@
-
 <div class="sidebar-wrapper">
   <div class="logo">
     <div class="logo-image-small"><img src="assets/img/angular2-logo.png"></div>
   </div>
-    <ul class="nav">
-        <li *ngFor="let menuItem of menuItems" routerLinkActive="active" class="{{menuItem.class}}">
-            <a [routerLink]="[menuItem.path]">
-                <i class="nc-icon {{menuItem.icon}}"></i>
-                <p>{{menuItem.title}}</p>
-            </a>
-        </li>
+  <ul class="nav">
 
-      <li routerlinkactive="" class="active">
 
-        <a data-toggle="collapse" href="#formsbb22" class="collapsed" aria-expanded="false" aria-controls="formsbb22" >
-          <i class="nc-icon nc-ruler-pencil"></i>
-          <p>Forms<b class="caret"></b></p>
-        </a>
+    <li *ngFor="let menuItem of menuHeaders" routerLinkActive="active" class="header-menu">
+      <a (click)="parentMenuUnselection(menuItem.id);">
+        <i class="nc-icon nc-simple-remove header-menu"></i>
+        <p>{{menuItem.title}}</p>
+      </a>
+    </li>
 
-        <div class="" id="formsbb22" style="">
-          <ul class="nav">
-            <li routerlinkactive="active" ><a href="#/forms/regular"><span class="sidebar-mini-icon">RF</span><span class="sidebar-normal">Regular Forms</span></a></li>
-            <li routerlinkactive="active" class=""><a href="#/forms/extended"><span class="sidebar-mini-icon">EF</span><span class="sidebar-normal">Extended Forms</span></a></li>
-            <li routerlinkactive="active" class=""><a href="#/forms/validation"><span class="sidebar-mini-icon">VF</span><span class="sidebar-normal">Validation Forms</span></a></li>
-            <li routerlinkactive="active"><a href="#/forms/wizard"><span class="sidebar-mini-icon">W</span><span class="sidebar-normal">Wizard</span></a></li>
-          </ul>
-        </div>
-      </li>
+    <br *ngIf="menuHeaders?.length > 0 ">
 
-      <p>
-        <button type="button" class="btn btn-outline-primary" (click)="isCollapsed = !isCollapsed"
-                [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample">
-          Collapse Toggle
-        </button>
-      </p>
-      <div id="collapseExample" [ngbCollapse]="isCollapsed">
-        <div class="card">
-          <div class="card-body">
-            You can collapse this card by clicking Toggle Button. This is example from ItSolutionStuff.com.
-          </div>
-        </div>
-      </div>
+    <li *ngFor="let menuItem of selectedMenuItems" routerLinkActive="active" class="{{menuItem.class}}">
 
-    </ul>
+      <a *ngIf="menuItem.type === 'link'" [routerLink]="[menuItem.path]">
+        <i class="nc-icon {{menuItem.icon}}"></i>
+        <p>{{menuItem.title}}</p>
+      </a>
+
+      <a *ngIf="menuItem.type === 'parent-menu'" (click)="parentMenuSelection(menuItem.id);">
+        <i class="nc-icon parent-menu {{menuItem.icon}}"></i>
+        <p>{{menuItem.title}}</p>
+      </a>
+
+    </li>
+
+    <!--<button type="button" class="btn btn-outline-primary" id="navbarDropdownMenuLinkss"  aria-controls="navbarDropdownMenuLinkss" (click)="isCollapsed = !isCollapsed">-->
+    <!--Toggle-->
+    <!--</button>-->
+
+    <!--<div class="collapse" aria-labelledby="navbarDropdownMenuLinkss" ngbCollapse >-->
+    <!--You can collapse this card by clicking Toggle-->
+    <!--</div>-->
+
+
+    <!--<li class="nav-item btn-rotate" ngbDropdown placement="bottom-left">-->
+    <!--<a class="nav-link" ngbDropdownToggle id="navbarDropdownMenuLink" >-->
+    <!--<i class="nc-icon nc-bell-55"></i>-->
+    <!--<p>-->
+    <!--<span class="d-lg-none d-md-block">Some Actions</span>-->
+    <!--</p>-->
+    <!--</a>-->
+    <!--<div ngbDropdownMenu aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu dropdown-menu-right">-->
+    <!--<a ngbDropdownItem href="javascript:void(0)">Action</a>-->
+    <!--<a ngbDropdownItem href="javascript:void(0)">Another action</a>-->
+    <!--<a ngbDropdownItem href="javascript:void(0)">Something else here</a>-->
+    <!--</div>-->
+    <!--</li>-->
+
+    <!--<li routerlinkactive="active">-->
+    <!--&lt;!&ndash;&ndash;&gt;&lt;!&ndash;&ndash;&gt;-->
+    <!--<a data-toggle="collapse" href="#maps1" class="collapsed" aria-expanded="false">-->
+    <!--<i class="nc-icon nc-pin-3"></i>-->
+    <!--<p>Maps<b class="caret"></b></p>-->
+    <!--</a>-->
+    <!--&lt;!&ndash;&ndash;&gt;-->
+    <!--<div class="collapse" id="maps1" style="">-->
+    <!--<ul class="nav">-->
+    <!--&lt;!&ndash;&ndash;&gt;-->
+    <!--<li routerlinkactive="active"><a href="#/maps/google"><span class="sidebar-mini-icon">GM</span><span class="sidebar-normal">Google Maps</span></a></li>-->
+    <!--<li routerlinkactive="active"><a href="#/maps/fullscreen"><span class="sidebar-mini-icon">FSM</span><span class="sidebar-normal">Full Screen Map</span></a></li>-->
+    <!--<li routerlinkactive="active"><a href="#/maps/vector"><span class="sidebar-mini-icon">VM</span><span class="sidebar-normal">Vector Map</span></a></li>-->
+    <!--</ul>-->
+    <!--</div>-->
+    <!--</li>-->
+  </ul>
+
+
 </div>
+
