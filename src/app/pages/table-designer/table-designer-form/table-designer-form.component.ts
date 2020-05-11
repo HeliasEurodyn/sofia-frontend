@@ -21,6 +21,7 @@ export class TableDesignerFormComponent implements OnInit {
   title = 'appBootstrap';
 
   public isCollapsed = false;
+
   constructor(private activatedRoute: ActivatedRoute,
               private tableDesignerService: TableDesignerService,
               private router: Router) {
@@ -28,8 +29,11 @@ export class TableDesignerFormComponent implements OnInit {
 
   checkIfTableAlreadyExists() {
     this.tableDesignerService.tableExists(this.tableDesign.name).subscribe(data => {
-      if(data) this.tableExists = true;
-      else this.tableExists = false;
+      if (data) {
+        this.tableExists = true;
+      } else {
+        this.tableExists = false;
+      }
     });
   }
 
@@ -58,6 +62,7 @@ export class TableDesignerFormComponent implements OnInit {
     this.tableHeaders = ['Name', 'Description', 'Type', 'Size', 'Related Component', 'Auto Increment', 'Primary key'];
 
     this.tableDesign = new TableDesign();
+
     this.tableDesign.customComponentFieldList = [
       {
         id: 0,
@@ -95,11 +100,11 @@ export class TableDesignerFormComponent implements OnInit {
     }
   }
 
-  toList(){
+  toList() {
     this.router.navigate(['/table-designer-list']);
   }
 
-  delete(){
+  delete() {
     this.tableDesignerService.delete(this.tableDesign.id).subscribe(data => {
       this.router.navigate(['/table-designer-list']);
     });

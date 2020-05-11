@@ -18,7 +18,6 @@ import { TableDesignerListComponent } from './pages/table-designer/table-designe
 import {FormsModule} from '@angular/forms';
 import { MenuDesignerListComponent } from './pages/menu/menu-designer-list/menu-designer-list.component';
 import { MenuDesignerFormComponent } from './pages/menu/menu-designer-form/menu-designer-form.component';
-
 @NgModule({
   declarations: [
     AppComponent,

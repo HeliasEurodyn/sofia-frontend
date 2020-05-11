@@ -29,7 +29,7 @@ export class TableDesignerListComponent implements OnInit {
 
   delete(row: any) {
     this.tableDesignerService.delete(row['id']).subscribe(data => {
-      this.refresh()
+      this.refresh();
     });
   }
 }

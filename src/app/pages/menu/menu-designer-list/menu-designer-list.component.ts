@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {MenuDesignerService} from '../../../services/menu-designer.service';
 
 @Component({
   selector: 'app-menu-designer-list',
@@ -6,10 +7,28 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./menu-designer-list.component.css']
 })
 export class MenuDesignerListComponent implements OnInit {
+  public tableData: any;
 
-  constructor() { }
+  constructor(private menuDesignerService: MenuDesignerService) { }
 
   ngOnInit(): void {
+    this.refresh();
+  }
+
+  refresh() {
+    this.tableData = {
+      headerRow: ['ID', 'Name', 'Version']
+    };
+
+    this.menuDesignerService.get().subscribe(data => {
+      this.tableData.dataRows = data;
+    });
+  }
+
+  delete(row: any) {
+    this.menuDesignerService.delete(row['id']).subscribe(data => {
+      this.refresh();
+    });
   }
 
 }

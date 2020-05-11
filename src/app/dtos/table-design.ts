@@ -6,7 +6,7 @@ export class TableDesign {
   description: string;
   createdOn: Date;
   createdBy: string;
-  customComponentFieldList: Field[];
+ public customComponentFieldList: Field[];
 }
 
 export class Field {
