@@ -4,6 +4,11 @@ export class MenuComponent {
   createdOn: Date;
   createdBy: string;
   menuFieldList: MenuField[];
+  version: number;
+  constructor() {
+    this.menuFieldList = [];
+  }
+
 }
 
 export class MenuField {
@@ -13,4 +18,8 @@ export class MenuField {
   icon: string;
   command: string;
   menuFieldList: MenuField[];
+  version: number;
+  constructor() {
+    this.menuFieldList = [];
+  }
 }

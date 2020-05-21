@@ -1,0 +1,178 @@
+<div class="row">
+  <div class="col-sm-12">
+    <div class="pull-left">
+      <button class="btn btn-outline-success" style="margin-top: 0px;" (click)="save()">
+        <i class="fa fa-save"></i>
+        Save
+      </button>
+      <button class="btn btn-outline-danger" style="margin-top: 0px;" [hidden]="mode === 'new-record'"
+              (click)="delete()">
+        <i class="fa fa-times"></i>
+        Delete
+      </button>
+      <button class="btn btn-outline-primary" style="margin-top: 0px;" (click)="toList()">
+        <i class="fa fa-sign-out"></i>
+        Back
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="card card-user">
+      <div class="card-header">
+        <h5 class="card-title">Menu</h5>
+      </div>
+      <div class="card-body">
+        <form>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Name</label>
+                <input type="text" class="form-control" name="name" [(ngModel)]="menuComponent.name">
+                <code></code>
+              </div>
+            </div>
+          </div>
+
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header">
+
+        <div class="row">
+          <div class="col-sm-7">
+            <h5 class="card-title pull-left">Menu Items</h5>
+          </div>
+          <div class="col-sm-5">
+            <div class="pull-right">
+
+              <button class="btn btn-outline-primary" (click)="addParentMenuField()" data-target="#menuModal" data-toggle="modal">
+                <i class="fa fa-plus-circle"></i>
+                New Menu </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="card-body">
+
+
+        <ul>
+          <ng-template #recursiveList let-list>
+            <li *ngFor="let item of list">
+              <h6>
+                <button (click)="upItemInList(item,list)"   type="button" title="New Submenu"
+                        class="btn btn-outline-warning btn-icon btn-sm">
+                  <i class="fa fa-angle-up"></i>
+                </button>
+                <button (click)="downItemInList(item, list)"   type="button" title="New Submenu"
+                        class="btn btn-outline-warning btn-icon btn-sm">
+                  <i class="fa fa-angle-down"></i>
+                </button>
+                <button (click)="addChildMenuField(item)"  data-target="#menuModal" data-toggle="modal"  type="button" title="New Submenu"
+                        class="btn btn-outline-primary btn-icon btn-sm">
+                  <i class="fa fa-plus-circle"></i>
+                </button>
+                <button (click)="editExistingMenuField(item)" data-target="#menuModal" data-toggle="modal" type="button" title="Edit"
+                        class="btn btn-outline-success btn-icon btn-sm" tabindex="0"
+                        ng-reflect-router-link="/table-designer-form/5">
+                  <i class="fa fa-pencil"></i>
+                </button>
+                <button (click)="removeMenuFieldLine(item,menuComponent.menuFieldList )"  type="button" title="Delete"
+                        class="btn btn-outline-danger btn-icon btn-sm last-menu-item-button">
+                  <i class="fa fa-times"></i>
+                </button>
+                <i class="fa {{item.icon}}"></i>
+                {{item.name}}
+              </h6>
+              <ul *ngIf="item.menuFieldList != undefined">
+                <ng-container
+                  *ngTemplateOutlet="recursiveList; context:{ $implicit: item.menuFieldList }">
+                </ng-container>
+              </ul>
+            </li>
+          </ng-template>
+          <ng-container
+            *ngTemplateOutlet="recursiveList; context:{ $implicit: menuComponent.menuFieldList }"></ng-container>
+        </ul>
+
+
+      </div>
+
+
+    </div>
+  </div>
+</div>
+
+<div aria-labelledby="ModalLabel" class="modal fade" id="menuModal" role="dialog"  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header justify-content-center">
+        <h4 *ngIf="fieldListMode === 'insert'" class="title title-up modal-title">Insert menu</h4>
+        <h4 *ngIf="fieldListMode === 'edit'" class="title title-up modal-title">Edit menu</h4>
+        <button aria-label="Close" class="close" data-dismiss="modal" type="button"><i class="nc-icon nc-simple-remove"></i></button>
+      </div>
+      <div class="modal-body">
+          <form>
+            <div class="row">
+              <div class="col-12">
+                <div class="form-group " [ngClass]="{'has-danger': tableExists}">
+                  <label>Name</label>
+                  <input type="text" class="form-control" name="name" [(ngModel)]="menuFieldComponent.name">
+                  <code></code>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-10">
+                <div class="form-group" [ngClass]="{'has-danger': tableExists}">
+                  <label>Icon</label>
+                  <input type="text" class="form-control" name="icon" [(ngModel)]="menuFieldComponent.icon">
+                  <div class="category">Find icons codes from  <a href="https://fontawesome.com/icons?d=gallery" target="_blank">here</a></div>
+                </div>
+              </div>
+              <div class="col-2">
+                <div class="form-group" [ngClass]="{'has-danger': tableExists}">
+                  <label>Prev</label>
+                  <i style="font-size: 35px;" class="fa {{menuFieldComponent.icon}}"></i>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="row">
+              <div class="col-12">
+                <div class="form-group" >
+                  <label>Command</label>
+                  <textarea class="form-control" name="name" [(ngModel)]="menuFieldComponent.command"></textarea>
+                  <code></code>
+                </div>
+              </div>
+            </div>
+
+          </form>
+      </div>
+      <div class="modal-footer">
+        <div class="left-side">
+          <button class="btn btn-outline-danger" type="button">Close</button>
+        </div>
+        <div class="divider">
+        </div>
+        <div *ngIf="fieldListMode === 'insert'" class="right-side">
+          <button class="btn btn-outline-primary" data-dismiss="modal" (click)="saveNewMenuItem()" type="button">Insert</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+

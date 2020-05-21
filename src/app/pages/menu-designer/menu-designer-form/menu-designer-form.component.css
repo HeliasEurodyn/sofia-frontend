@@ -1,0 +1,13 @@
+.modal-title{
+  margin: 0px;
+}
+
+li { /* styles all li elements*/
+  list-style-type: none;
+}
+
+
+.last-menu-item-button { /* styles all li elements*/
+  margin-right: 10px;
+}
+

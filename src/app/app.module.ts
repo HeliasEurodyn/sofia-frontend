@@ -16,8 +16,13 @@ import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.compon
 import { TableDesignerFormComponent } from './pages/table-designer/table-designer-form/table-designer-form.component';
 import { TableDesignerListComponent } from './pages/table-designer/table-designer-list/table-designer-list.component';
 import {FormsModule} from '@angular/forms';
-import { MenuDesignerListComponent } from './pages/menu/menu-designer-list/menu-designer-list.component';
-import { MenuDesignerFormComponent } from './pages/menu/menu-designer-form/menu-designer-form.component';
+import { MenuDesignerListComponent } from './pages/menu-designer/menu-designer-list/menu-designer-list.component';
+import { MenuDesignerFormComponent } from './pages/menu-designer/menu-designer-form/menu-designer-form.component';
+import { LoginComponent } from './pages/login/login.component';
+import { ListDesignerFormComponent } from './pages/list-designer/list-designer-form/list-designer-form.component';
+import { ListDesignerListComponent } from './pages/list-designer/list-designer-list/list-designer-list.component';
+import { ComponentDesignerListComponent } from './pages/component-designer/component-designer-list/component-designer-list.component';
+import { ComponentDesignerFormComponent } from './pages/component-designer/component-designer-form/component-designer-form.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -25,7 +30,12 @@ import { MenuDesignerFormComponent } from './pages/menu/menu-designer-form/menu-
     TableDesignerFormComponent,
     TableDesignerListComponent,
     MenuDesignerListComponent,
-    MenuDesignerFormComponent
+    MenuDesignerFormComponent,
+    LoginComponent,
+    ListDesignerFormComponent,
+    ListDesignerListComponent,
+    ComponentDesignerListComponent,
+    ComponentDesignerFormComponent
   ],
     imports: [
         BrowserAnimationsModule,

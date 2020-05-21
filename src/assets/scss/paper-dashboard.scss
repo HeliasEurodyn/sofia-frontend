@@ -63,3 +63,12 @@
 .row {
   padding-top: 10px !important;
 }
+
+@media (min-width: 991px) {
+  .main-panel, .sidebar, .sidebar-wrapper {
+    transition-property: top, bottom, width;
+    transition-duration: .2s, .2s, .35s;
+    transition-timing-function: linear, linear, ease;
+    -webkit-overflow-scrolling: touch;
+  }
+}

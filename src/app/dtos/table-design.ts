@@ -6,10 +6,11 @@ export class TableDesign {
   description: string;
   createdOn: Date;
   createdBy: string;
- public customComponentFieldList: Field[];
+ public customComponentFieldList: TableDesignField[];
+  version: number;
 }
 
-export class Field {
+export class TableDesignField {
   id: number;
   linecounter: number;
   name: string;
@@ -21,4 +22,5 @@ export class Field {
   createdBy: string;
   autoIncrement: Boolean;
   primaryKey: Boolean;
+  // version: number;
 }

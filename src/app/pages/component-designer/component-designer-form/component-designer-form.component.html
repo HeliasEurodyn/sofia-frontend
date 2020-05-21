@@ -1,0 +1,164 @@
+<div class="row">
+  <div class="col-sm-12">
+    <div class="pull-left">
+      <button class="btn btn-outline-success" style="margin-top: 0px;" (click)="save()">
+        <i class="fa fa-save"></i>
+        Save
+      </button>
+      <button class="btn btn-outline-danger" style="margin-top: 0px;" [hidden]="mode === 'new-record'"
+              (click)="delete()">
+        <i class="fa fa-times"></i>
+        Delete
+      </button>
+      <button class="btn btn-outline-primary" style="margin-top: 0px;" (click)="toList()">
+        <i class="fa fa-sign-out"></i>
+        Back
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="card card-user">
+      <div class="card-header">
+        <h5 class="card-title">Component</h5>
+      </div>
+      <div class="card-body">
+        <form>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Name</label>
+                <input type="text" class="form-control" name="name" [(ngModel)]="tableComponent.name" >
+                <code></code>
+              </div>
+            </div>
+          </div>
+
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header">
+
+        <div class="row">
+          <div class="col-sm-7">
+            <h5 class="card-title pull-left">Schema</h5>
+          </div>
+          <div class="col-sm-5">
+            <div class="pull-right">
+              <button class="btn btn-outline-primary" (click)="setSelectedTableComponent(tableComponent)" data-target="#menuModal" data-toggle="modal">
+                <i class="fa fa-link"></i> Select Table
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="card-body">
+
+
+        <ul>
+          <ng-template #recursiveList let-list>
+            <li *ngFor="let item of list">
+
+              <div class="row">
+                <div class="col-md-2">
+                  <h6>
+                    <button (click)="setSelectedTableComponent(item)"  data-target="#menuModal" data-toggle="modal"  type="button" title="New Submenu"
+                            class="btn btn-outline-primary btn-icon btn-sm">
+                      <i class="fa fa-link"></i>
+                    </button>
+
+                    <i class="fa {{item.icon}}"></i>
+                    {{item.tableDesignField.name}}({{item.tableDesignField.type}})
+                  </h6>
+                </div>
+                <div class="col-md-10">
+                  <label>Editor</label>
+                  <input type="text" class="form-control" >
+                </div>
+              </div>
+
+
+
+              <ul *ngIf="item.tableComponentFieldList != undefined">
+                <ng-container
+                  *ngTemplateOutlet="recursiveList; context:{ $implicit: item.tableComponentFieldList }">
+                </ng-container>
+              </ul>
+            </li>
+          </ng-template>
+
+          <ng-container
+            *ngTemplateOutlet="recursiveList; context:{ $implicit: tableComponent.tableComponentFieldList }"></ng-container>
+        </ul>
+
+
+      </div>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+<div aria-labelledby="ModalLabel" class="modal fade" id="menuModal" role="dialog"  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header justify-content-center">
+        <h4 *ngIf="fieldListMode === 'insert'" class="title title-up modal-title">Insert menu</h4>
+        <h4 *ngIf="fieldListMode === 'edit'" class="title title-up modal-title">Edit menu</h4>
+        <button aria-label="Close" class="close" data-dismiss="modal" type="button"><i class="nc-icon nc-simple-remove"></i></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="row">
+            <div class="col-12">
+              <table class="table table-striped">
+                <thead class=" text-primary">
+                <tr>
+                  <th>id</th>
+                  <th>name</th>
+                  <th>version</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let row of tables"(click)="selectTable(row)" data-dismiss="modal" style="cursor: pointer;" >
+                  <td>{{row['id']}}</td>
+                  <td>{{row['name']}}</td>
+                  <td>{{row['creationVersion']}}</td>
+                </tr>
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <div class="left-side">
+          <button class="btn btn-outline-danger" data-dismiss="modal"  type="button">Close</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

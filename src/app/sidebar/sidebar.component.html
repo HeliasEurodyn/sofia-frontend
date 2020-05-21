@@ -7,7 +7,7 @@
 
     <li *ngFor="let menuItem of menuHeaders" routerLinkActive="active" class="header-menu">
       <a (click)="parentMenuUnselection(menuItem.id);">
-        <i class="nc-icon nc-simple-remove header-menu"></i>
+        <i class="fa fa-sign-out header-menu"></i>
         <p>{{menuItem.title}}</p>
       </a>
     </li>
@@ -17,12 +17,12 @@
     <li *ngFor="let menuItem of selectedMenuItems" routerLinkActive="active" class="{{menuItem.class}}">
 
       <a *ngIf="menuItem.type === 'link'" [routerLink]="[menuItem.path]">
-        <i class="nc-icon {{menuItem.icon}}"></i>
+        <i class="fa {{menuItem.icon}}"></i>
         <p>{{menuItem.title}}</p>
       </a>
 
       <a *ngIf="menuItem.type === 'parent-menu'" (click)="parentMenuSelection(menuItem.id);">
-        <i class="nc-icon parent-menu {{menuItem.icon}}"></i>
+        <i class="parent-menu fa {{menuItem.icon}}"></i>
         <p>{{menuItem.title}}</p>
       </a>
 

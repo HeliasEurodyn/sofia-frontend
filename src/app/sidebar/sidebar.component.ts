@@ -92,12 +92,12 @@ export class SidebarComponent implements OnInit {
   ngOnInit() {
     this.menuItems = [];
 
-    this.menuItems.push({id: '1', path: '/dashboard', title: 'Dashboard', icon: 'nc-bank', type: 'link', class: '', children: null});
+    this.menuItems.push({id: '1', path: '/dashboard', title: 'Dashboard', icon: 'fa-home', type: 'link', class: '', children: null});
     this.menuItems.push({
       id: '2',
       path: '#',
       title: 'Other Menus',
-      icon: 'nc-layout-11',
+      icon: 'fa-th-list',
       type: 'parent-menu',
       class: 'parent-menu',
       children: null
@@ -106,7 +106,7 @@ export class SidebarComponent implements OnInit {
       id: '3',
       path: '/table-designer-list',
       title: 'Table Designer',
-      icon: 'nc-settings',
+      icon: 'fa-cogs',
       type: 'link',
       class: '',
       children: null
@@ -115,7 +115,35 @@ export class SidebarComponent implements OnInit {
       id: '4',
       path: '/menu-designer-list',
       title: 'Menu Designer',
-      icon: 'nc-tile-56',
+      icon: 'fa-cogs',
+      type: 'link',
+      class: '',
+      children: null
+    });
+    this.menuItems.push({
+      id: '40',
+      path: '/login',
+      title: 'login',
+      icon: 'fa-id-card',
+      type: 'link',
+      class: '',
+      children: null
+    });
+    this.menuItems.push({
+      id: '41',
+      path: '/list-designer-form/0',
+      title: 'List Designer',
+      icon: 'fa-cogs',
+      type: 'link',
+      class: '',
+      children: null
+    });
+
+    this.menuItems.push({
+      id: '42',
+      path: '/component-designer-form/0',
+      title: 'Compoent Designer',
+      icon: 'fa-cogs',
       type: 'link',
       class: '',
       children: null
