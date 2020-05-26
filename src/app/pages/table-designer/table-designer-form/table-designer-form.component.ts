@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {TableDesign} from '../../../dtos/table-design';
-import {TableDesignerService} from '../../../services/table-designer.service';
+import {Table} from '../../../dtos/table';
+import {TableService} from '../../../services/table.service';
 
 
 @Component({
@@ -12,18 +12,18 @@ import {TableDesignerService} from '../../../services/table-designer.service';
 export class TableDesignerFormComponent implements OnInit {
 //  public fields: any;
   public tableHeaders: any;
-  public tableDesign: TableDesign;
-  linecounter = 0;
+  public tableDesign: Table;
+  shortOrder = 0;
   public tableExists = false;
 
   public mode: string;
-  userDto: TableDesign;
+  userDto: Table;
   title = 'appBootstrap';
 
   public isCollapsed = false;
 
   constructor(private activatedRoute: ActivatedRoute,
-              private tableDesignerService: TableDesignerService,
+              private tableDesignerService: TableService,
               private router: Router) {
   }
 
@@ -47,7 +47,7 @@ export class TableDesignerFormComponent implements OnInit {
 
     if (id === '0') {
       this.mode = 'new-record';
-      this.tableDesign = new TableDesign();
+      this.tableDesign = new Table();
     } else {
       this.mode = 'edit-record';
     }
@@ -59,33 +59,33 @@ export class TableDesignerFormComponent implements OnInit {
     }
 
 
-    this.tableHeaders = ['Name', 'Description', 'Type', 'Size', 'Related Component', 'Auto Increment', 'Primary key'];
+    this.tableHeaders = ['Name', 'Description', 'Type', 'Size', 'Auto Increment', 'Primary key'];
 
-    this.tableDesign = new TableDesign();
+    this.tableDesign = new Table();
 
-    this.tableDesign.customComponentFieldList = [
+    this.tableDesign.tableFieldList = [
       {
         id: 0,
-        linecounter: this.linecounter,
+        shortOrder: this.shortOrder,
         name: '',
         description: '',
         type: '',
         size: '',
-        relatedComponentName: '',
         createdOn: null,
         createdBy: null,
         autoIncrement: false,
-        primaryKey: false
+        primaryKey: false,
+        version: null
       }
     ];
 
   }
 
   removeLine(row) {
-    if (this.tableDesign.customComponentFieldList.length === 1) {
+    if (this.tableDesign.tableFieldList.length === 1) {
       return;
     }
-    this.tableDesign.customComponentFieldList = this.tableDesign.customComponentFieldList.filter(item => item !== row);
+    this.tableDesign.tableFieldList = this.tableDesign.tableFieldList.filter(item => item !== row);
   }
 
   save() {
@@ -111,20 +111,20 @@ export class TableDesignerFormComponent implements OnInit {
   }
 
   addLine() {
-    this.linecounter++;
-    this.tableDesign.customComponentFieldList.push(
+    this.shortOrder++;
+    this.tableDesign.tableFieldList.push(
       {
         id: null,
-        linecounter: this.linecounter,
+        shortOrder: this.shortOrder,
         name: '',
         description: '',
         type: '',
         size: '',
-        relatedComponentName: '',
         createdOn: null,
         createdBy: null,
         autoIncrement: false,
         primaryKey: false,
+        version: null
       }
     );
   }

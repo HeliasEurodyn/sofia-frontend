@@ -305,9 +305,11 @@
     border-left: 0 none;
 }
 .form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
-    background-color: $light-gray;
-    color: $default-color;
-    cursor: not-allowed;
+    //background-color: $light-gray;
+    //color: $default-color;
+    //cursor: not-allowed;
+  border: 0px none;
+  background-color: #ffffff8c;
 }
 
 .input-group-btn .btn{

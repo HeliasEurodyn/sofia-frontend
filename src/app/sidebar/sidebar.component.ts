@@ -141,7 +141,7 @@ export class SidebarComponent implements OnInit {
 
     this.menuItems.push({
       id: '42',
-      path: '/component-designer-form/0',
+      path: '/component-designer-list',
       title: 'Compoent Designer',
       icon: 'fa-cogs',
       type: 'link',

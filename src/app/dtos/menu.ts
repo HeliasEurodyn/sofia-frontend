@@ -1,14 +1,14 @@
-export class MenuComponent {
+export class Menu {
   id: number;
   name: string;
   createdOn: Date;
   createdBy: string;
   menuFieldList: MenuField[];
   version: number;
+  shortOrder: number
   constructor() {
     this.menuFieldList = [];
   }
-
 }
 
 export class MenuField {

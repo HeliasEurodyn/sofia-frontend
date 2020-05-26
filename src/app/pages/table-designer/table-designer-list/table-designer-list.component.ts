@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {TableDesignerService} from '../../../services/table-designer.service';
+import {TableService} from '../../../services/table.service';
 
 @Component({
   selector: 'app-table-designer-list',
@@ -9,7 +9,7 @@ import {TableDesignerService} from '../../../services/table-designer.service';
 export class TableDesignerListComponent implements OnInit {
   public tableData: any;
 
-  constructor(private tableDesignerService: TableDesignerService) {
+  constructor(private service: TableService) {
   }
 
   ngOnInit(): void {
@@ -19,16 +19,16 @@ export class TableDesignerListComponent implements OnInit {
 
   refresh() {
     this.tableData = {
-      headerRow: ['ID', 'Name', 'Version']
+      headerRow: ['ID', 'Name', 'Created at']
     };
 
-    this.tableDesignerService.get().subscribe(data => {
+    this.service.get().subscribe(data => {
       this.tableData.dataRows = data;
     });
   }
 
   delete(row: any) {
-    this.tableDesignerService.delete(row['id']).subscribe(data => {
+    this.service.delete(row['id']).subscribe(data => {
       this.refresh();
     });
   }

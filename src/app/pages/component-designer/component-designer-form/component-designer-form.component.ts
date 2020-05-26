@@ -1,7 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {TableDesignerService} from '../../../services/table-designer.service';
+import {TableService} from '../../../services/table.service';
 import {TableComponent, TableComponentField} from '../../../dtos/table-component';
-import {TableDesign} from '../../../dtos/table-design';
+import {Table} from '../../../dtos/table';
+import {TableComponentService} from 'app/services/table-component.service';
+import {ActivatedRoute, Router} from '@angular/router';
 
 
 @Component({
@@ -12,54 +14,110 @@ import {TableDesign} from '../../../dtos/table-design';
 export class ComponentDesignerFormComponent implements OnInit {
 
   public tables: any;
-  public tableComponent: TableComponent;
+  public tableComponent = new TableComponent();
   public selectedTableComponent: TableComponent;
+  public mode: string;
 
-  tableDesign: TableDesign;
+  tableDesign: Table;
   tableComponentFieldList: TableComponentField[];
 
-  constructor(private tableDesignerService: TableDesignerService) {
+  constructor(private tableService: TableService,
+              private tableComponentService: TableComponentService,
+              private activatedRoute: ActivatedRoute,
+              private router: Router) {
   }
 
   ngOnInit(): void {
-    this.tableComponent = new TableComponent();
 
-    this.refresh()
+    let id = '0';
+    this.refresh();
+
+    if (this.activatedRoute.snapshot.paramMap.has('id')) {
+      id = this.activatedRoute.snapshot.paramMap.get('id');
+    }
+
+    if (id === '0') {
+      this.mode = 'new-record';
+      this.tableComponent = new TableComponent();
+    } else {
+      this.mode = 'edit-record';
+    }
+
+    if (this.mode === 'edit-record') {
+      this.tableComponentService.getById(id).subscribe(data => {
+        this.tableComponent = data;
+      });
+    }
+
   }
 
 
   refresh() {
-
-    this.tableDesignerService.get().subscribe(data => {
+    this.tableService.get().subscribe(data => {
       this.tables = data;
     });
   }
 
-  // setSelected(tableDesign: TableDesign, tableComponentFieldList: TableComponentField[] ) {
-  //   this.tableDesign = tableDesign;
-  //   this.tableComponentFieldList = tableComponentFieldList;
-  // }
+  save() {
+
+    if (this.mode === 'edit-record') {
+      this.tableComponentService.put(this.tableComponent).subscribe(data => {
+        this.router.navigate(['/component-designer-list']);
+      });
+    } else {
+
+      this.tableComponentService.post(this.tableComponent).subscribe(data => {
+        this.router.navigate(['/component-designer-list']);
+      });
+    }
+
+
+  }
 
   setSelectedTableComponent(selectedTableComponent) {
     this.selectedTableComponent = selectedTableComponent;
   }
 
   selectTable(row) {
-
-    this.selectedTableComponent.tableComponentFieldList = [];
-    this.selectedTableComponent.tableDesign = row;
+    this.selectedTableComponent.showFieldList = true;
+    this.selectedTableComponent.componentFieldList = [];
+    this.selectedTableComponent.table = row;
     let shortOrder = 1;
-    for (const tableDesignField of row.customComponentFieldList) {
+    for (const tableDesignField of row.tableFieldList) {
       const tableComponentFiled = new TableComponentField();
-      tableComponentFiled.tableDesignField = tableDesignField;
+      tableComponentFiled.tableField = tableDesignField;
       tableComponentFiled.editor = '';
+      tableComponentFiled.description = tableDesignField.description;
       tableComponentFiled.shortOrder = shortOrder;
-      this.selectedTableComponent.tableComponentFieldList.push(tableComponentFiled);
+      this.selectedTableComponent.componentFieldList.push(tableComponentFiled);
       shortOrder++;
     }
 
-    // console.log('row ' + JSON.stringify(this.tableComponent));
-
   }
+
+  toList() {
+    this.router.navigate(['/component-designer-list']);
+  }
+
+  delete() {
+    this.tableComponentService.delete(this.tableDesign.id).subscribe(data => {
+      this.router.navigate(['/component-designer-list']);
+    });
+  }
+
+
+  unselectTable(selectedTableComponent) {
+    selectedTableComponent.componentFieldList = [];
+    selectedTableComponent.table = null;
+  }
+
+  hideChildren(item) {
+    item.showFieldList = false;
+  }
+
+  showChildren(item) {
+    item.showFieldList = true;
+  }
+
 
 }

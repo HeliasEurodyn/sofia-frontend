@@ -15,6 +15,7 @@ import {MenuDesignerFormComponent} from '../../pages/menu-designer/menu-designer
 import {ListDesignerListComponent} from '../../pages/list-designer/list-designer-list/list-designer-list.component';
 import {ListDesignerFormComponent} from '../../pages/list-designer/list-designer-form/list-designer-form.component';
 import {ComponentDesignerFormComponent} from '../../pages/component-designer/component-designer-form/component-designer-form.component';
+import {ComponentDesignerListComponent} from '../../pages/component-designer/component-designer-list/component-designer-list.component';
 
 export const AdminLayoutRoutes: Routes = [
   {path: 'dashboard', component: DashboardComponent},
@@ -32,4 +33,6 @@ export const AdminLayoutRoutes: Routes = [
   {path: 'list-designer-list', component: ListDesignerListComponent},
   {path: 'list-designer-form/:id', component: ListDesignerFormComponent},
   {path: 'component-designer-form/:id', component: ComponentDesignerFormComponent},
+  {path: 'component-designer-list', component: ComponentDesignerListComponent},
+
 ];

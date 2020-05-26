@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {MenuDesignerService} from '../../../services/menu-designer.service';
+import {MenuService} from '../../../services/menu.service';
 
 @Component({
   selector: 'app-menu-designer-list',
@@ -9,7 +9,7 @@ import {MenuDesignerService} from '../../../services/menu-designer.service';
 export class MenuDesignerListComponent implements OnInit {
   public tableData: any;
 
-  constructor(private menuDesignerService: MenuDesignerService) { }
+  constructor(private menuDesignerService: MenuService) { }
 
   ngOnInit(): void {
     this.refresh();

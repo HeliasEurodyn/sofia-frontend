@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {MenuDesignerService} from '../../../services/menu-designer.service';
-import {MenuComponent, MenuField} from '../../../dtos/menu-component';
+import {MenuService} from '../../../services/menu.service';
+import {Menu, MenuField} from '../../../dtos/menu';
 
 @Component({
   selector: 'app-menu-designer-form',
@@ -12,7 +12,7 @@ export class MenuDesignerFormComponent implements OnInit {
 
 //  public fields: any;
   public tableHeaders: any;
-  public menuComponent: MenuComponent;
+  public menuComponent: Menu;
   public menuFieldComponent: MenuField;
   public selectedParentMenuFieldComponent: MenuField;
   linecounter = 0;
@@ -25,7 +25,7 @@ export class MenuDesignerFormComponent implements OnInit {
   public isCollapsed = false;
 
   constructor(private activatedRoute: ActivatedRoute,
-              private menuDesignerService: MenuDesignerService,
+              private menuDesignerService: MenuService,
               private router: Router) {
   }
 
@@ -51,7 +51,7 @@ export class MenuDesignerFormComponent implements OnInit {
 
     if (id === '0') {
       this.mode = 'new-record';
-      this.menuComponent = new MenuComponent();
+      this.menuComponent = new Menu();
     } else {
       this.mode = 'edit-record';
     }
@@ -65,7 +65,7 @@ export class MenuDesignerFormComponent implements OnInit {
 
    // this.tableHeaders = ['Name', 'Description', 'Type', 'Size', 'Related Component', 'Auto Increment', 'Primary key'];
 
-  //  this.menuComponent = new MenuComponent();
+  //  this.menuComponent = new Menu();
   //   this.menuComponent.menuFieldList = [
   //     {
   //       id: 0,

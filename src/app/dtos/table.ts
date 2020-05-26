@@ -1,4 +1,4 @@
-export class TableDesign {
+export class Table {
   id: number;
   name: string;
   creationVersion: number;
@@ -6,21 +6,21 @@ export class TableDesign {
   description: string;
   createdOn: Date;
   createdBy: string;
- public customComponentFieldList: TableDesignField[];
+  public tableFieldList: TableField[];
   version: number;
 }
 
-export class TableDesignField {
+export class TableField {
   id: number;
-  linecounter: number;
+  shortOrder: number;
   name: string;
   description: string;
   type: string;
   size: string;
-  relatedComponentName: string;
+  // relatedComponentName: string;
   createdOn: Date;
   createdBy: string;
   autoIncrement: Boolean;
   primaryKey: Boolean;
-  // version: number;
+  version: number;
 }
