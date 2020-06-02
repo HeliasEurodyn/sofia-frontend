@@ -3751,7 +3751,7 @@ hr.fc-divider {
 .fc .fc-head .fc-widget-header {
   margin-top: 15px; }
 
-/* Fake Table Rows
+/* Fake TableDTO Rows
 --------------------------------------------------------------------------------------------------*/
 .fc .fc-row {
   /* extra precedence to overcome themes w/ .ui-widget-content forcing a 1px border */

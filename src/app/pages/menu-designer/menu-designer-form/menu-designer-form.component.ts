@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MenuService} from '../../../services/menu.service';
-import {Menu, MenuField} from '../../../dtos/menu';
+import {MenuDTO, MenuFieldDTO} from '../../../dtos/menu/menuDTO';
 
 @Component({
   selector: 'app-menu-designer-form',
@@ -12,9 +12,9 @@ export class MenuDesignerFormComponent implements OnInit {
 
 //  public fields: any;
   public tableHeaders: any;
-  public menuComponent: Menu;
-  public menuFieldComponent: MenuField;
-  public selectedParentMenuFieldComponent: MenuField;
+  public menuComponent: MenuDTO;
+  public menuFieldComponent: MenuFieldDTO;
+  public selectedParentMenuFieldComponent: MenuFieldDTO;
   linecounter = 0;
   public tableExists = false;
   public fieldListMode = 'insert';
@@ -43,7 +43,7 @@ export class MenuDesignerFormComponent implements OnInit {
   ngOnInit(): void {
     let id = '0';
 
-    this.menuFieldComponent = new MenuField;
+    this.menuFieldComponent = new MenuFieldDTO;
 
     if (this.activatedRoute.snapshot.paramMap.has('id')) {
       id = this.activatedRoute.snapshot.paramMap.get('id');
@@ -51,7 +51,7 @@ export class MenuDesignerFormComponent implements OnInit {
 
     if (id === '0') {
       this.mode = 'new-record';
-      this.menuComponent = new Menu();
+      this.menuComponent = new MenuDTO();
     } else {
       this.mode = 'edit-record';
     }
@@ -65,25 +65,25 @@ export class MenuDesignerFormComponent implements OnInit {
 
    // this.tableHeaders = ['Name', 'Description', 'Type', 'Size', 'Related Component', 'Auto Increment', 'Primary key'];
 
-  //  this.menuComponent = new Menu();
+  //  this.menuComponent = new MenuDTO();
   //   this.menuComponent.menuFieldList = [
   //     {
   //       id: 0,
-  //       linecounter: 0,
+  //       shortOrder: 0,
   //       name: 'child_1',
   //       icon: 'child_1_icon',
   //       command: 'command',
   //       menuFieldList: [
   //         {
   //           id: 1,
-  //           linecounter: 0,
+  //           shortOrder: 0,
   //           name: 'child_1.1',
   //           icon: 'child_1-1_icon',
   //           command: 'command',
   //           menuFieldList: [
   //             {
   //               id: 1,
-  //               linecounter: 0,
+  //               shortOrder: 0,
   //               name: 'child_1.1.1',
   //               icon: 'child_1-1_icon',
   //               command: 'command',
@@ -91,14 +91,14 @@ export class MenuDesignerFormComponent implements OnInit {
   //             },
   //             {
   //               id: 2,
-  //               linecounter: 0,
+  //               shortOrder: 0,
   //               name: 'child_1.1.2',
   //               icon: 'fa-address-book',
   //               command: 'command',
   //               menuFieldList: [
   //                 {
   //                   id: 2,
-  //                   linecounter: 0,
+  //                   shortOrder: 0,
   //                   name: 'child_1.1.2.1',
   //                   icon: 'fa-barcode',
   //                   command: 'command',
@@ -110,7 +110,7 @@ export class MenuDesignerFormComponent implements OnInit {
   //         },
   //         {
   //           id: 2,
-  //           linecounter: 0,
+  //           shortOrder: 0,
   //           name: 'child_1.2',
   //           icon: 'fa-align-justify',
   //           command: 'command',
@@ -120,7 +120,7 @@ export class MenuDesignerFormComponent implements OnInit {
   //     },
   //     {
   //       id: 0,
-  //       linecounter: 0,
+  //       shortOrder: 0,
   //       name: 'child_2',
   //       icon: 'child_2_icon',
   //       command: 'command',
@@ -131,12 +131,12 @@ export class MenuDesignerFormComponent implements OnInit {
 
   }
 
-  addChildMenuField(selectedParentMenuFieldComponent: MenuField) {
+  addChildMenuField(selectedParentMenuFieldComponent: MenuFieldDTO) {
     this.linecounter++;
     this.selectedParentMenuFieldComponent = selectedParentMenuFieldComponent;
-    this.menuFieldComponent = new MenuField();
+    this.menuFieldComponent = new MenuFieldDTO();
     this.menuFieldComponent.menuFieldList = [];
-    this.menuFieldComponent.linecounter = this.linecounter;
+    this.menuFieldComponent.shortOrder = this.linecounter;
     this.fieldListMode = 'insert';
 
   }
@@ -144,14 +144,14 @@ export class MenuDesignerFormComponent implements OnInit {
   addParentMenuField() {
     this.linecounter++;
     this.selectedParentMenuFieldComponent = null;
-    this.menuFieldComponent = new MenuField();
+    this.menuFieldComponent = new MenuFieldDTO();
     this.menuFieldComponent.menuFieldList = [];
-    this.menuFieldComponent.linecounter = this.linecounter;
+    this.menuFieldComponent.shortOrder = this.linecounter;
     this.fieldListMode = 'insert';
 
   }
 
-  editExistingMenuField(selectedMenuFieldComponent: MenuField) {
+  editExistingMenuField(selectedMenuFieldComponent: MenuFieldDTO) {
     this.selectedParentMenuFieldComponent = null;
     this.menuFieldComponent = selectedMenuFieldComponent;
     this.fieldListMode = 'edit';
@@ -165,7 +165,7 @@ export class MenuDesignerFormComponent implements OnInit {
     }
   }
 
-  removeMenuFieldLine(selectedMenuFieldComponent: MenuField, menuFieldList: MenuField[]) {
+  removeMenuFieldLine(selectedMenuFieldComponent: MenuFieldDTO, menuFieldList: MenuFieldDTO[]) {
     if (menuFieldList === undefined) {
       return;
     }
@@ -180,7 +180,7 @@ export class MenuDesignerFormComponent implements OnInit {
 
   }
 
-  upItemInList(selectedMenuFieldComponent: MenuField, menuFieldList: MenuField[]) {
+  upItemInList(selectedMenuFieldComponent: MenuFieldDTO, menuFieldList: MenuFieldDTO[]) {
     if (menuFieldList === undefined) {
       return;
     }
@@ -196,7 +196,7 @@ export class MenuDesignerFormComponent implements OnInit {
   }
 
 
-  downItemInList(selectedMenuFieldComponent: MenuField, menuFieldList: MenuField[]) {
+  downItemInList(selectedMenuFieldComponent: MenuFieldDTO, menuFieldList: MenuFieldDTO[]) {
     if (menuFieldList === undefined) {
       return;
     }

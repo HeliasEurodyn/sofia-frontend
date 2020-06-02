@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {TableComponent} from 'app/dtos/table-component';
+import {ComponentDTO} from 'app/dtos/component/componentDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +26,7 @@ export class TableComponentService {
     return this.http.get<any>('http://localhost:15502/api/component/by-id?id=' + id);
   }
 
-  put(dto: TableComponent) {
+  put(dto: ComponentDTO) {
     const httpOptions = {
       headers: new HttpHeaders(
         {
@@ -42,7 +42,7 @@ export class TableComponentService {
   }
 
 
-  post(dto: TableComponent) {
+  post(dto: ComponentDTO) {
     const httpOptions = {
       headers: new HttpHeaders(
         {

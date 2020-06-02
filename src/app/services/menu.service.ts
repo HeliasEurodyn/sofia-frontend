@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {Menu} from '../dtos/menu';
+import {MenuDTO} from '../dtos/menu/menuDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +26,7 @@ export class MenuService {
     return this.http.get<any>('http://localhost:15502/api/menu/by-id?id=' + id);
   }
 
-  put(menuComponent: Menu) {
+  put(menuComponent: MenuDTO) {
     const httpOptions = {
       headers: new HttpHeaders(
         {
@@ -42,7 +42,7 @@ export class MenuService {
   }
 
 
-  post(menuComponent: Menu) {
+  post(menuComponent: MenuDTO) {
     const httpOptions = {
       headers: new HttpHeaders(
         {

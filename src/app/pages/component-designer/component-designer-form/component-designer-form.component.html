@@ -30,18 +30,75 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label>Name</label>
-                <input type="text" class="form-control" name="name" [(ngModel)]="tableComponent.name" >
+                <input type="text" class="form-control" name="name" [(ngModel)]="componentDTO.name">
                 <code></code>
               </div>
             </div>
           </div>
-
-
         </form>
       </div>
     </div>
   </div>
 </div>
+
+
+<!--        <ul>-->
+<!--          <ng-template #recursiveList let-list>-->
+<!--            <li *ngFor="let item of list">-->
+
+<!--              <div class="row">-->
+<!--                <div class="col-md-12">-->
+<!--                  <h6>-->
+<!--                    {{item.tableField?.name}}({{item.tableField.type}})-->
+<!--                  </h6>-->
+<!--                </div>-->
+
+<!--                <div class="col-md-12">-->
+<!--                  <label>Description</label>-->
+<!--                  <input type="text" class="form-control" [(ngModel)]="item.description">-->
+<!--                </div>-->
+
+<!--                <div class="col-md-12">-->
+<!--                  <label>Component Editor</label>-->
+<!--                  <input type="text" class="form-control" [(ngModel)]="item.editor">-->
+<!--                </div>-->
+<!--                <div class="col-md-12">-->
+
+<!--                  <button *ngIf="item.table == null" (click)="setSelectedTableComponent(item)" data-target="#menuModal" data-toggle="modal" type="button" title="Link Field to Table"-->
+<!--                          class="btn btn-outline-primary btn-icon btn-sm">-->
+<!--                    <i class="fa fa-link"></i>-->
+<!--                  </button>-->
+<!--                  <button *ngIf="item.table != null" (click)="removeTableComponent(item)" type="button" title="Unlink Field with Table"-->
+<!--                          class="btn btn-outline-danger btn-icon btn-sm">-->
+<!--                    <i class="fa fa-unlink"></i>-->
+<!--                  </button>-->
+
+<!--                  <button *ngIf="item.table != null && item.showFieldList === true" (click)="hideChildren(item)" type="button" title="Hide"-->
+<!--                          class="btn btn-outline-default btn-icon btn-sm margin-left">-->
+<!--                    <i class="fa fa-compress"></i>-->
+<!--                  </button>-->
+
+<!--                  <button *ngIf="item.table != null && item.showFieldList !== true" (click)="showChildren(item)" type="button" title="Show"-->
+<!--                          class="btn btn-outline-default btn-icon btn-sm margin-left">-->
+<!--                    <i class="fa fa-expand"></i>-->
+<!--                  </button>-->
+
+<!--                </div>-->
+
+<!--              </div>-->
+
+
+<!--              <ul *ngIf="item.componentFieldList != undefined  && item.componentFieldList != null && item.showFieldList === true">-->
+<!--                <ng-container-->
+<!--                  *ngTemplateOutlet="recursiveList; context:{ $implicit: item.componentFieldList }">-->
+<!--                </ng-container>-->
+<!--              </ul>-->
+<!--            </li>-->
+<!--          </ng-template>-->
+
+<!--          <ng-container-->
+<!--            *ngTemplateOutlet="recursiveList; context:{ $implicit: componentDTO.componentTableList }"></ng-container>-->
+<!--        </ul>-->
 
 
 <div class="row">
@@ -55,7 +112,8 @@
           </div>
           <div class="col-sm-5">
             <div class="pull-right">
-              <button class="btn btn-outline-primary" (click)="setSelectedTableComponent(tableComponent)" data-target="#menuModal" data-toggle="modal">
+              <button class="btn btn-outline-primary" (click)="setSelectedTableComponent(componentDTO)"
+                      data-target="#menuModal" data-toggle="modal">
                 <i class="fa fa-link"></i> Select Table
               </button>
             </div>
@@ -64,66 +122,67 @@
 
       </div>
       <div class="card-body">
-
-
         <ul>
-          <ng-template #recursiveList let-list>
-            <li *ngFor="let item of list">
+          <li *ngFor="let row of componentDTO.componentTableList">
+            <div class="row">
+              <div class="col-md-12">
+                <h6>
 
-              <div class="row">
-                <div class="col-md-12">
-                  <h6>
-                    {{item.tableField?.name}}({{item.tableField.type}})
-                  </h6>
-                </div>
-
-                <div class="col-md-12">
-                  <label>Description</label>
-                  <input type="text" class="form-control" [(ngModel)]="item.description">
-                </div>
-
-                <div class="col-md-12">
-                  <label>Component Editor</label>
-                  <input type="text" class="form-control" [(ngModel)]="item.editor">
-                </div>
-                <div class="col-md-12">
-
-                  <button *ngIf="item.table == null" (click)="setSelectedTableComponent(item)" data-target="#menuModal" data-toggle="modal" type="button" title="Link Field to Table"
-                          class="btn btn-outline-primary btn-icon btn-sm">
-                    <i class="fa fa-link"></i>
-                  </button>
-                  <button *ngIf="item.table != null" (click)="unselectTable(item)" type="button" title="Unlink Field with Table"
+                  <button (click)="removeTableComponent(row)" type="button" title="remove table"
                           class="btn btn-outline-danger btn-icon btn-sm">
-                    <i class="fa fa-unlink"></i>
+                    <i class="fa fa-times"></i>
                   </button>
-
-                  <button *ngIf="item.table != null && item.showFieldList === true" (click)="hideChildren(item)" type="button" title="Hide"
-                          class="btn btn-outline-default btn-icon btn-sm margin-left">
+                  <button *ngIf="row.table != null && row.showFieldList === true" (click)="hideChildren(row)"
+                          type="button" title="Hide"
+                          class="btn btn-outline-default btn-icon btn-sm">
                     <i class="fa fa-compress"></i>
                   </button>
 
-                  <button *ngIf="item.table != null && item.showFieldList !== true" (click)="showChildren(item)" type="button" title="Show"
-                          class="btn btn-outline-default btn-icon btn-sm margin-left">
+                  <button *ngIf="row.table != null && row.showFieldList !== true" (click)="showChildren(row)"
+                          type="button" title="Show"
+                          class="btn btn-outline-default btn-icon btn-sm">
                     <i class="fa fa-expand"></i>
                   </button>
+                  [{{row.code}}] {{row.table.name}}
 
-                </div>
-
+                </h6>
               </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>selector</label>
+                  <input type="text" class="form-control" name="selector" [(ngModel)]="row.selector">
+                  <code></code>
+                </div>
+              </div>
+            </div>
+
+            <ul *ngIf="row.table != null && row.showFieldList === true">
+              <li *ngFor="let field of row.componentTableFieldList" >
+                              <div class="row">
+                                <div class="col-md-12">
+                                  <h6>
+                                    {{field.tableField?.name}}({{field.tableField.type}})
+                                  </h6>
+                                </div>
+
+                                <div class="col-md-12">
+                                  <label>Description</label>
+                                  <input type="text" class="form-control" [(ngModel)]="field.description">
+                                </div>
+
+                                <div class="col-md-12">
+                                  <label>Component Editor</label>
+                                  <input type="text" class="form-control" [(ngModel)]="field.editor">
+                                </div>
+                              </div>
+              </li>
+            </ul>
 
 
-              <ul *ngIf="item.componentFieldList != undefined  && item.componentFieldList != null && item.showFieldList === true">
-                <ng-container
-                  *ngTemplateOutlet="recursiveList; context:{ $implicit: item.componentFieldList }">
-                </ng-container>
-              </ul>
-            </li>
-          </ng-template>
-
-          <ng-container
-            *ngTemplateOutlet="recursiveList; context:{ $implicit: tableComponent.componentFieldList }"></ng-container>
+          </li>
         </ul>
-
       </div>
 
     </div>
@@ -131,14 +190,14 @@
 </div>
 
 
-
-<div aria-labelledby="ModalLabel" class="modal fade" id="menuModal" role="dialog"  aria-hidden="true">
+<div aria-labelledby="ModalLabel" class="modal fade" id="menuModal" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header justify-content-center">
-        <h4 *ngIf="fieldListMode === 'insert'" class="title title-up modal-title">Insert menu</h4>
-        <h4 *ngIf="fieldListMode === 'edit'" class="title title-up modal-title">Edit menu</h4>
-        <button aria-label="Close" class="close" data-dismiss="modal" type="button"><i class="nc-icon nc-simple-remove"></i></button>
+        <h4 *ngIf="mode === 'insert'" class="title title-up modal-title">Insert menu</h4>
+        <h4 *ngIf="mode === 'edit'" class="title title-up modal-title">Edit menu</h4>
+        <button aria-label="Close" class="close" data-dismiss="modal" type="button"><i
+          class="nc-icon nc-simple-remove"></i></button>
       </div>
       <div class="modal-body">
         <form>
@@ -153,7 +212,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr *ngFor="let row of tables"(click)="selectTable(row)" data-dismiss="modal" style="cursor: pointer;" >
+                <tr *ngFor="let row of tables" (click)="selectTable(row)" data-dismiss="modal" style="cursor: pointer;">
                   <td>{{row['id']}}</td>
                   <td>{{row['name']}}</td>
                   <td>{{row['creationVersion']}}</td>
@@ -168,7 +227,7 @@
       </div>
       <div class="modal-footer">
         <div class="left-side">
-          <button class="btn btn-outline-danger" data-dismiss="modal"  type="button">Close</button>
+          <button class="btn btn-outline-danger" data-dismiss="modal" type="button">Close</button>
         </div>
 
       </div>

@@ -37,6 +37,11 @@ li{
 /*}*/
 
 
+.btn{
+  margin: 0px;
+  margin-left: 1px;
+}
+
 .margin-left{
   margin-left: 10px;
 }

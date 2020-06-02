@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Table} from '../../../dtos/table';
+import {TableDTO, TableFieldDTO} from '../../../dtos/table/tableDTO';
 import {TableService} from '../../../services/table.service';
 
 
@@ -12,12 +12,12 @@ import {TableService} from '../../../services/table.service';
 export class TableDesignerFormComponent implements OnInit {
 //  public fields: any;
   public tableHeaders: any;
-  public tableDesign: Table;
+  public table: TableDTO;
   shortOrder = 0;
   public tableExists = false;
 
   public mode: string;
-  userDto: Table;
+  userDto: TableDTO;
   title = 'appBootstrap';
 
   public isCollapsed = false;
@@ -28,7 +28,7 @@ export class TableDesignerFormComponent implements OnInit {
   }
 
   checkIfTableAlreadyExists() {
-    this.tableDesignerService.tableExists(this.tableDesign.name).subscribe(data => {
+    this.tableDesignerService.tableExists(this.table.name).subscribe(data => {
       if (data) {
         this.tableExists = true;
       } else {
@@ -47,54 +47,58 @@ export class TableDesignerFormComponent implements OnInit {
 
     if (id === '0') {
       this.mode = 'new-record';
-      this.tableDesign = new Table();
+      this.table = new TableDTO();
     } else {
       this.mode = 'edit-record';
     }
 
     if (this.mode === 'edit-record') {
       this.tableDesignerService.getById(id).subscribe(data => {
-        this.tableDesign = data;
+        this.table = data;
       });
     }
 
 
-    this.tableHeaders = ['Name', 'Description', 'Type', 'Size', 'Auto Increment', 'Primary key'];
+    this.tableHeaders = ['Name', 'Description', 'Type', 'Size', 'Auto Increment', 'Primary key', 'Has default', 'Default', 'Unsigned', 'Not Null' ];
 
-    this.tableDesign = new Table();
+    this.table = new TableDTO();
 
-    this.tableDesign.tableFieldList = [
-      {
-        id: 0,
-        shortOrder: this.shortOrder,
-        name: '',
-        description: '',
-        type: '',
-        size: '',
-        createdOn: null,
-        createdBy: null,
-        autoIncrement: false,
-        primaryKey: false,
-        version: null
-      }
-    ];
+    this.table.tableFieldList = [];
 
+    const tableFieldDTO = new TableFieldDTO();
+    tableFieldDTO.id = 0;
+    tableFieldDTO.shortOrder = this.shortOrder;
+    tableFieldDTO.name = '';
+    tableFieldDTO.description = '';
+    tableFieldDTO.type = '';
+    tableFieldDTO.size = '';
+    tableFieldDTO.createdOn = null;
+    tableFieldDTO.createdBy = null;
+    tableFieldDTO.autoIncrement = false;
+    tableFieldDTO.primaryKey = false;
+    tableFieldDTO.version = null;
+    tableFieldDTO.hasDefault = false;
+    tableFieldDTO.defaultValue = '';
+    tableFieldDTO.isUnsigned = false;
+    tableFieldDTO.hasNotNull = false;
+
+    this.table.tableFieldList.push(tableFieldDTO);
   }
 
   removeLine(row) {
-    if (this.tableDesign.tableFieldList.length === 1) {
+    if (this.table.tableFieldList.length === 1) {
       return;
     }
-    this.tableDesign.tableFieldList = this.tableDesign.tableFieldList.filter(item => item !== row);
+    this.table.tableFieldList = this.table.tableFieldList.filter(item => item !== row);
   }
 
   save() {
     if (this.mode === 'edit-record') {
-      this.tableDesignerService.put(this.tableDesign).subscribe(data => {
+      this.tableDesignerService.put(this.table).subscribe(data => {
         this.router.navigate(['/table-designer-list']);
       });
     } else {
-      this.tableDesignerService.post(this.tableDesign).subscribe(data => {
+      this.tableDesignerService.post(this.table).subscribe(data => {
         this.router.navigate(['/table-designer-list']);
       });
     }
@@ -105,27 +109,31 @@ export class TableDesignerFormComponent implements OnInit {
   }
 
   delete() {
-    this.tableDesignerService.delete(this.tableDesign.id).subscribe(data => {
+    this.tableDesignerService.delete(this.table.id).subscribe(data => {
       this.router.navigate(['/table-designer-list']);
     });
   }
 
   addLine() {
     this.shortOrder++;
-    this.tableDesign.tableFieldList.push(
-      {
-        id: null,
-        shortOrder: this.shortOrder,
-        name: '',
-        description: '',
-        type: '',
-        size: '',
-        createdOn: null,
-        createdBy: null,
-        autoIncrement: false,
-        primaryKey: false,
-        version: null
-      }
-    );
+
+    const tableFieldDTO = new TableFieldDTO();
+    tableFieldDTO.id = null;
+    tableFieldDTO.shortOrder = this.shortOrder;
+    tableFieldDTO.name = '';
+    tableFieldDTO.description = '';
+    tableFieldDTO.type = '';
+    tableFieldDTO.size = '';
+    tableFieldDTO.createdOn = null;
+    tableFieldDTO.createdBy = null;
+    tableFieldDTO.autoIncrement = false;
+    tableFieldDTO.primaryKey = false;
+    tableFieldDTO.version = null;
+    tableFieldDTO.hasDefault = false;
+    tableFieldDTO.defaultValue = '';
+    tableFieldDTO.isUnsigned = false;
+    tableFieldDTO.hasNotNull = false;
+
+    this.table.tableFieldList.push(tableFieldDTO);
   }
 }

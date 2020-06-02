@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
-import {Table} from '../dtos/table';
+import {TableDTO} from '../dtos/table/tableDTO';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 
 @Injectable({
@@ -25,7 +25,7 @@ export class TableService {
     return this.http.get<any>('http://localhost:15502/api/table/by-id?id=' + id);
   }
 
-  put(tableDesign: Table) {
+  put(tableDesign: TableDTO) {
     const httpOptions = {
       headers: new HttpHeaders(
         {
@@ -41,7 +41,7 @@ export class TableService {
   }
 
 
-  post(tableDesign: Table) {
+  post(tableDesign: TableDTO) {
     const httpOptions = {
       headers: new HttpHeaders(
         {

@@ -1126,7 +1126,7 @@
                 this.options.pageSize = this.options.totalRows;
                 $allSelected = true;
             } else if (this.options.pageSize === this.options.totalRows) {
-                // Fix #667 Table with pagination,
+                // Fix #667 TableDTO with pagination,
                 // multiple pages and a search that matches to one page throws exception
                 var pageLst = typeof this.options.pageList === 'string' ?
                     this.options.pageList.replace('[', '').replace(']', '')

@@ -30,7 +30,7 @@
             <div class="col-md-6 pr-1">
               <div class="form-group " [ngClass]="{'has-danger': tableExists}">
                 <label>Name</label>
-                <input type="text" class="form-control" placeholder="Name" name="name" (focusout)="checkIfTableAlreadyExists()" [(ngModel)]="tableDesign.name" [readonly]="mode === 'edit-record'" >
+                <input type="text" class="form-control" placeholder="Name" name="name" (focusout)="checkIfTableAlreadyExists()" [(ngModel)]="table.name" [readonly]="mode === 'edit-record'" >
                 <small class="text-danger" *ngIf="tableExists"> Error! Table name already exists. </small>
                 <code ></code>
               </div>
@@ -38,7 +38,7 @@
             <div class="col-md-6 pl-1">
               <div class="form-group">
                 <label>Version</label>
-                <input class="form-control ng-dirty ng-valid ng-touched" name="version"  number="true" [(ngModel)]="tableDesign.creationVersion"
+                <input class="form-control ng-dirty ng-valid ng-touched" name="version"  number="true" [(ngModel)]="table.creationVersion"
                        type="number">
               </div>
             </div>
@@ -48,7 +48,7 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label>Indexes</label>
-                <input type="text" class="form-control" placeholder="Indexes" name="indexes" [(ngModel)]="tableDesign.indexes"  >
+                <input type="text" class="form-control" placeholder="Indexes" name="indexes" [(ngModel)]="table.indexes"  >
               </div>
             </div>
           </div>
@@ -71,7 +71,7 @@
               <div class="form-group">
                 <label>Descryption</label>
                 <textarea
-                  class="form-control textarea" name="description" [(ngModel)]="tableDesign.description"></textarea>
+                  class="form-control textarea" name="description" [(ngModel)]="table.description"></textarea>
               </div>
 
 
@@ -161,6 +161,34 @@
                   <option value="true">Yes</option>
                 </select>
               </td>
+
+
+              <td>
+                <select class="transparent-input" [(ngModel)]="row.hasDefault">
+                  <option value="false">No</option>
+                  <option value="true">Yes</option>
+                </select>
+              </td>
+
+              <td>
+                <input class="form-control ng-dirty ng-valid ng-touched transparent-input"
+                        [(ngModel)]="row.defaultValue"  >
+              </td>
+
+              <td>
+                <select class="transparent-input" [(ngModel)]="row.isUnsigned">
+                  <option value="false">No</option>
+                  <option value="true">Yes</option>
+                </select>
+              </td>
+
+              <td>
+                <select class="transparent-input" [(ngModel)]="row.hasNotNull">
+                  <option value="false">No</option>
+                  <option value="true">Yes</option>
+                </select>
+              </td>
+
 
             </tr>
 
