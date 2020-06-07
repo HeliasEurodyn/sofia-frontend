@@ -111,10 +111,10 @@ export class ComponentDesignerFormComponent implements OnInit {
 
     // this.selectedTableComponent.showFieldList = true;
     // this.selectedTableComponent.componentTableList = [];
-    // this.selectedTableComponent.table = row;
+    // this.selectedTableComponent.dto = row;
     // let shortOrder = 1;
     // for (const tableDesignField of row.tableFieldList) {
-    //   const tableComponentFiled = new ComponentTableFieldDTO();
+    //   const tableComponentFiled = new ComponentTableField();
     //   tableComponentFiled.tableField = tableDesignField;
     //   tableComponentFiled.editor = '';
     //   tableComponentFiled.description = tableDesignField.description;

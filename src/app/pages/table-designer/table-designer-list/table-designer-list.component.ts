@@ -13,7 +13,6 @@ export class TableDesignerListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
     this.refresh();
   }
 
