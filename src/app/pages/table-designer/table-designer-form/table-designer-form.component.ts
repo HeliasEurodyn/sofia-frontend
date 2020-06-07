@@ -95,22 +95,22 @@ export class TableDesignerFormComponent implements OnInit {
   save() {
     if (this.mode === 'edit-record') {
       this.tableDesignerService.put(this.table).subscribe(data => {
-        this.router.navigate(['/table-designer-list']);
+        this.router.navigate(['/dto-designer-list']);
       });
     } else {
       this.tableDesignerService.post(this.table).subscribe(data => {
-        this.router.navigate(['/table-designer-list']);
+        this.router.navigate(['/dto-designer-list']);
       });
     }
   }
 
   toList() {
-    this.router.navigate(['/table-designer-list']);
+    this.router.navigate(['/dto-designer-list']);
   }
 
   delete() {
     this.tableDesignerService.delete(this.table.id).subscribe(data => {
-      this.router.navigate(['/table-designer-list']);
+      this.router.navigate(['/dto-designer-list']);
     });
   }
 

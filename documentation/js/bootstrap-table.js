@@ -225,7 +225,7 @@
     };
 
     BootstrapTable.DEFAULTS = {
-        classes: 'table table-hover',
+        classes: 'dto dto-hover',
         locale: undefined,
         height: undefined,
         undefinedText: '-',
@@ -514,44 +514,44 @@
 
     BootstrapTable.prototype.initContainer = function () {
         this.$container = $([
-            '<div class="bootstrap-table">',
-                '<div class="fixed-table-toolbar"></div>',
+            '<div class="bootstrap-dto">',
+                '<div class="fixed-dto-toolbar"></div>',
                     this.options.paginationVAlign === 'top' || this.options.paginationVAlign === 'both' ?
-                    '<div class="fixed-table-pagination" style="clear: both;"></div>' :
+                    '<div class="fixed-dto-pagination" style="clear: both;"></div>' :
                     '',
-                '<div class="fixed-table-container">',
-                '<div class="fixed-table-header"><table></table></div>',
-                '<div class="fixed-table-body">',
-                    '<div class="fixed-table-loading">',
+                '<div class="fixed-dto-container">',
+                '<div class="fixed-dto-header"><dto></dto></div>',
+                '<div class="fixed-dto-body">',
+                    '<div class="fixed-dto-loading">',
                         this.options.formatLoadingMessage(),
                     '</div>',
                 '</div>',
-                '<div class="fixed-table-footer"><table><tr></tr></table></div>',
+                '<div class="fixed-dto-footer"><dto><tr></tr></dto></div>',
                 this.options.paginationVAlign === 'bottom' || this.options.paginationVAlign === 'both' ?
-                '<div class="fixed-table-pagination"></div>' :
+                '<div class="fixed-dto-pagination"></div>' :
                 '',
                 '</div>',
             '</div>'
         ].join(''));
 
         this.$container.insertAfter(this.$el);
-        this.$tableContainer = this.$container.find('.fixed-table-container');
-        this.$tableHeader = this.$container.find('.fixed-table-header');
-        this.$tableBody = this.$container.find('.fixed-table-body');
-        this.$tableLoading = this.$container.find('.fixed-table-loading');
-        this.$tableFooter = this.$container.find('.fixed-table-footer');
-        this.$toolbar = this.$container.find('.fixed-table-toolbar');
-        this.$pagination = this.$container.find('.fixed-table-pagination');
+        this.$tableContainer = this.$container.find('.fixed-dto-container');
+        this.$tableHeader = this.$container.find('.fixed-dto-header');
+        this.$tableBody = this.$container.find('.fixed-dto-body');
+        this.$tableLoading = this.$container.find('.fixed-dto-loading');
+        this.$tableFooter = this.$container.find('.fixed-dto-footer');
+        this.$toolbar = this.$container.find('.fixed-dto-toolbar');
+        this.$pagination = this.$container.find('.fixed-dto-pagination');
 
         this.$tableBody.append(this.$el);
         this.$container.after('<div class="clearfix"></div>');
 
         this.$el.addClass(this.options.classes);
         if (this.options.striped) {
-            this.$el.addClass('table-striped');
+            this.$el.addClass('dto-striped');
         }
-        if ($.inArray('table-no-bordered', this.options.classes.split(' ')) !== -1) {
-            this.$tableContainer.addClass('table-no-bordered');
+        if ($.inArray('dto-no-bordered', this.options.classes.split(' ')) !== -1) {
+            this.$tableContainer.addClass('dto-no-bordered');
         }
     };
 
@@ -788,7 +788,7 @@
             this.data = data || this.options.data;
         }
 
-        // Fix #839 Records deleted when adding new row on filtered table
+        // Fix #839 Records deleted when adding new row on filtered dto
         if (type === 'append') {
             this.options.data = this.options.data.concat(data);
         } else if (type === 'prepend') {
@@ -1344,7 +1344,7 @@
             this.$body = $('<tbody></tbody>').appendTo(this.$el);
         }
 
-        //Fix #389 Bootstrap-table-flatJSON is not working
+        //Fix #389 Bootstrap-dto-flatJSON is not working
 
         if (!this.options.pagination || this.options.sidePagination === 'server') {
             this.pageFrom = 1;
@@ -1754,7 +1754,7 @@
     BootstrapTable.prototype.trigger = function (name) {
         var args = Array.prototype.slice.call(arguments, 1);
 
-        name += '.bs.table';
+        name += '.bs.dto';
         this.options[BootstrapTable.EVENTS[name]].apply(this.options, args);
         this.$el.trigger($.Event(name), args);
 
@@ -1763,7 +1763,7 @@
     };
 
     BootstrapTable.prototype.resetHeader = function () {
-        // fix #61: the hidden table reset header bug.
+        // fix #61: the hidden dto reset header bug.
         // fix bug: get $el.css('width') error sometime (height = 500)
         clearTimeout(this.timeoutId_);
         this.timeoutId_ = setTimeout($.proxy(this.fitHeader, this), this.$el.is(':hidden') ? 100 : 0);
@@ -2440,7 +2440,7 @@
 
         this.each(function () {
             var $this = $(this),
-                data = $this.data('bootstrap.table'),
+                data = $this.data('bootstrap.dto'),
                 options = $.extend({}, BootstrapTable.DEFAULTS, $this.data(),
                     typeof option === 'object' && option);
 
@@ -2456,12 +2456,12 @@
                 value = data[option].apply(data, args);
 
                 if (option === 'destroy') {
-                    $this.removeData('bootstrap.table');
+                    $this.removeData('bootstrap.dto');
                 }
             }
 
             if (!data) {
-                $this.data('bootstrap.table', (data = new BootstrapTable(this, options)));
+                $this.data('bootstrap.dto', (data = new BootstrapTable(this, options)));
             }
         });
 
@@ -2478,7 +2478,7 @@
     // =======================
 
     $(function () {
-        $('[data-toggle="table"]').bootstrapTable();
+        $('[data-toggle="dto"]').bootstrapTable();
     });
 
 }(jQuery);

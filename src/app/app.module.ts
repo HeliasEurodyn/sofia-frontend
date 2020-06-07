@@ -23,6 +23,9 @@ import { ListDesignerFormComponent } from './pages/list-designer/list-designer-f
 import { ListDesignerListComponent } from './pages/list-designer/list-designer-list/list-designer-list.component';
 import { ComponentDesignerListComponent } from './pages/component-designer/component-designer-list/component-designer-list.component';
 import { ComponentDesignerFormComponent } from './pages/component-designer/component-designer-form/component-designer-form.component';
+import { ViewDesignerListComponent } from './pages/view-designer/view-designer-list/view-designer-list.component';
+import { ViewDesignerFormComponent } from './pages/view-designer/view-designer-form/view-designer-form.component';
+import { ListComponent } from './pages/list/list/list.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -35,7 +38,10 @@ import { ComponentDesignerFormComponent } from './pages/component-designer/compo
     ListDesignerFormComponent,
     ListDesignerListComponent,
     ComponentDesignerListComponent,
-    ComponentDesignerFormComponent
+    ComponentDesignerFormComponent,
+    ViewDesignerListComponent,
+    ViewDesignerFormComponent,
+    ListComponent
   ],
     imports: [
         BrowserAnimationsModule,

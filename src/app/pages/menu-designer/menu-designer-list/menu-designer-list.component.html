@@ -59,9 +59,15 @@
                   </button>
 
                 </td>
-                <td>{{row['id']}}</td>
-                <td>{{row['name']}}</td>
-                <td>{{row['createdOn']}}</td>
+                <td>
+                  <input type="text" class="form-control transparent-input" readonly [(ngModel)]="row['id']">
+                </td>
+                <td>
+                  <input type="text" class="form-control transparent-input" readonly [(ngModel)]="row['name']">
+                </td>
+                <td>
+                  <input type="text" class="form-control transparent-input" readonly [(ngModel)]="row['createdOn']">
+                </td>
 
 
               </tr>

@@ -1,0 +1,168 @@
+<!--<div class="row">-->
+<!--  <div class="col-sm-12">-->
+<!--    <div class="pull-left">-->
+
+<!--      <button class="btn btn-outline-default btn-round" style="margin-top: 0px;" (click)="save()">-->
+<!--        <i class="fa fa-th-list"></i> Filters-->
+<!--      </button>-->
+<!--      <button class="btn btn-outline-default btn-round"  style="margin-top: 0px;" (click)="delete()">-->
+<!--        <i class="fa fa-th-list"></i> List-->
+<!--      </button>-->
+
+
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+
+
+  <div class="nav-tabs-navigation">
+    <div class="nav-tabs-wrapper">
+      <ul class="nav nav-tabs" id="tabs" role="tablist">
+        <li class="nav-item">
+          <a aria-expanded="true" class="nav-link active" data-toggle="tab" href="#columns"
+             role="tab" aria-selected="false">
+
+            <i class="fa fa-filter"></i>
+            Filters</a>
+        </li>
+        <li class="nav-item">
+          <a aria-expanded="false" class="nav-link" data-toggle="tab" href="#filters"
+             role="tab" aria-selected="true">
+            <i class="fa fa-search"></i>
+            List
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="tab-content text-center" id="my-tab-content">
+    <!-- filters -->
+    <div aria-expanded="true" class="tab-pane active" id="columns" role="tabpanel">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card card-user">
+            <div class="card-header">
+              <div class="row">
+                <div class="col-sm-7">
+                  <h5 class="card-title pull-left">Filters</h5>
+                </div>
+                <div class="col-sm-5">
+                  <div class="pull-right">
+                    <button class="btn btn-outline-primary" (click)="addLine()">
+                      <i class="fa fa-search"></i> List
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <form>
+
+
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <label>Indexes</label>
+                      <input type="text" class="form-control" placeholder="Indexes" name="indexes"  >
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <label>Descryption</label>
+                      <textarea
+                        class="form-control textarea" name="description" ></textarea>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- columns -->
+    <div aria-expanded="false" class="tab-pane" id="filters" role="tabpanel">
+
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header">
+
+              <div class="row">
+                <div class="col-sm-7">
+                  <div class="numbers pull-left">  </div>
+                </div>
+                <div class="col-sm-5">
+                  <div class="pull-right">
+                    <button class="btn btn-outline-primary" routerLink="/table-designer-form/0">
+                      <i class="fa fa-filter"></i> Filters
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            <div class="card-body">
+              <div class="">
+                <table class="table table-striped">
+                  <thead class=" text-primary">
+                  <tr>
+                    <!--              <th *ngFor="let cell of tableData.headerRow">{{ cell }}</th>-->
+                    <th class="text-left">Actions</th>
+                    <th>id</th>
+                    <th>name</th>
+                    <th>version</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr *ngFor="let row of tableData.dataRows">
+                    <!--              <td *ngFor="let cell of row">{{cell}}</td>-->
+
+                    <td>
+
+                      <button type="button" title="Edit" class="btn btn-outline-success btn-icon btn-sm"
+                              routerLink="/table-designer-form/{{row['id']}}">
+                        <i class="fa fa-pencil"></i>
+                      </button>
+
+                      <button type="button" title="Delete" class="btn btn-outline-danger btn-icon btn-sm" (click)="delete(row)">
+                        <i class="fa fa-times"></i>
+                      </button>
+
+                    </td>
+                    <td>
+                      <input type="text" class="form-control transparent-input" readonly [(ngModel)]="row['id']">
+                    </td>
+                    <td>
+                      <input type="text" class="form-control transparent-input" readonly [(ngModel)]="row['name']">
+                    </td>
+                    <td>
+                      <input type="text" class="form-control transparent-input" readonly [(ngModel)]="row['createdOn']">
+                    </td>
+
+
+                  </tr>
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+
+
+
+
+
+    </div>
+  </div>
+

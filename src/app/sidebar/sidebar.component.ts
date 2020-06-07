@@ -15,7 +15,7 @@ export interface RouteInfo {
 export const ROUTES: RouteInfo[] = [
   // {path: '/dashboard', title: 'Dashboard', icon: 'nc-bank', class: '', children: null},
   // {path: '#', title: 'Other Menus', icon: 'nc-layout-11', class: 'parent-menu', children: null},
-  // {path: '/table-designer-list', title: 'TableDTO Designer', icon: 'nc-settings', class: '', children: null},
+  // {path: '/dto-designer-list', title: 'TableDTO Designer', icon: 'nc-settings', class: '', children: null},
   // {path: '/menu-designer-list', title: 'MenuDTO Designer', icon: 'nc-tile-56', class: '', children: null},
 ];
 
@@ -105,7 +105,7 @@ export class SidebarComponent implements OnInit {
     this.menuItems.push({
       id: '3',
       path: '/table-designer-list',
-      title: 'TableDTO Designer',
+      title: 'Table Designer',
       icon: 'fa-cogs',
       type: 'link',
       class: '',
@@ -114,7 +114,7 @@ export class SidebarComponent implements OnInit {
     this.menuItems.push({
       id: '4',
       path: '/menu-designer-list',
-      title: 'MenuDTO Designer',
+      title: 'Menu Designer',
       icon: 'fa-cogs',
       type: 'link',
       class: '',
@@ -131,7 +131,7 @@ export class SidebarComponent implements OnInit {
     });
     this.menuItems.push({
       id: '41',
-      path: '/list-designer-form/0',
+      path: '/list-designer-list',
       title: 'List Designer',
       icon: 'fa-cogs',
       type: 'link',
@@ -149,6 +149,27 @@ export class SidebarComponent implements OnInit {
       children: null
     });
 
+
+    this.menuItems.push({
+      id: '43',
+      path: '/view-designer-list',
+      title: 'View Designer',
+      icon: 'fa-cogs',
+      type: 'link',
+      class: '',
+      children: null
+    });
+
+    this.menuItems.push({
+      id: '44',
+      path: '/list/1',
+      title: 'List',
+      icon: 'fa-cogs',
+      type: 'link',
+      class: '',
+      children: null
+    });
+
     this.menuItems[1].children =
       [
         {id: '11', path: '#', title: 'Second submenu', icon: 'nc-caps-small', type: 'parent-menu', class: 'parent-menu', children: null},
@@ -156,7 +177,7 @@ export class SidebarComponent implements OnInit {
         {id: '6', path: '/maps', title: 'Maps', icon: 'nc-pin-3', type: 'link', class: '', children: null},
         {id: '7', path: '/notifications', title: 'Notifications', icon: 'nc-bell-55', type: 'link', class: '', children: null},
         {id: '8', path: '/user', title: 'User Profile', icon: 'nc-single-02', type: 'link', class: '', children: null},
-        {id: '9', path: '/table', title: 'TableDTO List', icon: 'nc-tile-56', type: 'link', class: '', children: null},
+        {id: '9', path: '/dto', title: 'TableDTO List', icon: 'nc-tile-56', type: 'link', class: '', children: null},
         {id: '10', path: '/typography', title: 'Typography', icon: 'nc-caps-small', type: 'link', class: '', children: null},
       ];
 
@@ -167,7 +188,7 @@ export class SidebarComponent implements OnInit {
         {id: '16', path: '/maps', title: 'Maps', icon: 'nc-pin-3', type: 'link', class: '', children: null},
         {id: '17', path: '/notifications', title: 'Notifications', icon: 'nc-bell-55', type: 'link', class: '', children: null},
         {id: '18', path: '/user', title: 'User Profile', icon: 'nc-single-02', type: 'link', class: '', children: null},
-        {id: '19', path: '/table', title: 'TableDTO List', icon: 'nc-tile-56', type: 'link', class: '', children: null},
+        {id: '19', path: '/dto', title: 'TableDTO List', icon: 'nc-tile-56', type: 'link', class: '', children: null},
         {id: '20', path: '/typography', title: 'Typography', icon: 'nc-caps-small', type: 'link', class: '', children: null},
       ];
     this.menuItems[1].children[0].children[0].children = [

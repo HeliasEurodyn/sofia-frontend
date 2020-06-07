@@ -3,13 +3,14 @@
     <div class="card">
       <div class="card-header">
 
+
         <div class="row">
           <div class="col-sm-7">
-            <div class="numbers pull-left"> Table designer </div>
+            <div class="numbers pull-left"> View designer </div>
           </div>
           <div class="col-sm-5">
             <div class="pull-right">
-              <button class="btn btn-outline-primary" routerLink="/table-designer-form/0">
+              <button class="btn btn-outline-primary" routerLink="/view-designer-form/0">
                 <i class="fa fa-plus-circle"></i> New
               </button>
             </div>
@@ -18,11 +19,10 @@
 
       </div>
       <div class="card-body">
-        <div class="">
           <table class="table table-striped">
             <thead class=" text-primary">
             <tr>
-<!--              <th *ngFor="let cell of tableData.headerRow">{{ cell }}</th>-->
+              <!--              <th *ngFor="let cell of viewData.headerRow">{{ cell }}</th>-->
               <th class="text-left">Actions</th>
               <th>id</th>
               <th>name</th>
@@ -30,13 +30,13 @@
             </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let row of tableData.dataRows">
-<!--              <td *ngFor="let cell of row">{{cell}}</td>-->
+            <tr *ngFor="let row of tableData">
+              <!--              <td *ngFor="let cell of row">{{cell}}</td>-->
 
               <td>
 
                 <button type="button" title="Edit" class="btn btn-outline-success btn-icon btn-sm"
-                         routerLink="/table-designer-form/{{row['id']}}">
+                        routerLink="/view-designer-form/{{row['id']}}">
                   <i class="fa fa-pencil"></i>
                 </button>
 
@@ -60,7 +60,6 @@
 
             </tbody>
           </table>
-        </div>
       </div>
 
 

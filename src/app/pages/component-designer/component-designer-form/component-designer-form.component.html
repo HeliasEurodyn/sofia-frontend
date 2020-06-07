@@ -41,66 +41,6 @@
   </div>
 </div>
 
-
-<!--        <ul>-->
-<!--          <ng-template #recursiveList let-list>-->
-<!--            <li *ngFor="let item of list">-->
-
-<!--              <div class="row">-->
-<!--                <div class="col-md-12">-->
-<!--                  <h6>-->
-<!--                    {{item.tableField?.name}}({{item.tableField.type}})-->
-<!--                  </h6>-->
-<!--                </div>-->
-
-<!--                <div class="col-md-12">-->
-<!--                  <label>Description</label>-->
-<!--                  <input type="text" class="form-control" [(ngModel)]="item.description">-->
-<!--                </div>-->
-
-<!--                <div class="col-md-12">-->
-<!--                  <label>Component Editor</label>-->
-<!--                  <input type="text" class="form-control" [(ngModel)]="item.editor">-->
-<!--                </div>-->
-<!--                <div class="col-md-12">-->
-
-<!--                  <button *ngIf="item.table == null" (click)="setSelectedTableComponent(item)" data-target="#menuModal" data-toggle="modal" type="button" title="Link Field to Table"-->
-<!--                          class="btn btn-outline-primary btn-icon btn-sm">-->
-<!--                    <i class="fa fa-link"></i>-->
-<!--                  </button>-->
-<!--                  <button *ngIf="item.table != null" (click)="removeTableComponent(item)" type="button" title="Unlink Field with Table"-->
-<!--                          class="btn btn-outline-danger btn-icon btn-sm">-->
-<!--                    <i class="fa fa-unlink"></i>-->
-<!--                  </button>-->
-
-<!--                  <button *ngIf="item.table != null && item.showFieldList === true" (click)="hideChildren(item)" type="button" title="Hide"-->
-<!--                          class="btn btn-outline-default btn-icon btn-sm margin-left">-->
-<!--                    <i class="fa fa-compress"></i>-->
-<!--                  </button>-->
-
-<!--                  <button *ngIf="item.table != null && item.showFieldList !== true" (click)="showChildren(item)" type="button" title="Show"-->
-<!--                          class="btn btn-outline-default btn-icon btn-sm margin-left">-->
-<!--                    <i class="fa fa-expand"></i>-->
-<!--                  </button>-->
-
-<!--                </div>-->
-
-<!--              </div>-->
-
-
-<!--              <ul *ngIf="item.componentFieldList != undefined  && item.componentFieldList != null && item.showFieldList === true">-->
-<!--                <ng-container-->
-<!--                  *ngTemplateOutlet="recursiveList; context:{ $implicit: item.componentFieldList }">-->
-<!--                </ng-container>-->
-<!--              </ul>-->
-<!--            </li>-->
-<!--          </ng-template>-->
-
-<!--          <ng-container-->
-<!--            *ngTemplateOutlet="recursiveList; context:{ $implicit: componentDTO.componentTableList }"></ng-container>-->
-<!--        </ul>-->
-
-
 <div class="row">
   <div class="col-md-12">
     <div class="card">
