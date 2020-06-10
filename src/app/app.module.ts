@@ -26,6 +26,8 @@ import { ComponentDesignerFormComponent } from './pages/component-designer/compo
 import { ViewDesignerListComponent } from './pages/view-designer/view-designer-list/view-designer-list.component';
 import { ViewDesignerFormComponent } from './pages/view-designer/view-designer-form/view-designer-form.component';
 import { ListComponent } from './pages/list/list/list.component';
+import { MainContainerComponent } from './shared/container/main-container/main-container.component';
+import { ContainerChildComponent } from './shared/container/container-child/container-child.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -41,7 +43,9 @@ import { ListComponent } from './pages/list/list/list.component';
     ComponentDesignerFormComponent,
     ViewDesignerListComponent,
     ViewDesignerFormComponent,
-    ListComponent
+    ListComponent,
+    MainContainerComponent,
+    ContainerChildComponent
   ],
     imports: [
         BrowserAnimationsModule,

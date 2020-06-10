@@ -19,18 +19,44 @@
       </div>
 <!--      <a class="navbar-brand" href="javascript:void(0)">{{getTitle()}}</a> -->
 
-      <div class="btn-group">
-        <button style="padding: 10px;" class="btn btn-outline-danger btn-round" type="button"><i class="fa fa-times"></i></button>
-        <button class="btn btn-outline-default" type="button">{{getTitle()}}</button>
+
+
+
+<!--      <div class="btn-group" *ngFor="let pageHeader of pageHeaders | keyvalue">-->
+
+
+      <div class="btn-group" *ngFor="let pageId of pageIdsList ">
+        <button style="padding: 3px;margin-top: 0px;margin-bottom: 0px;" class="btn btn-outline-danger btn-round" (click)="closePage(pageId)" type="button">
+          <i class="fa fa-times"></i>
+        </button>
+        <button style="margin-top: 0px;margin-bottom: 0px;padding: 3px;"  class="btn btn-outline-default" type="button" (click)="selectPage(pageId)">
+          {{pageHeaders.get(pageId)}}
+        </button>
       </div>
-      <div class="btn-group">
-        <button style="padding: 10px;" class="btn btn-outline-danger btn-round" type="button"><i class="fa fa-times"></i></button>
-        <button class="btn btn-outline-default" type="button">Invoice</button>
-      </div>
-      <div class="btn-group">
-        <button style="padding: 10px;" class="btn btn-outline-danger btn-round" type="button"><i class="fa fa-times"></i></button>
-        <button class="btn btn-outline-default" type="button">Customer</button>
-      </div>
+
+
+<!--      <div class="btn-group">-->
+<!--        <button class="btn btn-outline-default" type="button">-->
+<!--          <i class="fa fa-th-large"></i>-->
+<!--          Dashboard-->
+<!--        </button>-->
+<!--      </div>-->
+<!--      <div class="btn-group">-->
+<!--        <button style="padding: 10px;" class="btn btn-outline-danger btn-round" type="button"><i class="fa fa-times"></i></button>-->
+<!--        <button class="btn btn-outline-default" type="button">{{getTitle()}}</button>-->
+<!--      </div>-->
+<!--      <div class="btn-group">-->
+<!--        <button style="padding: 10px;" class="btn btn-outline-danger btn-round" type="button"><i class="fa fa-times"></i></button>-->
+<!--        <button class="btn btn-outline-default" type="button">Invoice</button>-->
+<!--      </div>-->
+<!--      <div class="btn-group">-->
+<!--        <button style="padding: 10px;" class="btn btn-outline-danger btn-round" type="button"><i class="fa fa-times"></i></button>-->
+<!--        <button class="btn btn-outline-default" type="button">Customer</button>-->
+<!--      </div>-->
+<!--      <div class="btn-group">-->
+<!--        <button style="padding: 10px;" class="btn btn-outline-danger btn-round" type="button"><i class="fa fa-times"></i></button>-->
+<!--        <button class="btn btn-outline-default" type="button">Customer</button>-->
+<!--      </div>-->
 
     </div>
     <button class="navbar-toggler" type="button" (click)="collapse()"
@@ -40,7 +66,7 @@
       <span class="navbar-toggler-bar navbar-kebab"></span>
     </button>
     <div class="collapse navbar-collapse justify-content-end" id="collapseExample" [ngbCollapse]="isCollapsed">
-      <form>
+      <form class="search-field">
         <div class="input-group no-border">
           <input type="text" value="" class="form-control" placeholder="Search...">
           <div class="input-group-append">
@@ -52,7 +78,7 @@
       </form>
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link btn-magnify" href="javascript:void(0)">
+          <a class="nav-link btn-magnify" (click)="selectPage('dashboard')">
             <i class="nc-icon nc-layout-11"></i>
             <p>
               <span class="d-lg-none d-md-block">Stats</span>

@@ -1,15 +1,17 @@
 import {Component, OnInit} from '@angular/core';
 import {TableService} from '../../../services/table.service';
+import {BaseComponent} from '../../common/base-component';
 
 @Component({
   selector: 'app-table-designer-list',
   templateUrl: './table-designer-list.component.html',
   styleUrls: ['./table-designer-list.component.css']
 })
-export class TableDesignerListComponent implements OnInit {
+export class TableDesignerListComponent extends BaseComponent implements OnInit {
   public tableData: any;
 
   constructor(private service: TableService) {
+    super();
   }
 
   ngOnInit(): void {
@@ -31,4 +33,5 @@ export class TableDesignerListComponent implements OnInit {
       this.refresh();
     });
   }
+
 }

@@ -16,7 +16,8 @@
 
     <li *ngFor="let menuItem of selectedMenuItems" routerLinkActive="active" class="{{menuItem.class}}">
 
-      <a *ngIf="menuItem.type === 'link'" [routerLink]="[menuItem.path]">
+<!--      <a *ngIf="menuItem.type === 'link'" [routerLink]="[menuItem.path]">-->
+      <a *ngIf="menuItem.type === 'link'" (click)="notify(menuItem);">
         <i class="fa {{menuItem.icon}}"></i>
         <p>{{menuItem.title}}</p>
       </a>
@@ -37,9 +38,9 @@
       <div class="collapse" id="components" style="">
         <ul class="nav">
           <li routerlinkactive="active" ng-reflect-router-link-active="active">
-            <a ng-reflect-router-link="/list/1" href="#/list/1">
-              <i _ngcontent-uhe-c107="" class="fa fa-cogs"></i>
-              <p _ngcontent-uhe-c107="">List</p>
+            <a href="#/list/1">
+              <i class="fa fa-cogs"></i>
+              <p>List</p>
             </a>
           </li>
         </ul>
@@ -51,9 +52,9 @@
     <!--Toggle-->
     <!--</button>-->
 
-    <!--<div class="collapse" aria-labelledby="navbarDropdownMenuLinkss" ngbCollapse >-->
+    <!--<mainDiv class="collapse" aria-labelledby="navbarDropdownMenuLinkss" ngbCollapse >-->
     <!--You can collapse this card by clicking Toggle-->
-    <!--</div>-->
+    <!--</mainDiv>-->
 
 
     <!--<li class="nav-item btn-rotate" ngbDropdown placement="bottom-left">-->
@@ -63,11 +64,11 @@
     <!--<span class="d-lg-none d-md-block">Some Actions</span>-->
     <!--</p>-->
     <!--</a>-->
-    <!--<div ngbDropdownMenu aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu dropdown-menu-right">-->
+    <!--<mainDiv ngbDropdownMenu aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu dropdown-menu-right">-->
     <!--<a ngbDropdownItem href="javascript:void(0)">Action</a>-->
     <!--<a ngbDropdownItem href="javascript:void(0)">Another action</a>-->
     <!--<a ngbDropdownItem href="javascript:void(0)">Something else here</a>-->
-    <!--</div>-->
+    <!--</mainDiv>-->
     <!--</li>-->
 
     <!--<li routerlinkactive="active">-->
@@ -77,14 +78,14 @@
     <!--<p>Maps<b class="caret"></b></p>-->
     <!--</a>-->
     <!--&lt;!&ndash;&ndash;&gt;-->
-    <!--<div class="collapse" id="maps1" style="">-->
+    <!--<mainDiv class="collapse" id="maps1" style="">-->
     <!--<ul class="nav">-->
     <!--&lt;!&ndash;&ndash;&gt;-->
     <!--<li routerlinkactive="active"><a href="#/maps/google"><span class="sidebar-mini-icon">GM</span><span class="sidebar-normal">Google Maps</span></a></li>-->
     <!--<li routerlinkactive="active"><a href="#/maps/fullscreen"><span class="sidebar-mini-icon">FSM</span><span class="sidebar-normal">Full Screen Map</span></a></li>-->
     <!--<li routerlinkactive="active"><a href="#/maps/vector"><span class="sidebar-mini-icon">VM</span><span class="sidebar-normal">Vector Map</span></a></li>-->
     <!--</ul>-->
-    <!--</div>-->
+    <!--</mainDiv>-->
     <!--</li>-->
   </ul>
 

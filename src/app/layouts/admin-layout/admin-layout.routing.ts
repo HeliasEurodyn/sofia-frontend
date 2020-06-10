@@ -19,9 +19,11 @@ import {ComponentDesignerListComponent} from '../../pages/component-designer/com
 import {ViewDesignerListComponent} from '../../pages/view-designer/view-designer-list/view-designer-list.component';
 import {ViewDesignerFormComponent} from '../../pages/view-designer/view-designer-form/view-designer-form.component';
 import {ListComponent} from '../../pages/list/list/list.component';
+import {MainContainerComponent} from '../../shared/container/main-container/main-container.component';
 
 export const AdminLayoutRoutes: Routes = [
   {path: 'dashboard', component: DashboardComponent},
+  {path: 'main', component: MainContainerComponent},
   {path: 'user', component: UserComponent},
   {path: 'table', component: TableComponent},
   {path: 'typography', component: TypographyComponent},

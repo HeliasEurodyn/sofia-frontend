@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
+import {InternalMessageService} from 'app/shared/utils/internal-message-service';
 
 
 export interface RouteInfo {
@@ -34,7 +35,8 @@ export class SidebarComponent implements OnInit {
   public selectedMenuItems: any[];
   public menuHeaders: any[];
 
-  constructor(private router: Router) {
+  constructor(private router: Router,
+              private internalMessageService: InternalMessageService) {
     // console.log(this.router.url);
   }
 
@@ -92,7 +94,7 @@ export class SidebarComponent implements OnInit {
   ngOnInit() {
     this.menuItems = [];
 
-    this.menuItems.push({id: '1', path: '/dashboard', title: 'Dashboard', icon: 'fa-home', type: 'link', class: '', children: null});
+    this.menuItems.push({id: '1', path: 'dashboard', title: 'Dashboard', icon: 'fa-home', type: 'link', class: '', children: null});
     this.menuItems.push({
       id: '2',
       path: '#',
@@ -104,7 +106,7 @@ export class SidebarComponent implements OnInit {
     });
     this.menuItems.push({
       id: '3',
-      path: '/table-designer-list',
+      path: 'table-designer-list',
       title: 'Table Designer',
       icon: 'fa-cogs',
       type: 'link',
@@ -113,7 +115,7 @@ export class SidebarComponent implements OnInit {
     });
     this.menuItems.push({
       id: '4',
-      path: '/menu-designer-list',
+      path: 'menu-designer-list',
       title: 'Menu Designer',
       icon: 'fa-cogs',
       type: 'link',
@@ -122,7 +124,7 @@ export class SidebarComponent implements OnInit {
     });
     this.menuItems.push({
       id: '40',
-      path: '/login',
+      path: 'login',
       title: 'login',
       icon: 'fa-id-card',
       type: 'link',
@@ -131,7 +133,7 @@ export class SidebarComponent implements OnInit {
     });
     this.menuItems.push({
       id: '41',
-      path: '/list-designer-list',
+      path: 'list-designer-list',
       title: 'List Designer',
       icon: 'fa-cogs',
       type: 'link',
@@ -141,7 +143,7 @@ export class SidebarComponent implements OnInit {
 
     this.menuItems.push({
       id: '42',
-      path: '/component-designer-list',
+      path: 'component-designer-list',
       title: 'Compoent Designer',
       icon: 'fa-cogs',
       type: 'link',
@@ -152,7 +154,7 @@ export class SidebarComponent implements OnInit {
 
     this.menuItems.push({
       id: '43',
-      path: '/view-designer-list',
+      path: 'view-designer-list',
       title: 'View Designer',
       icon: 'fa-cogs',
       type: 'link',
@@ -162,7 +164,7 @@ export class SidebarComponent implements OnInit {
 
     this.menuItems.push({
       id: '44',
-      path: '/list/1',
+      path: 'list/1',
       title: 'List',
       icon: 'fa-cogs',
       type: 'link',
@@ -173,30 +175,34 @@ export class SidebarComponent implements OnInit {
     this.menuItems[1].children =
       [
         {id: '11', path: '#', title: 'Second submenu', icon: 'nc-caps-small', type: 'parent-menu', class: 'parent-menu', children: null},
-        {id: '5', path: '/icons', title: 'Icons', icon: 'nc-diamond', type: 'link', class: '', children: null},
-        {id: '6', path: '/maps', title: 'Maps', icon: 'nc-pin-3', type: 'link', class: '', children: null},
-        {id: '7', path: '/notifications', title: 'Notifications', icon: 'nc-bell-55', type: 'link', class: '', children: null},
-        {id: '8', path: '/user', title: 'User Profile', icon: 'nc-single-02', type: 'link', class: '', children: null},
-        {id: '9', path: '/dto', title: 'TableDTO List', icon: 'nc-tile-56', type: 'link', class: '', children: null},
-        {id: '10', path: '/typography', title: 'Typography', icon: 'nc-caps-small', type: 'link', class: '', children: null},
+        {id: '5', path: 'icons', title: 'Icons', icon: 'nc-diamond', type: 'link', class: '', children: null},
+        {id: '6', path: 'maps', title: 'Maps', icon: 'nc-pin-3', type: 'link', class: '', children: null},
+        {id: '7', path: 'notifications', title: 'Notifications', icon: 'nc-bell-55', type: 'link', class: '', children: null},
+        {id: '8', path: 'user', title: 'User Profile', icon: 'nc-single-02', type: 'link', class: '', children: null},
+        {id: '9', path: 'dto', title: 'TableDTO List', icon: 'nc-tile-56', type: 'link', class: '', children: null},
+        {id: '10', path: 'typography', title: 'Typography', icon: 'nc-caps-small', type: 'link', class: '', children: null},
       ];
 
     this.menuItems[1].children[0].children =
       [
         {id: '12', path: '#', title: 'third', icon: 'nc-caps-small', type: 'parent-menu', class: 'parent-menu', children: null},
-        {id: '13', path: '/icons', title: 'Icons', icon: 'nc-diamond', type: 'link', class: '', children: null},
-        {id: '16', path: '/maps', title: 'Maps', icon: 'nc-pin-3', type: 'link', class: '', children: null},
-        {id: '17', path: '/notifications', title: 'Notifications', icon: 'nc-bell-55', type: 'link', class: '', children: null},
-        {id: '18', path: '/user', title: 'User Profile', icon: 'nc-single-02', type: 'link', class: '', children: null},
-        {id: '19', path: '/dto', title: 'TableDTO List', icon: 'nc-tile-56', type: 'link', class: '', children: null},
-        {id: '20', path: '/typography', title: 'Typography', icon: 'nc-caps-small', type: 'link', class: '', children: null},
+        {id: '13', path: 'icons', title: 'Icons', icon: 'nc-diamond', type: 'link', class: '', children: null},
+        {id: '16', path: 'maps', title: 'Maps', icon: 'nc-pin-3', type: 'link', class: '', children: null},
+        {id: '17', path: 'notifications', title: 'Notifications', icon: 'nc-bell-55', type: 'link', class: '', children: null},
+        {id: '18', path: 'user', title: 'User Profile', icon: 'nc-single-02', type: 'link', class: '', children: null},
+        {id: '19', path: 'dto', title: 'TableDTO List', icon: 'nc-tile-56', type: 'link', class: '', children: null},
+        {id: '20', path: 'typography', title: 'Typography', icon: 'nc-caps-small', type: 'link', class: '', children: null},
       ];
     this.menuItems[1].children[0].children[0].children = [
       {id: '21', path: '/typography', title: 'Typography', icon: 'nc-caps-small', type: 'link', class: '', children: null},
     ];
 
     this.selectedMenuItems = this.menuItems;
-
-
   }
+
+
+  notify(menuItem) {
+    this.internalMessageService.publishMessage('OpenPageEvent', {path: menuItem.path, title: menuItem.title});
+  }
+
 }

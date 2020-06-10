@@ -1,0 +1,31 @@
+.navbar-wrapper{
+  overflow: auto;
+  white-space: nowrap;
+  padding: 2px;
+}
+
+.search-field{
+  min-width: 300px;
+  padding-left: 15px
+}
+
+::-webkit-scrollbar {
+  width: 1px;
+  height: 2px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #dee2e6 ;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #78cbce ;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #54a2a5 ;
+}
+
