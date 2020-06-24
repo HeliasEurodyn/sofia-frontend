@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {TableDTO, TableFieldDTO} from '../../../dtos/table/tableDTO';
 import {TableService} from '../../../services/table.service';
+import {PageComponent} from '../../page/page-component';
+import {NavigatorService} from '../../../services/navigator.service';
 
 
 @Component({
@@ -9,7 +11,7 @@ import {TableService} from '../../../services/table.service';
   templateUrl: './table-designer-form.component.html',
   styleUrls: ['./table-designer-form.component.css']
 })
-export class TableDesignerFormComponent implements OnInit {
+export class TableDesignerFormComponent extends PageComponent implements OnInit {
 //  public fields: any;
   public tableHeaders: any;
   public table: TableDTO;
@@ -18,13 +20,16 @@ export class TableDesignerFormComponent implements OnInit {
 
   public mode: string;
   userDto: TableDTO;
-  title = 'appBootstrap';
+  // title = 'appBootstrap';
 
   public isCollapsed = false;
 
   constructor(private activatedRoute: ActivatedRoute,
               private tableDesignerService: TableService,
-              private router: Router) {
+              private router: Router,
+              private navigatorService: NavigatorService) {
+    super();
+
   }
 
   checkIfTableAlreadyExists() {
@@ -37,19 +42,55 @@ export class TableDesignerFormComponent implements OnInit {
     });
   }
 
+  showPreviousPageButton() {
+    if (this.previousPage === null) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  navigateToPreviousPage() {
+    this.navigatorService.navigateToPreviousPage(this.pageId);
+  }
+
+  navigateToNextPage() {
+    this.navigatorService.navigateToNextPage(this.pageId);
+  }
+
+  showNextPageButton() {
+    if (this.nextPage === null) {
+      return false;
+    } else {
+      return true;
+    }
+  }
 
   ngOnInit(): void {
     let id = '0';
+    this.title = 'Table Designer Entry';
+    // this.title.next('Table Designer Entry :)')
 
-    if (this.activatedRoute.snapshot.paramMap.has('id')) {
-      id = this.activatedRoute.snapshot.paramMap.get('id');
-    }
+    this.mode = 'new-record';
+    this.table = new TableDTO();
 
-    if (id === '0') {
-      this.mode = 'new-record';
-      this.table = new TableDTO();
-    } else {
-      this.mode = 'edit-record';
+
+    if (this.params.has('LOCATE')) {
+      const locateValues = this.params.get('LOCATE');
+      let locateValuesInsideBrackets = locateValues.replace(/.*\(|\).*/, '');
+      locateValuesInsideBrackets = locateValuesInsideBrackets.replace(/.*\(|\).*/, '');
+      const locateValuesSplited = locateValuesInsideBrackets.split(',');
+
+      const locateValuesKeyValMap: Map<string, string> = new Map();
+
+      for (const locateValueSplited of locateValuesSplited) {
+        const locateValuesKeyVal: string[] = locateValueSplited.split('=');
+        locateValuesKeyValMap.set(locateValuesKeyVal[0], locateValuesKeyVal[1]);
+      }
+      if (locateValuesKeyValMap.has('ID')) {
+        id = locateValuesKeyValMap.get('ID');
+        this.mode = 'edit-record';
+      }
     }
 
     if (this.mode === 'edit-record') {
@@ -59,7 +100,7 @@ export class TableDesignerFormComponent implements OnInit {
     }
 
 
-    this.tableHeaders = ['Name', 'Description', 'Type', 'Size', 'Auto Increment', 'Primary key', 'Has default', 'Default', 'Unsigned', 'Not Null' ];
+    this.tableHeaders = ['Name', 'Description', 'Type', 'Size', 'Auto Increment', 'Primary key', 'Has default', 'Default', 'Unsigned', 'Not Null'];
 
     this.table = new TableDTO();
 

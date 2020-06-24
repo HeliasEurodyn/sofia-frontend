@@ -4,7 +4,7 @@ import { RouterModule } from '@angular/router';
 import { ToastrModule } from "ngx-toastr";
 import { HttpClientModule } from '@angular/common/http';
 
-import { SidebarModule } from './sidebar/sidebar.module';
+import { SidebarModule } from './shared/sidebar/sidebar.module';
 import { FooterModule } from './shared/footer/footer.module';
 import { NavbarModule} from './shared/navbar/navbar.module';
 import { FixedPluginModule} from './shared/fixedplugin/fixedplugin.module';
@@ -26,8 +26,9 @@ import { ComponentDesignerFormComponent } from './pages/component-designer/compo
 import { ViewDesignerListComponent } from './pages/view-designer/view-designer-list/view-designer-list.component';
 import { ViewDesignerFormComponent } from './pages/view-designer/view-designer-form/view-designer-form.component';
 import { ListComponent } from './pages/list/list/list.component';
-import { MainContainerComponent } from './shared/container/main-container/main-container.component';
-import { ContainerChildComponent } from './shared/container/container-child/container-child.component';
+import { TabContainerComponent } from './shared/main-tab-container/tab-container/tab-container.component';
+import { TabComponent } from './shared/main-tab-container/tab/tab.component';
+import { NavigatorComponent } from './pages/navigator/navigator.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -44,8 +45,9 @@ import { ContainerChildComponent } from './shared/container/container-child/cont
     ViewDesignerListComponent,
     ViewDesignerFormComponent,
     ListComponent,
-    MainContainerComponent,
-    ContainerChildComponent
+    TabContainerComponent,
+    TabComponent,
+    NavigatorComponent
   ],
     imports: [
         BrowserAnimationsModule,

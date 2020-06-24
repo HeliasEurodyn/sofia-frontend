@@ -19,11 +19,13 @@ import {ComponentDesignerListComponent} from '../../pages/component-designer/com
 import {ViewDesignerListComponent} from '../../pages/view-designer/view-designer-list/view-designer-list.component';
 import {ViewDesignerFormComponent} from '../../pages/view-designer/view-designer-form/view-designer-form.component';
 import {ListComponent} from '../../pages/list/list/list.component';
-import {MainContainerComponent} from '../../shared/container/main-container/main-container.component';
+import {TabContainerComponent} from '../../shared/main-tab-container/tab-container/tab-container.component';
+import {NavigatorComponent} from '../../pages/navigator/navigator.component';
+import {NavigatorService} from '../../services/navigator.service';
 
 export const AdminLayoutRoutes: Routes = [
   {path: 'dashboard', component: DashboardComponent},
-  {path: 'main', component: MainContainerComponent},
+  {path: 'main/:id', component: NavigatorComponent},
   {path: 'user', component: UserComponent},
   {path: 'table', component: TableComponent},
   {path: 'typography', component: TypographyComponent},
@@ -32,14 +34,16 @@ export const AdminLayoutRoutes: Routes = [
   {path: 'notifications', component: NotificationsComponent},
   {path: 'upgrade', component: UpgradeComponent},
   {path: 'table-designer-list', component: TableDesignerListComponent},
-  {path: 'table-designer-form/:id', component: TableDesignerFormComponent},
+  {path: 'table-designer-form', component: TableDesignerFormComponent},
   {path: 'menu-designer-list', component: MenuDesignerListComponent},
-  {path: 'menu-designer-form/:id', component: MenuDesignerFormComponent},
+  {path: 'menu-designer-form', component: MenuDesignerFormComponent},
   {path: 'list-designer-list', component: ListDesignerListComponent},
-  {path: 'list-designer-form/:id', component: ListDesignerFormComponent},
-  {path: 'component-designer-form/:id', component: ComponentDesignerFormComponent},
+  {path: 'list-designer-form', component: ListDesignerFormComponent},
+  {path: 'component-designer-form', component: ComponentDesignerFormComponent},
   {path: 'component-designer-list', component: ComponentDesignerListComponent},
   {path: 'view-designer-list', component: ViewDesignerListComponent},
-  {path: 'view-designer-form/:id', component: ViewDesignerFormComponent},
-  {path: 'list/:id', component: ListComponent},
+  {path: 'view-designer-form', component: ViewDesignerFormComponent},
+  {path: 'list', component: ListComponent},
 ];
+
+NavigatorService.NavPages = AdminLayoutRoutes;

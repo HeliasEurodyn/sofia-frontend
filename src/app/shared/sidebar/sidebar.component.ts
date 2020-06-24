@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
-import {InternalMessageService} from 'app/shared/utils/internal-message-service';
+import {NavigatorService} from '../../services/navigator.service';
 
 
 export interface RouteInfo {
@@ -35,9 +34,7 @@ export class SidebarComponent implements OnInit {
   public selectedMenuItems: any[];
   public menuHeaders: any[];
 
-  constructor(private router: Router,
-              private internalMessageService: InternalMessageService) {
-    // console.log(this.router.url);
+  constructor(private navigatorService: NavigatorService) {
   }
 
   parentMenuSelection(id: string) {
@@ -94,7 +91,15 @@ export class SidebarComponent implements OnInit {
   ngOnInit() {
     this.menuItems = [];
 
-    this.menuItems.push({id: '1', path: 'dashboard', title: 'Dashboard', icon: 'fa-home', type: 'link', class: '', children: null});
+    this.menuItems.push({
+      id: '1',
+      path: 'STATICPAGE[NAME:dashboard,TITLE:Dashboard]',
+      title: 'Dashboard',
+      icon: 'fa-home',
+      type: 'link',
+      class: '',
+      children: null
+    });
     this.menuItems.push({
       id: '2',
       path: '#',
@@ -106,7 +111,7 @@ export class SidebarComponent implements OnInit {
     });
     this.menuItems.push({
       id: '3',
-      path: 'table-designer-list',
+      path: 'STATICPAGE[NAME:table-designer-list,TITLE:Table Designer]',
       title: 'Table Designer',
       icon: 'fa-cogs',
       type: 'link',
@@ -115,7 +120,7 @@ export class SidebarComponent implements OnInit {
     });
     this.menuItems.push({
       id: '4',
-      path: 'menu-designer-list',
+      path: 'STATICPAGE[NAME:menu-designer-list,TITLE:Menu Designer]',
       title: 'Menu Designer',
       icon: 'fa-cogs',
       type: 'link',
@@ -124,7 +129,7 @@ export class SidebarComponent implements OnInit {
     });
     this.menuItems.push({
       id: '40',
-      path: 'login',
+      path: 'STATICPAGE[NAME:login,TITLE:Login]',
       title: 'login',
       icon: 'fa-id-card',
       type: 'link',
@@ -133,7 +138,7 @@ export class SidebarComponent implements OnInit {
     });
     this.menuItems.push({
       id: '41',
-      path: 'list-designer-list',
+      path: 'STATICPAGE[NAME:list-designer-list,TITLE:List Designer]',
       title: 'List Designer',
       icon: 'fa-cogs',
       type: 'link',
@@ -143,7 +148,7 @@ export class SidebarComponent implements OnInit {
 
     this.menuItems.push({
       id: '42',
-      path: 'component-designer-list',
+      path: 'STATICPAGE[NAME:component-designer-list,TITLE:Compoent Designer]',
       title: 'Compoent Designer',
       icon: 'fa-cogs',
       type: 'link',
@@ -154,7 +159,7 @@ export class SidebarComponent implements OnInit {
 
     this.menuItems.push({
       id: '43',
-      path: 'view-designer-list',
+      path: 'STATICPAGE[NAME:view-designer-list,TITLE:View Designer]',
       title: 'View Designer',
       icon: 'fa-cogs',
       type: 'link',
@@ -164,7 +169,7 @@ export class SidebarComponent implements OnInit {
 
     this.menuItems.push({
       id: '44',
-      path: 'list/1',
+      path: 'STATICPAGE[NAME:list,TYPE:EDIT,PARAMS:(ID=1),TITLE:List]',
       title: 'List',
       icon: 'fa-cogs',
       type: 'link',
@@ -202,7 +207,8 @@ export class SidebarComponent implements OnInit {
 
 
   notify(menuItem) {
-    this.internalMessageService.publishMessage('OpenPageEvent', {path: menuItem.path, title: menuItem.title});
+    this.navigatorService.openLocation(menuItem.path);
+    // this.internalMessageService.publishMessage('OpenTabEvent', {path: menuItem.path, title: menuItem.title});
   }
 
 }

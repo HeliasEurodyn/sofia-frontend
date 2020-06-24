@@ -1,8 +1,18 @@
-import {Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild} from '@angular/core';
-import {ROUTES} from '../../sidebar/sidebar.component';
+import {
+  AfterContentChecked,
+  AfterViewInit,
+  Component,
+  ComponentRef,
+  ElementRef,
+  OnChanges,
+  OnInit,
+  Renderer2, SimpleChanges,
+  ViewChild
+} from '@angular/core';
+import {ROUTES} from '../sidebar/sidebar.component';
 import {Router} from '@angular/router';
 import {Location} from '@angular/common';
-import {InternalMessageService} from '../utils/internal-message-service';
+import {NavigatorService} from '../../services/navigator.service';
 
 @Component({
   moduleId: module.id,
@@ -10,15 +20,17 @@ import {InternalMessageService} from '../utils/internal-message-service';
   templateUrl: 'navbar.component.html',
   styleUrls: ['./navbar.component.scss']
 })
-export class NavbarComponent implements OnInit, OnDestroy {
+
+export class NavbarComponent implements OnInit {
   private listTitles: any[];
   location: Location;
   private nativeElement: Node;
   private toggleButton;
   private sidebarVisible: boolean;
   private sidebarVisibleForDesktop: boolean;
-  private pageHeaders: Map<string, string> = new Map();
-  private pageIdsList: string[] = [];
+
+  // private pageHeaders: Map<string, string> = new Map();
+  // private pageIdsList: string[] = [];
 
   public isCollapsed = true;
   @ViewChild('navbar-cmp', {static: false}) button;
@@ -27,12 +39,13 @@ export class NavbarComponent implements OnInit, OnDestroy {
               private renderer: Renderer2,
               private element: ElementRef,
               private router: Router,
-              private internalMessageService: InternalMessageService) {
+              private navigatorService: NavigatorService) {
     this.location = location;
     this.nativeElement = element.nativeElement;
     this.sidebarVisible = false;
     this.sidebarVisibleForDesktop = true;
   }
+
 
   ngOnInit() {
     this.listTitles = ROUTES.filter(listTitle => listTitle);
@@ -41,8 +54,27 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.router.events.subscribe((event) => {
       this.sidebarClose();
     });
-    this.subscribeToInternalMessages();
+  }
 
+  mapPagesToHeaders() {
+    const headers = [];
+    for (const page of this.navigatorService.pages) {
+      const params: Map<string, string> = page.instance.params;
+      const key = 'HIDE-HEADER';
+
+      if (params.has(key)) {
+        if (params.get('HIDE-HEADER') === 'TRUE') {
+          continue;
+        }
+      }
+
+      headers.push(
+        {
+          pageId: page.instance.pageId,
+          title: page.instance.title
+        });
+    }
+    return headers;
   }
 
   getTitle() {
@@ -50,7 +82,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     if (titlee.charAt(0) === '#') {
       titlee = titlee.slice(1);
     }
-    for (var item = 0; item < this.listTitles.length; item++) {
+    for (let item = 0; item < this.listTitles.length; item++) {
       if (this.listTitles[item].path === titlee) {
         return this.listTitles[item].title;
       }
@@ -119,49 +151,31 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
 
-  private subscribeToInternalMessages() {
-    this.internalMessageService
-      .accessMessage('OpenPageHeaderEvent')
-      .subscribe(pageHeaderData => {
-        this.pageHeaders.set(pageHeaderData.pageId, pageHeaderData.title);
-        this.pageIdsList.push(pageHeaderData.pageId);
-      });
-    //
-    // this.internalMessageService
-    //   .accessMessage('ClosePageHeaderEvent')
-    //   .subscribe(pageId => {
-    //     if (this.pageHeaders.has(pageId)) {
-    //       this.pageHeaders.delete(pageId);
-    //     }
-    //   });
+  // private subscribeToInternalMessages() {
+  //   this.internalMessageService
+  //     .accessMessage('OpenTabHeaderEvent')
+  //     .subscribe(pageHeaderData => {
+  //       this.pageHeaders.set(pageHeaderData.pageId, pageHeaderData.title);
+  //       this.pageIdsList.push(pageHeaderData.pageId);
+  //     });
+  //   //
+  //   // this.internalMessageService
+  //   //   .accessMessage('ClosePageHeaderEvent')
+  //   //   .subscribe(pageId => {
+  //   //     if (this.pageHeaders.has(pageId)) {
+  //   //       this.pageHeaders.delete(pageId);
+  //   //     }
+  //   //   });
+  //
+  // }
 
+  navigateById(id: string) {
+    this.navigatorService.navigateById(id);
   }
 
-  selectPage(key: string) {
-    this.internalMessageService.publishMessage('selectPageEvent', key);
+  closePageById(id: string) {
+    this.navigatorService.closeById(id);
   }
 
-  closePage(key: string) {
-
-    if (this.pageHeaders.has(key)) {
-      this.pageHeaders.delete(key);
-    }
-
-    this.pageIdsList = this.pageIdsList.filter(item => item !== key);
-
-    this.internalMessageService.publishMessage('closePageEvent', key);
-    if (this.pageIdsList.length > 0) {
-      this.internalMessageService.publishMessage('selectPageEvent', this.pageIdsList[this.pageIdsList.length - 1]);
-    } else {
-      this.internalMessageService.publishMessage('selectPageEvent', 'dashboard');
-    }
-
-
-  }
-
-  ngOnDestroy(): void {
-    this.internalMessageService.unsubscribeTopic('OpenPageHeaderEvent');
-    // this.internalMessageService.unsubscribeTopic('ClosePageHeaderEvent');
-  }
 
 }
