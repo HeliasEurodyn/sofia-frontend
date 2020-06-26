@@ -10,7 +10,7 @@ export class NavigatorService {
   public static NavPages: Routes = [];
   public pages: any[] = [];
 
-  // public currentUuid: string;
+  public currentId: string;
 
   constructor(private componentFactoryResolver: ComponentFactoryResolver,
               private appRef: ApplicationRef,
@@ -30,10 +30,10 @@ export class NavigatorService {
       this.pages.push(componentRef);
       componentRef.instance.pageId = 'default';
       componentRef.instance.params = params;
-      // if (params.get('TITLE')) {
-      //   componentRef.instance.title = params.get('TITLE');
-      // }
-      //  this.currentUuid = 'default';
+      if (params.get('TITLE')) {
+        componentRef.instance.title = params.get('TITLE');
+      }
+      //  this.currentId = 'default';
     }
     return;
   }
@@ -46,7 +46,7 @@ export class NavigatorService {
           return;
         }
 
-       const pageIndex = this.pages.indexOf(page)
+        const pageIndex = this.pages.indexOf(page)
         this.pages[pageIndex] = page.instance.previousPage;
         this.router.navigateByUrl('/main/' + page.instance.previousPage.instance.pageId);
         return;
@@ -76,20 +76,34 @@ export class NavigatorService {
   }
 
   public closeById(id: string) {
+
+
     for (const page of this.pages) {
       if (id.toUpperCase() === page.instance.pageId.toUpperCase()) {
-        this.pages.splice(this.pages.indexOf(page), 1);
+        const pageIndex = this.pages.indexOf(page);
+
+        if (page.instance.nextPage !== null && page.instance.nextPage !== undefined) {
+          this.destroyNextPageBranch(page.instance.nextPage);
+        }
+
+        if (page.instance.previousPage !== null && page.instance.previousPage !== undefined) {
+          this.destroyPreviousPageBranch(page.instance.previousPage);
+        }
+
+        this.appRef.detachView(page.hostView);
+        page.destroy();
+
+        this.pages.splice(pageIndex, 1);
       }
     }
 
-    if (this.pages.length > 0) {
+    if (this.pages.length > 0 && id.toUpperCase() === this.currentId.toUpperCase()) {
       this.router.navigateByUrl('/main/' + this.pages[this.pages.length - 1].instance.pageId);
     }
 
   }
 
   public openLocation(command: string) {
-
     command = command.toUpperCase();
 
     if (command.length === 0) {
@@ -129,12 +143,17 @@ export class NavigatorService {
         const pageId = uuid.v4();
         componentRef.instance.pageId = pageId;
         componentRef.instance.params = commandParametersKeyValMap;
-
+        if (commandParametersKeyValMap.get('TITLE')) {
+          componentRef.instance.title = commandParametersKeyValMap.get('TITLE');
+        }
         if (componentRef.instance.params.has('PARENT-PAGEID')) {
 
           const parentPageId = componentRef.instance.params.get('PARENT-PAGEID');
           for (const page of this.pages) {
             if (parentPageId.toUpperCase() === page.instance.pageId.toUpperCase()) {
+              if (page.instance.nextPage !== null && page.instance.nextPage !== undefined) {
+                this.destroyNextPageBranch(page.instance.nextPage);
+              }
               page.instance.nextPage = componentRef;
               componentRef.instance.previousPage = page;
               this.pages[this.pages.indexOf(page)] = componentRef;
@@ -153,6 +172,23 @@ export class NavigatorService {
 
   }
 
+
+  private destroyNextPageBranch(page: ComponentRef<any>) {
+    if (page.instance.nextPage !== null && page.instance.nextPage !== undefined) {
+      this.destroyNextPageBranch(page.instance.nextPage);
+    }
+    this.appRef.detachView(page.hostView);
+    page.destroy();
+  }
+
+
+  private destroyPreviousPageBranch(page: ComponentRef<any>) {
+    if (page.instance.previousPage !== null && page.instance.previousPage !== undefined) {
+      this.destroyNextPageBranch(page.instance.previousPage);
+    }
+    this.appRef.detachView(page.hostView);
+    page.destroy();
+  }
 
   private verifyBrackets(command: string) {
 

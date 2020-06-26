@@ -21,10 +21,10 @@
 <!--      <div class="btn-group" *ngFor="let pageHeader of pageHeaders | keyvalue">-->
 
       <div class="btn-group" *ngFor="let page of mapPagesToHeaders()" >
-        <button style="padding: 3px;margin-top: 0px;margin-bottom: 0px;" class="btn btn-outline-danger btn-round" (click)="closePageById(page.pageId)" type="button">
+        <button [ngClass]="{'active-header':isTheActiveId(page.pageId)}" style="padding: 3px;margin-top: 0px;margin-bottom: 0px;" class="btn btn-outline-danger btn-round" (click)="closePageById(page.pageId)" type="button">
           <i class="fa fa-times"></i>
         </button>
-        <button style="margin-top: 0px;margin-bottom: 0px;padding: 3px;"  class="btn btn-outline-default" type="button" (click)="navigateById(page.pageId)">
+        <button [ngClass]="{'active-header':isTheActiveId(page.pageId)}" style="margin-top: 0px;margin-bottom: 0px;padding: 3px;"  class="btn btn-outline-default" type="button" (click)="navigateById(page.pageId)">
           {{page.title }}
         </button>
       </div>

@@ -7,7 +7,6 @@ import {
   ElementRef,
   EmbeddedViewRef,
   Injector,
-  OnChanges,
   OnInit,
   Renderer2,
   ViewChild
@@ -40,7 +39,6 @@ export class NavigatorComponent implements OnInit, AfterViewInit {
   }
 
 
-
   // ngOnChanges() {
   //
   // }
@@ -59,12 +57,13 @@ export class NavigatorComponent implements OnInit, AfterViewInit {
 
     let pageRendered = false;
     for (const page of this.navigatorService.pages) {
-
-
       if (pageId.toUpperCase() === page.instance.pageId.toUpperCase()) {
+        this.navigatorService.currentId = pageId;
         this.renderPage(page);
         pageRendered = true;
       }
+
+
     }
 
     if (!pageRendered && this.navigatorService.pages.length > 0) {
@@ -79,15 +78,6 @@ export class NavigatorComponent implements OnInit, AfterViewInit {
     this.router.events.subscribe((event) => {
         if (event instanceof NavigationEnd) {
           this.refreshDirectionComponent();
-          // let updatedUuid = '';
-          // if (this.activatedRoute.snapshot.paramMap.has('id')) {
-          //   updatedUuid = this.activatedRoute.snapshot.paramMap.get('id');
-          // }
-          // for (const page of this.navigatorService.pages) {
-          //   if (updatedUuid === page.instance.uuid) {
-          //     this.renderPage(page);
-          //   }
-          // }
         }
 
       }
@@ -108,9 +98,6 @@ export class NavigatorComponent implements OnInit, AfterViewInit {
 
     this.renderer.appendChild(this.pageDiv.nativeElement, domElem);
 
-    // page.instance.tabNavigationEmitter.subscribe(event => {
-    //   // this.pageNavigatorService.openLocation(event);
-    // })
   }
 
 

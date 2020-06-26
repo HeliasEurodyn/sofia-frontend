@@ -96,6 +96,7 @@ export class TableDesignerFormComponent extends PageComponent implements OnInit 
     if (this.mode === 'edit-record') {
       this.tableDesignerService.getById(id).subscribe(data => {
         this.table = data;
+        this.title = 'Entry ' + this.table.name;
       });
     }
 

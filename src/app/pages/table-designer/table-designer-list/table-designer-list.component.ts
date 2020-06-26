@@ -69,4 +69,9 @@ export class TableDesignerListComponent extends PageComponent implements OnInit 
     this.navigatorService.openLocation(command);
   }
 
+  openNewPage() {
+    let command = 'STATICPAGE[NAME:table-designer-form,TITLE:Form,PARENT-PAGEID:$PAGEID]';
+    command = command.replace('$PAGEID', this.pageId);
+    this.navigatorService.openLocation(command);
+  }
 }

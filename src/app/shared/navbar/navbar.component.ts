@@ -1,14 +1,4 @@
-import {
-  AfterContentChecked,
-  AfterViewInit,
-  Component,
-  ComponentRef,
-  ElementRef,
-  OnChanges,
-  OnInit,
-  Renderer2, SimpleChanges,
-  ViewChild
-} from '@angular/core';
+import {Component, ElementRef, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {ROUTES} from '../sidebar/sidebar.component';
 import {Router} from '@angular/router';
 import {Location} from '@angular/common';
@@ -178,4 +168,11 @@ export class NavbarComponent implements OnInit {
   }
 
 
+  isTheActiveId(pageId: any) {
+    if (pageId.toUpperCase() === this.navigatorService.currentId.toUpperCase()) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }
