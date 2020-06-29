@@ -1,5 +1,3 @@
-import {ComponentRef} from '@angular/core';
-
 export class PageComponent {
 
   public pageId: string;
@@ -11,6 +9,25 @@ export class PageComponent {
 
   constructor() {
   }
+
+  getLocateParams() {
+    const locateValuesKeyValMap: Map<string, string> = new Map();
+    if (this.params.has('LOCATE')) {
+      const locateValues = this.params.get('LOCATE');
+      let locateValuesInsideBrackets = locateValues.replace(/.*\(|\).*/, '');
+      locateValuesInsideBrackets = locateValuesInsideBrackets.replace(/.*\(|\).*/, '');
+      const locateValuesSplited = locateValuesInsideBrackets.split(',');
+
+
+      for (const locateValueSplited of locateValuesSplited) {
+        const locateValuesKeyVal: string[] = locateValueSplited.split('=');
+        locateValuesKeyValMap.set(locateValuesKeyVal[0], locateValuesKeyVal[1]);
+      }
+    }
+
+    return locateValuesKeyValMap;
+  }
+
 
 //  public title: Subject<string> = new BehaviorSubject('');
 

@@ -10,7 +10,7 @@
           </div>
           <div class="col-sm-5">
             <div class="pull-right">
-              <button class="btn btn-outline-primary" routerLink="/view-designer-form/0">
+              <button class="btn btn-outline-primary" (click)="openNewPage()">
                 <i class="fa fa-plus-circle"></i> New
               </button>
             </div>
@@ -36,7 +36,7 @@
               <td>
 
                 <button type="button" title="Edit" class="btn btn-outline-success btn-icon btn-sm"
-                        routerLink="/view-designer-form/{{row['id']}}">
+                        (click)="openPage( row['id'])" >
                   <i class="fa fa-pencil"></i>
                 </button>
 

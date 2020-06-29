@@ -1,15 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import {MenuService} from '../../../services/menu.service';
+import {PageComponent} from '../../page/page-component';
+import {NavigatorService} from '../../../services/navigator.service';
 
 @Component({
   selector: 'app-menu-designer-list',
   templateUrl: './menu-designer-list.component.html',
   styleUrls: ['./menu-designer-list.component.css']
 })
-export class MenuDesignerListComponent implements OnInit {
+export class MenuDesignerListComponent extends PageComponent implements OnInit {
   public tableData: any;
 
-  constructor(private menuDesignerService: MenuService) { }
+  constructor(private menuDesignerService: MenuService,
+              private navigatorService: NavigatorService) {
+    super();
+  }
 
   ngOnInit(): void {
     this.refresh();
@@ -29,6 +34,19 @@ export class MenuDesignerListComponent implements OnInit {
     this.menuDesignerService.delete(row['id']).subscribe(data => {
       this.refresh();
     });
+  }
+
+  openPage(id: string) {
+    let command = 'STATICPAGE[NAME:menu-designer-form,TITLE:Form,LOCATE:(ID=' + id + '),PARENT-PAGEID:$PAGEID]';
+    command = command.replace('$PAGEID', this.pageId);
+    this.navigatorService.openLocation(command);
+  }
+
+
+  openNewPage() {
+    let command = 'STATICPAGE[NAME:table-designer-form,TITLE:Form,PARENT-PAGEID:$PAGEID]';
+    command = command.replace('$PAGEID', this.pageId);
+    this.navigatorService.openLocation(command);
   }
 
 }

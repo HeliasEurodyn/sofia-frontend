@@ -4,6 +4,8 @@ import {ComponentDTO, ComponentTableDTO, ComponentTableFieldDTO} from '../../../
 import {TableDTO} from '../../../dtos/table/tableDTO';
 import {TableComponentService} from 'app/services/table-component.service';
 import {ActivatedRoute, Router} from '@angular/router';
+import {NavigatorService} from '../../../services/navigator.service';
+import {PageComponent} from '../../page/page-component';
 
 
 @Component({
@@ -11,7 +13,7 @@ import {ActivatedRoute, Router} from '@angular/router';
   templateUrl: './component-designer-form.component.html',
   styleUrls: ['./component-designer-form.component.css']
 })
-export class ComponentDesignerFormComponent implements OnInit {
+export class ComponentDesignerFormComponent extends PageComponent implements OnInit {
 
   public tables: any;
   public componentDTO = new ComponentDTO();
@@ -24,30 +26,21 @@ export class ComponentDesignerFormComponent implements OnInit {
   constructor(private tableService: TableService,
               private tableComponentService: TableComponentService,
               private activatedRoute: ActivatedRoute,
-              private router: Router) {
+              private router: Router,
+              private navigatorService: NavigatorService) {
+    super();
   }
 
   ngOnInit(): void {
 
-    this.refresh();
-
-  }
-
-
-  refresh() {
     let id = '0';
+    this.mode = 'new-record';
+    this.componentDTO = new ComponentDTO();
 
-    this.refreshTables();
 
-    if (this.activatedRoute.snapshot.paramMap.has('id')) {
-      id = this.activatedRoute.snapshot.paramMap.get('id');
-    }
-
-    if (id === '0') {
-      this.mode = 'new-record';
-      this.componentDTO = new ComponentDTO();
-      this.componentDTO.componentTableList = [];
-    } else {
+    const locateParams = this.getLocateParams();
+    if (locateParams.has('ID')) {
+      id = locateParams.get('ID');
       this.mode = 'edit-record';
     }
 
@@ -57,7 +50,34 @@ export class ComponentDesignerFormComponent implements OnInit {
       });
     }
 
+    this.refreshTables();
   }
+
+
+  showPreviousPageButton() {
+    if (this.previousPage === null) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  navigateToPreviousPage() {
+    this.navigatorService.navigateToPreviousPage(this.pageId);
+  }
+
+  navigateToNextPage() {
+    this.navigatorService.navigateToNextPage(this.pageId);
+  }
+
+  showNextPageButton() {
+    if (this.nextPage === null) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
 
   refreshTables() {
     this.tableService.get().subscribe(data => {
@@ -66,20 +86,17 @@ export class ComponentDesignerFormComponent implements OnInit {
 
   }
 
-
   save() {
-
     if (this.mode === 'edit-record') {
       this.tableComponentService.put(this.componentDTO).subscribe(data => {
-        this.router.navigate(['/component-designer-list']);
+        this.navigatorService.closeAndBack(this.pageId);
       });
     } else {
 
       this.tableComponentService.post(this.componentDTO).subscribe(data => {
-        this.router.navigate(['/component-designer-list']);
+        this.navigatorService.closeAndBack(this.pageId);
       });
     }
-
 
   }
 
@@ -142,13 +159,13 @@ export class ComponentDesignerFormComponent implements OnInit {
     return (curShortOrderObject.shortOrder + 1);
   }
 
-  toList() {
-    this.router.navigate(['/component-designer-list']);
-  }
+  // toList() {
+  //   this.router.navigate(['/component-designer-list']);
+  // }
 
   delete() {
     this.tableComponentService.delete(this.tableDesign.id).subscribe(data => {
-      this.router.navigate(['/component-designer-list']);
+      this.navigatorService.closeAndBack(this.pageId);
     });
   }
 

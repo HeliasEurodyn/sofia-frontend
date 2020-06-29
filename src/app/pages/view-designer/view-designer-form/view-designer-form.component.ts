@@ -3,14 +3,15 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ViewService} from 'app/services/view.service';
 import {ViewDTO} from '../../../dtos/view/view-dto';
-import {ViewFieldDTO} from '../../../dtos/view/view-field-dto';
+import {NavigatorService} from '../../../services/navigator.service';
+import {PageComponent} from '../../page/page-component';
 
 @Component({
   selector: 'app-view-designer-form',
   templateUrl: './view-designer-form.component.html',
   styleUrls: ['./view-designer-form.component.css']
 })
-export class ViewDesignerFormComponent implements OnInit {
+export class ViewDesignerFormComponent extends PageComponent implements OnInit {
 
   // public tableHeaders: any;
   public dto: ViewDTO;
@@ -25,31 +26,21 @@ export class ViewDesignerFormComponent implements OnInit {
 
   constructor(private activatedRoute: ActivatedRoute,
               private service: ViewService,
-              private router: Router) {
+              private router: Router,
+              private navigatorService: NavigatorService) {
+    super();
   }
 
-  // checkIfTableAlreadyExists() {
-  //   this.service.tableExists(this.dto.name).subscribe(data => {
-  //     if (data) {
-  //       this.tableExists = true;
-  //     } else {
-  //       this.tableExists = false;
-  //     }
-  //   });
-  // }
 
 
   ngOnInit(): void {
     let id = '0';
+    this.mode = 'new-record';
+    this.dto = new ViewDTO();
 
-    if (this.activatedRoute.snapshot.paramMap.has('id')) {
-      id = this.activatedRoute.snapshot.paramMap.get('id');
-    }
-
-    if (id === '0') {
-      this.mode = 'new-record';
-      this.dto = new ViewDTO();
-    } else {
+    const locateParams = this.getLocateParams();
+    if (locateParams.has('ID')) {
+      id = locateParams.get('ID');
       this.mode = 'edit-record';
     }
 
@@ -59,44 +50,25 @@ export class ViewDesignerFormComponent implements OnInit {
       });
     }
 
-
-    // this.tableHeaders = ['Name', 'Description', 'Type', 'Size'];
-
     this.dto.viewFieldList = [];
-
-    // const viewFieldDTO = new ViewFieldDTO();
-    // viewFieldDTO.id = 0;
-    // viewFieldDTO.shortOrder = this.shortOrder;
-    // viewFieldDTO.name = '';
-    // viewFieldDTO.description = '';
-    // viewFieldDTO.type = '';
-    // viewFieldDTO.size = '';
-    // viewFieldDTO.createdOn = null;
-    // viewFieldDTO.createdBy = null;
-    // viewFieldDTO.version = null;
-    //
-    // this.dto.viewFieldList.push(viewFieldDTO);
   }
 
   save() {
     if (this.mode === 'edit-record') {
       this.service.put(this.dto).subscribe(data => {
-        this.router.navigate(['/view-designer-list']);
+        this.navigatorService.closeAndBack(this.pageId);
       });
     } else {
       this.service.post(this.dto).subscribe(data => {
-        this.router.navigate(['/view-designer-list']);
+        this.navigatorService.closeAndBack(this.pageId);
       });
     }
   }
 
-  toList() {
-    this.router.navigate(['/view-designer-list']);
-  }
 
   delete() {
     this.service.delete(this.dto.id).subscribe(data => {
-      this.router.navigate(['/view-designer-list']);
+      this.navigatorService.closeAndBack(this.pageId);
     });
   }
 
@@ -104,6 +76,31 @@ export class ViewDesignerFormComponent implements OnInit {
     this.service.generateViewFields(this.dto.query).subscribe(data => {
       this.dto.viewFieldList = data;
     });
+  }
+
+
+  showPreviousPageButton() {
+    if (this.previousPage === null) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  showNextPageButton() {
+    if (this.nextPage === null) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  navigateToPreviousPage() {
+    this.navigatorService.navigateToPreviousPage(this.pageId);
+  }
+
+  navigateToNextPage() {
+    this.navigatorService.navigateToNextPage(this.pageId);
   }
 
 

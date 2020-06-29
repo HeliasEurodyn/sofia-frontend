@@ -2,13 +2,15 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MenuService} from '../../../services/menu.service';
 import {MenuDTO, MenuFieldDTO} from '../../../dtos/menu/menuDTO';
+import {PageComponent} from '../../page/page-component';
+import {NavigatorService} from '../../../services/navigator.service';
 
 @Component({
   selector: 'app-menu-designer-form',
   templateUrl: './menu-designer-form.component.html',
   styleUrls: ['./menu-designer-form.component.css']
 })
-export class MenuDesignerFormComponent implements OnInit {
+export class MenuDesignerFormComponent extends PageComponent implements OnInit {
 
 //  public fields: any;
   public tableHeaders: any;
@@ -26,7 +28,9 @@ export class MenuDesignerFormComponent implements OnInit {
 
   constructor(private activatedRoute: ActivatedRoute,
               private menuDesignerService: MenuService,
-              private router: Router) {
+              private router: Router,
+              private navigatorService: NavigatorService) {
+    super();
   }
 
   // checkIfTableAlreadyExists() {
@@ -41,18 +45,14 @@ export class MenuDesignerFormComponent implements OnInit {
 
 
   ngOnInit(): void {
-    let id = '0';
 
+    let id = '0';
+    this.mode = 'new-record';
     this.menuFieldComponent = new MenuFieldDTO;
 
-    if (this.activatedRoute.snapshot.paramMap.has('id')) {
-      id = this.activatedRoute.snapshot.paramMap.get('id');
-    }
-
-    if (id === '0') {
-      this.mode = 'new-record';
-      this.menuComponent = new MenuDTO();
-    } else {
+    const locateParams = this.getLocateParams();
+    if (locateParams.has('ID')) {
+      id = locateParams.get('ID');
       this.mode = 'edit-record';
     }
 
@@ -62,73 +62,30 @@ export class MenuDesignerFormComponent implements OnInit {
       });
     }
 
+  }
 
-   // this.tableHeaders = ['Name', 'Description', 'Type', 'Size', 'Related Component', 'Auto Increment', 'Primary key'];
+  showPreviousPageButton() {
+    if (this.previousPage === null) {
+      return false;
+    } else {
+      return true;
+    }
+  }
 
-  //  this.menuComponent = new MenuDTO();
-  //   this.menuComponent.menuFieldList = [
-  //     {
-  //       id: 0,
-  //       shortOrder: 0,
-  //       name: 'child_1',
-  //       icon: 'child_1_icon',
-  //       command: 'command',
-  //       menuFieldList: [
-  //         {
-  //           id: 1,
-  //           shortOrder: 0,
-  //           name: 'child_1.1',
-  //           icon: 'child_1-1_icon',
-  //           command: 'command',
-  //           menuFieldList: [
-  //             {
-  //               id: 1,
-  //               shortOrder: 0,
-  //               name: 'child_1.1.1',
-  //               icon: 'child_1-1_icon',
-  //               command: 'command',
-  //               menuFieldList: []
-  //             },
-  //             {
-  //               id: 2,
-  //               shortOrder: 0,
-  //               name: 'child_1.1.2',
-  //               icon: 'fa-address-book',
-  //               command: 'command',
-  //               menuFieldList: [
-  //                 {
-  //                   id: 2,
-  //                   shortOrder: 0,
-  //                   name: 'child_1.1.2.1',
-  //                   icon: 'fa-barcode',
-  //                   command: 'command',
-  //                   menuFieldList: []
-  //                 }]
-  //             }
-  //
-  //           ]
-  //         },
-  //         {
-  //           id: 2,
-  //           shortOrder: 0,
-  //           name: 'child_1.2',
-  //           icon: 'fa-align-justify',
-  //           command: 'command',
-  //           menuFieldList: []
-  //         }
-  //       ]
-  //     },
-  //     {
-  //       id: 0,
-  //       shortOrder: 0,
-  //       name: 'child_2',
-  //       icon: 'child_2_icon',
-  //       command: 'command',
-  //       menuFieldList: []
-  //     }
-  //   ];
+  navigateToPreviousPage() {
+    this.navigatorService.navigateToPreviousPage(this.pageId);
+  }
 
+  navigateToNextPage() {
+    this.navigatorService.navigateToNextPage(this.pageId);
+  }
 
+  showNextPageButton() {
+    if (this.nextPage === null) {
+      return false;
+    } else {
+      return true;
+    }
   }
 
   addChildMenuField(selectedParentMenuFieldComponent: MenuFieldDTO) {
@@ -215,22 +172,25 @@ export class MenuDesignerFormComponent implements OnInit {
   save() {
     if (this.mode === 'edit-record') {
       this.menuDesignerService.put(this.menuComponent).subscribe(data => {
-        this.router.navigate(['/menu-designer-list']);
+      //  this.router.navigate(['/menu-designer-list']);
+        this.navigatorService.closeAndBack(this.pageId);
       });
     } else {
       this.menuDesignerService.post(this.menuComponent).subscribe(data => {
-        this.router.navigate(['/menu-designer-list']);
+       // this.router.navigate(['/menu-designer-list']);
+        this.navigatorService.closeAndBack(this.pageId);
       });
     }
   }
 
-  toList() {
-    this.router.navigate(['/menu-designer-list']);
-  }
+  // toList() {
+  //   this.router.navigate(['/menu-designer-list']);
+  // }
 
   delete() {
     this.menuDesignerService.delete(this.menuComponent.id).subscribe(data => {
-      this.router.navigate(['/menu-designer-list']);
+    //  this.router.navigate(['/menu-designer-list']);
+      this.navigatorService.closeAndBack(this.pageId);
     });
   }
 

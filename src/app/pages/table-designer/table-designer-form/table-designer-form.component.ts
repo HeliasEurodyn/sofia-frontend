@@ -75,22 +75,10 @@ export class TableDesignerFormComponent extends PageComponent implements OnInit 
     this.table = new TableDTO();
 
 
-    if (this.params.has('LOCATE')) {
-      const locateValues = this.params.get('LOCATE');
-      let locateValuesInsideBrackets = locateValues.replace(/.*\(|\).*/, '');
-      locateValuesInsideBrackets = locateValuesInsideBrackets.replace(/.*\(|\).*/, '');
-      const locateValuesSplited = locateValuesInsideBrackets.split(',');
-
-      const locateValuesKeyValMap: Map<string, string> = new Map();
-
-      for (const locateValueSplited of locateValuesSplited) {
-        const locateValuesKeyVal: string[] = locateValueSplited.split('=');
-        locateValuesKeyValMap.set(locateValuesKeyVal[0], locateValuesKeyVal[1]);
-      }
-      if (locateValuesKeyValMap.has('ID')) {
-        id = locateValuesKeyValMap.get('ID');
-        this.mode = 'edit-record';
-      }
+    const locateParams = this.getLocateParams();
+    if (locateParams.has('ID')) {
+      id = locateParams.get('ID');
+      this.mode = 'edit-record';
     }
 
     if (this.mode === 'edit-record') {
@@ -137,11 +125,11 @@ export class TableDesignerFormComponent extends PageComponent implements OnInit 
   save() {
     if (this.mode === 'edit-record') {
       this.tableDesignerService.put(this.table).subscribe(data => {
-        this.router.navigate(['/dto-designer-list']);
+        this.navigatorService.closeAndBack(this.pageId);
       });
     } else {
       this.tableDesignerService.post(this.table).subscribe(data => {
-        this.router.navigate(['/dto-designer-list']);
+        this.navigatorService.closeAndBack(this.pageId);
       });
     }
   }

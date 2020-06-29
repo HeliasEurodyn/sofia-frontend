@@ -75,6 +75,24 @@ export class NavigatorService {
     }
   }
 
+
+  public closeAndBack(pageId) {
+
+    for (const page of this.pages) {
+      if (pageId.toUpperCase() === page.instance.pageId.toUpperCase()) {
+        if (page.instance.previousPage === null) {
+          this.closeById(pageId);
+        }
+
+        const pageIndex = this.pages.indexOf(page)
+        this.pages[pageIndex] = page.instance.previousPage;
+        this.router.navigateByUrl('/main/' + page.instance.previousPage.instance.pageId);
+        return;
+      }
+    }
+  }
+
+
   public closeById(id: string) {
 
 

@@ -8,8 +8,11 @@
               (click)="delete()">
         <i class="fa fa-times"></i> Delete
       </button>
-      <button class="btn btn-outline-primary" style="margin-top: 0px;" (click)="toList()">
-        <i class="fa fa-sign-out"></i> Back
+      <button class="btn btn-outline-primary" style="margin-top: 0px;" *ngIf="showPreviousPageButton()" (click)="navigateToPreviousPage()">
+        <i class="fa fa-chevron-left"></i> Back
+      </button>
+      <button class="btn btn-outline-primary" style="margin-top: 0px;" *ngIf="showNextPageButton()" (click)="navigateToNextPage()">
+        <i class="fa fa-chevron-right"></i> Next
       </button>
     </div>
   </div>
