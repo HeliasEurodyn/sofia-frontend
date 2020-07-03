@@ -29,6 +29,8 @@ import { ListComponent } from './pages/list/list/list.component';
 import { TabContainerComponent } from './shared/main-tab-container/tab-container/tab-container.component';
 import { TabComponent } from './shared/main-tab-container/tab/tab.component';
 import { NavigatorComponent } from './pages/navigator/navigator.component';
+import { AppViewDesignerFormComponent } from './pages/appview-designer/app-view-designer-form/app-view-designer-form.component';
+import { AppViewDesignerListComponent } from './pages/appview-designer/app-view-designer-list/app-view-designer-list.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -47,7 +49,9 @@ import { NavigatorComponent } from './pages/navigator/navigator.component';
     ListComponent,
     TabContainerComponent,
     TabComponent,
-    NavigatorComponent
+    NavigatorComponent,
+    AppViewDesignerFormComponent,
+    AppViewDesignerListComponent
   ],
     imports: [
         BrowserAnimationsModule,

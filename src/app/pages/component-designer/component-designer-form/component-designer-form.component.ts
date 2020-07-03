@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {TableService} from '../../../services/table.service';
+import {TableService} from '../../../services/crud/table.service';
 import {ComponentDTO, ComponentTableDTO, ComponentTableFieldDTO} from '../../../dtos/component/componentDTO';
 import {TableDTO} from '../../../dtos/table/tableDTO';
-import {TableComponentService} from 'app/services/table-component.service';
+import {TableComponentService} from 'app/services/crud/table-component.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {NavigatorService} from '../../../services/navigator.service';
 import {PageComponent} from '../../page/page-component';
@@ -88,12 +88,12 @@ export class ComponentDesignerFormComponent extends PageComponent implements OnI
 
   save() {
     if (this.mode === 'edit-record') {
-      this.tableComponentService.put(this.componentDTO).subscribe(data => {
+      this.tableComponentService.update(this.componentDTO).subscribe(data => {
         this.navigatorService.closeAndBack(this.pageId);
       });
     } else {
 
-      this.tableComponentService.post(this.componentDTO).subscribe(data => {
+      this.tableComponentService.save(this.componentDTO).subscribe(data => {
         this.navigatorService.closeAndBack(this.pageId);
       });
     }

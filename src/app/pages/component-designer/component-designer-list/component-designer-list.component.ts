@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {TableService} from '../../../services/table.service';
-import {TableComponentService} from '../../../services/table-component.service';
+import {TableService} from '../../../services/crud/table.service';
+import {TableComponentService} from '../../../services/crud/table-component.service';
 import {NavigatorService} from '../../../services/navigator.service';
 import {PageComponent} from '../../page/page-component';
 

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {MenuService} from '../../../services/menu.service';
+import {MenuService} from '../../../services/crud/menu.service';
 import {PageComponent} from '../../page/page-component';
 import {NavigatorService} from '../../../services/navigator.service';
 

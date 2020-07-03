@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ListDTO} from '../../../dtos/list/list-dto';
-import {TableComponentService} from 'app/services/table-component.service';
+import {TableComponentService} from 'app/services/crud/table-component.service';
 import {ListComponentDTO} from '../../../dtos/list/list-component-dto';
 import {ComponentTableDTO, ComponentTableFieldDTO} from '../../../dtos/component/componentDTO';
 import {ListComponentFieldDTO} from 'app/dtos/list/list-component-field-d-t-o';
-import {ListService} from 'app/services/list.service';
+import {ListService} from 'app/services/crud/list.service';
 import {NavigatorService} from '../../../services/navigator.service';
 import {PageComponent} from '../../page/page-component';
 
@@ -99,12 +99,12 @@ export class ListDesignerFormComponent extends PageComponent implements OnInit {
 
   save() {
     if (this.mode === 'edit-record') {
-      this.service.put(this.dto).subscribe(data => {
+      this.service.update(this.dto).subscribe(data => {
      //   this.router.navigate(['/list-designer-list']);
         this.navigatorService.closeAndBack(this.pageId);
       });
     } else {
-      this.service.post(this.dto).subscribe(data => {
+      this.service.save(this.dto).subscribe(data => {
        // this.router.navigate(['/list-designer-list']);
         this.navigatorService.closeAndBack(this.pageId);
       });

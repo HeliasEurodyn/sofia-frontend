@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {TableDTO, TableFieldDTO} from '../../../dtos/table/tableDTO';
-import {TableService} from '../../../services/table.service';
+import {TableService} from '../../../services/crud/table.service';
 import {PageComponent} from '../../page/page-component';
 import {NavigatorService} from '../../../services/navigator.service';
 
@@ -124,11 +124,11 @@ export class TableDesignerFormComponent extends PageComponent implements OnInit 
 
   save() {
     if (this.mode === 'edit-record') {
-      this.tableDesignerService.put(this.table).subscribe(data => {
+      this.tableDesignerService.update(this.table).subscribe(data => {
         this.navigatorService.closeAndBack(this.pageId);
       });
     } else {
-      this.tableDesignerService.post(this.table).subscribe(data => {
+      this.tableDesignerService.save(this.table).subscribe(data => {
         this.navigatorService.closeAndBack(this.pageId);
       });
     }

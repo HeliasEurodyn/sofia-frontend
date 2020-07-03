@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {MenuService} from '../../../services/menu.service';
+import {MenuService} from '../../../services/crud/menu.service';
 import {MenuDTO, MenuFieldDTO} from '../../../dtos/menu/menuDTO';
 import {PageComponent} from '../../page/page-component';
 import {NavigatorService} from '../../../services/navigator.service';
@@ -171,12 +171,12 @@ export class MenuDesignerFormComponent extends PageComponent implements OnInit {
 
   save() {
     if (this.mode === 'edit-record') {
-      this.menuDesignerService.put(this.menuComponent).subscribe(data => {
+      this.menuDesignerService.update(this.menuComponent).subscribe(data => {
       //  this.router.navigate(['/menu-designer-list']);
         this.navigatorService.closeAndBack(this.pageId);
       });
     } else {
-      this.menuDesignerService.post(this.menuComponent).subscribe(data => {
+      this.menuDesignerService.save(this.menuComponent).subscribe(data => {
        // this.router.navigate(['/menu-designer-list']);
         this.navigatorService.closeAndBack(this.pageId);
       });

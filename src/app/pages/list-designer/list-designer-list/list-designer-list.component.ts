@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ListService} from 'app/services/list.service';
+import {ListService} from 'app/services/crud/list.service';
 import {NavigatorService} from '../../../services/navigator.service';
 import {PageComponent} from '../../page/page-component';
 

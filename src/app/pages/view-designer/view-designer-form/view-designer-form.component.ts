@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 
 import {ActivatedRoute, Router} from '@angular/router';
-import {ViewService} from 'app/services/view.service';
+import {ViewService} from 'app/services/crud/view.service';
 import {ViewDTO} from '../../../dtos/view/view-dto';
 import {NavigatorService} from '../../../services/navigator.service';
 import {PageComponent} from '../../page/page-component';
@@ -55,11 +55,11 @@ export class ViewDesignerFormComponent extends PageComponent implements OnInit {
 
   save() {
     if (this.mode === 'edit-record') {
-      this.service.put(this.dto).subscribe(data => {
+      this.service.update(this.dto).subscribe(data => {
         this.navigatorService.closeAndBack(this.pageId);
       });
     } else {
-      this.service.post(this.dto).subscribe(data => {
+      this.service.save(this.dto).subscribe(data => {
         this.navigatorService.closeAndBack(this.pageId);
       });
     }
