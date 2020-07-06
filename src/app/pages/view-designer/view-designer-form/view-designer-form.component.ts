@@ -13,7 +13,6 @@ import {PageComponent} from '../../page/page-component';
 })
 export class ViewDesignerFormComponent extends PageComponent implements OnInit {
 
-  // public tableHeaders: any;
   public dto: ViewDTO;
   shortOrder = 0;
   public tableExists = false;
@@ -30,8 +29,6 @@ export class ViewDesignerFormComponent extends PageComponent implements OnInit {
               private navigatorService: NavigatorService) {
     super();
   }
-
-
 
   ngOnInit(): void {
     let id = '0';
@@ -64,7 +61,6 @@ export class ViewDesignerFormComponent extends PageComponent implements OnInit {
       });
     }
   }
-
 
   delete() {
     this.service.delete(this.dto.id).subscribe(data => {
@@ -102,6 +98,5 @@ export class ViewDesignerFormComponent extends PageComponent implements OnInit {
   navigateToNextPage() {
     this.navigatorService.navigateToNextPage(this.pageId);
   }
-
 
 }

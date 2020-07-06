@@ -1,15 +1,103 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {PageComponent} from '../../page/page-component';
+import {ViewDTO} from '../../../dtos/view/view-dto';
+import {ActivatedRoute, Router} from '@angular/router';
+import {ViewService} from '../../../services/crud/view.service';
+import {NavigatorService} from '../../../services/navigator.service';
+import {AppViewDTO} from '../../../dtos/appview/app-view-dto';
+import {AppViewService} from '../../../services/crud/app-view.service';
 
 @Component({
   selector: 'app-app-view-designer-form',
   templateUrl: './app-view-designer-form.component.html',
   styleUrls: ['./app-view-designer-form.component.css']
 })
-export class AppViewDesignerFormComponent implements OnInit {
+export class AppViewDesignerFormComponent extends PageComponent implements OnInit {
 
-  constructor() { }
+  public dto: AppViewDTO;
+  shortOrder = 0;
+  public tableExists = false;
+
+  public mode: string;
+  userDto: AppViewDTO;
+  title = 'appBootstrap';
+
+  public isCollapsed = false;
+
+  constructor(private activatedRoute: ActivatedRoute,
+              private service: AppViewService,
+              private router: Router,
+              private navigatorService: NavigatorService) {
+    super();
+  }
 
   ngOnInit(): void {
+    let id = '0';
+    this.mode = 'new-record';
+    this.dto = new AppViewDTO();
+
+    const locateParams = this.getLocateParams();
+    if (locateParams.has('ID')) {
+      id = locateParams.get('ID');
+      this.mode = 'edit-record';
+    }
+
+    if (this.mode === 'edit-record') {
+      this.service.getById(id).subscribe(data => {
+        this.dto = data;
+      });
+    }
+
+    this.dto.appViewFieldList = [];
+  }
+
+  save() {
+    if (this.mode === 'edit-record') {
+      this.service.update(this.dto).subscribe(data => {
+        this.navigatorService.closeAndBack(this.pageId);
+      });
+    } else {
+      this.service.save(this.dto).subscribe(data => {
+        this.navigatorService.closeAndBack(this.pageId);
+      });
+    }
+  }
+
+  delete() {
+    this.service.delete(this.dto.id).subscribe(data => {
+      this.navigatorService.closeAndBack(this.pageId);
+    });
+  }
+
+  generateViewFields() {
+    this.service.generateViewFields(this.dto.query).subscribe(data => {
+      this.dto.appViewFieldList = data;
+    });
+  }
+
+
+  showPreviousPageButton() {
+    if (this.previousPage === null) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  showNextPageButton() {
+    if (this.nextPage === null) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  navigateToPreviousPage() {
+    this.navigatorService.navigateToPreviousPage(this.pageId);
+  }
+
+  navigateToNextPage() {
+    this.navigatorService.navigateToNextPage(this.pageId);
   }
 
 }

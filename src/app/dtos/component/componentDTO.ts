@@ -21,4 +21,6 @@ export class ComponentTableFieldDTO extends BaseDTO {
   tableField: TableFieldDTO;
   description: string;
   editor: string;
+  defaultValue: string;
+  saveStatement: string;
 }

@@ -168,6 +168,16 @@ export class SidebarComponent implements OnInit {
     });
 
     this.menuItems.push({
+      id: '43',
+      path: 'STATICPAGE[NAME:appview-designer-list,TITLE:App View Designer]',
+      title: 'App View Designer',
+      icon: 'fa-cogs',
+      type: 'link',
+      class: '',
+      children: null
+    });
+
+    this.menuItems.push({
       id: '44',
       path: 'STATICPAGE[NAME:list,TYPE:EDIT,PARAMS:(ID=1),TITLE:List]',
       title: 'List',

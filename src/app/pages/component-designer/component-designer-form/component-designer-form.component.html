@@ -10,10 +10,12 @@
         <i class="fa fa-times"></i>
         Delete
       </button>
-      <button class="btn btn-outline-primary" style="margin-top: 0px;" *ngIf="showPreviousPageButton()" (click)="navigateToPreviousPage()">
+      <button class="btn btn-outline-primary" style="margin-top: 0px;" *ngIf="showPreviousPageButton()"
+              (click)="navigateToPreviousPage()">
         <i class="fa fa-chevron-left"></i> Back
       </button>
-      <button class="btn btn-outline-primary" style="margin-top: 0px;" *ngIf="showNextPageButton()" (click)="navigateToNextPage()">
+      <button class="btn btn-outline-primary" style="margin-top: 0px;" *ngIf="showNextPageButton()"
+              (click)="navigateToNextPage()">
         <i class="fa fa-chevron-right"></i> Next
       </button>
     </div>
@@ -65,7 +67,7 @@
       </div>
       <div class="card-body">
         <ul>
-          <li *ngFor="let row of componentDTO.componentTableList">
+          <li class="component-table" *ngFor="let row of componentDTO.componentTableList">
             <div class="row">
               <div class="col-md-12">
                 <h6>
@@ -101,24 +103,48 @@
             </div>
 
             <ul *ngIf="row.table != null && row.showFieldList === true">
-              <li *ngFor="let field of row.componentTableFieldList" >
-                              <div class="row">
-                                <div class="col-md-12">
-                                  <h6>
-                                    {{field.tableField?.name}}({{field.tableField.type}})
-                                  </h6>
-                                </div>
+              <li *ngFor="let field of row.componentTableFieldList">
 
-                                <div class="col-md-12">
-                                  <label>Description</label>
-                                  <input type="text" class="form-control" [(ngModel)]="field.description">
-                                </div>
 
-                                <div class="col-md-12">
-                                  <label>Component Editor</label>
-                                  <input type="text" class="form-control" [(ngModel)]="field.editor">
-                                </div>
-                              </div>
+                <div class="row">
+                  <div class="col-md-12">
+                    <h6>
+                      {{field.tableField?.name}}({{field.tableField.type}})
+                    </h6>
+                  </div>
+                </div>
+
+
+                <div class="row">
+                  <label class="col-md-auto col-form-label">Description</label>
+                  <div class="col">
+                    <input type="text" class="form-control" [(ngModel)]="field.description">
+                  </div>
+                </div>
+
+
+                <div class="row">
+                  <label class="col-md-auto col-form-label">Default Value</label>
+                  <div class="col">
+                    <input type="text" class="form-control" [(ngModel)]="field.defaultValue">
+                  </div>
+                </div>
+
+                <div class="row">
+                  <label class="col-md-auto col-form-label">Component Editor</label>
+                  <div class="col">
+                    <input type="text" class="form-control" [(ngModel)]="field.editor">
+                  </div>
+                </div>
+
+
+                <div class="row">
+                  <label class="col-md-auto col-form-label">Save Statement</label>
+                  <div class="col">
+                    <input type="text" class="form-control" [(ngModel)]="field.saveStatement">
+                  </div>
+                </div>
+
               </li>
             </ul>
 

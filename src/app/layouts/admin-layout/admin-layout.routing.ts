@@ -22,6 +22,8 @@ import {ListComponent} from '../../pages/list/list/list.component';
 import {TabContainerComponent} from '../../shared/main-tab-container/tab-container/tab-container.component';
 import {NavigatorComponent} from '../../pages/navigator/navigator.component';
 import {NavigatorService} from '../../services/navigator.service';
+import {AppViewDesignerListComponent} from '../../pages/appview-designer/app-view-designer-list/app-view-designer-list.component';
+import {AppViewDesignerFormComponent} from '../../pages/appview-designer/app-view-designer-form/app-view-designer-form.component';
 
 export const AdminLayoutRoutes: Routes = [
   {path: 'dashboard', component: DashboardComponent},
@@ -43,6 +45,9 @@ export const AdminLayoutRoutes: Routes = [
   {path: 'component-designer-list', component: ComponentDesignerListComponent},
   {path: 'view-designer-list', component: ViewDesignerListComponent},
   {path: 'view-designer-form', component: ViewDesignerFormComponent},
+  {path: 'appview-designer-list', component: AppViewDesignerListComponent},
+  {path: 'appview-designer-form', component: AppViewDesignerFormComponent},
+
   {path: 'list', component: ListComponent},
 ];
 

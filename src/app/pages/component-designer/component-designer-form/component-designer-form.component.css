@@ -45,3 +45,12 @@ li{
 .margin-left{
   margin-left: 10px;
 }
+
+
+.component-table {
+  position: relative;
+  padding: .75rem 1.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid #66615b;
+  border-radius: .25rem;
+}
