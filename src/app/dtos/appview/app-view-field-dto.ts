@@ -1,6 +1,7 @@
-export class AppViewFieldDTO {
-  name: string;
-  description: string;
-  type: string;
-  size: string;
+import {PersistEntityFieldDTO} from '../persistEntity/persist-entity-field-dto';
+
+export class AppViewFieldDTO extends PersistEntityFieldDTO {
+
+  private entitytype = 'appviewfield';
+
 }

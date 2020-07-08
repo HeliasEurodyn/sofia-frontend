@@ -1,8 +1,7 @@
-import {BaseDTO} from '../common/base-dto';
+import {PersistEntityFieldDTO} from '../persistEntity/persist-entity-field-dto';
 
-export class ViewFieldDTO extends BaseDTO {
-  name: string;
-  description: string;
-  type: string;
-  size: string;
+export class ViewFieldDTO extends PersistEntityFieldDTO {
+
+  private entitytype = 'viewfield';
+
 }

@@ -1,9 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {TableDTO, TableFieldDTO} from '../../../dtos/table/tableDTO';
+import {TableDTO} from '../../../dtos/table/tableDTO';
 import {TableService} from '../../../services/crud/table.service';
 import {PageComponent} from '../../page/page-component';
 import {NavigatorService} from '../../../services/navigator.service';
+import {TableFieldDTO} from '../../../dtos/table/table-field-dto';
 
 
 @Component({

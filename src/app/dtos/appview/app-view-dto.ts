@@ -1,10 +1,11 @@
-import {BaseDTO} from '../common/base-dto';
-import {ViewFieldDTO} from '../view/view-field-dto';
 import {AppViewFieldDTO} from './app-view-field-dto';
+import {PersistEntityDTO} from '../persistEntity/persist-entity-dto';
 
-export class AppViewDTO extends BaseDTO {
-  name: string;
-  description: string;
+export class AppViewDTO extends PersistEntityDTO {
+
   query: string;
+
   public appViewFieldList: AppViewFieldDTO[];
+
+  private entitytype = 'appview';
 }

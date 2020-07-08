@@ -3,11 +3,12 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {ListDTO} from '../../../dtos/list/list-dto';
 import {TableComponentService} from 'app/services/crud/table-component.service';
 import {ListComponentDTO} from '../../../dtos/list/list-component-dto';
-import {ComponentTableDTO, ComponentTableFieldDTO} from '../../../dtos/component/componentDTO';
 import {ListComponentFieldDTO} from 'app/dtos/list/list-component-field-d-t-o';
 import {ListService} from 'app/services/crud/list.service';
 import {NavigatorService} from '../../../services/navigator.service';
 import {PageComponent} from '../../page/page-component';
+import {ComponentPersistEntityFieldDTO} from '../../../dtos/component/component-persist-entity-field-dto';
+import {ComponentPersistEntityDTO} from '../../../dtos/component/component-persist-entity-dto';
 
 @Component({
   selector: 'app-list-designer-form',
@@ -160,8 +161,7 @@ export class ListDesignerFormComponent extends PageComponent implements OnInit {
     item.showFieldList = true;
   }
 
-
-  addFieldToColumns(row: ComponentTableDTO, field: ComponentTableFieldDTO) {
+  addFieldToColumns(row: ComponentPersistEntityDTO, field: ComponentPersistEntityFieldDTO) {
     const dto = new ListComponentFieldDTO();
     dto.editor = field.editor;
     dto.componentTable = row;
@@ -169,11 +169,11 @@ export class ListDesignerFormComponent extends PageComponent implements OnInit {
     dto.visible = true;
     dto.editable = false;
     dto.description = field.description
-    dto.type = field.tableField.type;
+    dto.type = field.persistEntityField.type;
     this.selectedListComponent.listComponentColumnFieldList.push(dto);
   }
 
-  addFieldToFilters(row: ComponentTableDTO, field: ComponentTableFieldDTO) {
+  addFieldToFilters(row: ComponentPersistEntityDTO, field: ComponentPersistEntityFieldDTO) {
     const dto = new ListComponentFieldDTO();
     dto.editor = field.editor;
     dto.componentTable = row;
@@ -181,11 +181,11 @@ export class ListDesignerFormComponent extends PageComponent implements OnInit {
     dto.visible = true;
     dto.editable = false;
     dto.description = field.description
-    dto.type = field.tableField.type;
+    dto.type = field.persistEntityField.type;
     this.selectedListComponent.listComponentFilterFieldList.push(dto);
   }
 
-  addFieldToGrouping(row: ComponentTableDTO, field: ComponentTableFieldDTO) {
+  addFieldToGrouping(row: ComponentPersistEntityDTO, field: ComponentPersistEntityFieldDTO) {
     const dto = new ListComponentFieldDTO();
     dto.editor = field.editor;
     dto.componentTable = row;
@@ -193,7 +193,7 @@ export class ListDesignerFormComponent extends PageComponent implements OnInit {
     dto.visible = true;
     dto.editable = false;
     dto.description = field.description
-    dto.type = field.tableField.type;
+    dto.type = field.persistEntityField.type;
     this.selectedListComponent.listComponentLeftGroupFieldList.push(dto);
   }
 

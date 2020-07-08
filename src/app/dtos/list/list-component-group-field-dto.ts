@@ -1,11 +1,12 @@
-import {ComponentTableDTO, ComponentTableFieldDTO} from '../component/componentDTO';
+import {ComponentPersistEntityDTO} from '../component/component-persist-entity-dto';
+import {ComponentPersistEntityFieldDTO} from '../component/component-persist-entity-field-dto';
 
 export class ListComponentGroupFieldDTO {
   editor: string;
   description: string;
   type: string
-  public componentTableDTO: ComponentTableDTO;
-  public componentTableFieldDTO: ComponentTableFieldDTO;
+  public componentTableDTO: ComponentPersistEntityDTO;
+  public componentTableFieldDTO: ComponentPersistEntityFieldDTO;
   visible: Boolean;
   editable: Boolean;
 }

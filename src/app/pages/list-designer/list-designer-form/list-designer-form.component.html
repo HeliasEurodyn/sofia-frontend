@@ -407,7 +407,7 @@
       </div>
       <div class="card-body">
         <ul style="padding: 0px;">
-          <li *ngFor="let row of selectedListComponent?.component.componentTableList">
+          <li *ngFor="let row of selectedListComponent?.component.componentPersistEntityList">
             <div class="row">
               <div class="col-md-12">
                 <h6 style="margin: 0px;">
@@ -441,7 +441,7 @@
               </tr>
               </thead>
               <tbody>
-              <tr *ngFor="let field of row.componentTableFieldList"
+              <tr *ngFor="let field of row.componentPersistEntityFieldList"
                   data-dismiss="modal" style="cursor: pointer;">
                 <td>
                   <button title="Add to columns" type="button" class="btn btn-outline-primary btn-icon btn-sm"

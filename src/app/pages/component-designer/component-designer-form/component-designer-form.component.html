@@ -67,7 +67,7 @@
       </div>
       <div class="card-body">
         <ul>
-          <li class="component-table" *ngFor="let row of componentDTO.componentTableList">
+          <li class="component-table" *ngFor="let row of componentDTO.componentPersistEntityList">
             <div class="row">
               <div class="col-md-12">
                 <h6>
@@ -76,18 +76,18 @@
                           class="btn btn-outline-danger btn-icon btn-sm">
                     <i class="fa fa-times"></i>
                   </button>
-                  <button *ngIf="row.table != null && row.showFieldList === true" (click)="hideChildren(row)"
+                  <button *ngIf="row.persistEntity != null && row.showFieldList === true" (click)="hideChildren(row)"
                           type="button" title="Hide"
                           class="btn btn-outline-default btn-icon btn-sm">
                     <i class="fa fa-compress"></i>
                   </button>
 
-                  <button *ngIf="row.table != null && row.showFieldList !== true" (click)="showChildren(row)"
+                  <button *ngIf="row.persistEntity != null && row.showFieldList !== true" (click)="showChildren(row)"
                           type="button" title="Show"
                           class="btn btn-outline-default btn-icon btn-sm">
                     <i class="fa fa-expand"></i>
                   </button>
-                  [{{row.code}}] {{row.table.name}}
+                  [{{row.code}}] {{row.persistEntity.name}}
 
                 </h6>
               </div>
@@ -102,14 +102,14 @@
               </div>
             </div>
 
-            <ul *ngIf="row.table != null && row.showFieldList === true">
-              <li *ngFor="let field of row.componentTableFieldList">
+            <ul *ngIf="row.persistEntity != null && row.showFieldList === true">
+              <li *ngFor="let field of row.componentPersistEntityFieldList">
 
 
                 <div class="row">
                   <div class="col-md-12">
                     <h6>
-                      {{field.tableField?.name}}({{field.tableField.type}})
+                      {{field.persistEntityField?.name}}({{field.persistEntityField.type}})
                     </h6>
                   </div>
                 </div>
