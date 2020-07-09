@@ -9,7 +9,7 @@ export class BaseDTO {
 
   modifiedBy: string;
 
-  shortOrder: number;
+  public shortOrder: number;
 
   version: number;
 }

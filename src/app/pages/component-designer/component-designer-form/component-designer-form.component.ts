@@ -8,6 +8,7 @@ import {NavigatorService} from '../../../services/navigator.service';
 import {PageComponent} from '../../page/page-component';
 import {ComponentPersistEntityFieldDTO} from '../../../dtos/component/component-persist-entity-field-dto';
 import {ComponentPersistEntityDTO} from '../../../dtos/component/component-persist-entity-dto';
+import {ViewService} from '../../../services/crud/view.service';
 
 
 @Component({
@@ -18,6 +19,7 @@ import {ComponentPersistEntityDTO} from '../../../dtos/component/component-persi
 export class ComponentDesignerFormComponent extends PageComponent implements OnInit {
 
   public tables: any;
+  public views: any;
   public componentDTO = new ComponentDTO();
   public selectedTableComponent: ComponentDTO;
   public mode: string;
@@ -26,6 +28,7 @@ export class ComponentDesignerFormComponent extends PageComponent implements OnI
   tableComponentFieldList: ComponentPersistEntityFieldDTO[];
 
   constructor(private tableService: TableService,
+              private viewService: ViewService,
               private tableComponentService: TableComponentService,
               private activatedRoute: ActivatedRoute,
               private router: Router,
@@ -53,6 +56,7 @@ export class ComponentDesignerFormComponent extends PageComponent implements OnI
     }
 
     this.refreshTables();
+    this.refreshViews();
   }
 
 
@@ -86,6 +90,13 @@ export class ComponentDesignerFormComponent extends PageComponent implements OnI
     });
   }
 
+  refreshViews() {
+    this.viewService.get().subscribe(data => {
+      this.views = data;
+    });
+  }
+
+
   save() {
     if (this.mode === 'edit-record') {
       this.tableComponentService.update(this.componentDTO).subscribe(data => {
@@ -100,8 +111,38 @@ export class ComponentDesignerFormComponent extends PageComponent implements OnI
 
   }
 
-  setSelectedTableComponent(selectedTableComponent) {
-    this.selectedTableComponent = selectedTableComponent;
+  //
+  // setSelectedViewComponent(selectedTableComponent) {
+  //  // this.selectedTableComponent = selectedTableComponent;
+  // }
+  //
+  // setSelectedTableComponent(selectedTableComponent) {
+  //   this.selectedTableComponent = selectedTableComponent;
+  // }
+
+
+  selectView(row) {
+
+    const componentTableDTO = new ComponentPersistEntityDTO();
+    componentTableDTO.persistEntity = row;
+    componentTableDTO.showFieldList = true;
+    componentTableDTO.shortOrder = this.genNextShortOrder(this.componentDTO.componentPersistEntityList);
+    componentTableDTO.code = 't' + componentTableDTO.shortOrder;
+
+    componentTableDTO.componentPersistEntityFieldList = [];
+    let shortOrder = 1;
+    for (const viewDesignField of row.viewFieldList) {
+      const componentTableFieldDTO = new ComponentPersistEntityFieldDTO();
+      componentTableFieldDTO.persistEntityField = viewDesignField;
+      componentTableFieldDTO.editor = '';
+      componentTableFieldDTO.description = viewDesignField.description;
+      componentTableFieldDTO.shortOrder = shortOrder;
+      componentTableDTO.componentPersistEntityFieldList.push(componentTableFieldDTO);
+      shortOrder++;
+    }
+
+    this.componentDTO.componentPersistEntityList.push(componentTableDTO);
+
   }
 
   selectTable(row) {

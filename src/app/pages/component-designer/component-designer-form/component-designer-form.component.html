@@ -56,8 +56,12 @@
           </div>
           <div class="col-sm-5">
             <div class="pull-right">
-              <button class="btn btn-outline-primary" (click)="setSelectedTableComponent(componentDTO)"
-                      data-target="#menuModal" data-toggle="modal">
+              <button class="btn btn-outline-primary"
+                      data-target="#viewModal" data-toggle="modal">
+                <i class="fa fa-link"></i> Select View
+              </button>
+              <button class="btn btn-outline-primary"
+                      data-target="#tableModal" data-toggle="modal">
                 <i class="fa fa-link"></i> Select Table
               </button>
             </div>
@@ -158,7 +162,54 @@
 </div>
 
 
-<div aria-labelledby="ModalLabel" class="modal fade" id="menuModal" role="dialog" aria-hidden="true">
+
+
+<div aria-labelledby="ModalLabel" class="modal fade" id="viewModal" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header justify-content-center">
+        <h4 *ngIf="mode === 'insert'" class="title title-up modal-title">Insert View</h4>
+        <h4 *ngIf="mode === 'edit'" class="title title-up modal-title">Edit View</h4>
+        <button aria-label="Close" class="close" data-dismiss="modal" type="button"><i
+          class="nc-icon nc-simple-remove"></i></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="row">
+            <div class="col-12">
+              <table class="table table-striped">
+                <thead class=" text-primary">
+                <tr>
+                  <th>id</th>
+                  <th>name</th>
+                  <th>version</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let row of views" (click)="selectView(row)" data-dismiss="modal" style="cursor: pointer;">
+                  <td>{{row['id']}}</td>
+                  <td>{{row['name']}}</td>
+                  <td>{{row['creationVersion']}}</td>
+                </tr>
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <div class="left-side">
+          <button class="btn btn-outline-danger" data-dismiss="modal" type="button">Close</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div aria-labelledby="ModalLabel" class="modal fade" id="tableModal" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header justify-content-center">
