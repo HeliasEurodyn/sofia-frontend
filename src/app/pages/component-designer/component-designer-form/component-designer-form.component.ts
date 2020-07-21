@@ -52,13 +52,35 @@ export class ComponentDesignerFormComponent extends PageComponent implements OnI
     if (this.mode === 'edit-record') {
       this.tableComponentService.getById(id).subscribe(data => {
         this.componentDTO = data;
+        this.cleanIdsIfCloneEnabled();
       });
     }
+
 
     this.refreshTables();
     this.refreshViews();
   }
 
+  cleanIdsIfCloneEnabled() {
+    if (this.params.has('TYPE')) {
+
+      if (this.params.get('TYPE').toUpperCase() === 'CLONE') {
+
+        this.componentDTO.id = null;
+        this.componentDTO.version = null;
+        for (const componentPersistEntity of this.componentDTO.componentPersistEntityList) {
+
+          componentPersistEntity.id = null;
+          componentPersistEntity.version = null;
+          for (const componentPersistEntityField of componentPersistEntity.componentPersistEntityFieldList) {
+            componentPersistEntityField.id = null;
+            componentPersistEntityField.version = null;
+          }
+        }
+        this.mode = 'new-record';
+      }
+    }
+  }
 
   showPreviousPageButton() {
     if (this.previousPage === null) {
@@ -86,6 +108,7 @@ export class ComponentDesignerFormComponent extends PageComponent implements OnI
 
   refreshTables() {
     this.tableService.get().subscribe(data => {
+      console.log(data);
       this.tables = data;
     });
   }

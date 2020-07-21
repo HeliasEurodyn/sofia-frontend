@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import {TableService} from '../../../services/crud/table.service';
+import {Component, OnInit} from '@angular/core';
 import {TableComponentService} from '../../../services/crud/table-component.service';
 import {NavigatorService} from '../../../services/navigator.service';
 import {PageComponent} from '../../page/page-component';
@@ -11,12 +10,17 @@ import {PageComponent} from '../../page/page-component';
 })
 export class ComponentDesignerListComponent extends PageComponent implements OnInit {
   public tableData: any;
+
   constructor(private service: TableComponentService,
               private navigatorService: NavigatorService) {
     super();
   }
 
   ngOnInit(): void {
+    this.refresh();
+  }
+
+  onFocusIn() {
     this.refresh();
   }
 
@@ -34,6 +38,12 @@ export class ComponentDesignerListComponent extends PageComponent implements OnI
     this.service.delete(row['id']).subscribe(data => {
       this.refresh();
     });
+  }
+
+  clone(id: string) {
+    let command = 'STATICPAGE[NAME:component-designer-form,TITLE:Form,TYPE:CLONE,LOCATE:(ID=' + id + '),PARENT-PAGEID:$PAGEID]';
+    command = command.replace('$PAGEID', this.pageId);
+    this.navigatorService.openLocation(command);
   }
 
   openPage(id: string) {

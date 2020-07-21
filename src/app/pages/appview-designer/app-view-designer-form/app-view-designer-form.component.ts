@@ -1,8 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {PageComponent} from '../../page/page-component';
-import {ViewDTO} from '../../../dtos/view/view-dto';
 import {ActivatedRoute, Router} from '@angular/router';
-import {ViewService} from '../../../services/crud/view.service';
 import {NavigatorService} from '../../../services/navigator.service';
 import {AppViewDTO} from '../../../dtos/appview/app-view-dto';
 import {AppViewService} from '../../../services/crud/app-view.service';
@@ -45,10 +43,27 @@ export class AppViewDesignerFormComponent extends PageComponent implements OnIni
     if (this.mode === 'edit-record') {
       this.service.getById(id).subscribe(data => {
         this.dto = data;
+        this.cleanIdsIfCloneEnabled();
       });
     }
 
     this.dto.appViewFieldList = [];
+  }
+
+  cleanIdsIfCloneEnabled() {
+    if (this.params.has('TYPE')) {
+
+      if (this.params.get('TYPE').toUpperCase() === 'CLONE') {
+
+        this.dto.id = null;
+        this.dto.version = null;
+        for (const appViewField of this.dto.appViewFieldList) {
+          appViewField.id = null;
+          appViewField.version = null;
+        }
+        this.mode = 'new-record';
+      }
+    }
   }
 
   save() {

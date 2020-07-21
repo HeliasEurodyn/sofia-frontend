@@ -10,6 +10,9 @@ export class PageComponent {
   constructor() {
   }
 
+  onFocusIn() {
+  }
+
   getLocateParams() {
     const locateValuesKeyValMap: Map<string, string> = new Map();
     if (this.params.has('LOCATE')) {
@@ -27,23 +30,6 @@ export class PageComponent {
 
     return locateValuesKeyValMap;
   }
-
-
-//  public title: Subject<string> = new BehaviorSubject('');
-
-  // public tabId: string;
-  // public hasNextPage: Boolean;
-  // public hasPreviousPage: Boolean;
-  // @Output() tabNavigationEmitter = new EventEmitter<string>();
-
-
-  // setPageId(pageId) {
-  //   this.pageId = pageId
-  // }
-
-  // navigateTo(command: string ) {
-  // //   this.tabNavigationEmitter.emit(command);
-  //  }
 
 
 }

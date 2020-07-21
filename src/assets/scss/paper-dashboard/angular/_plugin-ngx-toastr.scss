@@ -50,7 +50,7 @@
     }
 
     &.alert-with-icon {
-      .nc-icon {
+      .fa {
         position: absolute;
         left: 24px;
         top: 50%;
@@ -92,7 +92,7 @@
 }
 
 .toast-top-center {
-  top: 12px;
+  top: 12px !important;
 }
 
 .toast-bottom-center {

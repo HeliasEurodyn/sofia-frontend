@@ -59,10 +59,29 @@ export class MenuDesignerFormComponent extends PageComponent implements OnInit {
     if (this.mode === 'edit-record') {
       this.menuDesignerService.getById(id).subscribe(data => {
         this.menuComponent = data;
+        this.cleanIdsIfCloneEnabled();
       });
     }
 
   }
+
+
+  cleanIdsIfCloneEnabled() {
+    if (this.params.has('TYPE')) {
+
+      if (this.params.get('TYPE').toUpperCase() === 'CLONE') {
+
+        this.menuComponent.id = null;
+        this.menuComponent.version = null;
+        for (const menuField of this.menuComponent.menuFieldList) {
+          menuField.id = null;
+          menuField.version = null;
+        }
+        this.mode = 'new-record';
+      }
+    }
+  }
+
 
   showPreviousPageButton() {
     if (this.previousPage === null) {

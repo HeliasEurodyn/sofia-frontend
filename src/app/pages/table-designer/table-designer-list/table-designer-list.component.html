@@ -23,10 +23,22 @@
           </div>
           <div class="col-sm-5">
             <div class="pull-right">
-              <button class="btn btn-outline-primary" (click)="openNewPage()" >
+              <button class="btn btn-outline-success" (click)="openNewPage()" >
                 <i class="fa fa-plus-circle"></i> New
               </button>
             </div>
+            <div class="pull-right">
+              <button class="btn btn-outline-primary" (click)="refresh()" >
+                <i class="fa fa-refresh"></i> Refresh
+              </button>
+              <button class="btn btn-outline-primary" (click)="showNotification()" >
+                <i class="fa fa-refresh"></i> Popup example
+              </button>
+
+
+            </div>
+
+
           </div>
         </div>
 
@@ -36,7 +48,6 @@
           <table class="table table-striped">
             <thead class=" text-primary">
             <tr>
-<!--              <th *ngFor="let cell of tableData.headerRow">{{ cell }}</th>-->
               <th class="text-left">Actions</th>
               <th>id</th>
               <th>name</th>
@@ -45,15 +56,7 @@
             </thead>
             <tbody>
             <tr *ngFor="let row of tableData.dataRows">
-<!--              <td *ngFor="let cell of row">{{cell}}</td>-->
-
               <td>
-
-<!--                <button type="button" title="Edit" class="btn btn-outline-success btn-icon btn-sm"-->
-<!--                         routerLink="/table-designer-form/{{row['id']}}">-->
-<!--                  <i class="fa fa-pencil"></i>-->
-<!--                </button>-->
-
                <button type="button" title="Edit" class="btn btn-outline-success btn-icon btn-sm"
                         (click)="openPage( row['id'])"   >
                   <i class="fa fa-pencil"></i>
@@ -61,7 +64,10 @@
                 <button type="button" title="Delete" class="btn btn-outline-danger btn-icon btn-sm" (click)="delete(row)">
                   <i class="fa fa-times"></i>
                 </button>
-
+                <button type="button" title="Clone" class="btn btn-outline-success btn-icon btn-sm"
+                        (click)="clone( row['id'])"   >
+                  <i class="fa fa-clone"></i>
+                </button>
               </td>
               <td>
                 <input type="text" class="form-control transparent-input" readonly [(ngModel)]="row['id']">

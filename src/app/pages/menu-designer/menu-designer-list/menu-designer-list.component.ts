@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {MenuService} from '../../../services/crud/menu.service';
 import {PageComponent} from '../../page/page-component';
 import {NavigatorService} from '../../../services/navigator.service';
@@ -17,6 +17,10 @@ export class MenuDesignerListComponent extends PageComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.refresh();
+  }
+
+  onFocusIn() {
     this.refresh();
   }
 
@@ -45,6 +49,12 @@ export class MenuDesignerListComponent extends PageComponent implements OnInit {
 
   openNewPage() {
     let command = 'STATICPAGE[NAME:table-designer-form,TITLE:Form,PARENT-PAGEID:$PAGEID]';
+    command = command.replace('$PAGEID', this.pageId);
+    this.navigatorService.openLocation(command);
+  }
+
+  clone(id: string) {
+    let command = 'STATICPAGE[NAME:menu-designer-form,TITLE:Form,TYPE:CLONE,LOCATE:(ID=' + id + '),PARENT-PAGEID:$PAGEID]';
     command = command.replace('$PAGEID', this.pageId);
     this.navigatorService.openLocation(command);
   }

@@ -9,6 +9,6 @@ export class TableDTO extends PersistEntityDTO {
 
   public tableFieldList: TableFieldDTO[];
 
-  private entitytype = 'table';
+  private entitytype = 'Table';
 
 }

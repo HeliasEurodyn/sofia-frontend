@@ -179,7 +179,7 @@ export class SidebarComponent implements OnInit {
 
     this.menuItems.push({
       id: '44',
-      path: 'STATICPAGE[NAME:list,TYPE:EDIT,PARAMS:(ID=1),TITLE:List]',
+      path: 'LIST[LISTNAME:List2,TITLE:List]',
       title: 'List',
       icon: 'fa-cogs',
       type: 'link',

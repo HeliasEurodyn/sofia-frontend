@@ -47,7 +47,6 @@ export const AdminLayoutRoutes: Routes = [
   {path: 'view-designer-form', component: ViewDesignerFormComponent},
   {path: 'appview-designer-list', component: AppViewDesignerListComponent},
   {path: 'appview-designer-form', component: AppViewDesignerFormComponent},
-
   {path: 'list', component: ListComponent},
 ];
 

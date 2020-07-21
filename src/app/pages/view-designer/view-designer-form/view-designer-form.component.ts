@@ -44,10 +44,28 @@ export class ViewDesignerFormComponent extends PageComponent implements OnInit {
     if (this.mode === 'edit-record') {
       this.service.getById(id).subscribe(data => {
         this.dto = data;
+        this.cleanIdsIfCloneEnabled();
       });
     }
 
     this.dto.viewFieldList = [];
+  }
+
+
+  cleanIdsIfCloneEnabled() {
+    if (this.params.has('TYPE')) {
+
+      if (this.params.get('TYPE').toUpperCase() === 'CLONE') {
+
+        this.dto.id = null;
+        this.dto.version = null;
+        for (const viewField of this.dto.viewFieldList) {
+          viewField.id = null;
+          viewField.version = null;
+        }
+        this.mode = 'new-record';
+      }
+    }
   }
 
   save() {

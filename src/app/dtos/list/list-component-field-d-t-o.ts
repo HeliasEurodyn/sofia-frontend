@@ -7,8 +7,8 @@ export class ListComponentFieldDTO extends BaseDTO {
   editor: string;
   description: string;
   type: string
-  public componentTable: ComponentPersistEntityDTO;
-  public componentTableField: ComponentPersistEntityFieldDTO;
+  public componentPersistEntity: ComponentPersistEntityDTO;
+  public componentPersistEntityField: ComponentPersistEntityFieldDTO;
   visible: Boolean;
   editable: Boolean;
 }

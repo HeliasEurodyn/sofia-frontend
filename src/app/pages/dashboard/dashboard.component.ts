@@ -19,7 +19,7 @@ export class DashboardComponent extends PageComponent implements OnInit {
 
   ngOnInit() {
     this.title = 'Dashboard';
-   // this.title.next('Dashboard');
+    // this.title.next('Dashboard');
     this.chartColor = '#FFFFFF';
 
     this.canvas = document.getElementById('chartHours');
@@ -209,4 +209,5 @@ export class DashboardComponent extends PageComponent implements OnInit {
       options: chartOptions
     });
   }
+
 }

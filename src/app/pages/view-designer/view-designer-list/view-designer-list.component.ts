@@ -21,6 +21,10 @@ export class ViewDesignerListComponent extends PageComponent implements OnInit {
     this.refresh();
   }
 
+  onFocusIn() {
+    this.refresh();
+  }
+
   refresh() {
     this.service.get().subscribe(data => {
       this.tableData = data;
@@ -41,6 +45,12 @@ export class ViewDesignerListComponent extends PageComponent implements OnInit {
 
   openNewPage() {
     let command = 'STATICPAGE[NAME:view-designer-form,TITLE:Form,PARENT-PAGEID:$PAGEID]';
+    command = command.replace('$PAGEID', this.pageId);
+    this.navigatorService.openLocation(command);
+  }
+
+  clone(id: string) {
+    let command = 'STATICPAGE[NAME:view-designer-form,TITLE:Form,TYPE:CLONE,LOCATE:(ID=' + id + '),PARENT-PAGEID:$PAGEID]';
     command = command.replace('$PAGEID', this.pageId);
     this.navigatorService.openLocation(command);
   }

@@ -14,6 +14,6 @@ export class TableFieldDTO extends PersistEntityFieldDTO {
 
   hasNotNull: Boolean;
 
-  private entitytype = 'tablefield';
+  public entitytype = 'TableField';
 
 }

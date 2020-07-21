@@ -8,10 +8,12 @@
               (click)="delete()">
         <i class="fa fa-times"></i> Delete
       </button>
-      <button class="btn btn-outline-primary" style="margin-top: 0px;" *ngIf="showPreviousPageButton()" (click)="navigateToPreviousPage()">
+      <button class="btn btn-outline-primary" style="margin-top: 0px;" *ngIf="showPreviousPageButton()"
+              (click)="navigateToPreviousPage()">
         <i class="fa fa-chevron-left"></i> Back
       </button>
-      <button class="btn btn-outline-primary" style="margin-top: 0px;" *ngIf="showNextPageButton()" (click)="navigateToNextPage()">
+      <button class="btn btn-outline-primary" style="margin-top: 0px;" *ngIf="showNextPageButton()"
+              (click)="navigateToNextPage()">
         <i class="fa fa-chevron-right"></i> Next
       </button>
     </div>
@@ -29,7 +31,7 @@
           </div>
           <div class="col-sm-5">
             <div class="pull-right">
-              <button class="btn btn-outline-primary" data-target="#menuModal" data-toggle="modal">
+              <button class="btn btn-outline-primary" data-target="#insertComponentModal" data-toggle="modal">
                 <i class="fa fa-plus-circle"></i> Insert Component
               </button>
             </div>
@@ -38,15 +40,15 @@
 
       </div>
       <div class="card-body">
-          <div class="row">
-            <div class="col-md-12">
-              <div class="form-group " [ngClass]="{'has-danger': tableExists}">
-                <label>Name</label>
-                <input type="text" class="form-control" name="name" [(ngModel)]="dto.name">
-                <code></code>
-              </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group " [ngClass]="{'has-danger': tableExists}">
+              <label>Name</label>
+              <input type="text" class="form-control" name="name" [(ngModel)]="dto.name">
+              <code></code>
             </div>
           </div>
+        </div>
 
         <div class="row">
           <div class="col-md-12">
@@ -69,10 +71,12 @@
 
               <tr *ngFor="let row of this.dto.listComponentList">
                 <td>
-                  <button type="button" title="Delete" (click)="removeComponent(row)" class="btn btn-outline-danger btn-icon btn-sm">
+                  <button type="button" title="Delete" (click)="removeComponent(row)"
+                          class="btn btn-outline-danger btn-icon btn-sm">
                     <i class="fa fa-times"></i>
                   </button>
-                  <button type="button" title="Delete" class="btn btn-outline-primary btn-icon btn-sm" (click)="setSelectedComponent(row)">
+                  <button type="button" title="Delete" class="btn btn-outline-primary btn-icon btn-sm"
+                          (click)="setSelectedComponent(row)">
                     <i class="fa fa-search"></i>
                   </button>
                 </td>
@@ -102,7 +106,7 @@
 
 
 <div class="row">
-  <div [ngClass]="{'col-md-12':showAllFieldsDiv === false,'col-md-8':showAllFieldsDiv}" >
+  <div [ngClass]="{'col-md-12':showAllFieldsDiv === false,'col-md-8':showAllFieldsDiv}">
     <div class="card">
       <div class="card-header">
 
@@ -113,9 +117,12 @@
           <div class="col-sm-5">
             <div class="pull-right">
 
-              <button class="btn btn-outline-primary" (click)="showHideAllFields()">
-                <i class="fa"  [ngClass]="{'fa-expand':showAllFieldsDiv === false,'fa-compress':showAllFieldsDiv}"></i> Show Fields
+
+              <button class="btn btn-outline-primary" data-target="#insertFieldsModal" data-toggle="modal">
+                <i class="fa fa-plus-circle"></i> Insert fields
               </button>
+
+
             </div>
           </div>
         </div>
@@ -172,23 +179,25 @@
               </tr>
               </thead>
               <tbody>
-              <tr *ngIf="selectedListComponent == undefined || selectedListComponent?.listComponentColumnFieldList.length === 0 ">
-                <td colspan="8" class="empty-table-row" >Empty!</td>
+              <tr
+                *ngIf="selectedListComponent == undefined ||  selectedListComponent?.listComponentColumnFieldList.length === 0 ">
+                <td colspan="8" class="empty-table-row">Empty!</td>
               </tr>
 
               <tr *ngFor="let column of selectedListComponent?.listComponentColumnFieldList">
                 <td>
-                  <button (click)="removeColumn(column)" title="Delete" type="button" class="btn btn-outline-danger btn-icon btn-sm">
+                  <button (click)="removeColumn(column)" title="Delete" type="button"
+                          class="btn btn-outline-danger btn-icon btn-sm">
                     <i class="fa fa-times"></i>
                   </button>
                 </td>
                 <td>
                   <input type="text" readonly class="form-control transparent-input"
-                         value="[{{column.componentTable.code}}]{{column.componentTable.table.name}}">
+                         value="[{{column.componentPersistEntity.code}}]{{column.componentPersistEntity.persistEntity.name}}">
                 </td>
                 <td>
                   <input type="text" readonly class="form-control transparent-input"
-                         [(ngModel)]="column.componentTableField.tableField.name">
+                         [(ngModel)]="column.componentPersistEntityField.persistEntityField.name">
                 </td>
                 <td>
                   <select [(ngModel)]="column.type" class="transparent-input">
@@ -253,7 +262,8 @@
               </tr>
               </thead>
               <tbody>
-              <tr *ngIf="selectedListComponent == undefined || selectedListComponent?.listComponentFilterFieldList.length === 0 ">
+              <tr
+                *ngIf="selectedListComponent == undefined || selectedListComponent?.listComponentFilterFieldList.length === 0 ">
                 <td colspan="8" class="empty-table-row">Empty!</td>
               </tr>
               <tr *ngFor="let column of selectedListComponent?.listComponentFilterFieldList">
@@ -264,11 +274,11 @@
                 </td>
                 <td>
                   <input type="text" readonly class="form-control transparent-input"
-                         value="[{{column.componentTable.code}}]{{column.componentTable.table.name}}">
+                         value="[{{column.componentPersistEntity.code}}]{{column.componentPersistEntity.persistEntity.name}}">
                 </td>
                 <td>
                   <input type="text" readonly class="form-control transparent-input"
-                         [(ngModel)]="column.componentTableField.tableField.name">
+                         [(ngModel)]="column.componentPersistEntityField.persistEntityField.name">
                 </td>
                 <td>
                   <select [(ngModel)]="column.type" class="transparent-input">
@@ -332,7 +342,8 @@
               </tr>
               </thead>
               <tbody>
-              <tr *ngIf="selectedListComponent == undefined || selectedListComponent?.listComponentLeftGroupFieldList.length === 0 ">
+              <tr
+                *ngIf="selectedListComponent == undefined || selectedListComponent?.listComponentLeftGroupFieldList.length === 0 ">
                 <td colspan="8" class="empty-table-row">Empty!</td>
               </tr>
               <tr *ngFor="let column of selectedListComponent?.listComponentLeftGroupFieldList">
@@ -343,11 +354,11 @@
                 </td>
                 <td>
                   <input type="text" readonly class="form-control transparent-input"
-                         value="[{{column.componentTable.code}}]{{column.componentTable.table.name}}">
+                         value="[{{column.componentPersistEntity.code}}]{{column.componentPersistEntity.persistEntity.name}}">
                 </td>
                 <td>
                   <input type="text" readonly class="form-control transparent-input"
-                         [(ngModel)]="column.componentTableField.tableField.name">
+                         [(ngModel)]="column.componentPersistEntityField.persistEntityField.name">
                 </td>
                 <td>
                   <select [(ngModel)]="column.type" class="transparent-input">
@@ -411,27 +422,27 @@
             <div class="row">
               <div class="col-md-12">
                 <h6 style="margin: 0px;">
-                  <button style="margin: 0px;" *ngIf="row.table != null && row.showFieldList === true"
+                  <button style="margin: 0px;" *ngIf="row.persistEntity != null && row.showFieldList === true"
                           (click)="hideChildren(row)"
                           type="button" title="Hide"
                           class="btn btn-outline-default btn-icon btn-sm">
                     <i class="fa fa-compress"></i>
                   </button>
 
-                  <button style="margin: 0px;" *ngIf="row.table != null && row.showFieldList !== true"
+                  <button style="margin: 0px;" *ngIf="row.persistEntity != null && row.showFieldList !== true"
                           (click)="showChildren(row)"
                           type="button" title="Show"
                           class="btn btn-outline-default btn-icon btn-sm">
                     <i class="fa fa-expand"></i>
                   </button>
-                  [{{row.code}}] {{row.table.name}}
+                  [{{row.code}}] {{row.persistEntity.name}}
 
                 </h6>
               </div>
             </div>
 
 
-            <table *ngIf="row.table != null && row.showFieldList === true" class="table table-striped">
+            <table *ngIf="row.persistEntity != null && row.showFieldList === true" class="table table-striped">
               <thead class=" text-primary">
               <tr>
                 <th>actions</th>
@@ -457,8 +468,8 @@
                     <i class="fa fa-plus-circle" style="color: #13b0ff;"></i>
                   </button>
                 </td>
-                <td>{{field.tableField.id}}</td>
-                <td>{{field.tableField.type}}</td>
+                <td>{{field.persistEntityField.id}}</td>
+                <td>{{field.persistEntityField.type}}</td>
                 <td>{{field.editor}}</td>
               </tr>
 
@@ -475,7 +486,7 @@
 </div>
 
 
-<div aria-labelledby="ModalLabel" class="modal fade" id="menuModal" role="dialog" aria-hidden="true">
+<div aria-labelledby="ModalLabel" class="modal fade" id="insertComponentModal" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header justify-content-center">
@@ -499,9 +510,10 @@
                 <tr *ngFor="let row of components" (click)="selectComponent(row)" data-dismiss="modal"
                     style="cursor: pointer;">
                   <td>
-                    <button type="button" title="Delete" class="btn btn-outline-primary btn-icon btn-sm" (click)="setSelectedComponent(row)">
-                    <i class="fa fa-search"></i>
-                  </button>
+                    <button type="button" title="Delete" class="btn btn-outline-primary btn-icon btn-sm"
+                            (click)="setSelectedComponent(row)">
+                      <i class="fa fa-search"></i>
+                    </button>
                   </td>
                   <td>
                     <input type="text" readonly class="form-control transparent-input"
@@ -529,3 +541,86 @@
     </div>
   </div>
 </div>
+
+
+<div aria-labelledby="ModalLabel" class="modal fade" id="insertFieldsModal" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header justify-content-center">
+        <h4 class="title title-up modal-title">Available Fields {{this.selectedListComponent?.component.name}}</h4>
+        <button aria-label="Close" class="close" data-dismiss="modal" type="button"><i
+          class="nc-icon nc-simple-remove"></i></button>
+      </div>
+      <div class="modal-body">
+        <ul style="padding: 0px;">
+          <li *ngFor="let row of selectedListComponent?.component.componentPersistEntityList">
+            <div class="row">
+              <div class="col-md-12">
+                <h6 style="margin: 0px;">
+                  <button style="margin: 0px;" *ngIf="row.persistEntity != null && row.showFieldList === true"
+                          (click)="hideChildren(row)"
+                          type="button" title="Hide"
+                          class="btn btn-outline-default btn-icon btn-sm">
+                    <i class="fa fa-compress"></i>
+                  </button>
+
+                  <button style="margin: 0px;" *ngIf="row.persistEntity != null && row.showFieldList !== true"
+                          (click)="showChildren(row)"
+                          type="button" title="Show"
+                          class="btn btn-outline-default btn-icon btn-sm">
+                    <i class="fa fa-expand"></i>
+                  </button>
+                  [{{row.code}}] {{row.persistEntity.name}}
+
+                </h6>
+              </div>
+            </div>
+
+            <table *ngIf="row.persistEntity != null && row.showFieldList === true" class="table table-striped">
+              <thead class=" text-primary">
+              <tr>
+                <th>actions</th>
+                <th>id</th>
+                <th>Type</th>
+                <th>Editor</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let field of row.componentPersistEntityFieldList"
+                  style="cursor: pointer;">
+                <td>
+                  <button title="Add to columns" type="button" class="btn btn-outline-primary btn-icon btn-sm"
+                          (click)="addFieldToColumns(row, field)">
+                    <i class="fa fa-plus-circle" style="color: #4f5057;"></i>
+                  </button>
+                  <button title="Add to Filters" type="button" class="btn btn-outline-primary btn-icon btn-sm"
+                          (click)="addFieldToFilters(row, field)">
+                    <i class="fa fa-plus-circle" style="color: #f08a64;"></i>
+                  </button>
+                  <button title="Add to Grouping" type="button" class="btn btn-outline-primary btn-icon btn-sm"
+                          (click)="addFieldToGrouping(row, field)">
+                    <i class="fa fa-plus-circle" style="color: #13b0ff;"></i>
+                  </button>
+                </td>
+                <td>{{field.persistEntityField.id}}</td>
+                <td>{{field.persistEntityField.type}}</td>
+                <td>{{field.editor}}</td>
+              </tr>
+              </tbody>
+            </table>
+          </li>
+        </ul>
+
+      </div>
+
+
+      <div class="modal-footer">
+        <div class="left-side">
+          <button class="btn btn-outline-danger" data-dismiss="modal" type="button">Close</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+

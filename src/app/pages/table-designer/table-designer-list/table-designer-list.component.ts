@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {TableService} from '../../../services/crud/table.service';
 import {PageComponent} from '../../page/page-component';
 import {NavigatorService} from '../../../services/navigator.service';
+import {NotificationService} from '../../../services/notification.service';
 
 @Component({
   selector: 'app-table-designer-list',
@@ -13,12 +14,17 @@ export class TableDesignerListComponent extends PageComponent implements OnInit 
 
   constructor(private service: TableService,
               private navigatorService: NavigatorService,
+              private notificationService: NotificationService,
   ) {
     super();
   }
 
   ngOnInit(): void {
     this.title = 'Table Designer List';
+    this.refresh();
+  }
+
+  onFocusIn() {
     this.refresh();
   }
 
@@ -63,6 +69,13 @@ export class TableDesignerListComponent extends PageComponent implements OnInit 
     });
   }
 
+
+  clone(id: string) {
+    let command = 'STATICPAGE[NAME:table-designer-form,TITLE:Form,TYPE:CLONE,LOCATE:(ID=' + id + '),PARENT-PAGEID:$PAGEID]';
+    command = command.replace('$PAGEID', this.pageId);
+    this.navigatorService.openLocation(command);
+  }
+
   openPage(id: string) {
     let command = 'STATICPAGE[NAME:table-designer-form,TITLE:Form,LOCATE:(ID=' + id + '),PARENT-PAGEID:$PAGEID]';
     command = command.replace('$PAGEID', this.pageId);
@@ -73,5 +86,9 @@ export class TableDesignerListComponent extends PageComponent implements OnInit 
     let command = 'STATICPAGE[NAME:table-designer-form,TITLE:Form,PARENT-PAGEID:$PAGEID]';
     command = command.replace('$PAGEID', this.pageId);
     this.navigatorService.openLocation(command);
+  }
+
+  showNotification() {
+    this.notificationService.showNotification('top', 'center', 'alert-danger', 'fa-id-card', '<b>Error 500</b> Something Went Wrong');
   }
 }

@@ -1,8 +1,8 @@
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { NgModule } from '@angular/core';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {Injector, NgModule} from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { ToastrModule } from "ngx-toastr";
-import { HttpClientModule } from '@angular/common/http';
+import { ToastrModule } from 'ngx-toastr';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 
 import { SidebarModule } from './shared/sidebar/sidebar.module';
 import { FooterModule } from './shared/footer/footer.module';
@@ -31,6 +31,8 @@ import { TabComponent } from './shared/main-tab-container/tab/tab.component';
 import { NavigatorComponent } from './pages/navigator/navigator.component';
 import { AppViewDesignerFormComponent } from './pages/appview-designer/app-view-designer-form/app-view-designer-form.component';
 import { AppViewDesignerListComponent } from './pages/appview-designer/app-view-designer-list/app-view-designer-list.component';
+import {ErrorInterceptor} from './interceptors/error-interceptor';
+import {NotificationService} from './services/notification.service';
 @NgModule({
   declarations: [
     AppComponent,
@@ -66,7 +68,20 @@ import { AppViewDesignerListComponent } from './pages/appview-designer/app-view-
         FormsModule,
         HttpClientModule
     ],
-  providers: [],
+  providers: [
+    {provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
+      multi: true,
+      deps: [NotificationService]}
+
+    // {provide: HTTP_INTERCEPTORS,
+    //   useFactory: function (inj: Injector) {
+    //     return new ErrorInterceptor(inj);
+    //   },
+    //   multi: true,
+    //   deps: [Injector]}
+
+      ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

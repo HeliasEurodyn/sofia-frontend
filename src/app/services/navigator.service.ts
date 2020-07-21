@@ -46,6 +46,10 @@ export class NavigatorService {
           return;
         }
 
+        if (page.instance.previousPage.instance.onFocusIn != null) {
+          page.instance.previousPage.instance.onFocusIn();
+        }
+
         const pageIndex = this.pages.indexOf(page)
         this.pages[pageIndex] = page.instance.previousPage;
         this.router.navigateByUrl('/main/' + page.instance.previousPage.instance.pageId);
@@ -60,6 +64,11 @@ export class NavigatorService {
         if (page.instance.nextPage === null) {
           return;
         }
+
+        if (page.instance.nextPage.instance.onFocusIn != null) {
+          page.instance.nextPage.instance.onFocusIn();
+        }
+
         this.pages[this.pages.indexOf(page)] = page.instance.nextPage;
         this.router.navigateByUrl('/main/' + page.instance.nextPage.instance.pageId);
       }
@@ -70,6 +79,11 @@ export class NavigatorService {
   public navigateById(pageId: string) {
     for (const page of this.pages) {
       if (pageId.toUpperCase() === page.instance.pageId.toUpperCase()) {
+
+        if (page.instance.onFocusIn != null) {
+          page.instance.onFocusIn();
+        }
+
         this.router.navigateByUrl('/main/' + page.instance.pageId);
       }
     }
@@ -84,9 +98,14 @@ export class NavigatorService {
           this.closeById(pageId);
         }
 
+        if (page.instance.previousPage.instance.onFocusIn != null) {
+          page.instance.previousPage.instance.onFocusIn();
+        }
+
         const pageIndex = this.pages.indexOf(page)
         this.pages[pageIndex] = page.instance.previousPage;
         this.router.navigateByUrl('/main/' + page.instance.previousPage.instance.pageId);
+
         return;
       }
     }
@@ -116,6 +135,11 @@ export class NavigatorService {
     }
 
     if (this.pages.length > 0 && id.toUpperCase() === this.currentId.toUpperCase()) {
+
+      if (this.pages[this.pages.length - 1].instance.onFocusIn != null) {
+        this.pages[this.pages.length - 1].instance.onFocusIn();
+      }
+
       this.router.navigateByUrl('/main/' + this.pages[this.pages.length - 1].instance.pageId);
     }
 
@@ -155,38 +179,45 @@ export class NavigatorService {
       commandParametersKeyValMap.set(commandParameterKeyVal[0], commandParameterKeyVal[1]);
     }
 
+    let componentRef: ComponentRef<any> = null;
     if (commandType === 'STATICPAGE') {
-      const componentRef: ComponentRef<any> = this.generateStaticPage(commandParametersKeyValMap);
-      if (componentRef !== null) {
-        const pageId = uuid.v4();
-        componentRef.instance.pageId = pageId;
-        componentRef.instance.params = commandParametersKeyValMap;
-        if (commandParametersKeyValMap.get('TITLE')) {
-          componentRef.instance.title = commandParametersKeyValMap.get('TITLE');
-        }
-        if (componentRef.instance.params.has('PARENT-PAGEID')) {
-
-          const parentPageId = componentRef.instance.params.get('PARENT-PAGEID');
-          for (const page of this.pages) {
-            if (parentPageId.toUpperCase() === page.instance.pageId.toUpperCase()) {
-              if (page.instance.nextPage !== null && page.instance.nextPage !== undefined) {
-                this.destroyNextPageBranch(page.instance.nextPage);
-              }
-              page.instance.nextPage = componentRef;
-              componentRef.instance.previousPage = page;
-              this.pages[this.pages.indexOf(page)] = componentRef;
-
-              // this.router.navigateByUrl('/main/' + page.instance.pageId);
-            }
-          }
-        } else {
-          this.pages.push(componentRef);
-        }
-
-        this.router.navigateByUrl('/main/' + componentRef.instance.pageId);
-
-      }
+      componentRef = this.generateStaticPage(commandParametersKeyValMap);
+    } else if (commandType === 'LIST') {
+      commandParametersKeyValMap.set('NAME', 'LIST');
+      componentRef = this.generateStaticPage(commandParametersKeyValMap);
     }
+
+
+    if (componentRef !== null) {
+      const pageId = uuid.v4();
+      componentRef.instance.pageId = pageId;
+      componentRef.instance.params = commandParametersKeyValMap;
+      if (commandParametersKeyValMap.get('TITLE')) {
+        componentRef.instance.title = commandParametersKeyValMap.get('TITLE');
+      }
+      if (componentRef.instance.params.has('PARENT-PAGEID')) {
+
+        const parentPageId = componentRef.instance.params.get('PARENT-PAGEID');
+        for (const page of this.pages) {
+          if (parentPageId.toUpperCase() === page.instance.pageId.toUpperCase()) {
+            if (page.instance.nextPage !== null && page.instance.nextPage !== undefined) {
+              this.destroyNextPageBranch(page.instance.nextPage);
+            }
+            page.instance.nextPage = componentRef;
+            componentRef.instance.previousPage = page;
+            this.pages[this.pages.indexOf(page)] = componentRef;
+
+            // this.router.navigateByUrl('/main/' + page.instance.pageId);
+          }
+        }
+      } else {
+        this.pages.push(componentRef);
+      }
+
+      this.router.navigateByUrl('/main/' + componentRef.instance.pageId);
+
+    }
+
 
   }
 

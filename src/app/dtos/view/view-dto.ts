@@ -7,6 +7,6 @@ export class ViewDTO extends PersistEntityDTO {
 
   public viewFieldList: ViewFieldDTO[];
 
-  private entitytype = 'view';
+  private entitytype = 'View';
 
 }

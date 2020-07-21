@@ -13,7 +13,6 @@ import {TableFieldDTO} from '../../../dtos/table/table-field-dto';
   styleUrls: ['./table-designer-form.component.css']
 })
 export class TableDesignerFormComponent extends PageComponent implements OnInit {
-//  public fields: any;
   public tableHeaders: any;
   public table: TableDTO;
   shortOrder = 0;
@@ -21,7 +20,7 @@ export class TableDesignerFormComponent extends PageComponent implements OnInit 
 
   public mode: string;
   userDto: TableDTO;
-  // title = 'appBootstrap';
+
 
   public isCollapsed = false;
 
@@ -75,17 +74,18 @@ export class TableDesignerFormComponent extends PageComponent implements OnInit 
     this.mode = 'new-record';
     this.table = new TableDTO();
 
-
     const locateParams = this.getLocateParams();
     if (locateParams.has('ID')) {
       id = locateParams.get('ID');
       this.mode = 'edit-record';
     }
 
+
     if (this.mode === 'edit-record') {
       this.tableDesignerService.getById(id).subscribe(data => {
         this.table = data;
         this.title = 'Entry ' + this.table.name;
+        this.cleanIdsIfCloneEnabled();
       });
     }
 
@@ -115,6 +115,26 @@ export class TableDesignerFormComponent extends PageComponent implements OnInit 
 
     this.table.tableFieldList.push(tableFieldDTO);
   }
+
+
+
+  cleanIdsIfCloneEnabled() {
+    if (this.params.has('TYPE')) {
+
+      if (this.params.get('TYPE').toUpperCase() === 'CLONE') {
+
+        this.table.id = null;
+        this.table.version = null;
+        for (const tableField of this.table.tableFieldList) {
+          tableField.id = null;
+          tableField.version = null;
+        }
+        this.mode = 'new-record';
+      }
+    }
+  }
+
+
 
   removeLine(row) {
     if (this.table.tableFieldList.length === 1) {

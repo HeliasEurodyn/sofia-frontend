@@ -34,6 +34,10 @@ export class AppViewDesignerListComponent extends PageComponent implements OnIni
     });
   }
 
+  onFocusIn() {
+    this.refresh();
+  }
+
   openPage(id: string) {
     let command = 'STATICPAGE[NAME:appview-designer-form,TITLE:Form,LOCATE:(ID=' + id + '),PARENT-PAGEID:$PAGEID]';
     command = command.replace('$PAGEID', this.pageId);
@@ -42,6 +46,13 @@ export class AppViewDesignerListComponent extends PageComponent implements OnIni
 
   openNewPage() {
     let command = 'STATICPAGE[NAME:appview-designer-form,TITLE:Form,PARENT-PAGEID:$PAGEID]';
+    command = command.replace('$PAGEID', this.pageId);
+    this.navigatorService.openLocation(command);
+  }
+
+  clone(id: string) {
+    let command = 'STATICPAGE[NAME:appview-designer-form,TYPE:CLONE,TITLE:Form,LOCATE:(ID=' + id + '),PARENT-PAGEID:$PAGEID]';
+
     command = command.replace('$PAGEID', this.pageId);
     this.navigatorService.openLocation(command);
   }

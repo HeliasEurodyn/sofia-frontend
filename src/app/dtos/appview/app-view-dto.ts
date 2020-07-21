@@ -7,5 +7,5 @@ export class AppViewDTO extends PersistEntityDTO {
 
   public appViewFieldList: AppViewFieldDTO[];
 
-  private entitytype = 'appview';
+  public entitytype = 'AppView';
 }
