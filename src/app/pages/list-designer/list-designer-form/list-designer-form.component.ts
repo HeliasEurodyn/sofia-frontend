@@ -19,6 +19,8 @@ export class ListDesignerFormComponent extends PageComponent implements OnInit {
 
   public components: any;
   public selectedListComponent: ListComponentDTO;
+  public selectedFilterField: ListComponentFieldDTO;
+
   public dto: ListDTO;
   showAllFieldsDiv: Boolean = false;
 
@@ -41,6 +43,9 @@ export class ListDesignerFormComponent extends PageComponent implements OnInit {
 
 
   ngOnInit(): void {
+
+    this.selectedFilterField = new ListComponentFieldDTO();
+
     let id = '0';
     this.dto = new ListDTO();
     this.mode = 'new-record';
@@ -206,8 +211,71 @@ export class ListDesignerFormComponent extends PageComponent implements OnInit {
     dto.editable = false;
     dto.description = field.description
     dto.type = field.persistEntityField.type;
+    dto.shortOrder = this.genNextColumnsShortOrder();
+    dto.code = 'C' + dto.shortOrder;
     this.selectedListComponent.listComponentColumnFieldList.push(dto);
   }
+
+  genNextColumnsShortOrder() {
+    if (this.selectedListComponent.listComponentColumnFieldList === null
+      || this.selectedListComponent.listComponentColumnFieldList === undefined
+      || this.selectedListComponent.listComponentColumnFieldList.length === 0) {
+      return 1;
+    }
+
+    const curShortOrderObject = this.selectedListComponent.listComponentColumnFieldList.reduce(function (prev, curr) {
+      return prev.shortOrder < curr.shortOrder ? curr : prev;
+    });
+
+    return (curShortOrderObject.shortOrder + 1);
+  }
+
+  addFormulaFieldToFilters() {
+    const dto = new ListComponentFieldDTO();
+    dto.editor = '';
+    dto.componentPersistEntity = null
+    dto.componentPersistEntityField = null;
+    dto.visible = true;
+    dto.editable = false;
+    dto.required = false;
+    dto.description = '';
+    dto.type = 'list';
+    dto.shortOrder = this.genNextFilrerShortOrder();
+    dto.code = 'F' + dto.shortOrder;
+    dto.bclass = 'col-12';
+    this.selectedListComponent.listComponentFilterFieldList.push(dto);
+  }
+
+  addActionField() {
+    const dto = new ListComponentFieldDTO();
+    dto.editor = '';
+    dto.componentPersistEntity = null
+    dto.componentPersistEntityField = null;
+    dto.visible = true;
+    dto.editable = false;
+    dto.required = false;
+    dto.description = '';
+    dto.type = 'list';
+    dto.shortOrder = this.genNextActionFieldShortOrder();
+    dto.code = 'AC' + dto.shortOrder;
+    dto.bclass = 'fa-search';
+    this.selectedListComponent.listComponentActionFieldList.push(dto);
+  }
+
+  genNextActionFieldShortOrder() {
+    if (this.selectedListComponent.listComponentActionFieldList === null
+      || this.selectedListComponent.listComponentActionFieldList === undefined
+      || this.selectedListComponent.listComponentActionFieldList.length === 0) {
+      return 1;
+    }
+
+    const curShortOrderObject = this.selectedListComponent.listComponentActionFieldList.reduce(function (prev, curr) {
+      return prev.shortOrder < curr.shortOrder ? curr : prev;
+    });
+
+    return (curShortOrderObject.shortOrder + 1);
+  }
+
 
   addFieldToFilters(row: ComponentPersistEntityDTO, field: ComponentPersistEntityFieldDTO) {
     const dto = new ListComponentFieldDTO();
@@ -216,9 +284,28 @@ export class ListDesignerFormComponent extends PageComponent implements OnInit {
     dto.componentPersistEntityField = field;
     dto.visible = true;
     dto.editable = false;
+    dto.required = false;
     dto.description = field.description
     dto.type = field.persistEntityField.type;
+    dto.shortOrder = this.genNextFilrerShortOrder();
+    dto.code = 'F' + dto.shortOrder;
+    dto.bclass = 'col-12';
+
     this.selectedListComponent.listComponentFilterFieldList.push(dto);
+  }
+
+  genNextFilrerShortOrder() {
+    if (this.selectedListComponent.listComponentFilterFieldList === null
+      || this.selectedListComponent.listComponentFilterFieldList === undefined
+      || this.selectedListComponent.listComponentFilterFieldList.length === 0) {
+      return 1;
+    }
+
+    const curShortOrderObject = this.selectedListComponent.listComponentFilterFieldList.reduce(function (prev, curr) {
+      return prev.shortOrder < curr.shortOrder ? curr : prev;
+    });
+
+    return (curShortOrderObject.shortOrder + 1);
   }
 
   addFieldToGrouping(row: ComponentPersistEntityDTO, field: ComponentPersistEntityFieldDTO) {
@@ -230,7 +317,53 @@ export class ListDesignerFormComponent extends PageComponent implements OnInit {
     dto.editable = false;
     dto.description = field.description
     dto.type = field.persistEntityField.type;
+    dto.shortOrder = this.genNextGroupingLeftShortOrder();
+    dto.code = 'GL' + dto.shortOrder;
     this.selectedListComponent.listComponentLeftGroupFieldList.push(dto);
+  }
+
+
+  genNextGroupingLeftShortOrder() {
+    if (this.selectedListComponent.listComponentLeftGroupFieldList === null
+      || this.selectedListComponent.listComponentLeftGroupFieldList === undefined
+      || this.selectedListComponent.listComponentLeftGroupFieldList.length === 0) {
+      return 1;
+    }
+
+    const curShortOrderObject = this.selectedListComponent.listComponentLeftGroupFieldList.reduce(function (prev, curr) {
+      return prev.shortOrder < curr.shortOrder ? curr : prev;
+    });
+
+    return (curShortOrderObject.shortOrder + 1);
+  }
+
+
+  addFieldToOrderBy(row: ComponentPersistEntityDTO, field: ComponentPersistEntityFieldDTO) {
+    const dto = new ListComponentFieldDTO();
+    dto.editor = field.editor;
+    dto.componentPersistEntity = row;
+    dto.componentPersistEntityField = field;
+    dto.visible = true;
+    dto.editable = false;
+    dto.description = field.description
+    dto.type = field.persistEntityField.type;
+    dto.shortOrder = this.genNextOrderByShortOrder();
+    dto.code = 'OB' + dto.shortOrder;
+    this.selectedListComponent.listComponentOrderByFieldList.push(dto);
+  }
+
+  genNextOrderByShortOrder() {
+    if (this.selectedListComponent.listComponentOrderByFieldList === null
+      || this.selectedListComponent.listComponentOrderByFieldList === undefined
+      || this.selectedListComponent.listComponentOrderByFieldList.length === 0) {
+      return 1;
+    }
+
+    const curShortOrderObject = this.selectedListComponent.listComponentOrderByFieldList.reduce(function (prev, curr) {
+      return prev.shortOrder < curr.shortOrder ? curr : prev;
+    });
+
+    return (curShortOrderObject.shortOrder + 1);
   }
 
 
@@ -249,12 +382,83 @@ export class ListDesignerFormComponent extends PageComponent implements OnInit {
     }
   }
 
+  removeFilter(column: ListComponentFieldDTO) {
+    if (this.selectedListComponent !== undefined) {
+      this.selectedListComponent.listComponentFilterFieldList =
+        this.selectedListComponent.listComponentFilterFieldList.filter(item => item !== column);
+    }
+  }
+
+  removeLeftGroupField(column: ListComponentFieldDTO) {
+    if (this.selectedListComponent !== undefined) {
+      this.selectedListComponent.listComponentLeftGroupFieldList =
+        this.selectedListComponent.listComponentLeftGroupFieldList.filter(item => item !== column);
+    }
+  }
+
   removeComponent(row: ListComponentDTO) {
 
     this.selectedListComponent = undefined;
 
     this.dto.listComponentList =
       this.dto.listComponentList.filter(item => item !== row);
+  }
+
+  setSelectedFilterField(column: ListComponentFieldDTO) {
+    this.selectedFilterField = column;
+  }
+
+  generateDefaultFilterStructure() {
+    let firstItteration = true;
+    for (const listComponentFilterField of this.selectedListComponent.listComponentFilterFieldList) {
+      if (firstItteration) {
+        this.selectedListComponent.filterFieldStructure = '$' + listComponentFilterField.code;
+      } else {
+        this.selectedListComponent.filterFieldStructure += ' AND $' + listComponentFilterField.code;
+      }
+      firstItteration = false;
+    }
+  }
+
+  removeActionField(column: ListComponentFieldDTO) {
+    if (this.selectedListComponent !== undefined) {
+      this.selectedListComponent.listComponentActionFieldList =
+        this.selectedListComponent.listComponentActionFieldList.filter(item => item !== column);
+    }
+  }
+
+
+  removeOrderByField(column: ListComponentFieldDTO) {
+    if (this.selectedListComponent !== undefined) {
+      this.selectedListComponent.listComponentOrderByFieldList =
+        this.selectedListComponent.listComponentOrderByFieldList.filter(item => item !== column);
+    }
+  }
+
+  moveUp(selectedItem: ListComponentFieldDTO, list: ListComponentFieldDTO[]) {
+    let position = 0;
+    for (const listItem of list) {
+      if (selectedItem === listItem && position > 0) {
+        const prevItem = list[position - 1];
+        list[position] = prevItem;
+        list[position - 1] = listItem;
+      }
+      position++;
+    }
+  }
+
+  moveDown(selectedItem: ListComponentFieldDTO, list: ListComponentFieldDTO[]) {
+    let position = 0;
+    for (const listItem of list) {
+      if (selectedItem === listItem && (position + 1) < list.length) {
+        const nextItem = list[position + 1];
+     //   alert(nextItem.code + ' ' + listItem.code);
+        list[position] = nextItem;
+        list[position + 1] = listItem;
+        break;
+      }
+      position++;
+    }
   }
 
 

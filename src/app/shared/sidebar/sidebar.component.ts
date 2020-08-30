@@ -15,7 +15,7 @@ export interface RouteInfo {
 export const ROUTES: RouteInfo[] = [
   // {path: '/dashboard', title: 'Dashboard', icon: 'nc-bank', class: '', children: null},
   // {path: '#', title: 'Other Menus', icon: 'nc-layout-11', class: 'parent-menu', children: null},
-  // {path: '/dto-designer-list', title: 'TableDTO Designer', icon: 'nc-settings', class: '', children: null},
+  // {path: '/listDto-designer-list', title: 'TableDTO Designer', icon: 'nc-settings', class: '', children: null},
   // {path: '/menu-designer-list', title: 'MenuDTO Designer', icon: 'nc-tile-56', class: '', children: null},
 ];
 
@@ -179,7 +179,7 @@ export class SidebarComponent implements OnInit {
 
     this.menuItems.push({
       id: '44',
-      path: 'LIST[LISTNAME:List2,TITLE:List]',
+      path: 'LIST[LOCATE:(ID=5),TITLE:List]',
       title: 'List',
       icon: 'fa-cogs',
       type: 'link',

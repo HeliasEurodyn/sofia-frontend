@@ -48,7 +48,7 @@ export class MenuDesignerListComponent extends PageComponent implements OnInit {
 
 
   openNewPage() {
-    let command = 'STATICPAGE[NAME:table-designer-form,TITLE:Form,PARENT-PAGEID:$PAGEID]';
+    let command = 'STATICPAGE[NAME:menu-designer-form,TITLE:Form,PARENT-PAGEID:$PAGEID]';
     command = command.replace('$PAGEID', this.pageId);
     this.navigatorService.openLocation(command);
   }

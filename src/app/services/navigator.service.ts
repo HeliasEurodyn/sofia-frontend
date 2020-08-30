@@ -266,6 +266,7 @@ export class NavigatorService {
 
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(navPage[0].component);
     const componentRef: ComponentRef<any> = componentFactory.create(this.injector);
+    // console.log(pageParameters);
     componentRef.instance.params = pageParameters;
     return componentRef;
   }

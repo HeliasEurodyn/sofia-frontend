@@ -156,12 +156,12 @@ export class TableDesignerFormComponent extends PageComponent implements OnInit 
   }
 
   toList() {
-    this.router.navigate(['/dto-designer-list']);
+    this.router.navigate(['/listDto-designer-list']);
   }
 
   delete() {
     this.tableDesignerService.delete(this.table.id).subscribe(data => {
-      this.router.navigate(['/dto-designer-list']);
+      this.router.navigate(['/listDto-designer-list']);
     });
   }
 

@@ -28,3 +28,7 @@ h6{
   padding: 30px;
   text-align: center;
 }
+
+.modal-select-fields{
+  max-width: 700px;
+}

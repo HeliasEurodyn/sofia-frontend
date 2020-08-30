@@ -13,14 +13,14 @@
 
 .nav-tabs .nav-link.active {
   background-color: transparent !important;
-  border: 2px solid #11b3b3    !important;
+  border: 2px solid #11b3b3 !important;
 }
 
 .nav-tabs .nav-link:hover {
   /*background-color: #9ad0d0 !important;*/
   /*color: #66615B !important;*/
 
-  background-color: #a5a19d  !important;
+  background-color: #a5a19d !important;
   color: #ffffff !important;
 
 }
@@ -29,6 +29,132 @@
   border-bottom: 0px solid transparent;
 }
 
-.nav-tabs-navigation{
+.nav-tabs-navigation {
   padding-top: 5px;
 }
+
+.form-group {
+  margin: 0px !important;
+}
+
+.input-group {
+  margin-bottom: 0px !important;
+}
+
+.filter-col {
+  padding-bottom: 5px;
+}
+
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 2px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #dee2e6;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #78cbce;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #11abab;
+}
+
+.card {
+  margin: 0px;
+}
+
+.card-header .row {
+  padding: 0px !important;
+}
+
+.table-fixed tbody {
+  height: 540px;
+  overflow-y: auto;
+  width: 100%;
+}
+
+.table-fixed thead,
+.table-fixed tbody {
+  display: block;
+}
+
+.table-fixed tbody {
+  border: 2px solid #caeff0;
+}
+
+
+.table-fixed tr {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.table-fixed th,
+.table-fixed td {
+  flex-basis: 0;
+  flex-grow: 1;
+  max-width: 100%;
+  padding: 1px;
+}
+
+
+.table-fixed .sortable:after {
+  content: "\f0dc";
+  position: relative;
+  bottom: 1px;
+  display: inline-block;
+  right: -7px;
+  font-family: FontAwesome;
+  opacity: 0.4;
+  font-size: 11px;
+}
+
+.col-10-percent {
+  flex: 0 0 10%;
+  max-width: 10%;
+}
+
+
+ul {
+  padding-left: 7px;
+}
+
+li { /* styles all li elements*/
+  list-style-type: none;
+  padding-left: 0px;
+  text-align: left;
+}
+
+.btn {
+  margin: 2px;
+}
+
+.left-group-button {
+  padding: 2px;
+  padding-left: 6px;
+  padding-right: 6px;
+}
+
+@media (min-width: 768px) {
+  .col-md-2 {
+    padding: 0px;
+    padding-left: 15px;
+  }
+}
+
+
+@media (max-width: 768px) {
+  .col-12 {
+    padding-bottom: 5px !important;
+  }
+}
+
+
+
+

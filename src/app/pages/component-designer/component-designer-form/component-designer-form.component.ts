@@ -9,6 +9,7 @@ import {PageComponent} from '../../page/page-component';
 import {ComponentPersistEntityFieldDTO} from '../../../dtos/component/component-persist-entity-field-dto';
 import {ComponentPersistEntityDTO} from '../../../dtos/component/component-persist-entity-dto';
 import {ViewService} from '../../../services/crud/view.service';
+import {MenuFieldDTO} from '../../../dtos/menu/menuDTO';
 
 
 @Component({
@@ -134,16 +135,6 @@ export class ComponentDesignerFormComponent extends PageComponent implements OnI
 
   }
 
-  //
-  // setSelectedViewComponent(selectedTableComponent) {
-  //  // this.selectedTableComponent = selectedTableComponent;
-  // }
-  //
-  // setSelectedTableComponent(selectedTableComponent) {
-  //   this.selectedTableComponent = selectedTableComponent;
-  // }
-
-
   selectView(row) {
 
     const componentTableDTO = new ComponentPersistEntityDTO();
@@ -192,9 +183,7 @@ export class ComponentDesignerFormComponent extends PageComponent implements OnI
 
   }
 
-
   genNextShortOrder(componentTableList: ComponentPersistEntityDTO[]) {
-
 
     if (this.componentDTO.componentPersistEntityList === null
       || this.componentDTO.componentPersistEntityList === undefined
@@ -235,4 +224,40 @@ export class ComponentDesignerFormComponent extends PageComponent implements OnI
   }
 
 
+  upItemInList(row: ComponentPersistEntityDTO, componentPersistEntityList: ComponentPersistEntityDTO[]) {
+    if (componentPersistEntityList === undefined) {
+      return;
+    }
+
+    if (componentPersistEntityList.indexOf(row) > 0) {
+
+      const position = componentPersistEntityList.indexOf(row);
+      const item = componentPersistEntityList[position];
+      const prevItem = componentPersistEntityList[position - 1];
+      const itemshortOrder = item.shortOrder ;
+      item.shortOrder = prevItem.shortOrder;
+      prevItem.shortOrder = itemshortOrder;
+      componentPersistEntityList[position] = prevItem;
+      componentPersistEntityList[position - 1] = item;
+    }
+
+  }
+
+  downItemInList(row: ComponentPersistEntityDTO, componentPersistEntityList: ComponentPersistEntityDTO[]) {
+    if (componentPersistEntityList === undefined) {
+      return;
+    }
+
+    if (componentPersistEntityList.indexOf(row) < componentPersistEntityList.length - 1) {
+
+      const position = componentPersistEntityList.indexOf(row);
+      const item = componentPersistEntityList[position];
+      const prevItem = componentPersistEntityList[position + 1];
+      const itemshortOrder = item.shortOrder ;
+      item.shortOrder = prevItem.shortOrder;
+      prevItem.shortOrder = itemshortOrder;
+      componentPersistEntityList[position] = prevItem;
+      componentPersistEntityList[position + 1] = item;
+    }
+  }
 }

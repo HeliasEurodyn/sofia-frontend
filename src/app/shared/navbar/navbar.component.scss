@@ -5,8 +5,17 @@
 }
 
 .search-field{
-  min-width: 300px;
+  min-width: 200px;
   padding-left: 15px
+}
+
+.search-field .input-group .form-control{
+  min-width: 200px;
+  transition: min-width 2s;
+}
+
+.search-field .input-group .form-control:focus {
+  min-width: 350px;
 }
 
 ::-webkit-scrollbar {

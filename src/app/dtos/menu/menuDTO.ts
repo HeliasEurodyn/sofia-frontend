@@ -7,6 +7,7 @@ export class MenuDTO extends BaseDTO {
 
   constructor() {
     super();
+    this.name = '';
     this.menuFieldList = [];
   }
 }

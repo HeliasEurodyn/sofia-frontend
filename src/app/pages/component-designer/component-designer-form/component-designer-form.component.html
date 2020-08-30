@@ -75,6 +75,14 @@
             <div class="row">
               <div class="col-md-12">
                 <h6>
+                  <button (click)="upItemInList(row,componentDTO.componentPersistEntityList)"   type="button" title="New Submenu"
+                          class="btn btn-outline-warning btn-icon btn-sm">
+                    <i class="fa fa-angle-up"></i>
+                  </button>
+                  <button (click)="downItemInList(row, componentDTO.componentPersistEntityList)"   type="button" title="New Submenu"
+                          class="btn btn-outline-warning btn-icon btn-sm">
+                    <i class="fa fa-angle-down"></i>
+                  </button>
 
                   <button (click)="removeTableComponent(row)" type="button" title="remove table"
                           class="btn btn-outline-danger btn-icon btn-sm">
@@ -160,8 +168,6 @@
     </div>
   </div>
 </div>
-
-
 
 
 <div aria-labelledby="ModalLabel" class="modal fade" id="viewModal" role="dialog" aria-hidden="true">

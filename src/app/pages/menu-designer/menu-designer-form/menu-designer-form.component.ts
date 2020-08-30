@@ -48,7 +48,9 @@ export class MenuDesignerFormComponent extends PageComponent implements OnInit {
 
     let id = '0';
     this.mode = 'new-record';
+    this.menuComponent = new MenuDTO();
     this.menuFieldComponent = new MenuFieldDTO;
+
 
     const locateParams = this.getLocateParams();
     if (locateParams.has('ID')) {

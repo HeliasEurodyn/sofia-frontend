@@ -33,6 +33,15 @@ import { AppViewDesignerFormComponent } from './pages/appview-designer/app-view-
 import { AppViewDesignerListComponent } from './pages/appview-designer/app-view-designer-list/app-view-designer-list.component';
 import {ErrorInterceptor} from './interceptors/error-interceptor';
 import {NotificationService} from './services/notification.service';
+import {NgbDateAdapter, NgbDateParserFormatter, NgbDatepickerModule} from '@ng-bootstrap/ng-bootstrap';
+import { DatePickerComponent } from './form-controlls/date-picker/date-picker.component';
+import {NgbDateFRParserFormatter} from './form-controlls/date-picker/ngb-date-frparser-formatter';
+import {NgbUTCStringAdapter} from './form-controlls/date-picker/ngb-utcstring-adapter';
+import { SofiaDateDirective } from './directives/sofia-date.directive';
+import {NgxMaskModule} from 'ngx-mask';
+import {DatePipe} from '@angular/common';
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -53,33 +62,41 @@ import {NotificationService} from './services/notification.service';
     TabComponent,
     NavigatorComponent,
     AppViewDesignerFormComponent,
-    AppViewDesignerListComponent
+    AppViewDesignerListComponent,
+    DatePickerComponent,
+    SofiaDateDirective
   ],
-    imports: [
-        BrowserAnimationsModule,
-        RouterModule.forRoot(AppRoutes, {
-            useHash: true
-        }),
-        SidebarModule,
-        NavbarModule,
-        ToastrModule.forRoot(),
-        FooterModule,
-        FixedPluginModule,
-        FormsModule,
-        HttpClientModule
-    ],
+  imports: [
+    BrowserAnimationsModule,
+    RouterModule.forRoot(AppRoutes, {
+      useHash: true
+    }),
+    NgxMaskModule.forRoot(),
+    SidebarModule,
+    NavbarModule,
+    ToastrModule.forRoot(),
+    FooterModule,
+    FixedPluginModule,
+    FormsModule,
+    HttpClientModule,
+    NgbDatepickerModule,
+
+  ],
   providers: [
+    DatePipe,
     {provide: HTTP_INTERCEPTORS,
       useClass: ErrorInterceptor,
       multi: true,
-      deps: [NotificationService]}
-
-    // {provide: HTTP_INTERCEPTORS,
-    //   useFactory: function (inj: Injector) {
-    //     return new ErrorInterceptor(inj);
-    //   },
-    //   multi: true,
-    //   deps: [Injector]}
+      deps: [NotificationService],
+    },
+    {
+      provide: NgbDateParserFormatter,
+      useClass: NgbDateFRParserFormatter
+    },
+    {
+      provide: NgbDateAdapter,
+      useClass: NgbUTCStringAdapter
+    },
 
       ],
   bootstrap: [AppComponent]

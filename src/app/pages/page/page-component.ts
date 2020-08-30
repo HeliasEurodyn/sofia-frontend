@@ -21,7 +21,6 @@ export class PageComponent {
       locateValuesInsideBrackets = locateValuesInsideBrackets.replace(/.*\(|\).*/, '');
       const locateValuesSplited = locateValuesInsideBrackets.split(',');
 
-
       for (const locateValueSplited of locateValuesSplited) {
         const locateValuesKeyVal: string[] = locateValueSplited.split('=');
         locateValuesKeyValMap.set(locateValuesKeyVal[0], locateValuesKeyVal[1]);

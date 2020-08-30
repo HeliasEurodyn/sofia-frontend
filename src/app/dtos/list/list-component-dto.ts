@@ -10,4 +10,8 @@ export class ListComponentDTO extends BaseDTO {
   public listComponentFilterFieldList: ListComponentFieldDTO[] = [];
   public listComponentLeftGroupFieldList: ListComponentFieldDTO[] = [];
   public listComponentTopGroupFieldList: ListComponentFieldDTO[] = [];
+  public listComponentOrderByFieldList: ListComponentFieldDTO[] = [];
+  public listComponentActionFieldList: ListComponentFieldDTO[] = [];
+  public filterFieldStructure: String = '';
+  public customFilterFieldStructure: Boolean = false;
 }
