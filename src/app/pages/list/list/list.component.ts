@@ -174,4 +174,15 @@ export class ListComponent extends PageComponent implements OnInit {
       return false;
     }
   }
+
+  dataExcel() {
+    this.service.getListResultDataExcel(this.listDto).subscribe(data => {
+      const blob = new Blob([data], {type: 'application/xlsx'});
+      const downloadURL = window.URL.createObjectURL(data);
+      const link = document.createElement('a');
+      link.href = downloadURL;
+      link.download = 'list-data.xlsx';
+      link.click();
+    });
+  }
 }

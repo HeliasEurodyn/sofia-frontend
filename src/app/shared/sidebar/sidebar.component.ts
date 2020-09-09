@@ -89,6 +89,10 @@ export class SidebarComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    // console.log(localStorage.getItem('loggedin_user'));
+    // alert(JSON.stringify(localStorage.getItem('loggedin_user')));
+
     this.menuItems = [];
 
     this.menuItems.push({
@@ -187,6 +191,15 @@ export class SidebarComponent implements OnInit {
       children: null
     });
 
+    this.menuItems.push({
+      id: '45',
+      path: 'STATICPAGE[NAME:user-list,TITLE:Users]',
+      title: 'Users',
+      icon: 'fa-cogs',
+      type: 'link',
+      class: '',
+      children: null
+    });
     this.menuItems[1].children =
       [
         {id: '11', path: '#', title: 'Second submenu', icon: 'nc-caps-small', type: 'parent-menu', class: 'parent-menu', children: null},

@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpParams} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {CrudService} from './common/crud.service';
 import {Observable} from 'rxjs';
 import {environment} from '../../../environments/environment';
@@ -19,12 +19,20 @@ export class ListService extends CrudService<any> {
   }
 
   getListResultData(listDto: ListDTO) {
-    return this.http.post<any>(`${environment.serverUrl}/${this.endpoint}/data`,  listDto);
+    return this.http.post<any>(`${environment.serverUrl}/${this.endpoint}/data`, listDto);
+  }
+
+  getListResultDataExcel(listDto: ListDTO) {
+
+    const httpOptions = {
+      responseType: 'blob' as 'json',
+    };
+
+    return this.http.post<any>(`${environment.serverUrl}/${this.endpoint}/data-excel`, listDto, httpOptions);
   }
 
   getGroupResultData(listDto: ListDTO) {
-    return this.http.post<any>(`${environment.serverUrl}/${this.endpoint}/left-grouping-data`,  listDto);
+    return this.http.post<any>(`${environment.serverUrl}/${this.endpoint}/left-grouping-data`, listDto);
   }
-
 
 }

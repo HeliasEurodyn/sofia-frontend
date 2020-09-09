@@ -193,24 +193,17 @@ export class MenuDesignerFormComponent extends PageComponent implements OnInit {
   save() {
     if (this.mode === 'edit-record') {
       this.menuDesignerService.update(this.menuComponent).subscribe(data => {
-      //  this.router.navigate(['/menu-designer-list']);
         this.navigatorService.closeAndBack(this.pageId);
       });
     } else {
       this.menuDesignerService.save(this.menuComponent).subscribe(data => {
-       // this.router.navigate(['/menu-designer-list']);
         this.navigatorService.closeAndBack(this.pageId);
       });
     }
   }
 
-  // toList() {
-  //   this.router.navigate(['/menu-designer-list']);
-  // }
-
   delete() {
     this.menuDesignerService.delete(this.menuComponent.id).subscribe(data => {
-    //  this.router.navigate(['/menu-designer-list']);
       this.navigatorService.closeAndBack(this.pageId);
     });
   }

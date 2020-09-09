@@ -24,6 +24,8 @@ import {NavigatorComponent} from '../../pages/navigator/navigator.component';
 import {NavigatorService} from '../../services/navigator.service';
 import {AppViewDesignerListComponent} from '../../pages/appview-designer/app-view-designer-list/app-view-designer-list.component';
 import {AppViewDesignerFormComponent} from '../../pages/appview-designer/app-view-designer-form/app-view-designer-form.component';
+import {UserFormComponent} from '../../pages/user/user-form/user-form.component';
+import {UserListComponent} from '../../pages/user/user-list/user-list.component';
 
 export const AdminLayoutRoutes: Routes = [
   {path: 'dashboard', component: DashboardComponent},
@@ -47,6 +49,8 @@ export const AdminLayoutRoutes: Routes = [
   {path: 'view-designer-form', component: ViewDesignerFormComponent},
   {path: 'appview-designer-list', component: AppViewDesignerListComponent},
   {path: 'appview-designer-form', component: AppViewDesignerFormComponent},
+  {path: 'user-form', component: UserFormComponent},
+  {path: 'user-list', component: UserListComponent},
   {path: 'list', component: ListComponent},
 ];
 

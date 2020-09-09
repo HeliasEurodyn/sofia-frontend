@@ -40,6 +40,9 @@ import {NgbUTCStringAdapter} from './form-controlls/date-picker/ngb-utcstring-ad
 import { SofiaDateDirective } from './directives/sofia-date.directive';
 import {NgxMaskModule} from 'ngx-mask';
 import {DatePipe} from '@angular/common';
+import { UserFormComponent } from './pages/user/user-form/user-form.component';
+import { UserListComponent } from './pages/user/user-list/user-list.component';
+import {AuthenticationHeaderInterceptor} from './interceptors/authentication-header-interceptor';
 
 
 @NgModule({
@@ -64,7 +67,9 @@ import {DatePipe} from '@angular/common';
     AppViewDesignerFormComponent,
     AppViewDesignerListComponent,
     DatePickerComponent,
-    SofiaDateDirective
+    SofiaDateDirective,
+    UserFormComponent,
+    UserListComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -84,11 +89,11 @@ import {DatePipe} from '@angular/common';
   ],
   providers: [
     DatePipe,
-    {provide: HTTP_INTERCEPTORS,
-      useClass: ErrorInterceptor,
-      multi: true,
-      deps: [NotificationService],
-    },
+    // {provide: HTTP_INTERCEPTORS,
+    //   useClass: ErrorInterceptor,
+    //   multi: true,
+    //   deps: [NotificationService],
+    // },
     {
       provide: NgbDateParserFormatter,
       useClass: NgbDateFRParserFormatter
@@ -97,7 +102,7 @@ import {DatePipe} from '@angular/common';
       provide: NgbDateAdapter,
       useClass: NgbUTCStringAdapter
     },
-
+    {provide: HTTP_INTERCEPTORS, useClass: AuthenticationHeaderInterceptor, multi: true}
       ],
   bootstrap: [AppComponent]
 })
