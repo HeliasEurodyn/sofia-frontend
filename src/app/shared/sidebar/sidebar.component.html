@@ -14,38 +14,57 @@
 
     <br *ngIf="menuHeaders?.length > 0 ">
 
-    <li *ngFor="let menuItem of selectedMenuItems" routerLinkActive="active">
+    <ng-template #recursiveList let-list>
+      <li *ngFor="let menuItem of list" routerLinkActive="active">
 
-<!--      <a *ngIf="menuItem.type === 'link'" [routerLink]="[menuItem.path]">-->
-      <a *ngIf="menuItem.command !== 'parent-menu'" (click)="notify(menuItem);">
-        <i class="fa {{menuItem.icon}}"></i>
-        <p>{{menuItem.name}}</p>
-      </a>
+        <!--      <a *ngIf="menuItem.type === 'link'" [routerLink]="[menuItem.path]">-->
+        <a *ngIf="menuItem.command !== 'parent-menu' && menuItem.command !== 'parent-collapse' "
+           (click)="notify(menuItem);">
+          <i class="fa {{menuItem.icon}}"></i>
+          <p>{{menuItem.name}}</p>
+        </a>
 
-      <a *ngIf="menuItem.command === 'parent-menu'" (click)="parentMenuSelection(menuItem.id);">
-        <i class="parent-menu fa {{menuItem.icon}}"></i>
-        <p>{{menuItem.name}}</p>
-      </a>
+        <a *ngIf="menuItem.command === 'parent-menu'" (click)="parentMenuSelection(menuItem.id);">
+          <i class="parent-menu fa {{menuItem.icon}}"></i>
+          <p>{{menuItem.name}}</p>
+        </a>
 
-    </li>
+        <ng-container *ngIf="menuItem.command === 'parent-collapse'">
+          <a data-toggle="collapse" href="#components-collapse-{{menuItem.id}}">
+            <i class="parent-menu fa {{menuItem.icon}}"></i>
+            <p>{{menuItem.name}}</p>
+          </a>
+          <div class="collapse" id="components-collapse-{{menuItem.id}}" style="">
+            <ul class="nav sub-nav">
+              <ng-container
+                *ngTemplateOutlet="recursiveList; context:{ $implicit: menuItem.menuFieldList }">
+              </ng-container>
+            </ul>
+          </div>
+        </ng-container>
 
+      </li>
+    </ng-template>
 
-    <li routerlinkactive="active" class="active">
-      <a data-toggle="collapse" href="#components">
-        <i class="nc-icon nc-layout-11"></i>
-        <p>Test<b class="caret"></b></p>
-      </a>
-      <div class="collapse" id="components" style="">
-        <ul class="nav">
-          <li routerlinkactive="active" ng-reflect-router-link-active="active">
-            <a href="#/list/1">
-              <i class="fa fa-cogs"></i>
-              <p>List</p>
-            </a>
-          </li>
-        </ul>
-      </div>
-    </li>
+    <ng-container
+      *ngTemplateOutlet="recursiveList; context:{ $implicit: selectedMenuItems }"></ng-container>
+
+<!--    <li routerlinkactive="active" class="active">-->
+<!--      <a data-toggle="collapse" href="#components">-->
+<!--        <i class="nc-icon nc-layout-11"></i>-->
+<!--        <p>Test<b class="caret"></b></p>-->
+<!--      </a>-->
+<!--      <div class="collapse" id="components" style="">-->
+<!--        <ul class="nav">-->
+<!--          <li routerlinkactive="active" ng-reflect-router-link-active="active">-->
+<!--            <a href="#/list/1">-->
+<!--              <i class="fa fa-cogs"></i>-->
+<!--              <p>List</p>-->
+<!--            </a>-->
+<!--          </li>-->
+<!--        </ul>-->
+<!--      </div>-->
+<!--    </li>-->
 
 
     <!--<button type="button" class="btn btn-outline-primary" id="navbarDropdownMenuLinkss"  aria-controls="navbarDropdownMenuLinkss" (click)="isCollapsed = !isCollapsed">-->
