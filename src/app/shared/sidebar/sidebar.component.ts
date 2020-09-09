@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {NavigatorService} from '../../services/navigator.service';
+import {UserDto} from '../../dtos/user/user-dto';
 
 
 export interface RouteInfo {
@@ -33,13 +34,14 @@ export class SidebarComponent implements OnInit {
   public menuItems: any[];
   public selectedMenuItems: any[];
   public menuHeaders: any[];
+  public userDto: UserDto;
 
   constructor(private navigatorService: NavigatorService) {
   }
 
   parentMenuSelection(id: string) {
     this.menuHeaders = [];
-    this.selectedMenuItems = this.menuItems;
+    this.selectedMenuItems = this.userDto.menu.menuFieldList;
     this.parentMenuSelectionRecursive(this.selectedMenuItems, id);
     this.menuHeaders.reverse();
   }
@@ -48,10 +50,10 @@ export class SidebarComponent implements OnInit {
     for (const menuItem of menuItems) {
       if (menuItem.id === id) {
         this.menuHeaders.push(menuItem);
-        this.selectedMenuItems = menuItem.children;
+        this.selectedMenuItems = menuItem.menuFieldList;
         return true;
-      } else if (menuItem.type === 'parent-menu') {
-        const foundInBranch = this.parentMenuSelectionRecursive(menuItem.children, id);
+      } else if (menuItem.command === 'parent-menu') {
+        const foundInBranch = this.parentMenuSelectionRecursive(menuItem.menuFieldList, id);
         if (foundInBranch) {
           this.menuHeaders.push(menuItem);
           return true;
@@ -65,7 +67,7 @@ export class SidebarComponent implements OnInit {
     console.log('Selected ' + id);
 
     this.menuHeaders = [];
-    this.selectedMenuItems = this.menuItems;
+    this.selectedMenuItems = this.userDto.menu.menuFieldList;
     this.parentMenuUnselectionRecursive(this.selectedMenuItems, id);
     this.menuHeaders.reverse();
   }
@@ -77,8 +79,8 @@ export class SidebarComponent implements OnInit {
         this.selectedMenuItems = menuItems;
         return true;
       }
-      if (menuItem.type === 'parent-menu') {
-        const foundInBranch = this.parentMenuUnselectionRecursive(menuItem.children, id);
+      if (menuItem.command === 'parent-menu') {
+        const foundInBranch = this.parentMenuUnselectionRecursive(menuItem.menuFieldList, id);
         if (foundInBranch) {
           this.menuHeaders.push(menuItem);
           return true;
@@ -88,10 +90,13 @@ export class SidebarComponent implements OnInit {
     return false;
   }
 
+
   ngOnInit() {
 
     // console.log(localStorage.getItem('loggedin_user'));
-    // alert(JSON.stringify(localStorage.getItem('loggedin_user')));
+    //  alert(JSON.stringify(localStorage.getItem('loggedin_user')));
+    this.userDto = JSON.parse(localStorage.getItem('loggedin_user'));
+
 
     this.menuItems = [];
 
@@ -224,13 +229,14 @@ export class SidebarComponent implements OnInit {
     this.menuItems[1].children[0].children[0].children = [
       {id: '21', path: '/typography', title: 'Typography', icon: 'nc-caps-small', type: 'link', class: '', children: null},
     ];
-
-    this.selectedMenuItems = this.menuItems;
+ //   alert(JSON.stringify(this.userDto.menu.menuFieldList));
+ //   this.selectedMenuItems = this.menuItems;
+    this.selectedMenuItems = this.userDto.menu.menuFieldList;
   }
 
 
   notify(menuItem) {
-    this.navigatorService.openLocation(menuItem.path);
+    this.navigatorService.openLocation(menuItem.command);
     // this.internalMessageService.publishMessage('OpenTabEvent', {path: menuItem.path, title: menuItem.title});
   }
 

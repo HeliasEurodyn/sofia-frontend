@@ -7,24 +7,24 @@
 
     <li *ngFor="let menuItem of menuHeaders" routerLinkActive="active" class="header-menu">
       <a (click)="parentMenuUnselection(menuItem.id);">
-        <i class="fa fa-sign-out header-menu"></i>
-        <p>{{menuItem.title}}</p>
+        <i class="fa fa-folder-o header-menu"></i>
+        <p>{{menuItem.name}}</p>
       </a>
     </li>
 
     <br *ngIf="menuHeaders?.length > 0 ">
 
-    <li *ngFor="let menuItem of selectedMenuItems" routerLinkActive="active" class="{{menuItem.class}}">
+    <li *ngFor="let menuItem of selectedMenuItems" routerLinkActive="active">
 
 <!--      <a *ngIf="menuItem.type === 'link'" [routerLink]="[menuItem.path]">-->
-      <a *ngIf="menuItem.type === 'link'" (click)="notify(menuItem);">
+      <a *ngIf="menuItem.command !== 'parent-menu'" (click)="notify(menuItem);">
         <i class="fa {{menuItem.icon}}"></i>
-        <p>{{menuItem.title}}</p>
+        <p>{{menuItem.name}}</p>
       </a>
 
-      <a *ngIf="menuItem.type === 'parent-menu'" (click)="parentMenuSelection(menuItem.id);">
+      <a *ngIf="menuItem.command === 'parent-menu'" (click)="parentMenuSelection(menuItem.id);">
         <i class="parent-menu fa {{menuItem.icon}}"></i>
-        <p>{{menuItem.title}}</p>
+        <p>{{menuItem.name}}</p>
       </a>
 
     </li>

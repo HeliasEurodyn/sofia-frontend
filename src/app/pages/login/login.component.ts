@@ -30,7 +30,6 @@ export class LoginComponent implements OnInit {
       if (localStorage.getItem('rememberChecked') === 'true') {
         this.username = localStorage.getItem('username');
         this.password = localStorage.getItem('password');
-        alert(localStorage.getItem('password'));
         this.rememberChecked = true;
       } else {
         this.username = '';
@@ -71,7 +70,6 @@ export class LoginComponent implements OnInit {
           localStorage.setItem('username', '');
           localStorage.setItem('password', '');
           localStorage.setItem('rememberChecked', 'false');
-          alert('rememberChecked false done');
         }
         // AppConstants.SessionInfo.username = this.username
         // AppConstants.SessionInfo.password = this.password
