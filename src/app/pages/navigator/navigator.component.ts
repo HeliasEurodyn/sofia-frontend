@@ -74,30 +74,29 @@ export class NavigatorComponent implements OnInit, AfterViewInit {
 
 
   subscripeRootChange() {
-
     this.router.events.subscribe((event) => {
         if (event instanceof NavigationEnd) {
           this.refreshDirectionComponent();
         }
-
       }
     );
   }
 
-
   public renderPage(page: ComponentRef<any>) {
-
     this.appRef.attachView(page.hostView);
-
     const domElem = (page.hostView as EmbeddedViewRef<any>).rootNodes[0] as HTMLElement;
     console.log(this.pageDiv);
     const childElements = this.pageDiv.nativeElement.childNodes;
     for (const childElement of childElements) {
       this.renderer.removeChild(this.pageDiv.nativeElement, childElement);
     }
-
     this.renderer.appendChild(this.pageDiv.nativeElement, domElem);
+  }
 
+  logout() {
+    localStorage.removeItem('jwt_token');
+    localStorage.removeItem('loggedin_user');
+    this.router.navigateByUrl(`/login`);
   }
 
 
