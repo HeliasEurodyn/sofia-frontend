@@ -32,9 +32,9 @@
               </div>
               <div class="col-sm-5">
                 <div class="pull-right">
-                  <button class="btn btn-outline-primary">
-                    <i class="fa fa-search"></i> List
-                  </button>
+<!--                  <button class="btn btn-outline-primary">-->
+<!--                    <i class="fa fa-search"></i> List-->
+<!--                  </button>-->
                 </div>
               </div>
             </div>
@@ -118,7 +118,12 @@
           </div>
           <div class="card-body">
 
-            <ul>
+            <div *ngIf="groupContent?.length > 0" class="row">
+              <div class="col-12">
+                <h6 class="float-left"> Grouping columns </h6>
+              </div>
+            </div>
+            <ul *ngIf="groupContent?.length > 0">
               <ng-template #recursiveList let-list>
                 <li *ngFor="let item of list">
 
@@ -140,6 +145,17 @@
               <ng-container
                 *ngTemplateOutlet="recursiveList; context:{ $implicit: groupContent}"></ng-container>
             </ul>
+
+
+            <div class="row" style="margin-bottom: 1rem">
+              <div class="col-12">
+                <h6 class="float-left"> Grouping columns </h6>
+              </div>
+              <div class="col-12" *ngFor="let item of this.listComponentDto?.listComponentLeftGroupFieldList">
+                <p class="float-left" style="margin-bottom: 0px;"><i class="fa fa-square"></i> {{item.description}} </p>
+              </div>
+            </div>
+
 
           </div>
         </div>
