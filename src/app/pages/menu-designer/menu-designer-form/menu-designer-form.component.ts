@@ -75,15 +75,27 @@ export class MenuDesignerFormComponent extends PageComponent implements OnInit {
 
         this.menuComponent.id = null;
         this.menuComponent.version = null;
-        for (const menuField of this.menuComponent.menuFieldList) {
-          menuField.id = null;
-          menuField.version = null;
+        if (this.menuComponent.menuFieldList != null) {
+          this.cleanFieldListIdsIfCloneEnabled(this.menuComponent.menuFieldList);
         }
         this.mode = 'new-record';
       }
     }
   }
 
+  cleanFieldListIdsIfCloneEnabled(menuFieldList: MenuFieldDTO[]) {
+    if (this.params.has('TYPE')) {
+      if (this.params.get('TYPE').toUpperCase() === 'CLONE') {
+        for (const menuField of menuFieldList) {
+          menuField.id = null;
+          menuField.version = null;
+          if (menuField.menuFieldList != null) {
+            this.cleanFieldListIdsIfCloneEnabled(menuField.menuFieldList);
+          }
+        }
+      }
+    }
+  }
 
   showPreviousPageButton() {
     if (this.previousPage === null) {
