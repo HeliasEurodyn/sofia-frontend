@@ -3,6 +3,8 @@ import {ROUTES} from '../sidebar/sidebar.component';
 import {Router} from '@angular/router';
 import {Location} from '@angular/common';
 import {NavigatorService} from '../../services/navigator.service';
+import {LoadingService} from '../../services/loading.service';
+import {delay} from 'rxjs/operators';
 
 @Component({
   moduleId: module.id,
@@ -18,7 +20,7 @@ export class NavbarComponent implements OnInit {
   private toggleButton;
   private sidebarVisible: boolean;
   private sidebarVisibleForDesktop: boolean;
-
+  private loading = false;
   // private pageHeaders: Map<string, string> = new Map();
   // private pageIdsList: string[] = [];
 
@@ -29,7 +31,8 @@ export class NavbarComponent implements OnInit {
               private renderer: Renderer2,
               private element: ElementRef,
               private router: Router,
-              private navigatorService: NavigatorService) {
+              private navigatorService: NavigatorService,
+              private loadingService: LoadingService) {
     this.location = location;
     this.nativeElement = element.nativeElement;
     this.sidebarVisible = false;
@@ -44,7 +47,18 @@ export class NavbarComponent implements OnInit {
     this.router.events.subscribe((event) => {
       this.sidebarClose();
     });
+    this.listenToLoading();
   }
+
+  listenToLoading(): void {
+    this.loadingService.loadingSub
+      .pipe(delay(0)) // This prevents a ExpressionChangedAfterItHasBeenCheckedError for subsequent requests
+      .subscribe((loading) => {
+        this.loading = loading;
+        console.log(this.loading);
+      });
+  }
+
 
   mapPagesToHeaders() {
     const headers = [];

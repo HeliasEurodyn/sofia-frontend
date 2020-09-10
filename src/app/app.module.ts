@@ -43,6 +43,7 @@ import {DatePipe} from '@angular/common';
 import { UserFormComponent } from './pages/user/user-form/user-form.component';
 import { UserListComponent } from './pages/user/user-list/user-list.component';
 import {AuthenticationHeaderInterceptor} from './interceptors/authentication-header-interceptor';
+import {HttpRequestLoadingInterceptor} from './interceptors/http-request-loading.interceptor';
 
 
 @NgModule({
@@ -102,7 +103,8 @@ import {AuthenticationHeaderInterceptor} from './interceptors/authentication-hea
       provide: NgbDateAdapter,
       useClass: NgbUTCStringAdapter
     },
-    {provide: HTTP_INTERCEPTORS, useClass: AuthenticationHeaderInterceptor, multi: true}
+    {provide: HTTP_INTERCEPTORS, useClass: AuthenticationHeaderInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: HttpRequestLoadingInterceptor, multi: true}
       ],
   bootstrap: [AppComponent]
 })
