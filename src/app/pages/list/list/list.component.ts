@@ -168,7 +168,7 @@ export class ListComponent extends PageComponent implements OnInit {
 
 
   isGroupContentDivVisible() {
-    if (this.listComponentDto.listComponentLeftGroupFieldList.length > 0) {
+    if (this.listComponentDto?.listComponentLeftGroupFieldList?.length > 0) {
       return true;
     } else {
       return false;
