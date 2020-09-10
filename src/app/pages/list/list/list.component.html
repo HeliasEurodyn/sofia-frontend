@@ -28,13 +28,15 @@
           <div class="card-header">
             <div class="row">
               <div class="col-sm-7">
-                <h5 class="card-title pull-left">Filters</h5>
+                <h5 class="card-title pull-left">
+                  <i class="fa fa-filter"></i>
+                  Filters</h5>
               </div>
               <div class="col-sm-5">
                 <div class="pull-right">
-<!--                  <button class="btn btn-outline-primary">-->
-<!--                    <i class="fa fa-search"></i> List-->
-<!--                  </button>-->
+                  <!--                  <button class="btn btn-outline-primary">-->
+                  <!--                    <i class="fa fa-search"></i> List-->
+                  <!--                  </button>-->
                 </div>
               </div>
             </div>
@@ -50,7 +52,7 @@
                   <div class="{{row.bclass}}  L{{listDto.id}}-{{listComponentDto.code}}-{{row.code}} filter-col"
                        style="{{row.css}}">
                     <div class="form-group">
-                      <label>{{row.description}}</label>
+                      <b [ngClass]="{'text-danger': row.required}">{{row.description}}</b>
                       <input type="text" class="form-control" [(ngModel)]="row.fieldValue">
                     </div>
                   </div>
@@ -60,7 +62,7 @@
                   <div class="{{row.bclass}} L{{listDto.id}}-{{listComponentDto.code}}-{{row.code}} filter-col"
                        style="{{row.css}}">
                     <div class="form-group">
-                      <label>{{row.description}}</label>
+                      <b [ngClass]="{'text-danger': row.required}" class="text-danger">{{row.description}}</b>
                       <input type="number" number="true" [(ngModel)]="row.fieldValue" class="form-control">
                     </div>
                   </div>
@@ -70,7 +72,7 @@
                   <div class="{{row.bclass}} L{{listDto.id}}-{{listComponentDto.code}}-{{row.code}} filter-col"
                        style="{{row.css}}">
                     <div class="form-group">
-                      <label>{{row.description}}</label>
+                      <b [ngClass]="{'text-danger': row.required}">{{row.description}}</b>
                       <input type="number" number="true" [(ngModel)]="row.fieldValue" class="form-control">
                     </div>
                   </div>
@@ -80,7 +82,7 @@
                   <div class="{{row.bclass}} L{{listDto.id}}-{{listComponentDto.code}}-{{row.code}} filter-col"
                        style="{{row.css}}">
                     <div class="form-group">
-                      <label>{{row.description}}</label>
+                      <b [ngClass]="{'text-danger': row.required}">{{row.description}}</b>
                       <app-date-picker [(inputDate)]="row.fieldValue"></app-date-picker>
                     </div>
                   </div>
@@ -128,12 +130,13 @@
                 <li *ngFor="let item of list">
 
                   <div class="btn-group">
-                    <button  *ngIf="item['children'].length > 0" (click)="updateVisibility(item)" type="button" class="btn left-group-button btn-outline-success active-header" style="padding: 5px;">
+                    <button *ngIf="item['children'].length > 0" (click)="updateVisibility(item)" type="button"
+                            class="btn left-group-button btn-outline-success active-header" style="padding: 5px;">
                       <i class="fa fa-expand"></i>
                     </button>
-                  <button (click)="filterGroup(item)"  class="btn left-group-button btn-outline-default">
-                    {{item['value']}}
-                  </button>
+                    <button (click)="filterGroup(item)" class="btn left-group-button btn-outline-default">
+                      {{item['value']}}
+                    </button>
                   </div>
                   <ul *ngIf="item['children'] != undefined && item['childrenVisible'] ">
                     <ng-container
@@ -166,12 +169,14 @@
           <div class="card-header">
             <div class="row">
               <div class="col-sm-7">
-                <div class="numbers pull-left">
-                </div>
+                <h5 class="card-title pull-left">
+                  <i class="fa fa-search"></i>
+                  List</h5>
               </div>
               <div class="col-sm-5">
                 <div class="pull-right">
-                  <button type="button" title="Excel" (click)="dataExcel()" class="btn btn-outline-primary btn-icon btn-sm">
+                  <button type="button" title="Excel" (click)="dataExcel()"
+                          class="btn btn-outline-primary btn-icon btn-sm">
                     <i class="fa fa-file-excel-o"></i>
                   </button>
                 </div>
@@ -186,7 +191,7 @@
               <thead class="text-primary">
               <tr>
                 <ng-container *ngIf="this.listComponentDto?.listComponentActionFieldList.length > 0">
-                <th style="max-width: 100px;"></th>
+                  <th style="max-width: 100px;"></th>
                 </ng-container>
                 <ng-container *ngFor="let row of this.listComponentDto?.listComponentColumnFieldList">
                   <th *ngIf="row.visible" class="sortable">
@@ -203,7 +208,8 @@
 
                 <td style="max-width: 100px;" *ngIf="this.listComponentDto?.listComponentActionFieldList.length > 0">
                   <ng-container *ngFor="let field of this.listComponentDto?.listComponentActionFieldList">
-                    <button type="button" title="{{field.description}}" (click)="listButtonClick(field.editor)" class="btn btn-outline-success btn-icon btn-sm">
+                    <button type="button" title="{{field.description}}" (click)="listButtonClick(field.editor)"
+                            class="btn btn-outline-success btn-icon btn-sm">
                       <i class="fa {{field.bclass}}"></i>
                     </button>
                   </ng-container>

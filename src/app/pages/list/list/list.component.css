@@ -156,5 +156,17 @@ li { /* styles all li elements*/
 }
 
 
+.nav-tabs .nav-link.active {
+  background-color: #fffffffa !important;
+}
+
+.nav-tabs .nav-link {
+  background-color: #fffffffa !important;
+}
+
+.nav-tabs .nav-link.active:hover{
+
+  color: #11b3b3 !important;
+ }
 
 

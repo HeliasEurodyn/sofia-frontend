@@ -5,6 +5,7 @@ import {PageComponent} from '../../page/page-component';
 import {ListComponentDTO} from '../../../dtos/list/list-component-dto';
 import {ListResultsData} from '../../../dtos/list/list-results-data';
 import {NavigatorService} from '../../../services/navigator.service';
+import {NotificationService} from '../../../services/notification.service';
 
 @Component({
   selector: 'app-list',
@@ -17,12 +18,13 @@ export class ListComponent extends PageComponent implements OnInit {
   public listComponentDto: ListComponentDTO;
   public listResultsData: ListResultsData;
   public groupContent: Array<Map<string, any>>;
-  public groupContentRetreived = false;
+  // public groupContentRetreived = false;
   private selectedGroupItem: any;
 
 
   constructor(private service: ListService,
-              private navigatorService: NavigatorService) {
+              private navigatorService: NavigatorService,
+              private notificationService: NotificationService) {
     super();
   }
 
@@ -66,16 +68,23 @@ export class ListComponent extends PageComponent implements OnInit {
   }
 
   getListResultData() {
+
+    let requiredFiledsEmpty = false;
+    for (const filterField of this.listComponentDto.listComponentFilterFieldList) {
+      if ((filterField.fieldValue == null || filterField.fieldValue === '') && filterField.required ) {
+        this.notificationService.showNotification('top', 'center', 'alert-danger', 'fa-id-card', '<b>Filters error</b> Required filter field ' + filterField.description + ' is empty!');
+        requiredFiledsEmpty = true;
+      }
+    }
+
+    if (requiredFiledsEmpty) {
+      return;
+    }
+
     this.service.getListResultData(this.listDto).subscribe(data => {
       this.listResultsData = data;
-      //  this.initializeGroupContentVisibility(this.listResultsData.groupContent, false);
-      //  this.initializeGroupContentParrents(this.listResultsData.groupContent);
     });
-
-    if (this.groupContentRetreived === false) {
-      this.getGroupResultData();
-      this.groupContentRetreived = true;
-    }
+    this.getGroupResultData();
 
   }
 

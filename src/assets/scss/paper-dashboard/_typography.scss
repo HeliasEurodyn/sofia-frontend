@@ -106,7 +106,8 @@ p{
 
 .text-primary,
 a.text-primary:focus, a.text-primary:hover {
-  color: $brand-primary !important;
+  /* color: $brand-primary !important; */
+  color: #33312b !important;
 }
 .text-info,
 a.text-info:focus, a.text-info:hover {
