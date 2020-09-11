@@ -45,6 +45,9 @@
 
 
 
+
+
+
 .spinner {
   //margin: 100px auto;
   //width: 50px;
@@ -56,11 +59,19 @@
 .spinner > div {
   background-color: #3aabb3;
   height: 100%;
-  width: 6px;
+  width: 3px;
   display: inline-block;
 
-  -webkit-animation: sk-stretchdelay 1.2s infinite ease-in-out;
+  //-webkit-animation: sk-stretchdelay 1.2s infinite ease-in-out;
+  //animation: sk-stretchdelay 1.2s infinite ease-in-out;
+}
+
+.running-spinner > div {
   animation: sk-stretchdelay 1.2s infinite ease-in-out;
+}
+
+.stopped-spinner > div {
+  animation: sk-stretchdelay-stopped 1.2s infinite ease-in-out;
 }
 
 .rect{
@@ -87,12 +98,13 @@
   animation-delay: -0.8s;
 }
 
-@-webkit-keyframes sk-stretchdelay {
-  0%, 40%, 100% { -webkit-transform: scaleY(0.05) }
-  20% { -webkit-transform: scaleY(1.0) }
-}
+//@-webkit-keyframes sk-stretchdelay {
+//  0%, 40%, 100% { -webkit-transform: scaleY(0.05) }
+//  20% { -webkit-transform: scaleY(1.0) }
+//}
 
 @keyframes sk-stretchdelay {
+
   0%, 40%, 100% {
     transform: scaleY(0.05);
     -webkit-transform: scaleY(0.05);
@@ -100,4 +112,12 @@
        transform: scaleY(1.0);
        -webkit-transform: scaleY(1.0);
      }
+}
+
+@keyframes sk-stretchdelay-stopped {
+
+  0%, 40%, 100% {
+    transform: scaleY(0.05);
+    -webkit-transform: scaleY(0.05);
+  }
 }

@@ -62,9 +62,9 @@
     <div class="collapse navbar-collapse justify-content-end" id="collapseExample" [ngbCollapse]="isCollapsed">
 
 
-      <ul class="navbar-nav" *ngIf="loading">
+      <ul class="navbar-nav" >
         <li class="nav-item">
-          <div class="spinner" >
+          <div class="spinner stopped-spinner"  [ngClass]="{'running-spinner':loading,'stopped-spinner':!loading}" >
             <div class="rect rect1"></div>
             <div class="rect rect2"></div>
             <div class="rect rect3"></div>
