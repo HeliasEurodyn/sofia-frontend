@@ -5,6 +5,8 @@ import {Location} from '@angular/common';
 import {NavigatorService} from '../../services/navigator.service';
 import {LoadingService} from '../../services/loading.service';
 import {delay} from 'rxjs/operators';
+import {HttpErrorResponceService} from '../../services/http-error-responce.service';
+import {NotificationService} from '../../services/notification.service';
 
 @Component({
   moduleId: module.id,
@@ -32,7 +34,10 @@ export class NavbarComponent implements OnInit {
               private element: ElementRef,
               private router: Router,
               private navigatorService: NavigatorService,
-              private loadingService: LoadingService) {
+              private loadingService: LoadingService,
+              private httpErrorResponceService: HttpErrorResponceService,
+              private notificationService: NotificationService
+  ) {
     this.location = location;
     this.nativeElement = element.nativeElement;
     this.sidebarVisible = false;
@@ -48,6 +53,7 @@ export class NavbarComponent implements OnInit {
       this.sidebarClose();
     });
     this.listenToLoading();
+    this.listenToHttpErrors();
   }
 
   listenToLoading(): void {
@@ -55,7 +61,15 @@ export class NavbarComponent implements OnInit {
       .pipe(delay(0)) // This prevents a ExpressionChangedAfterItHasBeenCheckedError for subsequent requests
       .subscribe((loading) => {
         this.loading = loading;
-        console.log(this.loading);
+      });
+  }
+
+  listenToHttpErrors(): void {
+    this.httpErrorResponceService.httpErrorMessageEmitter
+      .subscribe((message) => {
+        if (message !== '') {
+          this.notificationService.showNotification('top', 'center', 'alert-danger', 'fa-thumbs-down', message);
+        }
       });
   }
 

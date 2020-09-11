@@ -7,6 +7,7 @@ import {BehaviorSubject} from 'rxjs';
 export class LoadingService {
 
   loadingSub: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+
   /**
    * Contains in-progress loading requests
    */
