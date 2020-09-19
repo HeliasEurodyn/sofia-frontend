@@ -18,8 +18,12 @@ export class ListService extends CrudService<any> {
     return this.http.get<any>(`${environment.serverUrl}/${this.endpoint}/by-name?name=${name}`);
   }
 
+  getDataById(id: any): Observable<any> {
+    return this.http.get<any>(`${environment.serverUrl}/${this.endpoint}/data/by-id?id=${id}`);
+  }
+
   getListResultData(listDto: ListDTO) {
-    return this.http.post<any>(`${environment.serverUrl}/${this.endpoint}/data`, listDto);
+    return this.http.post<any>(`${environment.serverUrl}/${this.endpoint}/data/results`, listDto);
   }
 
   getListResultDataExcel(listDto: ListDTO) {
@@ -32,7 +36,8 @@ export class ListService extends CrudService<any> {
   }
 
   getGroupResultData(listDto: ListDTO) {
-    return this.http.post<any>(`${environment.serverUrl}/${this.endpoint}/left-grouping-data`, listDto);
+    return this.http.post<any>(`${environment.serverUrl}/${this.endpoint}/data/left-grouping/results`, listDto);
   }
+
 
 }

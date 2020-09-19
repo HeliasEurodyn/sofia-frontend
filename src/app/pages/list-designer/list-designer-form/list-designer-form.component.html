@@ -40,6 +40,8 @@
 
       </div>
       <div class="card-body">
+
+
         <div class="row">
           <div class="col-md-12">
             <div class="form-group " [ngClass]="{'has-danger': tableExists}">
@@ -49,6 +51,60 @@
             </div>
           </div>
         </div>
+
+
+
+        <div class="row">
+
+          <div class="col-md-5">
+            <div class="form-group " [ngClass]="{'has-danger': tableExists}">
+              <label>Total Pages</label>
+              <input type="text" class="form-control" [(ngModel)]="selectedListComponent.totalPages">
+              <code></code>
+            </div>
+          </div>
+
+          <div class="col-md-5">
+            <div class="form-group " [ngClass]="{'has-danger': tableExists}">
+              <label>Rows Limit</label>
+              <input type="text" class="form-control" [(ngModel)]="selectedListComponent.rowsLimit">
+              <code></code>
+            </div>
+          </div>
+
+          <div class="col-md-2">
+            <label style="padding-bottom: 20px;"></label>
+            <div class="form-check">
+              <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" [(ngModel)]="selectedListComponent.hasPagination"> Use Pagination
+                <span class="form-check-sign"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="col-md-12" style="padding-top: 10px;">
+
+            <div class="form-check">
+              <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" [(ngModel)]="selectedListComponent.exportExcel"> Excel Export
+                <span class="form-check-sign"></span>
+              </label>
+            </div>
+            <div class="form-check">
+              <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" [(ngModel)]="selectedListComponent.HeaderFilters"> Use Header Filters
+                <span class="form-check-sign"></span>
+              </label>
+            </div>
+          </div>
+
+
+
+        </div>
+
+
+
+
 
         <div class="row">
           <div class="col-md-12">
@@ -163,8 +219,11 @@
             <div class="row" style="padding-bottom: 10px;">
               <div class="col-sm-12">
                 <div class="pull-right">
-                  <button class="btn btn-outline-primary">
-                    <i class="fa fa-plus-circle"></i> Formula field
+                  <button (click)="addCommandFormulaFieldToColumns()" class="btn btn-outline-warning">
+                    <i class="fa fa-plus-circle"></i> Command Formula field
+                  </button>
+                  <button (click)="addSqlFormulaFieldToColumns()" class="btn btn-outline-success">
+                    <i class="fa fa-plus-circle"></i> Sql Formula field
                   </button>
                 </div>
               </div>
@@ -180,6 +239,7 @@
                 <th>Type</th>
                 <th>Description</th>
                 <th>Editor</th>
+                <th>Default</th>
                 <th>Visible</th>
                 <th>Editable</th>
               </tr>
@@ -190,8 +250,8 @@
                 <td colspan="9" class="empty-table-row">Empty!</td>
               </tr>
 
-              <tr *ngFor="let column of selectedListComponent?.listComponentColumnFieldList">
-                <td>
+              <tr *ngFor="let column of selectedListComponent?.listComponentColumnFieldList" [ngClass]="{'command-field': column.formulaType === 'command', 'sql-field': column.formulaType === 'sql'}"  >
+                <td style="min-width: 150px;">
                   <button (click)="removeColumn(column)" title="Delete" type="button"
                           class="btn btn-outline-danger btn-icon btn-sm">
                     <i class="fa fa-times"></i>
@@ -215,11 +275,11 @@
                 </td>
                 <td>
                   <input type="text" readonly class="form-control transparent-input"
-                         value="[{{column.componentPersistEntity.code}}]{{column.componentPersistEntity.persistEntity.name}}">
+                         value=" {{column?.componentPersistEntity?.code}} {{column?.componentPersistEntity?.persistEntity.name}}">
                 </td>
                 <td>
                   <input type="text" readonly class="form-control transparent-input"
-                         [(ngModel)]="column.componentPersistEntityField.persistEntityField.name">
+                         [(ngModel)]="column?.componentPersistEntityField?.persistEntityField.name">
                 </td>
                 <td>
                   <select [(ngModel)]="column.type" class="transparent-input">
@@ -239,6 +299,10 @@
                 <td>
                   <input type="text" class="form-control transparent-input"
                          [(ngModel)]="column.editor">
+                </td>
+                <td>
+                  <input type="text" class="form-control transparent-input"
+                         [(ngModel)]="column.defaultValue">
                 </td>
                 <td>
                   <select class="transparent-input" [(ngModel)]="column.visible">
@@ -1004,6 +1068,13 @@
           <div class="col-12">
             <label>Editor</label>
             <textarea class="form-control" [(ngModel)]="selectedFilterField.editor"></textarea>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12">
+            <label>Default</label>
+            <textarea class="form-control" [(ngModel)]="selectedFilterField.defaultValue"></textarea>
           </div>
         </div>
 

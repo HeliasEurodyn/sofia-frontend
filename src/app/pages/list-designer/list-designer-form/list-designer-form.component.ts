@@ -213,6 +213,7 @@ export class ListDesignerFormComponent extends PageComponent implements OnInit {
     dto.type = field.persistEntityField.type;
     dto.shortOrder = this.genNextColumnsShortOrder();
     dto.code = 'C' + dto.shortOrder;
+    dto.formulaType = 'column';
     this.selectedListComponent.listComponentColumnFieldList.push(dto);
   }
 
@@ -239,11 +240,45 @@ export class ListDesignerFormComponent extends PageComponent implements OnInit {
     dto.editable = false;
     dto.required = false;
     dto.description = '';
-    dto.type = 'list';
+    dto.type = '';
     dto.shortOrder = this.genNextFilrerShortOrder();
     dto.code = 'F' + dto.shortOrder;
     dto.bclass = 'col-12';
     this.selectedListComponent.listComponentFilterFieldList.push(dto);
+  }
+
+
+  addCommandFormulaFieldToColumns() {
+    const dto = new ListComponentFieldDTO();
+    dto.editor = '';
+    dto.componentPersistEntity = null
+    dto.componentPersistEntityField = null;
+    dto.visible = true;
+    dto.editable = false;
+    dto.required = false;
+    dto.description = '';
+    dto.type = '';
+    dto.shortOrder = this.genNextColumnsShortOrder();
+    dto.code = 'C' + dto.shortOrder;
+    dto.formulaType = 'command';
+    this.selectedListComponent.listComponentColumnFieldList.push(dto);
+  }
+
+
+  addSqlFormulaFieldToColumns() {
+    const dto = new ListComponentFieldDTO();
+    dto.editor = '';
+    dto.componentPersistEntity = null
+    dto.componentPersistEntityField = null;
+    dto.visible = true;
+    dto.editable = false;
+    dto.required = false;
+    dto.description = '';
+    dto.type = '';
+    dto.shortOrder = this.genNextColumnsShortOrder();
+    dto.code = 'C' + dto.shortOrder;
+    dto.formulaType = 'sql';
+    this.selectedListComponent.listComponentColumnFieldList.push(dto);
   }
 
   addActionField() {

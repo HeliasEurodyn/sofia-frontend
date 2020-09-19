@@ -21,4 +21,5 @@ export class ListComponentFieldDTO extends BaseDTO {
   bclass: string;
   css: string;
   fieldValue: any;
+  formulaType: string;
 }

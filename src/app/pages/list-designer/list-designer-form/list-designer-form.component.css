@@ -32,3 +32,11 @@ h6{
 .modal-select-fields{
   max-width: 700px;
 }
+
+.command-field{
+  border: 2px solid #fbc658 !important;
+}
+
+.sql-field{
+  border: 2px solid #6bd098 !important;
+}

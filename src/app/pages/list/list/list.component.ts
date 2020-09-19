@@ -34,38 +34,38 @@ export class ListComponent extends PageComponent implements OnInit {
     if (this.getLocateParams().has('ID')) {
       const id = this.getLocateParams().get('ID');
 
-      this.service.getById(id).subscribe(data => {
+      this.service.getDataById(id).subscribe(data => {
         this.listDto = data;
         this.listComponentDto = this.listDto.listComponentList[0];
 
-        for (const listComponentDto of this.listDto.listComponentList) {
-          for (const listComponentFilterField of listComponentDto.listComponentFilterFieldList) {
-            listComponentFilterField.fieldValue = this.parseDefaultValue(listComponentFilterField.defaultValue);
-          }
-        }
+        // for (const listComponentDto of this.listDto.listComponentList) {
+        //   for (const listComponentFilterField of listComponentDto.listComponentFilterFieldList) {
+        //     // listComponentFilterField.fieldValue = this.parseDefaultValue(listComponentFilterField.defaultValue);
+        //   }
+        // }
 
       });
     }
   }
 
-  parseDefaultValue(defaultValue: string) {
-
-    if (defaultValue == null) {
-      return '';
-    }
-
-    if (defaultValue === '') {
-      return '';
-    }
-
-    if (defaultValue.match(/^\$DATENOWPLUS\((-\d+|\d+)\)$/)) {
-      const currentDate = new Date();
-      const parameter = +defaultValue.replace(/^\$DATENOWPLUS\(/, '').replace(/\)$/, '');
-      currentDate.setDate(currentDate.getDate() + parameter);
-      return currentDate;
-    }
-    return defaultValue;
-  }
+  // parseDefaultValue(defaultValue: string) {
+  //
+  //   if (defaultValue == null) {
+  //     return '';
+  //   }
+  //
+  //   if (defaultValue === '') {
+  //     return '';
+  //   }
+  //
+  //   if (defaultValue.match(/^\$DATENOWPLUS\((-\d+|\d+)\)$/)) {
+  //     const currentDate = new Date();
+  //     const parameter = +defaultValue.replace(/^\$DATENOWPLUS\(/, '').replace(/\)$/, '');
+  //     currentDate.setDate(currentDate.getDate() + parameter);
+  //     return currentDate;
+  //   }
+  //   return defaultValue;
+  // }
 
   getListResultData() {
 
