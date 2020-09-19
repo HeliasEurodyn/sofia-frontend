@@ -21,32 +21,32 @@ export class HttpRequestErrorInterceptor implements HttpInterceptor {
       .pipe(catchError((err) => {
         switch (err.status) {
           case 400:
-            this.httpErrorResponceService.setNewErrorMessage('<b>Error 400</b> Bad Request 400');
+            this.httpErrorResponceService.setNewErrorMessage('<b>400</b> Bad Request 400');
             // this.notificationService.showNotification('top', 'center', 'alert-danger',
             //   'fa-thumbs-down', '<b>Error 400</b> Bad Request 400');
             break;
           case 401:
-            this.httpErrorResponceService.setNewErrorMessage('<b>Request Code 401</b> Not Found.');
+            this.httpErrorResponceService.setNewErrorMessage('<b>Code 401</b> Not Found.');
             // this.notificationService.showNotification('top', 'center', 'alert-danger', 'fa-tasks', '<b>Request Code 401</b> Not Found.');
             break;
 
           case 404:
-            this.httpErrorResponceService.setNewErrorMessage('<b>Request Code 404</b> Not Found.');
+            this.httpErrorResponceService.setNewErrorMessage('<b>Code 404</b> Not Found.');
             // this.notificationService.showNotification('top', 'center', 'alert-danger', 'fa-tasks', '<b>Request Code 404</b> Not Found.');
             break;
 
           case 408:
-            this.httpErrorResponceService.setNewErrorMessage('<b>Request Code 408</b> TimeOut.');
+            this.httpErrorResponceService.setNewErrorMessage('<b>Code 408</b> TimeOut.');
             // this.notificationService.showNotification('top', 'center', 'alert-danger', 'fa-tasks', '<b>Request Code 408</b> TimeOut.');
             break;
 
           case 403:
-            this.httpErrorResponceService.setNewErrorMessage('<b>Request Code 403</b> Forbidden area.');
+            this.httpErrorResponceService.setNewErrorMessage('<b>Code 403</b> Forbidden area.');
             // this.notificationService.showNotification('top', 'center', 'alert-danger', 'fa-tasks', '<b>Request Code 403</b> Forbidden area.');
             break;
 
           case 500:
-            this.httpErrorResponceService.setNewErrorMessage('<b>Request Code 500</b> Internal server issue.');
+            this.httpErrorResponceService.setNewErrorMessage('<b>Code 500</b> Internal server issue.');
             // this.notificationService.showNotification('top', 'center', 'alert-danger', 'fa-tasks', '<b>Request Code 500</b> Internal server issue.');
             break;
         }
