@@ -56,18 +56,10 @@
 
         <div class="row">
 
-          <div class="col-md-5">
+          <div class="col-md-10">
             <div class="form-group " [ngClass]="{'has-danger': tableExists}">
-              <label>Total Pages</label>
-              <input type="text" class="form-control" [(ngModel)]="selectedListComponent.totalPages">
-              <code></code>
-            </div>
-          </div>
-
-          <div class="col-md-5">
-            <div class="form-group " [ngClass]="{'has-danger': tableExists}">
-              <label>Rows Limit</label>
-              <input type="text" class="form-control" [(ngModel)]="selectedListComponent.rowsLimit">
+              <label>Page Size</label>
+              <input type="number" class="form-control" [(ngModel)]="selectedListComponent.pageSize">
               <code></code>
             </div>
           </div>
@@ -81,6 +73,25 @@
               </label>
             </div>
           </div>
+
+          <div class="col-md-10">
+            <div class="form-group " [ngClass]="{'has-danger': tableExists}">
+              <label>Max Size</label>
+              <input type="number" class="form-control" [(ngModel)]="selectedListComponent.maxSize">
+              <code></code>
+            </div>
+          </div>
+
+          <div class="col-md-2">
+            <label style="padding-bottom: 20px;"></label>
+            <div class="form-check">
+              <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" [(ngModel)]="selectedListComponent.hasMaxSize"> Set Max Rows Size
+                <span class="form-check-sign"></span>
+              </label>
+            </div>
+          </div>
+
 
           <div class="col-md-12" style="padding-top: 10px;">
 

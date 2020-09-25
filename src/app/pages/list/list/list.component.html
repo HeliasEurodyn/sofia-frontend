@@ -78,6 +78,16 @@
                   </div>
                 </ng-container>
 
+                <ng-container *ngIf="row.type === 'list'">
+                  <div class="{{row.bclass}} L{{listDto.id}}-{{listComponentDto.code}}-{{row.code}} filter-col"
+                       style="{{row.css}}">
+                    <div class="form-group">
+                      <b [ngClass]="{'text-danger': row.required}">{{row.description}}</b>
+                      <app-date-picker [(inputDate)]="row.fieldValue"></app-date-picker>
+                    </div>
+                  </div>
+                </ng-container>
+
                 <ng-container *ngIf="row.type === 'datetime'">
                   <div class="{{row.bclass}} L{{listDto.id}}-{{listComponentDto.code}}-{{row.code}} filter-col"
                        style="{{row.css}}">
@@ -122,7 +132,7 @@
 
             <div *ngIf="groupContent?.length > 0" class="row">
               <div class="col-12">
-                <h6 class="float-left"> Grouping columns </h6>
+                <h6 class="float-left"> Grouping values </h6>
               </div>
             </div>
             <ul *ngIf="groupContent?.length > 0">
@@ -228,30 +238,27 @@
             </table>
 
 
-            <!--            <div class="div-table">-->
-            <!--              <div class="div-table-row">-->
-            <!--                <div class="div-table-col" align="center">Customer ID</div>-->
-            <!--                <div  class="div-table-col">Customer Name</div>-->
-            <!--                <div  class="div-table-col">Customer Address</div>-->
-            <!--              </div>-->
-            <!--              <div class="div-table-row">-->
-            <!--                <div class="div-table-col">001</div>-->
-            <!--                <div class="div-table-col">002</div>-->
-            <!--                <div class="div-table-col">003</div>-->
-            <!--              </div>-->
-            <!--              <div class="div-table-row">-->
-            <!--                <div class="div-table-col">xxx</div>-->
-            <!--                <div class="div-table-col">yyy</div>-->
-            <!--                <div class="div-table-col">www</div>-->
-            <!--              </div>-->
-            <!--              <div class="div-table-row">-->
-            <!--                <div class="div-table-col">ttt</div>-->
-            <!--                <div class="div-table-col">uuu</div>-->
-            <!--                <div class="div-table-col">Mkkk</div>-->
-            <!--              </div>-->
-
-            <!--            </div>-->
-
+            <ul *ngIf="this.listComponentDto?.hasPagination" class="pagination pull-right">
+              <li class="page-item">
+                <a aria-label="Previous" (click)="navigateToPage(this.listResultsData.currentPage-1)"  class="page-link" disabled="">
+                  <span aria-hidden="true"><i aria-hidden="true" class="fa fa-angle-double-left"></i></span>
+                </a>
+              </li>
+              <li class="page-item">
+                <a class="page-link" (click)="navigateToPage(this.listResultsData.currentPage-1)"  *ngIf="this.showPrevPagination" >{{this.listResultsData.currentPage}}</a>
+              </li>
+              <li class="page-item active">
+                <a class="page-link" (click)="navigateToPage(this.listResultsData.currentPage)" >{{listResultsData.currentPage+1}}</a>
+              </li>
+              <li class="page-item">
+                <a class="page-link" (click)="navigateToPage(this.listResultsData.currentPage+1)"   *ngIf="this.showNextPagination" >{{listResultsData.currentPage+2}}</a>
+              </li>
+              <li class="page-item">
+                <a aria-label="Next" (click)="navigateToPage(this.listResultsData.currentPage+1)"  class="page-link">
+                  <span aria-hidden="true"><i aria-hidden="true" class="fa fa-angle-double-right"></i></span>
+                </a>
+              </li>
+            </ul>
           </div>
 
 

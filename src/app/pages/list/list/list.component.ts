@@ -18,9 +18,10 @@ export class ListComponent extends PageComponent implements OnInit {
   public listComponentDto: ListComponentDTO;
   public listResultsData: ListResultsData;
   public groupContent: Array<Map<string, any>>;
-  // public groupContentRetreived = false;
   private selectedGroupItem: any;
 
+  private showPrevPagination = false;
+  private showNextPagination = false;
 
   constructor(private service: ListService,
               private navigatorService: NavigatorService,
@@ -37,41 +38,14 @@ export class ListComponent extends PageComponent implements OnInit {
       this.service.getDataById(id).subscribe(data => {
         this.listDto = data;
         this.listComponentDto = this.listDto.listComponentList[0];
-
-        // for (const listComponentDto of this.listDto.listComponentList) {
-        //   for (const listComponentFilterField of listComponentDto.listComponentFilterFieldList) {
-        //     // listComponentFilterField.fieldValue = this.parseDefaultValue(listComponentFilterField.defaultValue);
-        //   }
-        // }
-
       });
     }
   }
 
-  // parseDefaultValue(defaultValue: string) {
-  //
-  //   if (defaultValue == null) {
-  //     return '';
-  //   }
-  //
-  //   if (defaultValue === '') {
-  //     return '';
-  //   }
-  //
-  //   if (defaultValue.match(/^\$DATENOWPLUS\((-\d+|\d+)\)$/)) {
-  //     const currentDate = new Date();
-  //     const parameter = +defaultValue.replace(/^\$DATENOWPLUS\(/, '').replace(/\)$/, '');
-  //     currentDate.setDate(currentDate.getDate() + parameter);
-  //     return currentDate;
-  //   }
-  //   return defaultValue;
-  // }
-
   getListResultData() {
-
     let requiredFiledsEmpty = false;
     for (const filterField of this.listComponentDto.listComponentFilterFieldList) {
-      if ((filterField.fieldValue == null || filterField.fieldValue === '') && filterField.required ) {
+      if ((filterField.fieldValue == null || filterField.fieldValue === '') && filterField.required) {
         this.notificationService.showNotification('top', 'center', 'alert-danger', 'fa-id-card', '<b>Filters error</b> Required filter field ' + filterField.description + ' is empty!');
         requiredFiledsEmpty = true;
       }
@@ -83,8 +57,32 @@ export class ListComponent extends PageComponent implements OnInit {
 
     this.service.getListResultData(this.listDto).subscribe(data => {
       this.listResultsData = data;
+      this.setPaginationSettings();
     });
+
     this.getGroupResultData();
+
+  }
+
+  setPaginationSettings() {
+
+    if (!this.listComponentDto.hasPagination) {
+      return;
+    }
+
+    if (this.listResultsData.currentPage > 0) {
+      this.showPrevPagination = true;
+    } else {
+      this.showPrevPagination = false;
+    }
+
+
+    if (this.listResultsData.currentPage + 1 < this.listResultsData.totalPages) {
+      this.showNextPagination = true;
+    } else {
+      this.showNextPagination = false;
+    }
+
 
   }
 
@@ -194,4 +192,23 @@ export class ListComponent extends PageComponent implements OnInit {
       link.click();
     });
   }
+
+
+  navigateToPage(page: number) {
+
+    if (page < 0) {
+      return;
+    }
+
+    if (page > (this.listResultsData.totalPages - 1)) {
+      return;
+    }
+
+    this.listComponentDto.currentPage = page;
+    this.service.getListResultData(this.listDto).subscribe(data => {
+      this.listResultsData = data;
+      this.setPaginationSettings();
+    });
+  }
+
 }
