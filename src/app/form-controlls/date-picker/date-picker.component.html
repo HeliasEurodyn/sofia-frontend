@@ -1,30 +1,9 @@
-<!--<div class="input-group input-group-alternative">-->
-<!--  <div class="input-group-prepend">-->
-<!--    <span class="input-group-text"><i class="fa fa-calendar"></i></span>-->
-<!--  </div>-->
-
-
-<!--  <input class="form-control"-->
-<!--         [ngModel] ="inputDate | date:'yyyy-MM-dd'"-->
-<!--         (ngModelChange)="valueUpdate($event)"-->
-
-<!--         ngbDatepicker-->
-<!--         (dateSelect)="onDateSelect($event)"-->
-<!--         #d="ngbDatepicker" (click)="d.toggle()"-->
-
-<!--         (keyup)="onKeyDownEvent($event)"-->
-<!--         placeholder="Select date"-->
-<!--         type="text">-->
-<!--</div>-->
-
 
 <div class="input-group input-group-alternative">
 
     <div class="input-group-prepend">
       <span #dateIcon (click)="ngbDatepickerIdentifier.toggle()" class="input-group-text"><i class="fa fa-calendar"></i></span>
-<!--      <span #dateIcon data-target="#dateTimeModal" data-toggle="modal" class="input-group-text"><i class="fa fa-calendar"></i></span>-->
     </div>
-
 
   <input
     hidden
@@ -34,7 +13,6 @@
     (dateSelect)="onNgbDatepickerSelection($event)"
     #ngbDatepickerIdentifier="ngbDatepicker"
   >
-
 
   <input
     [specialCharacters]="[ '/' ,']' , '\\' ]"
@@ -46,30 +24,11 @@
     (focusout)="dateModelFocusOut()"
   >
 
-<!--    ngbDatepicker-->
-<!--    [dayTemplate]="t"-->
-<!--    [autoClose]="true"-->
-<!--    (dateSelect)="onNgbDatepickerSelection($event)"-->
-<!--    #d="ngbDatepicker">-->
-
-
   <ng-template #t let-date="date" let-focused="focused">
             <span class="custom-day">
             {{ date.day }}
             </span>
   </ng-template>
-
-<!--  <input type="text" [specialCharacters]="[ '[' ,']' , '\\' ]" mask="00\00\0000" />-->
-
-<!--  <div aria-labelledby="ModalLabel" class="modal fade" id="dateTimeModal" role="dialog" aria-hidden="true">-->
-<!--    <div class="modal-dialog modal-dialog-centered">-->
-<!--      <div class="modal-content">-->
-<!--        <ngb-datepicker #d></ngb-datepicker>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
-
-
 
 </div>
 
