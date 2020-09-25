@@ -17,7 +17,15 @@ export class NavigatorService {
               private injector: Injector,
               private router: Router,
   ) {
+    //  const pagesStringified = localStorage.getItem('PAGES');
+    //  alert(pagesStringified);
+    //  if (pagesStringified == null) {
     this.createDefaultPage('dashboard');
+    //  } else {
+    //       this.pages = JSON.parse(pagesStringified);
+    // }
+
+
   }
 
   createDefaultPage(pageName: string) {
@@ -25,7 +33,7 @@ export class NavigatorService {
     params.set('NAME', pageName);
     params.set('HIDE-HEADER', 'TRUE');
     const componentRef: ComponentRef<any> = this.generateStaticPage(params);
-    console.log(componentRef);
+
     if (componentRef !== null) {
       this.pages.push(componentRef);
       componentRef.instance.pageId = 'default';
@@ -195,15 +203,24 @@ export class NavigatorService {
       if (commandParametersKeyValMap.get('TITLE')) {
         componentRef.instance.title = commandParametersKeyValMap.get('TITLE');
       }
+
+      // Check if there is Parent-pageId reference to the command
       if (componentRef.instance.params.has('PARENT-PAGEID')) {
 
         const parentPageId = componentRef.instance.params.get('PARENT-PAGEID');
+        // Iterate pages and try to find the referring page.
         for (const page of this.pages) {
+          // If page is found do
           if (parentPageId.toUpperCase() === page.instance.pageId.toUpperCase()) {
+            // If page has already net page - destroy it from memory
             if (page.instance.nextPage !== null && page.instance.nextPage !== undefined) {
               this.destroyNextPageBranch(page.instance.nextPage);
             }
+
+            // Make new page as next
             page.instance.nextPage = componentRef;
+
+            // Make new pages prefious the found page
             componentRef.instance.previousPage = page;
             this.pages[this.pages.indexOf(page)] = componentRef;
 
@@ -212,6 +229,7 @@ export class NavigatorService {
         }
       } else {
         this.pages.push(componentRef);
+        // localStorage.setItem('PAGES', JSON.stringify(this.pages));
       }
 
       this.router.navigateByUrl('/main/' + componentRef.instance.pageId);
