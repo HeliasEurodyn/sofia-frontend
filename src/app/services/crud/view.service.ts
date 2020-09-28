@@ -18,7 +18,7 @@ export class ViewService extends CrudService<any> {
   }
 
   generateViewFields(query: string): Observable<any> {
-    return this.http.get<any>('http://localhost:15502/api/view/generate-view-fields?query=' + query);
+    return this.http.get<any>('http://localhost:15502/api/view/generate-view-fields?query=' + encodeURIComponent(query));
   }
 
 }
