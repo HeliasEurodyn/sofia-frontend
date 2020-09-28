@@ -10,6 +10,7 @@ import {ComponentPersistEntityFieldDTO} from '../../../dtos/component/component-
 import {ComponentPersistEntityDTO} from '../../../dtos/component/component-persist-entity-dto';
 import {ViewService} from '../../../services/crud/view.service';
 import {MenuFieldDTO} from '../../../dtos/menu/menuDTO';
+import {AppViewService} from '../../../services/crud/app-view.service';
 
 
 @Component({
@@ -21,6 +22,8 @@ export class ComponentDesignerFormComponent extends PageComponent implements OnI
 
   public tables: any;
   public views: any;
+  public appViews: any;
+
   public componentDTO = new ComponentDTO();
   public selectedTableComponent: ComponentDTO;
   public mode: string;
@@ -30,6 +33,7 @@ export class ComponentDesignerFormComponent extends PageComponent implements OnI
 
   constructor(private tableService: TableService,
               private viewService: ViewService,
+              private appViewService: AppViewService,
               private tableComponentService: TableComponentService,
               private activatedRoute: ActivatedRoute,
               private router: Router,
@@ -60,6 +64,8 @@ export class ComponentDesignerFormComponent extends PageComponent implements OnI
 
     this.refreshTables();
     this.refreshViews();
+    this.refreshAppViews();
+
   }
 
   cleanIdsIfCloneEnabled() {
@@ -120,6 +126,11 @@ export class ComponentDesignerFormComponent extends PageComponent implements OnI
     });
   }
 
+  refreshAppViews() {
+    this.appViewService.get().subscribe(data => {
+      this.appViews = data;
+    });
+  }
 
   save() {
     if (this.mode === 'edit-record') {
@@ -150,6 +161,30 @@ export class ComponentDesignerFormComponent extends PageComponent implements OnI
       componentTableFieldDTO.persistEntityField = viewDesignField;
       componentTableFieldDTO.editor = '';
       componentTableFieldDTO.description = viewDesignField.description;
+      componentTableFieldDTO.shortOrder = shortOrder;
+      componentTableDTO.componentPersistEntityFieldList.push(componentTableFieldDTO);
+      shortOrder++;
+    }
+
+    this.componentDTO.componentPersistEntityList.push(componentTableDTO);
+
+  }
+
+  selectAppView(row) {
+
+    const componentTableDTO = new ComponentPersistEntityDTO();
+    componentTableDTO.persistEntity = row;
+    componentTableDTO.showFieldList = true;
+    componentTableDTO.shortOrder = this.genNextShortOrder(this.componentDTO.componentPersistEntityList);
+    componentTableDTO.code = 't' + componentTableDTO.shortOrder;
+
+    componentTableDTO.componentPersistEntityFieldList = [];
+    let shortOrder = 1;
+    for (const appViewDesignField of row.appViewFieldList) {
+      const componentTableFieldDTO = new ComponentPersistEntityFieldDTO();
+      componentTableFieldDTO.persistEntityField = appViewDesignField;
+      componentTableFieldDTO.editor = '';
+      componentTableFieldDTO.description = appViewDesignField.description;
       componentTableFieldDTO.shortOrder = shortOrder;
       componentTableDTO.componentPersistEntityFieldList.push(componentTableFieldDTO);
       shortOrder++;
@@ -234,7 +269,7 @@ export class ComponentDesignerFormComponent extends PageComponent implements OnI
       const position = componentPersistEntityList.indexOf(row);
       const item = componentPersistEntityList[position];
       const prevItem = componentPersistEntityList[position - 1];
-      const itemshortOrder = item.shortOrder ;
+      const itemshortOrder = item.shortOrder;
       item.shortOrder = prevItem.shortOrder;
       prevItem.shortOrder = itemshortOrder;
       componentPersistEntityList[position] = prevItem;
@@ -253,7 +288,7 @@ export class ComponentDesignerFormComponent extends PageComponent implements OnI
       const position = componentPersistEntityList.indexOf(row);
       const item = componentPersistEntityList[position];
       const prevItem = componentPersistEntityList[position + 1];
-      const itemshortOrder = item.shortOrder ;
+      const itemshortOrder = item.shortOrder;
       item.shortOrder = prevItem.shortOrder;
       prevItem.shortOrder = itemshortOrder;
       componentPersistEntityList[position] = prevItem;

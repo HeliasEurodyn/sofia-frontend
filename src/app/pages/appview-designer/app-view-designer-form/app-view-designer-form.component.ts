@@ -68,9 +68,11 @@ export class AppViewDesignerFormComponent extends PageComponent implements OnIni
 
   save() {
     if (this.mode === 'edit-record') {
+
       this.service.update(this.dto).subscribe(data => {
         this.navigatorService.closeAndBack(this.pageId);
       });
+
     } else {
       this.service.save(this.dto).subscribe(data => {
         this.navigatorService.closeAndBack(this.pageId);
