@@ -1,16 +1,23 @@
 <div class="nav-tabs-navigation">
   <div class="nav-tabs-wrapper">
-    <ul class="nav nav-tabs" id="tabs" role="tablist">
+    <ul class="nav nav-tabs">
       <li class="nav-item">
-        <a aria-expanded="true" class="nav-link active" data-toggle="tab" href="#columns"
-           role="tab" aria-selected="false">
-
+        <a class="nav-link"
+            [ngClass]="{'active': this.defaultPage === 'filter', 'is-hidden': !this.filterVisible }"
+            data-toggle="tab"
+            href="#filters"
+           role="tab">
           <i class="fa fa-filter"></i>
-          Filters</a>
+          Filters
+        </a>
       </li>
       <li class="nav-item">
-        <a aria-expanded="false" class="nav-link" (click)="getListResultData()" data-toggle="tab" href="#filters"
-           role="tab" aria-selected="true">
+        <a class="nav-link"
+           [ngClass]="{'active': this.defaultPage !== 'filter', 'is-hidden': !this.listVisible }"
+           (click)="getListResultData()"
+           data-toggle="tab"
+           href="#list"
+           role="tab">
           <i class="fa fa-search"></i>
           List
         </a>
@@ -21,7 +28,7 @@
 
 <div class="tab-content text-center" id="my-tab-content">
   <!-- filters -->
-  <div aria-expanded="true" class="tab-pane active" id="columns" role="tabpanel">
+  <div class="tab-pane" [ngClass]="{'active': this.defaultPage === 'filter'}" id="filters" role="tabpanel">
     <div class="row">
       <div class="col-md-12">
         <div class="card card-user">
@@ -110,8 +117,7 @@
   </div>
 
   <!-- columns -->
-  <div aria-expanded="false" class="tab-pane" id="filters" role="tabpanel">
-
+  <div class="tab-pane" [ngClass]="{'active': this.defaultPage !== 'filter'}" id="list" role="tabpanel">
 
     <div class="row">
 

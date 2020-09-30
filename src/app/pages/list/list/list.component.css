@@ -192,3 +192,7 @@ li { /* styles all li elements*/
   background: 0 0;
   outline: 0;
 }
+
+.is-hidden {
+  display: none;
+}

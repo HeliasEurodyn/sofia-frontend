@@ -23,6 +23,10 @@ export class ListComponent extends PageComponent implements OnInit {
   private showPrevPagination = false;
   private showNextPagination = false;
 
+  private listVisible: Boolean = false;
+  private filterVisible: Boolean = false;
+  private defaultPage: String = 'filter';
+
   constructor(private service: ListService,
               private navigatorService: NavigatorService,
               private notificationService: NotificationService) {
@@ -38,6 +42,14 @@ export class ListComponent extends PageComponent implements OnInit {
       this.service.getDataById(id).subscribe(data => {
         this.listDto = data;
         this.listComponentDto = this.listDto.listComponentList[0];
+
+        this.listVisible = this.listComponentDto.listVisible;
+        this.filterVisible = this.listComponentDto.filterVisible;
+        this.defaultPage = this.listComponentDto.defaultPage;
+
+        if (this.listComponentDto.autoRun) {
+          this.getListResultData();
+        }
       });
     }
   }

@@ -14,7 +14,12 @@ export class ListComponentDTO extends BaseDTO {
   public listComponentActionFieldList: ListComponentFieldDTO[] = [];
   public filterFieldStructure: String = '';
   public customFilterFieldStructure: Boolean = false;
+
   public exportExcel: Boolean;
+  public defaultPage: String = 'filter';
+  public autoRun: Boolean = false;
+  public listVisible: Boolean = true;
+  public filterVisible: Boolean = true;
 
   public hasPagination: Boolean;
   public totalPages: number;
