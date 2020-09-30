@@ -283,6 +283,15 @@
       }
     }
 }
+
+.input-group-selector{
+  cursor: pointer;
+}
+.input-group-selector input[type="text"]{
+  cursor: pointer;
+}
+
+
 .input-group[disabled]{
     .input-group-prepend .input-group-text,
     .input-group-append .input-group-text{

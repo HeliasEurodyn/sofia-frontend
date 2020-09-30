@@ -70,6 +70,7 @@ export class UserFormComponent extends PageComponent implements OnInit {
   }
 
   save() {
+
     if (this.mode === 'edit-record') {
       this.userService.update(this.userDTO).subscribe(data => {
         this.navigatorService.closeAndBack(this.pageId);
@@ -105,4 +106,7 @@ export class UserFormComponent extends PageComponent implements OnInit {
     this.navigatorService.navigateToPreviousPage(this.pageId);
   }
 
+  selectMenu(menu: MenuDTO) {
+    this.userDTO.menu = menu;
+  }
 }

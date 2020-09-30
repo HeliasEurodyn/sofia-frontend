@@ -14,18 +14,18 @@ import {TableFieldDTO} from '../../../dtos/table/table-field-dto';
 })
 export class TableDesignerFormComponent extends PageComponent implements OnInit {
   public tableHeaders: any;
-  public table: TableDTO;
+  public dto: TableDTO;
   shortOrder = 0;
   public tableExists = false;
 
   public mode: string;
-  userDto: TableDTO;
+ // userDto: TableDTO;
 
 
   public isCollapsed = false;
 
   constructor(private activatedRoute: ActivatedRoute,
-              private tableDesignerService: TableService,
+              private service: TableService,
               private router: Router,
               private navigatorService: NavigatorService) {
     super();
@@ -33,7 +33,7 @@ export class TableDesignerFormComponent extends PageComponent implements OnInit 
   }
 
   checkIfTableAlreadyExists() {
-    this.tableDesignerService.tableExists(this.table.name).subscribe(data => {
+    this.service.tableExists(this.dto.name).subscribe(data => {
       if (data) {
         this.tableExists = true;
       } else {
@@ -72,7 +72,7 @@ export class TableDesignerFormComponent extends PageComponent implements OnInit 
     // this.title.next('Table Designer Entry :)')
 
     this.mode = 'new-record';
-    this.table = new TableDTO();
+    this.dto = new TableDTO();
 
     const locateParams = this.getLocateParams();
     if (locateParams.has('ID')) {
@@ -82,9 +82,9 @@ export class TableDesignerFormComponent extends PageComponent implements OnInit 
 
 
     if (this.mode === 'edit-record') {
-      this.tableDesignerService.getById(id).subscribe(data => {
-        this.table = data;
-        this.title = 'Entry ' + this.table.name;
+      this.service.getById(id).subscribe(data => {
+        this.dto = data;
+        this.title = 'Entry ' + this.dto.name;
         this.cleanIdsIfCloneEnabled();
       });
     }
@@ -92,9 +92,9 @@ export class TableDesignerFormComponent extends PageComponent implements OnInit 
 
     this.tableHeaders = ['Name', 'Description', 'Type', 'Size', 'Auto Increment', 'Primary key', 'Has default', 'Default', 'Unsigned', 'Not Null'];
 
-    this.table = new TableDTO();
+    this.dto = new TableDTO();
 
-    this.table.tableFieldList = [];
+    this.dto.tableFieldList = [];
 
     const tableFieldDTO = new TableFieldDTO();
     tableFieldDTO.id = 0;
@@ -113,7 +113,7 @@ export class TableDesignerFormComponent extends PageComponent implements OnInit 
     tableFieldDTO.isUnsigned = false;
     tableFieldDTO.hasNotNull = false;
 
-    this.table.tableFieldList.push(tableFieldDTO);
+    this.dto.tableFieldList.push(tableFieldDTO);
   }
 
 
@@ -123,9 +123,9 @@ export class TableDesignerFormComponent extends PageComponent implements OnInit 
 
       if (this.params.get('TYPE').toUpperCase() === 'CLONE') {
 
-        this.table.id = null;
-        this.table.version = null;
-        for (const tableField of this.table.tableFieldList) {
+        this.dto.id = null;
+        this.dto.version = null;
+        for (const tableField of this.dto.tableFieldList) {
           tableField.id = null;
           tableField.version = null;
         }
@@ -137,19 +137,19 @@ export class TableDesignerFormComponent extends PageComponent implements OnInit 
 
 
   removeLine(row) {
-    if (this.table.tableFieldList.length === 1) {
+    if (this.dto.tableFieldList.length === 1) {
       return;
     }
-    this.table.tableFieldList = this.table.tableFieldList.filter(item => item !== row);
+    this.dto.tableFieldList = this.dto.tableFieldList.filter(item => item !== row);
   }
 
   save() {
     if (this.mode === 'edit-record') {
-      this.tableDesignerService.update(this.table).subscribe(data => {
+      this.service.update(this.dto).subscribe(data => {
         this.navigatorService.closeAndBack(this.pageId);
       });
     } else {
-      this.tableDesignerService.save(this.table).subscribe(data => {
+      this.service.save(this.dto).subscribe(data => {
         this.navigatorService.closeAndBack(this.pageId);
       });
     }
@@ -160,7 +160,7 @@ export class TableDesignerFormComponent extends PageComponent implements OnInit 
   }
 
   delete() {
-    this.tableDesignerService.delete(this.table.id).subscribe(data => {
+    this.service.delete(this.dto.id).subscribe(data => {
       this.router.navigate(['/listDto-designer-list']);
     });
   }
@@ -185,6 +185,13 @@ export class TableDesignerFormComponent extends PageComponent implements OnInit 
     tableFieldDTO.isUnsigned = false;
     tableFieldDTO.hasNotNull = false;
 
-    this.table.tableFieldList.push(tableFieldDTO);
+    this.dto.tableFieldList.push(tableFieldDTO);
+  }
+
+  generateTableFields() {
+      this.service.generateTableFields(this.dto.name).subscribe(data => {
+        this.dto.tableFieldList = data;
+      });
+
   }
 }

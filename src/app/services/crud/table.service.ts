@@ -16,4 +16,7 @@ export class TableService extends CrudService<any> {
     return this.http.get<any>('http://localhost:15502/api/table/table-exists?name=' + name);
   }
 
+  generateTableFields(name: string) {
+    return this.http.get<any>('http://localhost:15502/api/table/generate-table-fields?name=' + encodeURIComponent(name));
+  }
 }
