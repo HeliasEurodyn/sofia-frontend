@@ -165,8 +165,16 @@ export class ListDesignerFormComponent extends PageComponent implements OnInit {
 
 
   selectComponent(selectedComponent) {
-    // const dto = new ListDTO();
+
     this.dto.component = selectedComponent;
+    this.dto.listComponentActionFieldList = [];
+    this.dto.listComponentColumnFieldList = [];
+    this.dto.listComponentFilterFieldList = [];
+    this.dto.listComponentLeftGroupFieldList = [];
+    this.dto.listComponentOrderByFieldList = [];
+    this.dto.listComponentTopGroupFieldList = [];
+
+    // const dto = new ListDTO();
     // this.dto.shortOrder = this.genNextShortOrder();
     // this.dto.code = 'c' + this.dto.shortOrder;
     // this.dto.listComponentList.push(dto);
