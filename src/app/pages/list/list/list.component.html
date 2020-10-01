@@ -53,10 +53,10 @@
 
             <div class="row">
 
-              <ng-container *ngFor="let row of this.listComponentDto?.listComponentFilterFieldList">
+              <ng-container *ngFor="let row of this.listDto?.listComponentFilterFieldList">
 
                 <ng-container *ngIf="row.type === 'varchar' || row.type === 'text' ">
-                  <div class="{{row.bclass}}  L{{listDto.id}}-{{listComponentDto.code}}-{{row.code}} filter-col"
+                  <div class="{{row.bclass}}  L{{listDto.id}}-{{this.listDto.code}}-{{row.code}} filter-col"
                        style="{{row.css}}">
                     <div class="form-group">
                       <b [ngClass]="{'text-danger': row.required}">{{row.description}}</b>
@@ -66,7 +66,7 @@
                 </ng-container>
 
                 <ng-container *ngIf="row.type === 'double' ">
-                  <div class="{{row.bclass}} L{{listDto.id}}-{{listComponentDto.code}}-{{row.code}} filter-col"
+                  <div class="{{row.bclass}} L{{listDto.id}}-{{this.listDto.code}}-{{row.code}} filter-col"
                        style="{{row.css}}">
                     <div class="form-group">
                       <b [ngClass]="{'text-danger': row.required}" class="text-danger">{{row.description}}</b>
@@ -76,7 +76,7 @@
                 </ng-container>
 
                 <ng-container *ngIf="row.type === 'int' || row.type === 'bigint'">
-                  <div class="{{row.bclass}} L{{listDto.id}}-{{listComponentDto.code}}-{{row.code}} filter-col"
+                  <div class="{{row.bclass}} L{{listDto.id}}-{{this.listDto.code}}-{{row.code}} filter-col"
                        style="{{row.css}}">
                     <div class="form-group">
                       <b [ngClass]="{'text-danger': row.required}">{{row.description}}</b>
@@ -86,7 +86,7 @@
                 </ng-container>
 
                 <ng-container *ngIf="row.type === 'list'">
-                  <div class="{{row.bclass}} L{{listDto.id}}-{{listComponentDto.code}}-{{row.code}} filter-col"
+                  <div class="{{row.bclass}} L{{listDto.id}}-{{this.listDto.code}}-{{row.code}} filter-col"
                        style="{{row.css}}">
                     <div class="form-group">
                       <b [ngClass]="{'text-danger': row.required}">{{row.description}}</b>
@@ -96,7 +96,7 @@
                 </ng-container>
 
                 <ng-container *ngIf="row.type === 'datetime'">
-                  <div class="{{row.bclass}} L{{listDto.id}}-{{listComponentDto.code}}-{{row.code}} filter-col"
+                  <div class="{{row.bclass}} L{{listDto.id}}-{{this.listDto.code}}-{{row.code}} filter-col"
                        style="{{row.css}}">
                     <div class="form-group">
                       <b [ngClass]="{'text-danger': row.required}">{{row.description}}</b>
@@ -170,7 +170,7 @@
               <div class="col-12">
                 <h6 class="float-left"> Grouping columns </h6>
               </div>
-              <div class="col-12" *ngFor="let item of this.listComponentDto?.listComponentLeftGroupFieldList">
+              <div class="col-12" *ngFor="let item of this.listDto?.listComponentLeftGroupFieldList">
                 <p class="float-left" style="margin-bottom: 0px;"><i class="fa fa-square"></i> {{item.description}} </p>
               </div>
             </div>
@@ -191,7 +191,7 @@
               </div>
               <div class="col-sm-5">
                 <div class="pull-right">
-                  <button *ngIf="this.listComponentDto?.exportExcel" type="button" title="Excel" (click)="dataExcel()"
+                  <button *ngIf="this.listDto?.exportExcel" type="button" title="Excel" (click)="dataExcel()"
                           class="btn btn-outline-primary btn-icon btn-sm">
                     <i class="fa fa-file-excel-o"></i>
                   </button>
@@ -206,10 +206,10 @@
             <table class="table table-striped table-fixed">
               <thead class="text-primary">
               <tr>
-                <ng-container *ngIf="this.listComponentDto?.listComponentActionFieldList.length > 0">
+                <ng-container *ngIf="this.listDto?.listComponentActionFieldList.length > 0">
                   <th style="max-width: 100px;"></th>
                 </ng-container>
-                <ng-container *ngFor="let row of this.listComponentDto?.listComponentColumnFieldList">
+                <ng-container *ngFor="let row of this.listDto?.listComponentColumnFieldList">
                   <th *ngIf="row.visible" class="sortable">
                     {{row.description}}
                   </th>
@@ -222,8 +222,8 @@
                 <!--              <td *ngFor="let cell of row">{{cell}}</td>-->
 
 
-                <td style="max-width: 100px;" *ngIf="this.listComponentDto?.listComponentActionFieldList.length > 0">
-                  <ng-container *ngFor="let field of this.listComponentDto?.listComponentActionFieldList">
+                <td style="max-width: 100px;" *ngIf="this.listDto?.listComponentActionFieldList.length > 0">
+                  <ng-container *ngFor="let field of this.listDto?.listComponentActionFieldList">
                     <button type="button" title="{{field.description}}" (click)="listButtonClick(field.editor)"
                             class="btn btn-outline-success btn-icon btn-sm">
                       <i class="fa {{field.bclass}}"></i>
@@ -232,7 +232,7 @@
                 </td>
 
 
-                <ng-container *ngFor="let column of this.listComponentDto?.listComponentColumnFieldList">
+                <ng-container *ngFor="let column of this.listDto?.listComponentColumnFieldList">
                   <td *ngIf="column.visible">
                     <input type="text" class="form-control transparent-input" readonly [(ngModel)]="row[column.code]">
                   </td>
@@ -244,7 +244,7 @@
             </table>
 
 
-            <ul *ngIf="this.listComponentDto?.hasPagination" class="pagination pull-right">
+            <ul *ngIf="this.listDto?.hasPagination" class="pagination pull-right">
               <li class="page-item">
                 <a aria-label="Previous" (click)="navigateToPage(this.listResultsData.currentPage-1)"  class="page-link" disabled="">
                   <span aria-hidden="true"><i aria-hidden="true" class="fa fa-angle-double-left"></i></span>
@@ -267,12 +267,9 @@
             </ul>
           </div>
 
-
         </div>
       </div>
     </div>
-
-
   </div>
 </div>
 

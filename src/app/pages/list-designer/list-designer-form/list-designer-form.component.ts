@@ -18,7 +18,6 @@ import {ComponentPersistEntityDTO} from '../../../dtos/component/component-persi
 export class ListDesignerFormComponent extends PageComponent implements OnInit {
 
   public components: any;
-  public selectedListComponent: ListComponentDTO;
   public selectedFilterField: ListComponentFieldDTO;
 
   public dto: ListDTO;
@@ -59,14 +58,14 @@ export class ListDesignerFormComponent extends PageComponent implements OnInit {
     if (this.mode === 'edit-record') {
       this.service.getById(id).subscribe(data => {
         this.dto = data;
-        if (this.dto.listComponentList.length > 0) {
-          this.selectedListComponent = this.dto.listComponentList[0];
-        }
+        //  if (this.dto.listComponentList.length > 0) {
+        //    this.selectedListComponent = this.dto;
+        //  }
         this.cleanIdsIfCloneEnabled();
       });
     }
 
-    this.dto.listComponentList = [];
+    //  this.dto.listComponentList = [];
     this.refreshComponents();
   }
 
@@ -77,30 +76,30 @@ export class ListDesignerFormComponent extends PageComponent implements OnInit {
 
         this.dto.id = null;
         this.dto.version = null;
-        for (const listComponent of this.dto.listComponentList) {
-          listComponent.id = null;
-          listComponent.version = null;
+        // for (const listComponent of this.dto.listComponentList) {
+        //  listComponent.id = null;
+        //    listComponent.version = null;
 
-          for (const listComponentFieldList of listComponent.listComponentColumnFieldList) {
-            listComponentFieldList.id = null;
-            listComponentFieldList.version = null;
-          }
-
-          for (const listComponentFieldList of listComponent.listComponentFilterFieldList) {
-            listComponentFieldList.id = null;
-            listComponentFieldList.version = null;
-          }
-
-          for (const listComponentFieldList of listComponent.listComponentLeftGroupFieldList) {
-            listComponentFieldList.id = null;
-            listComponentFieldList.version = null;
-          }
-
-          for (const listComponentFieldList of listComponent.listComponentTopGroupFieldList) {
-            listComponentFieldList.id = null;
-            listComponentFieldList.version = null;
-          }
+        for (const listComponentFieldList of this.dto.listComponentColumnFieldList) {
+          listComponentFieldList.id = null;
+          listComponentFieldList.version = null;
         }
+
+        for (const listComponentFieldList of this.dto.listComponentFilterFieldList) {
+          listComponentFieldList.id = null;
+          listComponentFieldList.version = null;
+        }
+
+        for (const listComponentFieldList of this.dto.listComponentLeftGroupFieldList) {
+          listComponentFieldList.id = null;
+          listComponentFieldList.version = null;
+        }
+
+        for (const listComponentFieldList of this.dto.listComponentTopGroupFieldList) {
+          listComponentFieldList.id = null;
+          listComponentFieldList.version = null;
+        }
+        //  }
         this.mode = 'new-record';
       }
     }
@@ -165,34 +164,34 @@ export class ListDesignerFormComponent extends PageComponent implements OnInit {
   }
 
 
-  selectComponent(row) {
-    const dto = new ListComponentDTO();
-    dto.component = row;
-    dto.shortOrder = this.genNextShortOrder();
-    dto.code = 'c' + dto.shortOrder;
-    this.dto.listComponentList.push(dto);
+  selectComponent(selectedComponent) {
+    // const dto = new ListDTO();
+    this.dto.component = selectedComponent;
+    // this.dto.shortOrder = this.genNextShortOrder();
+    // this.dto.code = 'c' + this.dto.shortOrder;
+    // this.dto.listComponentList.push(dto);
 
-    this.selectedListComponent = dto;
+    // this.selectedListComponent = dto;
   }
 
-  genNextShortOrder() {
-    if (this.dto.listComponentList === null
-      || this.dto.listComponentList === undefined
-      || this.dto.listComponentList.length === 0) {
-      return 1;
-    }
+  // genNextShortOrder() {
+  //   if (this.dto.listComponentList === null
+  //     || this.dto.listComponentList === undefined
+  //     || this.dto.listComponentList.length === 0) {
+  //     return 1;
+  //   }
+  //
+  //   const curShortOrderObject = this.dto.listComponentList.reduce(function (prev, curr) {
+  //     return prev.shortOrder < curr.shortOrder ? curr : prev;
+  //   });
+  //
+  //   return (curShortOrderObject.shortOrder + 1);
+  // }
 
-    const curShortOrderObject = this.dto.listComponentList.reduce(function (prev, curr) {
-      return prev.shortOrder < curr.shortOrder ? curr : prev;
-    });
 
-    return (curShortOrderObject.shortOrder + 1);
-  }
-
-
-  setSelectedComponent(row: ListComponentDTO) {
-    this.selectedListComponent = row;
-  }
+  // setSelectedComponent(row: ListComponentDTO) {
+  //   this.selectedListComponent = row;
+  // }
 
   hideChildren(item) {
     item.showFieldList = false;
@@ -214,17 +213,17 @@ export class ListDesignerFormComponent extends PageComponent implements OnInit {
     dto.shortOrder = this.genNextColumnsShortOrder();
     dto.code = 'C' + dto.shortOrder;
     dto.formulaType = 'column';
-    this.selectedListComponent.listComponentColumnFieldList.push(dto);
+    this.dto.listComponentColumnFieldList.push(dto);
   }
 
   genNextColumnsShortOrder() {
-    if (this.selectedListComponent.listComponentColumnFieldList === null
-      || this.selectedListComponent.listComponentColumnFieldList === undefined
-      || this.selectedListComponent.listComponentColumnFieldList.length === 0) {
+    if (this.dto.listComponentColumnFieldList === null
+      || this.dto.listComponentColumnFieldList === undefined
+      || this.dto.listComponentColumnFieldList.length === 0) {
       return 1;
     }
 
-    const curShortOrderObject = this.selectedListComponent.listComponentColumnFieldList.reduce(function (prev, curr) {
+    const curShortOrderObject = this.dto.listComponentColumnFieldList.reduce(function (prev, curr) {
       return prev.shortOrder < curr.shortOrder ? curr : prev;
     });
 
@@ -244,7 +243,7 @@ export class ListDesignerFormComponent extends PageComponent implements OnInit {
     dto.shortOrder = this.genNextFilrerShortOrder();
     dto.code = 'F' + dto.shortOrder;
     dto.bclass = 'col-12';
-    this.selectedListComponent.listComponentFilterFieldList.push(dto);
+    this.dto.listComponentFilterFieldList.push(dto);
   }
 
 
@@ -261,7 +260,7 @@ export class ListDesignerFormComponent extends PageComponent implements OnInit {
     dto.shortOrder = this.genNextColumnsShortOrder();
     dto.code = 'C' + dto.shortOrder;
     dto.formulaType = 'command';
-    this.selectedListComponent.listComponentColumnFieldList.push(dto);
+    this.dto.listComponentColumnFieldList.push(dto);
   }
 
 
@@ -278,7 +277,7 @@ export class ListDesignerFormComponent extends PageComponent implements OnInit {
     dto.shortOrder = this.genNextColumnsShortOrder();
     dto.code = 'C' + dto.shortOrder;
     dto.formulaType = 'sql';
-    this.selectedListComponent.listComponentColumnFieldList.push(dto);
+    this.dto.listComponentColumnFieldList.push(dto);
   }
 
   addActionField() {
@@ -294,17 +293,17 @@ export class ListDesignerFormComponent extends PageComponent implements OnInit {
     dto.shortOrder = this.genNextActionFieldShortOrder();
     dto.code = 'AC' + dto.shortOrder;
     dto.bclass = 'fa-search';
-    this.selectedListComponent.listComponentActionFieldList.push(dto);
+    this.dto.listComponentActionFieldList.push(dto);
   }
 
   genNextActionFieldShortOrder() {
-    if (this.selectedListComponent.listComponentActionFieldList === null
-      || this.selectedListComponent.listComponentActionFieldList === undefined
-      || this.selectedListComponent.listComponentActionFieldList.length === 0) {
+    if (this.dto.listComponentActionFieldList === null
+      || this.dto.listComponentActionFieldList === undefined
+      || this.dto.listComponentActionFieldList.length === 0) {
       return 1;
     }
 
-    const curShortOrderObject = this.selectedListComponent.listComponentActionFieldList.reduce(function (prev, curr) {
+    const curShortOrderObject = this.dto.listComponentActionFieldList.reduce(function (prev, curr) {
       return prev.shortOrder < curr.shortOrder ? curr : prev;
     });
 
@@ -326,17 +325,17 @@ export class ListDesignerFormComponent extends PageComponent implements OnInit {
     dto.code = 'F' + dto.shortOrder;
     dto.bclass = 'col-12';
 
-    this.selectedListComponent.listComponentFilterFieldList.push(dto);
+    this.dto.listComponentFilterFieldList.push(dto);
   }
 
   genNextFilrerShortOrder() {
-    if (this.selectedListComponent.listComponentFilterFieldList === null
-      || this.selectedListComponent.listComponentFilterFieldList === undefined
-      || this.selectedListComponent.listComponentFilterFieldList.length === 0) {
+    if (this.dto.listComponentFilterFieldList === null
+      || this.dto.listComponentFilterFieldList === undefined
+      || this.dto.listComponentFilterFieldList.length === 0) {
       return 1;
     }
 
-    const curShortOrderObject = this.selectedListComponent.listComponentFilterFieldList.reduce(function (prev, curr) {
+    const curShortOrderObject = this.dto.listComponentFilterFieldList.reduce(function (prev, curr) {
       return prev.shortOrder < curr.shortOrder ? curr : prev;
     });
 
@@ -354,18 +353,18 @@ export class ListDesignerFormComponent extends PageComponent implements OnInit {
     dto.type = field.persistEntityField.type;
     dto.shortOrder = this.genNextGroupingLeftShortOrder();
     dto.code = 'GL' + dto.shortOrder;
-    this.selectedListComponent.listComponentLeftGroupFieldList.push(dto);
+    this.dto.listComponentLeftGroupFieldList.push(dto);
   }
 
 
   genNextGroupingLeftShortOrder() {
-    if (this.selectedListComponent.listComponentLeftGroupFieldList === null
-      || this.selectedListComponent.listComponentLeftGroupFieldList === undefined
-      || this.selectedListComponent.listComponentLeftGroupFieldList.length === 0) {
+    if (this.dto.listComponentLeftGroupFieldList === null
+      || this.dto.listComponentLeftGroupFieldList === undefined
+      || this.dto.listComponentLeftGroupFieldList.length === 0) {
       return 1;
     }
 
-    const curShortOrderObject = this.selectedListComponent.listComponentLeftGroupFieldList.reduce(function (prev, curr) {
+    const curShortOrderObject = this.dto.listComponentLeftGroupFieldList.reduce(function (prev, curr) {
       return prev.shortOrder < curr.shortOrder ? curr : prev;
     });
 
@@ -384,17 +383,17 @@ export class ListDesignerFormComponent extends PageComponent implements OnInit {
     dto.type = field.persistEntityField.type;
     dto.shortOrder = this.genNextOrderByShortOrder();
     dto.code = 'OB' + dto.shortOrder;
-    this.selectedListComponent.listComponentOrderByFieldList.push(dto);
+    this.dto.listComponentOrderByFieldList.push(dto);
   }
 
   genNextOrderByShortOrder() {
-    if (this.selectedListComponent.listComponentOrderByFieldList === null
-      || this.selectedListComponent.listComponentOrderByFieldList === undefined
-      || this.selectedListComponent.listComponentOrderByFieldList.length === 0) {
+    if (this.dto.listComponentOrderByFieldList === null
+      || this.dto.listComponentOrderByFieldList === undefined
+      || this.dto.listComponentOrderByFieldList.length === 0) {
       return 1;
     }
 
-    const curShortOrderObject = this.selectedListComponent.listComponentOrderByFieldList.reduce(function (prev, curr) {
+    const curShortOrderObject = this.dto.listComponentOrderByFieldList.reduce(function (prev, curr) {
       return prev.shortOrder < curr.shortOrder ? curr : prev;
     });
 
@@ -411,33 +410,33 @@ export class ListDesignerFormComponent extends PageComponent implements OnInit {
   }
 
   removeColumn(column: ListComponentFieldDTO) {
-    if (this.selectedListComponent !== undefined) {
-      this.selectedListComponent.listComponentColumnFieldList =
-        this.selectedListComponent.listComponentColumnFieldList.filter(item => item !== column);
-    }
+    // if (this.selectedListComponent !== undefined) {
+    this.dto.listComponentColumnFieldList =
+      this.dto.listComponentColumnFieldList.filter(item => item !== column);
+    // }
   }
 
   removeFilter(column: ListComponentFieldDTO) {
-    if (this.selectedListComponent !== undefined) {
-      this.selectedListComponent.listComponentFilterFieldList =
-        this.selectedListComponent.listComponentFilterFieldList.filter(item => item !== column);
+    if (this.dto !== undefined) {
+      this.dto.listComponentFilterFieldList =
+        this.dto.listComponentFilterFieldList.filter(item => item !== column);
     }
   }
 
   removeLeftGroupField(column: ListComponentFieldDTO) {
-    if (this.selectedListComponent !== undefined) {
-      this.selectedListComponent.listComponentLeftGroupFieldList =
-        this.selectedListComponent.listComponentLeftGroupFieldList.filter(item => item !== column);
+    if (this.dto !== undefined) {
+      this.dto.listComponentLeftGroupFieldList =
+        this.dto.listComponentLeftGroupFieldList.filter(item => item !== column);
     }
   }
 
-  removeComponent(row: ListComponentDTO) {
-
-    this.selectedListComponent = undefined;
-
-    this.dto.listComponentList =
-      this.dto.listComponentList.filter(item => item !== row);
-  }
+  // removeComponent(row: ListComponentDTO) {
+  //
+  //   this.selectedListComponent = undefined;
+  //
+  //   this.dto.listComponentList =
+  //     this.dto.listComponentList.filter(item => item !== row);
+  // }
 
   setSelectedFilterField(column: ListComponentFieldDTO) {
     this.selectedFilterField = column;
@@ -445,29 +444,24 @@ export class ListDesignerFormComponent extends PageComponent implements OnInit {
 
   generateDefaultFilterStructure() {
     let firstItteration = true;
-    for (const listComponentFilterField of this.selectedListComponent.listComponentFilterFieldList) {
+    for (const listComponentFilterField of this.dto.listComponentFilterFieldList) {
       if (firstItteration) {
-        this.selectedListComponent.filterFieldStructure = '$' + listComponentFilterField.code;
+        this.dto.filterFieldStructure = '$' + listComponentFilterField.code;
       } else {
-        this.selectedListComponent.filterFieldStructure += ' AND $' + listComponentFilterField.code;
+        this.dto.filterFieldStructure += ' AND $' + listComponentFilterField.code;
       }
       firstItteration = false;
     }
   }
 
   removeActionField(column: ListComponentFieldDTO) {
-    if (this.selectedListComponent !== undefined) {
-      this.selectedListComponent.listComponentActionFieldList =
-        this.selectedListComponent.listComponentActionFieldList.filter(item => item !== column);
-    }
+    this.dto.listComponentActionFieldList =
+      this.dto.listComponentActionFieldList.filter(item => item !== column);
   }
 
-
   removeOrderByField(column: ListComponentFieldDTO) {
-    if (this.selectedListComponent !== undefined) {
-      this.selectedListComponent.listComponentOrderByFieldList =
-        this.selectedListComponent.listComponentOrderByFieldList.filter(item => item !== column);
-    }
+    this.dto.listComponentOrderByFieldList =
+      this.dto.listComponentOrderByFieldList.filter(item => item !== column);
   }
 
   moveUp(selectedItem: ListComponentFieldDTO, list: ListComponentFieldDTO[]) {
@@ -487,7 +481,7 @@ export class ListDesignerFormComponent extends PageComponent implements OnInit {
     for (const listItem of list) {
       if (selectedItem === listItem && (position + 1) < list.length) {
         const nextItem = list[position + 1];
-     //   alert(nextItem.code + ' ' + listItem.code);
+        //   alert(nextItem.code + ' ' + listItem.code);
         list[position] = nextItem;
         list[position + 1] = listItem;
         break;

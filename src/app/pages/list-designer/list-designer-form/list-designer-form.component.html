@@ -31,9 +31,9 @@
           </div>
           <div class="col-sm-5">
             <div class="pull-right">
-              <button class="btn btn-outline-primary" data-target="#insertComponentModal" data-toggle="modal">
-                <i class="fa fa-plus-circle"></i> Insert Component
-              </button>
+<!--              <button class="btn btn-outline-primary" data-target="#insertComponentModal" data-toggle="modal">-->
+<!--                <i class="fa fa-plus-circle"></i> Insert Component-->
+<!--              </button>-->
             </div>
           </div>
         </div>
@@ -41,8 +41,8 @@
       </div>
       <div class="card-body">
 
-
         <div class="row">
+
           <div class="col-md-12">
             <div class="form-group " [ngClass]="{'has-danger': tableExists}">
               <label>Name</label>
@@ -50,15 +50,36 @@
               <code></code>
             </div>
           </div>
+
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Component</label>
+              <div class="input-group input-group-selector no-border">
+                <div data-target="#insertComponentModal" data-toggle="modal" class="input-group-prepend">
+                 <span class="input-group-text">
+                    <i class="fa fa-search"></i>
+                 </span>
+                </div>
+                <input readonly data-target="#insertComponentModal" data-toggle="modal" type="text" class="form-control"
+                       value="{{this.dto?.component?.id}} {{this.dto?.component?.name}}">
+                <div class="input-group-append" (click)="selectComponent(null)">
+                 <span class="input-group-text input-group-text-rm">
+                    <i class="fa fa-window-close"></i>
+                 </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
         </div>
 
 
-
-        <div *ngIf="selectedListComponent !== undefined" class="row">
+        <div class="row">
           <div class="col-md-10">
             <div class="form-group " [ngClass]="{'has-danger': tableExists}">
               <label>Page Size</label>
-              <input type="number" class="form-control" [(ngModel)]="selectedListComponent.pageSize">
+              <input type="number" class="form-control" [(ngModel)]="this.dto.pageSize">
               <code></code>
             </div>
           </div>
@@ -67,7 +88,7 @@
             <label style="padding-bottom: 20px;"></label>
             <div class="form-check">
               <label class="form-check-label">
-                <input class="form-check-input" type="checkbox" [(ngModel)]="selectedListComponent.hasPagination"> Use Pagination
+                <input class="form-check-input" type="checkbox" [(ngModel)]="this.dto.hasPagination"> Use Pagination
                 <span class="form-check-sign"></span>
               </label>
             </div>
@@ -76,7 +97,7 @@
           <div class="col-md-10">
             <div class="form-group " [ngClass]="{'has-danger': tableExists}">
               <label>Max Size</label>
-              <input type="number" class="form-control" [(ngModel)]="selectedListComponent.maxSize">
+              <input type="number" class="form-control" [(ngModel)]="this.dto.maxSize">
               <code></code>
             </div>
           </div>
@@ -85,7 +106,7 @@
             <label style="padding-bottom: 20px;"></label>
             <div class="form-check">
               <label class="form-check-label">
-                <input class="form-check-input" type="checkbox" [(ngModel)]="selectedListComponent.hasMaxSize"> Set Max Rows Size
+                <input class="form-check-input" type="checkbox" [(ngModel)]="this.dto.hasMaxSize"> Set Max Rows Size
                 <span class="form-check-sign"></span>
               </label>
             </div>
@@ -95,7 +116,8 @@
           <div class="col-md-6">
             <div class="form-group">
               <label>Default page</label>
-              <select [(ngModel)]="selectedListComponent.defaultPage"  class="form-control" data-size="7" data-style="btn btn-primary btn-round" title="Single Select" >
+              <select [(ngModel)]="this.dto.defaultPage" class="form-control" data-size="7"
+                      data-style="btn btn-primary btn-round" title="Single Select">
                 <option class="bs-title-option" value="filter">Filter</option>
                 <option class="bs-title-option" value="list">List</option>
               </select>
@@ -104,12 +126,11 @@
           </div>
 
 
-
           <div class="col-md-2">
             <label style="padding-bottom: 20px;"></label>
             <div class="form-check">
               <label class="form-check-label">
-                <input class="form-check-input" type="checkbox" [(ngModel)]="selectedListComponent.autoRun"> Auto run
+                <input class="form-check-input" type="checkbox" [(ngModel)]="this.dto.autoRun"> Auto run
                 <span class="form-check-sign"></span>
               </label>
             </div>
@@ -119,7 +140,7 @@
             <label style="padding-bottom: 20px;"></label>
             <div class="form-check">
               <label class="form-check-label">
-                <input class="form-check-input" type="checkbox" [(ngModel)]="selectedListComponent.filterVisible"> Filter is Visible
+                <input class="form-check-input" type="checkbox" [(ngModel)]="this.dto.filterVisible"> Filter is Visible
                 <span class="form-check-sign"></span>
               </label>
             </div>
@@ -129,7 +150,7 @@
             <label style="padding-bottom: 20px;"></label>
             <div class="form-check">
               <label class="form-check-label">
-                <input class="form-check-input" type="checkbox" [(ngModel)]="selectedListComponent.listVisible"> List is Visible
+                <input class="form-check-input" type="checkbox" [(ngModel)]="this.dto.listVisible"> List is Visible
                 <span class="form-check-sign"></span>
               </label>
             </div>
@@ -140,7 +161,7 @@
             <label style="padding-bottom: 10px;"></label>
             <div class="form-check">
               <label class="form-check-label">
-                <input class="form-check-input" type="checkbox" [(ngModel)]="selectedListComponent.exportExcel"> Excel Export
+                <input class="form-check-input" type="checkbox" [(ngModel)]="this.dto.exportExcel"> Excel Export
                 <span class="form-check-sign"></span>
               </label>
             </div>
@@ -150,7 +171,7 @@
             <label style="padding-bottom: 10px;"></label>
             <div class="form-check">
               <label class="form-check-label">
-                <input class="form-check-input" type="checkbox" [(ngModel)]="selectedListComponent.HeaderFilters"> Use Header Filters
+                <input class="form-check-input" type="checkbox" [(ngModel)]="this.dto.HeaderFilters"> Use Header Filters
                 <span class="form-check-sign"></span>
               </label>
             </div>
@@ -160,57 +181,54 @@
         </div>
 
 
+        <!--        <div class="row">-->
+        <!--          <div class="col-md-12">-->
+        <!--            <label>Components</label>-->
+        <!--            <table class="table table-striped">-->
+        <!--              <thead class=" text-primary">-->
+        <!--              <tr>-->
+        <!--                <th>Actions</th>-->
+        <!--                <th>Code</th>-->
+        <!--                <th>id</th>-->
+        <!--                <th>Name</th>-->
+        <!--                <th>Selector</th>-->
+        <!--              </tr>-->
+        <!--              </thead>-->
+        <!--              <tbody>-->
 
+        <!--&lt;!&ndash;              <tr *ngIf="this.dto.listComponentList.length === 0 ">&ndash;&gt;-->
+        <!--&lt;!&ndash;                <td colspan="5" class="empty-table-row">Empty!</td>&ndash;&gt;-->
+        <!--&lt;!&ndash;              </tr>&ndash;&gt;-->
 
-
-        <div class="row">
-          <div class="col-md-12">
-            <label>Components</label>
-            <table class="table table-striped">
-              <thead class=" text-primary">
-              <tr>
-                <th>Actions</th>
-                <th>Code</th>
-                <th>id</th>
-                <th>Name</th>
-                <th>Selector</th>
-              </tr>
-              </thead>
-              <tbody>
-
-              <tr *ngIf="this.dto.listComponentList.length === 0 ">
-                <td colspan="5" class="empty-table-row">Empty!</td>
-              </tr>
-
-              <tr *ngFor="let row of this.dto.listComponentList">
-                <td>
-                  <button type="button" title="Delete" (click)="removeComponent(row)"
-                          class="btn btn-outline-danger btn-icon btn-sm">
-                    <i class="fa fa-times"></i>
-                  </button>
-                  <button type="button" title="Delete" class="btn btn-outline-primary btn-icon btn-sm"
-                          (click)="setSelectedComponent(row)">
-                    <i class="fa fa-search"></i>
-                  </button>
-                </td>
-                <td>
-                  <input type="text" readonly class="form-control transparent-input" [(ngModel)]="row.code">
-                </td>
-                <td>
-                  <input type="text" readonly class="form-control transparent-input" [(ngModel)]="row.component.id">
-                </td>
-                <td>
-                  <input type="text" readonly class="form-control transparent-input"
-                         [(ngModel)]="row.component.name">
-                </td>
-                <td>
-                  <input type="text" class="form-control transparent-input" [(ngModel)]="row.selector">
-                </td>
-              </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
+        <!--&lt;!&ndash;              <tr>&ndash;&gt;-->
+        <!--&lt;!&ndash;                <td>&ndash;&gt;-->
+        <!--&lt;!&ndash;                  <button type="button" title="Delete" (click)="removeComponent(row)"&ndash;&gt;-->
+        <!--&lt;!&ndash;                          class="btn btn-outline-danger btn-icon btn-sm">&ndash;&gt;-->
+        <!--&lt;!&ndash;                    <i class="fa fa-times"></i>&ndash;&gt;-->
+        <!--&lt;!&ndash;                  </button>&ndash;&gt;-->
+        <!--&lt;!&ndash;                  <button type="button" title="Delete" class="btn btn-outline-primary btn-icon btn-sm"&ndash;&gt;-->
+        <!--&lt;!&ndash;                          (click)="setSelectedComponent(row)">&ndash;&gt;-->
+        <!--&lt;!&ndash;                    <i class="fa fa-search"></i>&ndash;&gt;-->
+        <!--&lt;!&ndash;                  </button>&ndash;&gt;-->
+        <!--&lt;!&ndash;                </td>&ndash;&gt;-->
+        <!--&lt;!&ndash;                <td>&ndash;&gt;-->
+        <!--&lt;!&ndash;                  <input type="text" readonly class="form-control transparent-input" [(ngModel)]="row.code">&ndash;&gt;-->
+        <!--&lt;!&ndash;                </td>&ndash;&gt;-->
+        <!--&lt;!&ndash;                <td>&ndash;&gt;-->
+        <!--&lt;!&ndash;                  <input type="text" readonly class="form-control transparent-input" [(ngModel)]="row.component.id">&ndash;&gt;-->
+        <!--&lt;!&ndash;                </td>&ndash;&gt;-->
+        <!--&lt;!&ndash;                <td>&ndash;&gt;-->
+        <!--&lt;!&ndash;                  <input type="text" readonly class="form-control transparent-input"&ndash;&gt;-->
+        <!--&lt;!&ndash;                         [(ngModel)]="row.component.name">&ndash;&gt;-->
+        <!--&lt;!&ndash;                </td>&ndash;&gt;-->
+        <!--&lt;!&ndash;                <td>&ndash;&gt;-->
+        <!--&lt;!&ndash;                  <input type="text" class="form-control transparent-input" [(ngModel)]="row.selector">&ndash;&gt;-->
+        <!--&lt;!&ndash;                </td>&ndash;&gt;-->
+        <!--&lt;!&ndash;              </tr>&ndash;&gt;-->
+        <!--              </tbody>-->
+        <!--            </table>-->
+        <!--          </div>-->
+        <!--        </div>-->
 
       </div>
     </div>
@@ -225,7 +243,7 @@
 
         <div class="row">
           <div class="col-sm-7">
-            <h5 class="card-title pull-left">Fields design {{this.selectedListComponent?.component?.name}}</h5>
+            <h5 class="card-title pull-left">Fields design {{this.dto?.component?.name}}</h5>
           </div>
           <div class="col-sm-5">
             <div class="pull-right">
@@ -302,12 +320,10 @@
               </tr>
               </thead>
               <tbody>
-              <tr
-                *ngIf="selectedListComponent == undefined ||  selectedListComponent?.listComponentColumnFieldList.length === 0 ">
-                <td colspan="9" class="empty-table-row">Empty!</td>
-              </tr>
 
-              <tr *ngFor="let column of selectedListComponent?.listComponentColumnFieldList" [ngClass]="{'command-field': column.formulaType === 'command', 'sql-field': column.formulaType === 'sql'}"  >
+
+              <tr *ngFor="let column of this.dto?.listComponentColumnFieldList"
+                  [ngClass]="{'command-field': column.formulaType === 'command', 'sql-field': column.formulaType === 'sql'}">
                 <td style="min-width: 150px;">
                   <button (click)="removeColumn(column)" title="Delete" type="button"
                           class="btn btn-outline-danger btn-icon btn-sm">
@@ -318,10 +334,12 @@
                           class="btn btn-outline-success btn-icon btn-sm">
                     <i class="fa fa-search"></i>
                   </button>
-                  <button (click)="moveUp(column, selectedListComponent?.listComponentColumnFieldList)" type="button" title="Move Up" class="btn btn-outline-warning btn-icon btn-sm">
+                  <button (click)="moveUp(column, this.dto?.listComponentColumnFieldList)" type="button" title="Move Up"
+                          class="btn btn-outline-warning btn-icon btn-sm">
                     <i class="fa fa-angle-up"></i>
                   </button>
-                  <button (click)="moveDown(column, selectedListComponent?.listComponentColumnFieldList)" type="button" title="Move Down" class="btn btn-outline-warning btn-icon btn-sm">
+                  <button (click)="moveDown(column, this.dto?.listComponentColumnFieldList)" type="button"
+                          title="Move Down" class="btn btn-outline-warning btn-icon btn-sm">
                     <i class="fa fa-angle-down"></i>
                   </button>
 
@@ -413,10 +431,10 @@
               </thead>
               <tbody>
               <tr
-                *ngIf="selectedListComponent == undefined || selectedListComponent?.listComponentFilterFieldList.length === 0 ">
+                *ngIf="this.dto == undefined || this.dto?.listComponentFilterFieldList.length === 0 ">
                 <td colspan="12" class="empty-table-row">Empty!</td>
               </tr>
-              <tr *ngFor="let column of selectedListComponent?.listComponentFilterFieldList">
+              <tr *ngFor="let column of this.dto?.listComponentFilterFieldList">
                 <td style="min-width: 150px;">
                   <button (click)="removeFilter(column)" title="Remove" type="button"
                           class="btn btn-outline-danger btn-icon btn-sm">
@@ -427,10 +445,12 @@
                           class="btn btn-outline-success btn-icon btn-sm">
                     <i class="fa fa-search"></i>
                   </button>
-                  <button (click)="moveUp(column, selectedListComponent?.listComponentFilterFieldList)" type="button" title="Move Up" class="btn btn-outline-warning btn-icon btn-sm">
+                  <button (click)="moveUp(column, this.dto?.listComponentFilterFieldList)" type="button" title="Move Up"
+                          class="btn btn-outline-warning btn-icon btn-sm">
                     <i class="fa fa-angle-up"></i>
                   </button>
-                  <button (click)="moveDown(column, selectedListComponent?.listComponentFilterFieldList)" type="button" title="Move Down" class="btn btn-outline-warning btn-icon btn-sm">
+                  <button (click)="moveDown(column, this.dto?.listComponentFilterFieldList)" type="button"
+                          title="Move Down" class="btn btn-outline-warning btn-icon btn-sm">
                     <i class="fa fa-angle-down"></i>
                   </button>
                 </td>
@@ -536,10 +556,10 @@
               </thead>
               <tbody>
               <tr
-                *ngIf="selectedListComponent == undefined || selectedListComponent?.listComponentLeftGroupFieldList.length === 0 ">
+                *ngIf="this.dto == undefined || this.dto?.listComponentLeftGroupFieldList.length === 0 ">
                 <td colspan="9" class="empty-table-row">Empty!</td>
               </tr>
-              <tr *ngFor="let column of selectedListComponent?.listComponentLeftGroupFieldList">
+              <tr *ngFor="let column of this.dto?.listComponentLeftGroupFieldList">
                 <td>
                   <button title="Remove" (click)="removeLeftGroupField(column)" type="button"
                           class="btn btn-outline-danger btn-icon btn-sm">
@@ -550,10 +570,12 @@
                           class="btn btn-outline-success btn-icon btn-sm">
                     <i class="fa fa-search"></i>
                   </button>
-                  <button (click)="moveUp(column, selectedListComponent?.listComponentLeftGroupFieldList)" type="button" title="Move Up" class="btn btn-outline-warning btn-icon btn-sm">
+                  <button (click)="moveUp(column, this.dto?.listComponentLeftGroupFieldList)" type="button"
+                          title="Move Up" class="btn btn-outline-warning btn-icon btn-sm">
                     <i class="fa fa-angle-up"></i>
                   </button>
-                  <button (click)="moveDown(column, selectedListComponent?.listComponentLeftGroupFieldList)" type="button" title="Move Down" class="btn btn-outline-warning btn-icon btn-sm">
+                  <button (click)="moveDown(column, this.dto?.listComponentLeftGroupFieldList)" type="button"
+                          title="Move Down" class="btn btn-outline-warning btn-icon btn-sm">
                     <i class="fa fa-angle-down"></i>
                   </button>
                 </td>
@@ -627,10 +649,10 @@
               </thead>
               <tbody>
               <tr
-                *ngIf="selectedListComponent == undefined || selectedListComponent?.listComponentOrderByFieldList?.length === 0 ">
+                *ngIf="this.dto == undefined || this.dto?.listComponentOrderByFieldList?.length === 0 ">
                 <td colspan="9" class="empty-table-row">Empty!</td>
               </tr>
-              <tr *ngFor="let column of selectedListComponent?.listComponentOrderByFieldList">
+              <tr *ngFor="let column of this.dto?.listComponentOrderByFieldList">
                 <td>
                   <button title="Remove" (click)="removeOrderByField(column)" type="button"
                           class="btn btn-outline-danger btn-icon btn-sm">
@@ -641,10 +663,12 @@
                           class="btn btn-outline-success btn-icon btn-sm">
                     <i class="fa fa-search"></i>
                   </button>
-                  <button (click)="moveUp(column, selectedListComponent?.listComponentOrderByFieldList)" type="button" title="Move Up" class="btn btn-outline-warning btn-icon btn-sm">
+                  <button (click)="moveUp(column, this.dto?.listComponentOrderByFieldList)" type="button"
+                          title="Move Up" class="btn btn-outline-warning btn-icon btn-sm">
                     <i class="fa fa-angle-up"></i>
                   </button>
-                  <button (click)="moveDown(column, selectedListComponent?.listComponentOrderByFieldList)" type="button" title="Move Down" class="btn btn-outline-warning btn-icon btn-sm">
+                  <button (click)="moveDown(column, this.dto?.listComponentOrderByFieldList)" type="button"
+                          title="Move Down" class="btn btn-outline-warning btn-icon btn-sm">
                     <i class="fa fa-angle-down"></i>
                   </button>
                 </td>
@@ -721,10 +745,10 @@
               </thead>
               <tbody>
               <tr
-                *ngIf="selectedListComponent == undefined || selectedListComponent?.listComponentActionFieldList.length === 0 ">
+                *ngIf="this.dto == undefined || this.dto?.listComponentActionFieldList.length === 0 ">
                 <td colspan="6" class="empty-table-row">Empty!</td>
               </tr>
-              <tr *ngFor="let column of selectedListComponent?.listComponentActionFieldList">
+              <tr *ngFor="let column of this.dto?.listComponentActionFieldList">
                 <td>
                   <button title="Remove" (click)="removeActionField(column)" type="button"
                           class="btn btn-outline-danger btn-icon btn-sm">
@@ -735,10 +759,12 @@
                           class="btn btn-outline-success btn-icon btn-sm">
                     <i class="fa fa-search"></i>
                   </button>
-                  <button (click)="moveUp(column, selectedListComponent?.listComponentActionFieldList)" type="button" title="Move Up" class="btn btn-outline-warning btn-icon btn-sm">
+                  <button (click)="moveUp(column, this.dto?.listComponentActionFieldList)" type="button" title="Move Up"
+                          class="btn btn-outline-warning btn-icon btn-sm">
                     <i class="fa fa-angle-up"></i>
                   </button>
-                  <button (click)="moveDown(column, selectedListComponent?.listComponentActionFieldList)" type="button" title="Move Down" class="btn btn-outline-warning btn-icon btn-sm">
+                  <button (click)="moveDown(column, this.dto?.listComponentActionFieldList)" type="button"
+                          title="Move Down" class="btn btn-outline-warning btn-icon btn-sm">
                     <i class="fa fa-angle-down"></i>
                   </button>
                 </td>
@@ -782,7 +808,7 @@
 
         <div class="row">
           <div class="col-sm-12">
-            <h5 class="card-title pull-left">Available Fields {{this.selectedListComponent?.component.name}}</h5>
+            <h5 class="card-title pull-left">Available Fields</h5>
           </div>
         </div>
 
@@ -790,7 +816,7 @@
       </div>
       <div class="card-body">
         <ul style="padding: 0px;">
-          <li *ngFor="let row of selectedListComponent?.component.componentPersistEntityList">
+          <li *ngFor="let row of this.dto?.component?.componentPersistEntityList">
             <div class="row">
               <div class="col-md-12">
                 <h6 style="margin: 0px;">
@@ -920,13 +946,13 @@
   <div class="modal-dialog modal-dialog-centered modal-select-fields">
     <div class="modal-content">
       <div class="modal-header justify-content-center">
-        <h4 class="title title-up modal-title">Available Fields {{this.selectedListComponent?.component.name}}</h4>
+        <h4 class="title title-up modal-title">Fields</h4>
         <button aria-label="Close" class="close" data-dismiss="modal" type="button"><i
           class="nc-icon nc-simple-remove"></i></button>
       </div>
       <div class="modal-body">
         <ul style="padding: 0px;">
-          <li *ngFor="let row of selectedListComponent?.component.componentPersistEntityList">
+          <li *ngFor="let row of this.dto?.component?.componentPersistEntityList">
             <div class="row">
               <div class="col-md-12">
                 <h6 style="margin: 0px;">
@@ -1023,7 +1049,7 @@
               <div class="form-check">
                 <label class="form-check-label">
                   <input class="form-check-input" type="checkbox"
-                         [(ngModel)]="selectedListComponent.customFilterFieldStructure">
+                         [(ngModel)]="this.dto.customFilterFieldStructure">
                   Use Custom Filter Field Structure <span class="form-check-sign"></span>
                 </label>
               </div>
@@ -1042,8 +1068,8 @@
         <div class="row">
           <div class="col-12">
             <label>Custom Filter structure</label>
-            <textarea style="min-height: 200px;" [readonly]="!selectedListComponent?.customFilterFieldStructure"
-                      class="form-control" [(ngModel)]="selectedListComponent.filterFieldStructure"></textarea>
+            <textarea style="min-height: 200px;" [readonly]="!this.dto?.customFilterFieldStructure"
+                      class="form-control" [(ngModel)]="this.dto.filterFieldStructure"></textarea>
           </div>
         </div>
 
@@ -1059,7 +1085,6 @@
     </div>
   </div>
 </div>
-
 
 
 <div aria-labelledby="ModalLabel" class="modal fade" id="selectedColumnFieldModal" role="dialog" aria-hidden="true">
@@ -1111,7 +1136,6 @@
             </select>
           </div>
         </div>
-
 
 
         <div class="row">
@@ -1572,7 +1596,8 @@
   </div>
 </div>
 
-<div aria-labelledby="ModalLabel" class="modal fade" id="selectedActionFieldFieldModal" role="dialog" aria-hidden="true">
+<div aria-labelledby="ModalLabel" class="modal fade" id="selectedActionFieldFieldModal" role="dialog"
+     aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-select-fields">
     <div class="modal-content">
       <div class="modal-header justify-content-center">

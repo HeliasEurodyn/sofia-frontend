@@ -15,7 +15,7 @@ import {NotificationService} from '../../../services/notification.service';
 export class ListComponent extends PageComponent implements OnInit {
 
   public listDto: ListDTO;
-  public listComponentDto: ListComponentDTO;
+ // public listComponentDto: ListComponentDTO;
   public listResultsData: ListResultsData;
   public groupContent: Array<Map<string, any>>;
   private selectedGroupItem: any;
@@ -41,13 +41,13 @@ export class ListComponent extends PageComponent implements OnInit {
 
       this.service.getDataById(id).subscribe(data => {
         this.listDto = data;
-        this.listComponentDto = this.listDto.listComponentList[0];
+        // this.listComponentDto = this.listDto.listComponentList[0];
 
-        this.listVisible = this.listComponentDto.listVisible;
-        this.filterVisible = this.listComponentDto.filterVisible;
-        this.defaultPage = this.listComponentDto.defaultPage;
+        this.listVisible = this.listDto.listVisible;
+        this.filterVisible = this.listDto.filterVisible;
+        this.defaultPage = this.listDto.defaultPage;
 
-        if (this.listComponentDto.autoRun) {
+        if (this.listDto.autoRun) {
           this.getListResultData();
         }
       });
@@ -56,7 +56,7 @@ export class ListComponent extends PageComponent implements OnInit {
 
   getListResultData() {
     let requiredFiledsEmpty = false;
-    for (const filterField of this.listComponentDto.listComponentFilterFieldList) {
+    for (const filterField of this.listDto.listComponentFilterFieldList) {
       if ((filterField.fieldValue == null || filterField.fieldValue === '') && filterField.required) {
         this.notificationService.showNotification('top', 'center', 'alert-danger', 'fa-id-card', '<b>Filters error</b> Required filter field ' + filterField.description + ' is empty!');
         requiredFiledsEmpty = true;
@@ -78,7 +78,7 @@ export class ListComponent extends PageComponent implements OnInit {
 
   setPaginationSettings() {
 
-    if (!this.listComponentDto.hasPagination) {
+    if (!this.listDto.hasPagination) {
       return;
     }
 
@@ -172,13 +172,13 @@ export class ListComponent extends PageComponent implements OnInit {
   }
 
   private resetListComponentLeftGroupFieldList() {
-    for (const leftGroupingField of this.listComponentDto.listComponentLeftGroupFieldList) {
+    for (const leftGroupingField of this.listDto.listComponentLeftGroupFieldList) {
       leftGroupingField.fieldValue = null;
     }
   }
 
   private setValueToListComponentLeftGroupFieldList(code: string, value: any) {
-    for (const leftGroupingField of this.listComponentDto.listComponentLeftGroupFieldList) {
+    for (const leftGroupingField of this.listDto.listComponentLeftGroupFieldList) {
       if (leftGroupingField.code === code) {
         leftGroupingField.fieldValue = value;
       }
@@ -187,7 +187,7 @@ export class ListComponent extends PageComponent implements OnInit {
 
 
   isGroupContentDivVisible() {
-    if (this.listComponentDto?.listComponentLeftGroupFieldList?.length > 0) {
+    if (this.listDto?.listComponentLeftGroupFieldList?.length > 0) {
       return true;
     } else {
       return false;
@@ -216,7 +216,7 @@ export class ListComponent extends PageComponent implements OnInit {
       return;
     }
 
-    this.listComponentDto.currentPage = page;
+    this.listDto.currentPage = page;
     this.service.getListResultData(this.listDto).subscribe(data => {
       this.listResultsData = data;
       this.setPaginationSettings();
