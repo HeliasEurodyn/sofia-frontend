@@ -121,3 +121,7 @@
     -webkit-transform: scaleY(0.05);
   }
 }
+
+.btn-group .btn + .btn {
+  font-size: 10px;
+}

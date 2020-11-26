@@ -13,3 +13,36 @@
   background-image: url('/assets/img/bg/dark-material-bg.jpg');
   background-size: cover;
 }
+
+
+.btn-outline-success {
+  border: 1px solid #51cbce !important;
+  color: #51cbce !important;
+}
+
+.btn-outline-success:hover{
+  border: 1px solid #837c7c !important;
+  background-color: #51cbce !important;
+  color: #fff !important;
+}
+
+.footer{
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  border-top: none;
+  color: white;
+}
+
+.navbar{
+  padding-top: 30px;
+  border-bottom: none;
+}
+
+.navbar.navbar-transparent a:not(.dropdown-item):not(.btn) {
+  color: #ffffff;
+}
+
+/*.navbar.navbar-transparent .nav-item .nav-link:not(.btn) {*/
+/*  color: #ffffff;*/
+/*}*/

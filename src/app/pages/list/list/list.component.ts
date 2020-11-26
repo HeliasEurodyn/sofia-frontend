@@ -2,10 +2,10 @@ import {Component, OnInit} from '@angular/core';
 import {ListDTO} from '../../../dtos/list/list-dto';
 import {ListService} from '../../../services/crud/list.service';
 import {PageComponent} from '../../page/page-component';
-import {ListComponentDTO} from '../../../dtos/list/list-component-dto';
 import {ListResultsData} from '../../../dtos/list/list-results-data';
 import {NavigatorService} from '../../../services/navigator.service';
 import {NotificationService} from '../../../services/notification.service';
+import {DatePipe} from '@angular/common';
 
 @Component({
   selector: 'app-list',
@@ -15,10 +15,10 @@ import {NotificationService} from '../../../services/notification.service';
 export class ListComponent extends PageComponent implements OnInit {
 
   public listDto: ListDTO;
- // public listComponentDto: ListComponentDTO;
+  // public listComponentDto: ListComponentDTO;
   public listResultsData: ListResultsData;
   public groupContent: Array<Map<string, any>>;
-  private selectedGroupItem: any;
+  // private selectedGroupItem: any;
 
   private showPrevPagination = false;
   private showNextPagination = false;
@@ -29,7 +29,8 @@ export class ListComponent extends PageComponent implements OnInit {
 
   constructor(private service: ListService,
               private navigatorService: NavigatorService,
-              private notificationService: NotificationService) {
+              private notificationService: NotificationService,
+              public datepipe: DatePipe) {
     super();
   }
 
@@ -67,17 +68,42 @@ export class ListComponent extends PageComponent implements OnInit {
       return;
     }
 
-    this.service.getListResultData(this.listDto).subscribe(data => {
+    const values = new Map();
+    for (const filterField of this.listDto.listComponentFilterFieldList) {
+      if (filterField.fieldValue != null && filterField.fieldValue !== '' && filterField.editable) {
+        let fieldValue = '';
+        if (filterField.type === 'datetime') {
+          fieldValue = this.datepipe.transform(filterField.fieldValue, 'yyyyMMddHHmmss');
+        } else {
+          fieldValue = filterField.fieldValue;
+        }
+        values.set(filterField.code, fieldValue);
+      }
+    }
+
+    console.log(this.listDto.listComponentLeftGroupFieldList);
+    for (const filterField of this.listDto.listComponentLeftGroupFieldList) {
+
+      if (filterField.fieldValue != null && filterField.fieldValue !== '' && filterField.editable) {
+        let fieldValue = '';
+        if (filterField.type === 'datetime') {
+          fieldValue = this.datepipe.transform(filterField.fieldValue, 'yyyyMMddHHmmss');
+        } else {
+          fieldValue = filterField.fieldValue;
+        }
+        values.set(filterField.code, fieldValue);
+      }
+    }
+
+    this.service.getListResultData2(values, this.listDto.id).subscribe(data => {
       this.listResultsData = data;
       this.setPaginationSettings();
     });
 
-    this.getGroupResultData();
-
+    this.getGroupResultData(values);
   }
 
   setPaginationSettings() {
-
     if (!this.listDto.hasPagination) {
       return;
     }
@@ -95,11 +121,10 @@ export class ListComponent extends PageComponent implements OnInit {
       this.showNextPagination = false;
     }
 
-
   }
 
-  getGroupResultData() {
-    this.service.getGroupResultData(this.listDto).subscribe(data => {
+  getGroupResultData(parametersMap: Map<string, string>) {
+    this.service.getGroupResultData(parametersMap, this.listDto.id).subscribe(data => {
       this.groupContent = data;
       this.initializeGroupContentVisibility(this.listResultsData.groupContent, false);
       this.initializeGroupContentParrents(this.listResultsData.groupContent);
@@ -122,7 +147,6 @@ export class ListComponent extends PageComponent implements OnInit {
   }
 
   private initializeGroupContentVisibility(groupContent: Array<Map<string, any>>, childrenVisible: Boolean) {
-
     if (groupContent == null) {
       return;
     }
@@ -151,16 +175,13 @@ export class ListComponent extends PageComponent implements OnInit {
     }
   }
 
-
   filterGroup(item) {
-    this.resetListComponentLeftGroupFieldList();
-    if (item['code'] + '-' + item['value'] !== this.selectedGroupItem) {
-      this.selectedGroupItem = item['code'] + '-' + item['value'];
-      this.setValueToListComponentLeftGroupFieldList(item['code'], item['value']);
-      if (item['parrent'] != null) {
-        this.filterGroupParrent(item['parrent'])
-      }
+
+    this.setValueToListComponentLeftGroupFieldList(item['code'], item['value']);
+    if (item['parrent'] != null) {
+      this.filterGroupParrent(item['parrent'])
     }
+
     this.getListResultData();
   }
 
@@ -171,10 +192,14 @@ export class ListComponent extends PageComponent implements OnInit {
     }
   }
 
-  private resetListComponentLeftGroupFieldList() {
+  private resetListComponentLeftGroupFieldList(code) {
     for (const leftGroupingField of this.listDto.listComponentLeftGroupFieldList) {
-      leftGroupingField.fieldValue = null;
+      if (code === leftGroupingField.code) {
+        leftGroupingField.fieldValue = null;
+      }
     }
+
+    this.getListResultData();
   }
 
   private setValueToListComponentLeftGroupFieldList(code: string, value: any) {
@@ -184,7 +209,6 @@ export class ListComponent extends PageComponent implements OnInit {
       }
     }
   }
-
 
   isGroupContentDivVisible() {
     if (this.listDto?.listComponentLeftGroupFieldList?.length > 0) {
@@ -204,7 +228,6 @@ export class ListComponent extends PageComponent implements OnInit {
       link.click();
     });
   }
-
 
   navigateToPage(page: number) {
 

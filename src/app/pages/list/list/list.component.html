@@ -141,10 +141,10 @@
                 <h6 class="float-left"> Grouping values </h6>
               </div>
             </div>
+
             <ul *ngIf="groupContent?.length > 0">
               <ng-template #recursiveList let-list>
                 <li *ngFor="let item of list">
-
                   <div class="btn-group">
                     <button *ngIf="item['children'].length > 0" (click)="updateVisibility(item)" type="button"
                             class="btn left-group-button btn-outline-success active-header" style="padding: 5px;">
@@ -165,15 +165,35 @@
                 *ngTemplateOutlet="recursiveList; context:{ $implicit: groupContent}"></ng-container>
             </ul>
 
-
             <div class="row" style="margin-bottom: 1rem">
               <div class="col-12">
-                <h6 class="float-left"> Grouping columns </h6>
+                <h6 class="float-left"> Group selections </h6>
               </div>
+
+
               <div class="col-12" *ngFor="let item of this.listDto?.listComponentLeftGroupFieldList">
-                <p class="float-left" style="margin-bottom: 0px;"><i class="fa fa-square"></i> {{item.description}} </p>
+                <p class="float-left" style="margin-bottom: 0px;"> {{item.description}} </p>
+
+                <div class="form-group">
+                  <div class="input-group input-group-selector no-border">
+                    <input readonly data-target="#insertComponentModal" data-toggle="modal" type="text" class="form-control"
+                           value="{{item.fieldValue}}">
+                    <div class="input-group-append" (click)="resetListComponentLeftGroupFieldList(item.code)">
+                 <span class="input-group-text input-group-text-rm">
+                    <i class="fa fa-window-close"></i>
+                 </span>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
+
+              </div>
+
+
+
+
+
+
 
 
           </div>
