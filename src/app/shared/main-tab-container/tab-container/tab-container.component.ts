@@ -39,36 +39,36 @@ export class TabContainerComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit() {
 
-    this.openTabWithId('dashboard', 'STATICPAGE[NAME:dashboard]');
+  //  this.openTabWithId('dashboard', 'STATICPAGE[NAME:dashboard]');
     this.subscribeToInternalMessages();
 
   }
 
   private subscribeToInternalMessages() {
-    this.internalMessageService
-      .accessMessage('OpenTabEvent')
-      .subscribe(data => {
-        const pageId = this.openTab(data.path);
-        this.internalMessageService.publishMessage('OpenTabHeaderEvent', {pageId: pageId, title: data.title});
-      });
-
-    this.internalMessageService
-      .accessMessage('selectTabEvent')
-      .subscribe(pageId => {
-        this.selectPage(pageId);
-      });
-
-    this.internalMessageService
-      .accessMessage('closeTabEvent')
-      .subscribe(pageId => {
-        this.closeTab(pageId);
-      });
+    // this.internalMessageService
+    //   .accessMessage('openTabEvent')
+    //   .subscribe(data => {
+    //     const pageId = this.openTab(data.path);
+    //     this.internalMessageService.publishMessage('OpenTabHeaderEvent', {pageId: pageId, title: data.title});
+    //   });
+    //
+    // this.internalMessageService
+    //   .accessMessage('selectTabEvent')
+    //   .subscribe(pageId => {
+    //     this.selectPage(pageId);
+    //   });
+    //
+    // this.internalMessageService
+    //   .accessMessage('closeTabEvent')
+    //   .subscribe(pageId => {
+    //     this.closeTab(pageId);
+    //   });
 
   }
 
   ngOnDestroy(): void {
-    this.internalMessageService.unsubscribeTopic('OpenTabEvent');
-    this.internalMessageService.unsubscribeTopic('closeTabEvent');
+    // this.internalMessageService.unsubscribeTopic('openTabEvent');
+    // this.internalMessageService.unsubscribeTopic('closeTabEvent');
   }
 
 
@@ -112,32 +112,32 @@ export class TabContainerComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private openTab(path: string) {
-    const pageId = uuid.v4();
-    this.openTabWithId(pageId, path);
-    return pageId;
+    // const pageId = uuid.v4();
+    // this.openTabWithId(pageId, path);
+    // return pageId;
   }
 
   private openTabWithId(pageId: string, path: string) {
-
-    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(TabComponent);
-    const componentRef = componentFactory.create(this.injector);
-
-
-    this.appRef.attachView(componentRef.hostView);
-
-    const domElem = (componentRef.hostView as EmbeddedViewRef<any>).rootNodes[0] as HTMLElement;
-
-    const childElements = this.tabDiv.nativeElement.childNodes;
-    for (const childElement of childElements) {
-      this.renderer.removeChild(this.tabDiv.nativeElement, childElement);
-    }
-
-    this.renderer.appendChild(this.tabDiv.nativeElement, domElem);
-
-  //  this.activeComponents.set(pageId, componentRef);
-    this.tabsList.push(componentRef);
-    componentRef.instance.tabId = pageId;
-    componentRef.instance.openPageAfterOpen(path);
+//
+//     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(TabComponent);
+//     const componentRef = componentFactory.create(this.injector);
+//
+//
+//     this.appRef.attachView(componentRef.hostView);
+//
+//     const domElem = (componentRef.hostView as EmbeddedViewRef<any>).rootNodes[0] as HTMLElement;
+//
+//     const childElements = this.tabDiv.nativeElement.childNodes;
+//     for (const childElement of childElements) {
+//       this.renderer.removeChild(this.tabDiv.nativeElement, childElement);
+//     }
+//
+//     this.renderer.appendChild(this.tabDiv.nativeElement, domElem);
+//
+//   //  this.activeComponents.set(pageId, componentRef);
+//     this.tabsList.push(componentRef);
+// //    componentRef.instance.tabId = pageId;
+//  //   componentRef.instance.openPageAfterOpen(path);
   }
 
 

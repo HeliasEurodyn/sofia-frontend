@@ -22,11 +22,11 @@ export class ListService extends CrudService<any> {
     return this.http.get<any>(`${environment.serverUrl}/${this.endpoint}/data/by-id?id=${id}`);
   }
 
-  getListResultData(listDto: ListDTO) {
+  getListResultDataPost(listDto: ListDTO) {
     return this.http.post<any>(`${environment.serverUrl}/${this.endpoint}/data/results`, listDto);
   }
 
-  getListResultData2(parametersMap: Map<string, string>, id: number) {
+  getListResultData(parametersMap: Map<string, string>, id: number) {
     let parameters = '?id=' + id;
     for (const key of parametersMap.keys()) {
       parameters += '&' + encodeURIComponent(key) + '=' + encodeURIComponent(parametersMap.get(key));

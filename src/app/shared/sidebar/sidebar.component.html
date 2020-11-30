@@ -4,7 +4,6 @@
   </div>
   <ul class="nav">
 
-
     <li *ngFor="let menuItem of menuHeaders" routerLinkActive="active" class="header-menu">
       <a (click)="parentMenuUnselection(menuItem.id);">
         <i class="fa fa-folder-o header-menu"></i>
@@ -17,9 +16,8 @@
     <ng-template #recursiveList let-list>
       <li *ngFor="let menuItem of list" routerLinkActive="active">
 
-        <!--      <a *ngIf="menuItem.type === 'link'" [routerLink]="[menuItem.path]">-->
         <a *ngIf="menuItem.command !== 'parent-menu' && menuItem.command !== 'parent-collapse' "
-           (click)="notify(menuItem);">
+           (click)="openMenu(menuItem);">
           <i class="fa {{menuItem.icon}}"></i>
           <p>{{menuItem.name}}</p>
         </a>
@@ -36,8 +34,7 @@
           </a>
           <div class="collapse" id="components-collapse-{{menuItem.id}}" style="">
             <ul class="nav sub-nav">
-              <ng-container
-                *ngTemplateOutlet="recursiveList; context:{ $implicit: menuItem.menuFieldList }">
+              <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: menuItem.menuFieldList }">
               </ng-container>
             </ul>
           </div>
@@ -46,66 +43,8 @@
       </li>
     </ng-template>
 
-    <ng-container
-      *ngTemplateOutlet="recursiveList; context:{ $implicit: selectedMenuItems }"></ng-container>
+    <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: selectedMenuItems }"></ng-container>
 
-<!--    <li routerlinkactive="active" class="active">-->
-<!--      <a data-toggle="collapse" href="#components">-->
-<!--        <i class="nc-icon nc-layout-11"></i>-->
-<!--        <p>Test<b class="caret"></b></p>-->
-<!--      </a>-->
-<!--      <div class="collapse" id="components" style="">-->
-<!--        <ul class="nav">-->
-<!--          <li routerlinkactive="active" ng-reflect-router-link-active="active">-->
-<!--            <a href="#/list/1">-->
-<!--              <i class="fa fa-cogs"></i>-->
-<!--              <p>List</p>-->
-<!--            </a>-->
-<!--          </li>-->
-<!--        </ul>-->
-<!--      </div>-->
-<!--    </li>-->
-
-
-    <!--<button type="button" class="btn btn-outline-primary" id="navbarDropdownMenuLinkss"  aria-controls="navbarDropdownMenuLinkss" (click)="isCollapsed = !isCollapsed">-->
-    <!--Toggle-->
-    <!--</button>-->
-
-    <!--<mainDiv class="collapse" aria-labelledby="navbarDropdownMenuLinkss" ngbCollapse >-->
-    <!--You can collapse this card by clicking Toggle-->
-    <!--</mainDiv>-->
-
-
-    <!--<li class="nav-item btn-rotate" ngbDropdown placement="bottom-left">-->
-    <!--<a class="nav-link" ngbDropdownToggle id="navbarDropdownMenuLink" >-->
-    <!--<i class="nc-icon nc-bell-55"></i>-->
-    <!--<p>-->
-    <!--<span class="d-lg-none d-md-block">Some Actions</span>-->
-    <!--</p>-->
-    <!--</a>-->
-    <!--<mainDiv ngbDropdownMenu aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu dropdown-menu-right">-->
-    <!--<a ngbDropdownItem href="javascript:void(0)">Action</a>-->
-    <!--<a ngbDropdownItem href="javascript:void(0)">Another action</a>-->
-    <!--<a ngbDropdownItem href="javascript:void(0)">Something else here</a>-->
-    <!--</mainDiv>-->
-    <!--</li>-->
-
-    <!--<li routerlinkactive="active">-->
-    <!--&lt;!&ndash;&ndash;&gt;&lt;!&ndash;&ndash;&gt;-->
-    <!--<a data-toggle="collapse" href="#maps1" class="collapsed" aria-expanded="false">-->
-    <!--<i class="nc-icon nc-pin-3"></i>-->
-    <!--<p>Maps<b class="caret"></b></p>-->
-    <!--</a>-->
-    <!--&lt;!&ndash;&ndash;&gt;-->
-    <!--<mainDiv class="collapse" id="maps1" style="">-->
-    <!--<ul class="nav">-->
-    <!--&lt;!&ndash;&ndash;&gt;-->
-    <!--<li routerlinkactive="active"><a href="#/maps/google"><span class="sidebar-mini-icon">GM</span><span class="sidebar-normal">Google Maps</span></a></li>-->
-    <!--<li routerlinkactive="active"><a href="#/maps/fullscreen"><span class="sidebar-mini-icon">FSM</span><span class="sidebar-normal">Full Screen Map</span></a></li>-->
-    <!--<li routerlinkactive="active"><a href="#/maps/vector"><span class="sidebar-mini-icon">VM</span><span class="sidebar-normal">Vector Map</span></a></li>-->
-    <!--</ul>-->
-    <!--</mainDiv>-->
-    <!--</li>-->
   </ul>
 
 

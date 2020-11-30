@@ -13,7 +13,7 @@ export class NotificationService {
   showNotification(from: String, align: String, type: String, icon: String, message: String) {
 
     this.toastr.info(
-      '<span data-notify="icon" class="fa ' + icon + '"></span><span data-notify="message"> ' + message + '</span>',
+      '<span data-openMenu="icon" class="fa ' + icon + '"></span><span data-openMenu="message"> ' + message + '</span>',
       '',
       {
         timeOut: 4000,

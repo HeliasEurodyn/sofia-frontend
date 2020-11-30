@@ -40,7 +40,6 @@ export class ListDesignerFormComponent extends PageComponent implements OnInit {
     super();
   }
 
-
   ngOnInit(): void {
 
     this.selectedFilterField = new ListComponentFieldDTO();
@@ -58,14 +57,10 @@ export class ListDesignerFormComponent extends PageComponent implements OnInit {
     if (this.mode === 'edit-record') {
       this.service.getById(id).subscribe(data => {
         this.dto = data;
-        //  if (this.dto.listComponentList.length > 0) {
-        //    this.selectedListComponent = this.dto;
-        //  }
         this.cleanIdsIfCloneEnabled();
       });
     }
 
-    //  this.dto.listComponentList = [];
     this.refreshComponents();
   }
 
@@ -76,9 +71,6 @@ export class ListDesignerFormComponent extends PageComponent implements OnInit {
 
         this.dto.id = null;
         this.dto.version = null;
-        // for (const listComponent of this.dto.listComponentList) {
-        //  listComponent.id = null;
-        //    listComponent.version = null;
 
         for (const listComponentFieldList of this.dto.listComponentColumnFieldList) {
           listComponentFieldList.id = null;
@@ -99,19 +91,16 @@ export class ListDesignerFormComponent extends PageComponent implements OnInit {
           listComponentFieldList.id = null;
           listComponentFieldList.version = null;
         }
-        //  }
         this.mode = 'new-record';
       }
     }
   }
-
 
   refreshComponents() {
     this.tableComponentService.get().subscribe(data => {
       this.components = data;
     });
   }
-
 
   showPreviousPageButton() {
     if (this.previousPage === null) {
@@ -137,7 +126,6 @@ export class ListDesignerFormComponent extends PageComponent implements OnInit {
     }
   }
 
-
   save() {
     if (this.mode === 'edit-record') {
       this.service.update(this.dto).subscribe(data => {
@@ -152,10 +140,6 @@ export class ListDesignerFormComponent extends PageComponent implements OnInit {
     }
   }
 
-  // toList() {
-  //   this.router.navigate(['/list-designer-list']);
-  // }
-
   delete() {
     this.service.delete(this.dto.id).subscribe(data => {
       // this.router.navigate(['/list-designer-list']);
@@ -163,9 +147,7 @@ export class ListDesignerFormComponent extends PageComponent implements OnInit {
     });
   }
 
-
   selectComponent(selectedComponent) {
-
     this.dto.component = selectedComponent;
     this.dto.listComponentActionFieldList = [];
     this.dto.listComponentColumnFieldList = [];
@@ -173,33 +155,7 @@ export class ListDesignerFormComponent extends PageComponent implements OnInit {
     this.dto.listComponentLeftGroupFieldList = [];
     this.dto.listComponentOrderByFieldList = [];
     this.dto.listComponentTopGroupFieldList = [];
-
-    // const dto = new ListDTO();
-    // this.dto.shortOrder = this.genNextShortOrder();
-    // this.dto.code = 'c' + this.dto.shortOrder;
-    // this.dto.listComponentList.push(dto);
-
-    // this.selectedListComponent = dto;
   }
-
-  // genNextShortOrder() {
-  //   if (this.dto.listComponentList === null
-  //     || this.dto.listComponentList === undefined
-  //     || this.dto.listComponentList.length === 0) {
-  //     return 1;
-  //   }
-  //
-  //   const curShortOrderObject = this.dto.listComponentList.reduce(function (prev, curr) {
-  //     return prev.shortOrder < curr.shortOrder ? curr : prev;
-  //   });
-  //
-  //   return (curShortOrderObject.shortOrder + 1);
-  // }
-
-
-  // setSelectedComponent(row: ListComponentDTO) {
-  //   this.selectedListComponent = row;
-  // }
 
   hideChildren(item) {
     item.showFieldList = false;
@@ -215,6 +171,7 @@ export class ListDesignerFormComponent extends PageComponent implements OnInit {
     dto.componentPersistEntity = row;
     dto.componentPersistEntityField = field;
     dto.visible = true;
+    dto.required = false;
     dto.editable = false;
     dto.description = field.description
     dto.type = field.persistEntityField.type;
@@ -254,7 +211,6 @@ export class ListDesignerFormComponent extends PageComponent implements OnInit {
     this.dto.listComponentFilterFieldList.push(dto);
   }
 
-
   addCommandFormulaFieldToColumns() {
     const dto = new ListComponentFieldDTO();
     dto.editor = '';
@@ -271,15 +227,16 @@ export class ListDesignerFormComponent extends PageComponent implements OnInit {
     this.dto.listComponentColumnFieldList.push(dto);
   }
 
-
   addSqlFormulaFieldToColumns() {
     const dto = new ListComponentFieldDTO();
     dto.editor = '';
     dto.componentPersistEntity = null
     dto.componentPersistEntityField = null;
     dto.visible = true;
-    dto.editable = false;
+    dto.editable = true;
     dto.required = false;
+    dto.headerFilter = false;
+    dto.operator = '=';
     dto.description = '';
     dto.type = '';
     dto.shortOrder = this.genNextColumnsShortOrder();

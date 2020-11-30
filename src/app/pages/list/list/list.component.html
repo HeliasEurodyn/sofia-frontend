@@ -3,9 +3,9 @@
     <ul class="nav nav-tabs">
       <li class="nav-item">
         <a class="nav-link"
-            [ngClass]="{'active': this.defaultPage === 'filter', 'is-hidden': !this.filterVisible }"
-            data-toggle="tab"
-            href="#filters"
+           [ngClass]="{'active': this.defaultPage === 'filter', 'is-hidden': !this.filterVisible }"
+           data-toggle="tab"
+           href="#filters"
            role="tab">
           <i class="fa fa-filter"></i>
           Filters
@@ -27,6 +27,7 @@
 </div>
 
 <div class="tab-content text-center" id="my-tab-content">
+
   <!-- filters -->
   <div class="tab-pane" [ngClass]="{'active': this.defaultPage === 'filter'}" id="filters" role="tabpanel">
     <div class="row">
@@ -41,19 +42,15 @@
               </div>
               <div class="col-sm-5">
                 <div class="pull-right">
-                  <!--                  <button class="btn btn-outline-primary">-->
-                  <!--                    <i class="fa fa-search"></i> List-->
-                  <!--                  </button>-->
                 </div>
               </div>
             </div>
           </div>
           <div class="card-body">
 
-
             <div class="row">
-
               <ng-container *ngFor="let row of this.listDto?.listComponentFilterFieldList">
+
 
                 <ng-container *ngIf="row.type === 'varchar' || row.type === 'text' ">
                   <div class="{{row.bclass}}  L{{listDto.id}}-{{this.listDto.code}}-{{row.code}} filter-col"
@@ -86,11 +83,10 @@
                 </ng-container>
 
                 <ng-container *ngIf="row.type === 'list'">
-                  <div class="{{row.bclass}} L{{listDto.id}}-{{this.listDto.code}}-{{row.code}} filter-col"
-                       style="{{row.css}}">
+                  <div class="{{row.bclass}} L{{listDto.id}}-{{this.listDto.code}}-{{row.code}} filter-col" style="{{row.css}}">
                     <div class="form-group">
                       <b [ngClass]="{'text-danger': row.required}">{{row.description}}</b>
-                      <app-date-picker [(inputDate)]="row.fieldValue"></app-date-picker>
+                        <app-list-selector></app-list-selector>
                     </div>
                   </div>
                 </ng-container>
@@ -106,10 +102,7 @@
                 </ng-container>
 
               </ng-container>
-
             </div>
-
-
           </div>
         </div>
       </div>
@@ -120,7 +113,6 @@
   <div class="tab-pane" [ngClass]="{'active': this.defaultPage !== 'filter'}" id="list" role="tabpanel">
 
     <div class="row">
-
       <div *ngIf="isGroupContentDivVisible()" class="col-md-2 col-sm-12 col-12">
         <div class="card">
           <div class="card-header">
@@ -176,8 +168,7 @@
 
                 <div class="form-group">
                   <div class="input-group input-group-selector no-border">
-                    <input readonly data-target="#insertComponentModal" data-toggle="modal" type="text" class="form-control"
-                           value="{{item.fieldValue}}">
+                    <input readonly type="text" class="form-control" value="{{item.fieldValue}}">
                     <div class="input-group-append" (click)="resetListComponentLeftGroupFieldList(item.code)">
                  <span class="input-group-text input-group-text-rm">
                     <i class="fa fa-window-close"></i>
@@ -187,19 +178,12 @@
                 </div>
               </div>
 
-              </div>
-
-
-
-
-
-
+            </div>
 
 
           </div>
         </div>
       </div>
-
       <div class="col">
         <div class="card">
           <div class="card-header">
@@ -221,8 +205,6 @@
           </div>
 
           <div class="card-body">
-
-
             <table class="table table-striped table-fixed">
               <thead class="text-primary">
               <tr>
@@ -235,12 +217,22 @@
                   </th>
                 </ng-container>
               </tr>
+              <tr *ngIf="this.listDto?.headerFilters">
+                <ng-container *ngIf="this.listDto?.listComponentActionFieldList.length > 0">
+                  <th style="max-width: 100px;"></th>
+                </ng-container>
+                <ng-container *ngFor="let row of this.listDto?.listComponentColumnFieldList">
+                  <th *ngIf="row.visible">
+                    <input type="text" class="form-control transparent-input" *ngIf="row.headerFilter"
+                           [readonly]="!row.editable"
+                           [(ngModel)]="row.fieldValue" (keydown)="columnFilterRefreshData($event)">
+                  </th>
+                </ng-container>
+              </tr>
               </thead>
               <tbody>
 
               <tr *ngFor="let row of this.listResultsData?.listContent">
-                <!--              <td *ngFor="let cell of row">{{cell}}</td>-->
-
 
                 <td style="max-width: 100px;" *ngIf="this.listDto?.listComponentActionFieldList.length > 0">
                   <ng-container *ngFor="let field of this.listDto?.listComponentActionFieldList">
@@ -250,7 +242,6 @@
                     </button>
                   </ng-container>
                 </td>
-
 
                 <ng-container *ngFor="let column of this.listDto?.listComponentColumnFieldList">
                   <td *ngIf="column.visible">
@@ -263,24 +254,27 @@
               </tbody>
             </table>
 
-
             <ul *ngIf="this.listDto?.hasPagination" class="pagination pull-right">
               <li class="page-item">
-                <a aria-label="Previous" (click)="navigateToPage(this.listResultsData.currentPage-1)"  class="page-link" disabled="">
+                <a aria-label="Previous" (click)="navigateToPage(this.listResultsData.currentPage-1)" class="page-link"
+                   disabled="">
                   <span aria-hidden="true"><i aria-hidden="true" class="fa fa-angle-double-left"></i></span>
                 </a>
               </li>
               <li class="page-item">
-                <a class="page-link" (click)="navigateToPage(this.listResultsData.currentPage-1)"  *ngIf="this.showPrevPagination" >{{this.listResultsData.currentPage}}</a>
+                <a class="page-link" (click)="navigateToPage(this.listResultsData.currentPage-1)"
+                   *ngIf="this.showPrevPagination">{{this.listResultsData.currentPage}}</a>
               </li>
               <li class="page-item active">
-                <a class="page-link" (click)="navigateToPage(this.listResultsData.currentPage)" >{{listResultsData.currentPage+1}}</a>
+                <a class="page-link"
+                   (click)="navigateToPage(this.listResultsData.currentPage)">{{listResultsData.currentPage + 1}}</a>
               </li>
               <li class="page-item">
-                <a class="page-link" (click)="navigateToPage(this.listResultsData.currentPage+1)"   *ngIf="this.showNextPagination" >{{listResultsData.currentPage+2}}</a>
+                <a class="page-link" (click)="navigateToPage(this.listResultsData.currentPage+1)"
+                   *ngIf="this.showNextPagination">{{listResultsData.currentPage + 2}}</a>
               </li>
               <li class="page-item">
-                <a aria-label="Next" (click)="navigateToPage(this.listResultsData.currentPage+1)"  class="page-link">
+                <a aria-label="Next" (click)="navigateToPage(this.listResultsData.currentPage+1)" class="page-link">
                   <span aria-hidden="true"><i aria-hidden="true" class="fa fa-angle-double-right"></i></span>
                 </a>
               </li>
@@ -290,6 +284,8 @@
         </div>
       </div>
     </div>
+
   </div>
 </div>
+
 

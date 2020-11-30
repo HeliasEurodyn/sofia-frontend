@@ -15,10 +15,8 @@ import {DatePipe} from '@angular/common';
 export class ListComponent extends PageComponent implements OnInit {
 
   public listDto: ListDTO;
-  // public listComponentDto: ListComponentDTO;
   public listResultsData: ListResultsData;
   public groupContent: Array<Map<string, any>>;
-  // private selectedGroupItem: any;
 
   private showPrevPagination = false;
   private showNextPagination = false;
@@ -42,7 +40,6 @@ export class ListComponent extends PageComponent implements OnInit {
 
       this.service.getDataById(id).subscribe(data => {
         this.listDto = data;
-        // this.listComponentDto = this.listDto.listComponentList[0];
 
         this.listVisible = this.listDto.listVisible;
         this.filterVisible = this.listDto.filterVisible;
@@ -59,7 +56,8 @@ export class ListComponent extends PageComponent implements OnInit {
     let requiredFiledsEmpty = false;
     for (const filterField of this.listDto.listComponentFilterFieldList) {
       if ((filterField.fieldValue == null || filterField.fieldValue === '') && filterField.required) {
-        this.notificationService.showNotification('top', 'center', 'alert-danger', 'fa-id-card', '<b>Filters error</b> Required filter field ' + filterField.description + ' is empty!');
+        this.notificationService.showNotification('top', 'center', 'alert-danger', 'fa-id-card',
+          '<b>Filters error</b> Required filter field ' + filterField.description + ' is empty!');
         requiredFiledsEmpty = true;
       }
     }
@@ -81,9 +79,7 @@ export class ListComponent extends PageComponent implements OnInit {
       }
     }
 
-    console.log(this.listDto.listComponentLeftGroupFieldList);
     for (const filterField of this.listDto.listComponentLeftGroupFieldList) {
-
       if (filterField.fieldValue != null && filterField.fieldValue !== '' && filterField.editable) {
         let fieldValue = '';
         if (filterField.type === 'datetime') {
@@ -95,7 +91,19 @@ export class ListComponent extends PageComponent implements OnInit {
       }
     }
 
-    this.service.getListResultData2(values, this.listDto.id).subscribe(data => {
+    for (const filterField of this.listDto.listComponentColumnFieldList) {
+      if (filterField.fieldValue != null && filterField.fieldValue !== '' && filterField.editable) {
+        let fieldValue = '';
+        if (filterField.type === 'datetime') {
+          fieldValue = this.datepipe.transform(filterField.fieldValue, 'yyyyMMddHHmmss');
+        } else {
+          fieldValue = filterField.fieldValue;
+        }
+        values.set(filterField.code, fieldValue);
+      }
+    }
+
+    this.service.getListResultData(values, this.listDto.id).subscribe(data => {
       this.listResultsData = data;
       this.setPaginationSettings();
     });
@@ -114,13 +122,11 @@ export class ListComponent extends PageComponent implements OnInit {
       this.showPrevPagination = false;
     }
 
-
     if (this.listResultsData.currentPage + 1 < this.listResultsData.totalPages) {
       this.showNextPagination = true;
     } else {
       this.showNextPagination = false;
     }
-
   }
 
   getGroupResultData(parametersMap: Map<string, string>) {
@@ -130,7 +136,6 @@ export class ListComponent extends PageComponent implements OnInit {
       this.initializeGroupContentParrents(this.listResultsData.groupContent);
     });
   }
-
 
   private initializeGroupContentParrents(groupContent: Array<Map<string, any>>) {
     if (groupContent == null) {
@@ -155,8 +160,6 @@ export class ListComponent extends PageComponent implements OnInit {
       groupContentEntry['childrenVisible'] = childrenVisible;
 
       if (groupContentEntry['children'] !== null) {
-
-
         this.initializeGroupContentVisibility(groupContentEntry['children'], childrenVisible);
       }
     }
@@ -176,12 +179,10 @@ export class ListComponent extends PageComponent implements OnInit {
   }
 
   filterGroup(item) {
-
     this.setValueToListComponentLeftGroupFieldList(item['code'], item['value']);
     if (item['parrent'] != null) {
       this.filterGroupParrent(item['parrent'])
     }
-
     this.getListResultData();
   }
 
@@ -198,7 +199,6 @@ export class ListComponent extends PageComponent implements OnInit {
         leftGroupingField.fieldValue = null;
       }
     }
-
     this.getListResultData();
   }
 
@@ -229,8 +229,13 @@ export class ListComponent extends PageComponent implements OnInit {
     });
   }
 
-  navigateToPage(page: number) {
+  columnFilterRefreshData(event: KeyboardEvent) {
+    if (event.key === 'Enter') {
+      this.getListResultData();
+    }
+  }
 
+  navigateToPage(page: number) {
     if (page < 0) {
       return;
     }
@@ -240,7 +245,7 @@ export class ListComponent extends PageComponent implements OnInit {
     }
 
     this.listDto.currentPage = page;
-    this.service.getListResultData(this.listDto).subscribe(data => {
+    this.service.getListResultDataPost(this.listDto).subscribe(data => {
       this.listResultsData = data;
       this.setPaginationSettings();
     });

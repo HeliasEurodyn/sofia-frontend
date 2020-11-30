@@ -40,36 +40,39 @@ export class TabComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.openPage(this.command);
+    //  this.openPage(this.command);
   }
 
   public openPageAfterOpen(command: string) {
-    this.command = command;
   }
 
-  public openPage(command: string) {
-
-
-    const componentRef = this.pageNavigatorService.openLocation(command);
-
-    this.appRef.attachView(componentRef.hostView);
-
-    const domElem = (componentRef.hostView as EmbeddedViewRef<any>).rootNodes[0] as HTMLElement;
-    console.log(this.pageDiv);
-    const childElements = this.pageDiv.nativeElement.childNodes;
-    for (const childElement of childElements) {
-      this.renderer.removeChild(this.pageDiv.nativeElement, childElement);
-    }
-
-    this.renderer.appendChild(this.pageDiv.nativeElement, domElem);
-
-
-    this.pages.push(componentRef);
-
-    componentRef.instance.tabNavigationEmitter.subscribe(event => {
-      // this.pageNavigatorService.openLocation(event);
-     
-    })
-  }
+  // public openPageAfterOpen(command: string) {
+  //   this.command = command;
+  // }
+  //
+  // public openPage(command: string) {
+  //
+  //
+  //   const componentRef = this.pageNavigatorService.openLocation(command);
+  //
+  //   this.appRef.attachView(componentRef.hostView);
+  //
+  //   const domElem = (componentRef.hostView as EmbeddedViewRef<any>).rootNodes[0] as HTMLElement;
+  //   console.log(this.pageDiv);
+  //   const childElements = this.pageDiv.nativeElement.childNodes;
+  //   for (const childElement of childElements) {
+  //     this.renderer.removeChild(this.pageDiv.nativeElement, childElement);
+  //   }
+  //
+  //   this.renderer.appendChild(this.pageDiv.nativeElement, domElem);
+  //
+  //
+  //   this.pages.push(componentRef);
+  //
+  //   componentRef.instance.tabNavigationEmitter.subscribe(event => {
+  //     // this.pageNavigatorService.openLocation(event);
+  //
+  //   })
+  // }
 
 }

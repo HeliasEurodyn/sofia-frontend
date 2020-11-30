@@ -17,22 +17,14 @@ export class NavigatorService {
               private injector: Injector,
               private router: Router,
   ) {
-    //  const pagesStringified = localStorage.getItem('PAGES');
-    //  alert(pagesStringified);
-    //  if (pagesStringified == null) {
     this.createDefaultPage('dashboard');
-    //  } else {
-    //       this.pages = JSON.parse(pagesStringified);
-    // }
-
-
   }
 
   createDefaultPage(pageName: string) {
     const params: Map<string, string> = new Map();
     params.set('NAME', pageName);
     params.set('HIDE-HEADER', 'TRUE');
-    const componentRef: ComponentRef<any> = this.generateStaticPage(params);
+    const componentRef: ComponentRef<any> = this.generateComponent(params);
 
     if (componentRef !== null) {
       this.pages.push(componentRef);
@@ -41,7 +33,6 @@ export class NavigatorService {
       if (params.get('TITLE')) {
         componentRef.instance.title = params.get('TITLE');
       }
-      //  this.currentId = 'default';
     }
     return;
   }
@@ -83,7 +74,6 @@ export class NavigatorService {
     }
   }
 
-
   public navigateById(pageId: string) {
     for (const page of this.pages) {
       if (pageId.toUpperCase() === page.instance.pageId.toUpperCase()) {
@@ -97,9 +87,7 @@ export class NavigatorService {
     }
   }
 
-
   public closeAndBack(pageId) {
-
     for (const page of this.pages) {
       if (pageId.toUpperCase() === page.instance.pageId.toUpperCase()) {
         if (page.instance.previousPage === null) {
@@ -121,8 +109,6 @@ export class NavigatorService {
 
 
   public closeById(id: string) {
-
-
     for (const page of this.pages) {
       if (id.toUpperCase() === page.instance.pageId.toUpperCase()) {
         const pageIndex = this.pages.indexOf(page);
@@ -150,17 +136,24 @@ export class NavigatorService {
 
       this.router.navigateByUrl('/main/' + this.pages[this.pages.length - 1].instance.pageId);
     }
-
   }
 
-  public openLocation(command: string) {
+  public parseCommandAndGetType(command: string) {
     command = command.toUpperCase();
-
     if (command.length === 0) {
-      return;
+      return null;
     }
 
     const commandType = command.replace(/\[.*/, '');
+
+    return commandType;
+  }
+
+  public parseCommand(command: string) {
+    command = command.toUpperCase();
+    if (command.length === 0) {
+      return null;
+    }
 
     if (this.verifyBrackets(command) === false) {
       return null;
@@ -171,7 +164,6 @@ export class NavigatorService {
     if (index <= 0) {
       return;
     }
-
 
     let commandInsideBrackets = command.replace(/.*\[|\].*/, '');
     commandInsideBrackets = commandInsideBrackets.replace(/.*\[|\].*/, '');
@@ -187,14 +179,22 @@ export class NavigatorService {
       commandParametersKeyValMap.set(commandParameterKeyVal[0], commandParameterKeyVal[1]);
     }
 
+    return commandParametersKeyValMap;
+  }
+
+  public openLocation(command: string) {
+
+    const commandType = this.parseCommandAndGetType(command);
+
+    const commandParametersKeyValMap: Map<string, string> = this.parseCommand(command);
+
     let componentRef: ComponentRef<any> = null;
     if (commandType === 'STATICPAGE') {
-      componentRef = this.generateStaticPage(commandParametersKeyValMap);
+      componentRef = this.generateComponent(commandParametersKeyValMap);
     } else if (commandType === 'LIST') {
       commandParametersKeyValMap.set('NAME', 'LIST');
-      componentRef = this.generateStaticPage(commandParametersKeyValMap);
+      componentRef = this.generateComponent(commandParametersKeyValMap);
     }
-
 
     if (componentRef !== null) {
       const pageId = uuid.v4();
@@ -224,7 +224,6 @@ export class NavigatorService {
             componentRef.instance.previousPage = page;
             this.pages[this.pages.indexOf(page)] = componentRef;
 
-            // this.router.navigateByUrl('/main/' + page.instance.pageId);
           }
         }
       } else {
@@ -233,11 +232,11 @@ export class NavigatorService {
       }
 
       this.router.navigateByUrl('/main/' + componentRef.instance.pageId);
-
     }
 
-
   }
+
+
 
 
   private destroyNextPageBranch(page: ComponentRef<any>) {
@@ -248,7 +247,6 @@ export class NavigatorService {
     page.destroy();
   }
 
-
   private destroyPreviousPageBranch(page: ComponentRef<any>) {
     if (page.instance.previousPage !== null && page.instance.previousPage !== undefined) {
       this.destroyNextPageBranch(page.instance.previousPage);
@@ -258,7 +256,6 @@ export class NavigatorService {
   }
 
   private verifyBrackets(command: string) {
-
     const bracketOpenLength = (command.match(/\[/) || []).length;
     const bracketCloseLength = (command.match(/\]/) || []).length;
 
@@ -269,9 +266,7 @@ export class NavigatorService {
     }
   }
 
-
-  public generateStaticPage(pageParameters: Map<string, string>) {
-
+  public generateComponent(pageParameters: Map<string, string>) {
     if (!pageParameters.has('NAME')) {
       return null;
     }

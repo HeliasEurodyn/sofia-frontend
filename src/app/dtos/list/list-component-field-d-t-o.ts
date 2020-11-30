@@ -12,6 +12,7 @@ export class ListComponentFieldDTO extends BaseDTO {
   public componentPersistEntityField: ComponentPersistEntityFieldDTO;
   visible: Boolean;
   editable: Boolean;
+  headerFilter: Boolean;
   required: Boolean;
   defaultValue: string;
   decimals: number;

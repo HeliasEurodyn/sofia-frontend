@@ -171,7 +171,7 @@
             <label style="padding-bottom: 10px;"></label>
             <div class="form-check">
               <label class="form-check-label">
-                <input class="form-check-input" type="checkbox" [(ngModel)]="this.dto.HeaderFilters"> Use Header Filters
+                <input class="form-check-input" type="checkbox" [(ngModel)]="this.dto.headerFilters"> Use Header Filters
                 <span class="form-check-sign"></span>
               </label>
             </div>
@@ -1085,7 +1085,6 @@
           </div>
         </div>
 
-
         <div class="row">
           <div class="col-12">
             <label>Description</label>
@@ -1102,11 +1101,47 @@
 
         <div class="row">
           <div class="col-12">
-            <label>Default</label>
+            <label>Use Header filter</label><br>
+            <select class="transparent-input" [(ngModel)]="selectedFilterField.headerFilter">
+              <option value="false">No</option>
+              <option value="true">Yes</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12">
+            <label>Header filter Default</label>
             <textarea class="form-control" [(ngModel)]="selectedFilterField.defaultValue"></textarea>
           </div>
         </div>
 
+        <div class="row">
+          <div class="col-12">
+            <label>Header filter Operator</label><br>
+            <select [(ngModel)]="selectedFilterField.operator" name="type" class="transparent-input">
+              <option value=""></option>
+              <option value="=">=</option>
+              <option value="<">&#60;</option>
+              <option value=">">&#62;</option>
+              <option value="<=">&#60;=</option>
+              <option value=">=">&#62;=</option>
+              <option value="like">like</option>
+              <option value="<>">&#60;&#62;</option>
+              <option value="in">in</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12">
+            <label>Header filter Editable</label><br>
+            <select class="transparent-input" [(ngModel)]="selectedFilterField.editable">
+              <option value="false">No</option>
+              <option value="true">Yes</option>
+            </select>
+          </div>
+        </div>
 
         <div class="row">
           <div class="col-12">
@@ -1115,14 +1150,12 @@
           </div>
         </div>
 
-
         <div class="row">
           <div class="col-12">
             <label>Bootstrap Column Class</label>
             <input type="text" class="form-control" [(ngModel)]="selectedFilterField.bclass">
           </div>
         </div>
-
 
         <div class="row">
           <div class="col-12">
@@ -1133,17 +1166,6 @@
             </select>
           </div>
         </div>
-
-        <div class="row">
-          <div class="col-12">
-            <label>Editable</label><br>
-            <select class="transparent-input" [(ngModel)]="selectedFilterField.editable">
-              <option value="false">No</option>
-              <option value="true">Yes</option>
-            </select>
-          </div>
-        </div>
-
 
       </div>
 
@@ -1157,7 +1179,6 @@
     </div>
   </div>
 </div>
-
 
 <div aria-labelledby="ModalLabel" class="modal fade" id="selectedFilterFieldModal" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-select-fields">
@@ -1307,7 +1328,6 @@
   </div>
 </div>
 
-
 <div aria-labelledby="ModalLabel" class="modal fade" id="selectedLeftGroupFieldModal" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-select-fields">
     <div class="modal-content">
@@ -1428,7 +1448,6 @@
     </div>
   </div>
 </div>
-
 
 <div aria-labelledby="ModalLabel" class="modal fade" id="selectedOrderByFieldModal" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-select-fields">

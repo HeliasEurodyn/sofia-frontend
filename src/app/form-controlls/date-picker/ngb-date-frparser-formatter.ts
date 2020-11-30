@@ -1,5 +1,5 @@
 import {NgbDateParserFormatter, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 
 function padNumber(value: number) {
   if (isNumber(value)) {
@@ -19,7 +19,6 @@ function toInteger(value: any): number {
 
 @Injectable()
 export class NgbDateFRParserFormatter extends NgbDateParserFormatter {
-
 
   parse(value: string): NgbDateStruct {
     if (value) {

@@ -43,6 +43,7 @@ import {UserListComponent} from './pages/user/user-list/user-list.component';
 import {AuthenticationHeaderInterceptor} from './interceptors/authentication-header-interceptor';
 import {HttpRequestLoadingInterceptor} from './interceptors/http-request-loading.interceptor';
 import {HttpRequestErrorInterceptor} from './interceptors/http-request-error.interceptor';
+import { ListSelectorComponent } from './form-controlls/list-selector/list-selector.component';
 
 
 @NgModule({
@@ -69,7 +70,8 @@ import {HttpRequestErrorInterceptor} from './interceptors/http-request-error.int
     DatePickerComponent,
     SofiaDateDirective,
     UserFormComponent,
-    UserListComponent
+    UserListComponent,
+    ListSelectorComponent
   ],
   imports: [
     BrowserAnimationsModule,

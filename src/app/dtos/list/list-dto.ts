@@ -29,7 +29,7 @@ export class ListDTO extends BaseDTO {
   public hasMaxSize: Boolean;
   public maxSize: number;
 
-  public HeaderFilters: Boolean;
+  public headerFilters: Boolean;
   public rowNavigation: string;
 
   public component: ComponentDTO;

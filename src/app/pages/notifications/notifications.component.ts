@@ -16,7 +16,7 @@ export class NotificationsComponent{
     switch (color) {
       case 1:
         this.toastr.info(
-        '<span data-notify="icon" class="nc-icon nc-bell-55"></span><span data-notify="message">Welcome to <b>Paper Dashboard Angular</b> - a beautiful bootstrap dashboard for every web developer.</span>',
+        '<span data-openMenu="icon" class="nc-icon nc-bell-55"></span><span data-openMenu="message">Welcome to <b>Paper Dashboard Angular</b> - a beautiful bootstrap dashboard for every web developer.</span>',
           "",
           {
             timeOut: 4000,
@@ -29,7 +29,7 @@ export class NotificationsComponent{
         break;
       case 2:
         this.toastr.success(
-          '<span data-notify="icon" class="nc-icon nc-bell-55"></span><span data-notify="message">Welcome to <b>Paper Dashboard Angular</b> - a beautiful bootstrap dashboard for every web developer.</span>',
+          '<span data-openMenu="icon" class="nc-icon nc-bell-55"></span><span data-openMenu="message">Welcome to <b>Paper Dashboard Angular</b> - a beautiful bootstrap dashboard for every web developer.</span>',
           "",
           {
             timeOut: 4000,
@@ -42,7 +42,7 @@ export class NotificationsComponent{
         break;
       case 3:
         this.toastr.warning(
-        '<span data-notify="icon" class="nc-icon nc-bell-55"></span><span data-notify="message">Welcome to <b>Paper Dashboard Angular</b> - a beautiful bootstrap dashboard for every web developer.</span>',
+        '<span data-openMenu="icon" class="nc-icon nc-bell-55"></span><span data-openMenu="message">Welcome to <b>Paper Dashboard Angular</b> - a beautiful bootstrap dashboard for every web developer.</span>',
           "",
           {
             timeOut: 4000,
@@ -55,7 +55,7 @@ export class NotificationsComponent{
         break;
       case 4:
         this.toastr.error(
-        '<span data-notify="icon" class="nc-icon nc-bell-55"></span><span data-notify="message">Welcome to <b>Paper Dashboard Angular</b> - a beautiful bootstrap dashboard for every web developer.</span>',
+        '<span data-openMenu="icon" class="nc-icon nc-bell-55"></span><span data-openMenu="message">Welcome to <b>Paper Dashboard Angular</b> - a beautiful bootstrap dashboard for every web developer.</span>',
           "",
           {
             timeOut: 4000,
@@ -68,7 +68,7 @@ export class NotificationsComponent{
         break;
       case 5:
         this.toastr.show(
-        '<span data-notify="icon" class="nc-icon nc-bell-55"></span><span data-notify="message">Welcome to <b>Paper Dashboard Angular</b> - a beautiful bootstrap dashboard for every web developer.</span>',
+        '<span data-openMenu="icon" class="nc-icon nc-bell-55"></span><span data-openMenu="message">Welcome to <b>Paper Dashboard Angular</b> - a beautiful bootstrap dashboard for every web developer.</span>',
           "",
           {
             timeOut: 4000,
