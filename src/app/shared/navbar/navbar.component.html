@@ -4,11 +4,9 @@
 
       <div class="navbar-minimize">
         <button class="btn btn-icon btn-round showHideSidemenuBtn" id="minimizeSidebar" (click)="updateToggle()"  style="box-shadow: 0 2px 2px 0 rgba(53, 53, 53, 0.2), 0 3px 1px -2px rgba(153, 153, 153, 0.2), 0 1px 5px 0 rgba(153, 153, 153, 0.12) !important;">
-<!--          <i class="nc-icon nc-minimal-right text-center visible-on-sidebar-mini"></i>-->
           <i class="fa fa-ellipsis-v text-center visible-on-sidebar-regular" style="color: #636262;"></i>
         </button>
       </div>
-
 
       <div class="navbar-toggle">
         <button type="button" class="navbar-toggler" (click)="sidebarToggle()">
@@ -17,8 +15,6 @@
           <span class="navbar-toggler-bar bar3"></span>
         </button>
       </div>
-<!--      <a class="navbar-brand" href="javascript:void(0)">{{getTitle()}}</a> -->
-<!--      <div class="btn-group" *ngFor="let pageHeader of pageHeaders | keyvalue">-->
 
       <div class="btn-group" *ngFor="let page of mapPagesToHeaders()" >
         <button [ngClass]="{'active-header':isTheActiveId(page.pageId)}" style="padding: 3px;margin-top: 0px;margin-bottom: 0px;" class="btn btn-outline-danger btn-round" (click)="closePageById(page.pageId)" type="button">
@@ -28,29 +24,6 @@
           {{page.title }}
         </button>
       </div>
-
-<!--      <div class="btn-group">-->
-<!--        <button class="btn btn-outline-default" type="button">-->
-<!--          <i class="fa fa-th-large"></i>-->
-<!--          Dashboard-->
-<!--        </button>-->
-<!--      </div>-->
-<!--      <div class="btn-group">-->
-<!--        <button style="padding: 10px;" class="btn btn-outline-danger btn-round" type="button"><i class="fa fa-times"></i></button>-->
-<!--        <button class="btn btn-outline-default" type="button">{{getTitle()}}</button>-->
-<!--      </div>-->
-<!--      <div class="btn-group">-->
-<!--        <button style="padding: 10px;" class="btn btn-outline-danger btn-round" type="button"><i class="fa fa-times"></i></button>-->
-<!--        <button class="btn btn-outline-default" type="button">Invoice</button>-->
-<!--      </div>-->
-<!--      <div class="btn-group">-->
-<!--        <button style="padding: 10px;" class="btn btn-outline-danger btn-round" type="button"><i class="fa fa-times"></i></button>-->
-<!--        <button class="btn btn-outline-default" type="button">Customer</button>-->
-<!--      </div>-->
-<!--      <div class="btn-group">-->
-<!--        <button style="padding: 10px;" class="btn btn-outline-danger btn-round" type="button"><i class="fa fa-times"></i></button>-->
-<!--        <button class="btn btn-outline-default" type="button">Customer</button>-->
-<!--      </div>-->
 
     </div>
     <button class="navbar-toggler" type="button" (click)="collapse()"

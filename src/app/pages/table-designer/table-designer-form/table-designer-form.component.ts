@@ -3,9 +3,8 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {TableDTO} from '../../../dtos/table/tableDTO';
 import {TableService} from '../../../services/crud/table.service';
 import {PageComponent} from '../../page/page-component';
-import {NavigatorService} from '../../../services/navigator.service';
+import {CommandNavigatorService} from '../../../services/command-navigator.service';
 import {TableFieldDTO} from '../../../dtos/table/table-field-dto';
-
 
 @Component({
   selector: 'app-table-designer-form',
@@ -17,19 +16,14 @@ export class TableDesignerFormComponent extends PageComponent implements OnInit 
   public dto: TableDTO;
   shortOrder = 0;
   public tableExists = false;
-
   public mode: string;
- // userDto: TableDTO;
-
-
   public isCollapsed = false;
 
   constructor(private activatedRoute: ActivatedRoute,
               private service: TableService,
               private router: Router,
-              private navigatorService: NavigatorService) {
+              private navigatorService: CommandNavigatorService) {
     super();
-
   }
 
   checkIfTableAlreadyExists() {
@@ -68,7 +62,7 @@ export class TableDesignerFormComponent extends PageComponent implements OnInit 
 
   ngOnInit(): void {
     let id = '0';
-    this.title = 'Table Designer Entry';
+    this.setTitle('Table Designer Entry');
     // this.title.next('Table Designer Entry :)')
 
     this.mode = 'new-record';
@@ -84,7 +78,7 @@ export class TableDesignerFormComponent extends PageComponent implements OnInit 
     if (this.mode === 'edit-record') {
       this.service.getById(id).subscribe(data => {
         this.dto = data;
-        this.title = 'Entry ' + this.dto.name;
+        this.setTitle('Entry ' + this.dto.name);
         this.cleanIdsIfCloneEnabled();
       });
     }
@@ -117,7 +111,6 @@ export class TableDesignerFormComponent extends PageComponent implements OnInit 
   }
 
 
-
   cleanIdsIfCloneEnabled() {
     if (this.params.has('TYPE')) {
 
@@ -133,7 +126,6 @@ export class TableDesignerFormComponent extends PageComponent implements OnInit 
       }
     }
   }
-
 
 
   removeLine(row) {
@@ -189,9 +181,9 @@ export class TableDesignerFormComponent extends PageComponent implements OnInit 
   }
 
   generateTableFields() {
-      this.service.generateTableFields(this.dto.name).subscribe(data => {
-        this.dto.tableFieldList = data;
-      });
+    this.service.generateTableFields(this.dto.name).subscribe(data => {
+      this.dto.tableFieldList = data;
+    });
 
   }
 }

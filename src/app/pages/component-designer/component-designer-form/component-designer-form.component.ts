@@ -4,7 +4,7 @@ import {ComponentDTO} from '../../../dtos/component/componentDTO';
 import {TableDTO} from '../../../dtos/table/tableDTO';
 import {TableComponentService} from 'app/services/crud/table-component.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import {NavigatorService} from '../../../services/navigator.service';
+import {CommandNavigatorService} from '../../../services/command-navigator.service';
 import {PageComponent} from '../../page/page-component';
 import {ComponentPersistEntityFieldDTO} from '../../../dtos/component/component-persist-entity-field-dto';
 import {ComponentPersistEntityDTO} from '../../../dtos/component/component-persist-entity-dto';
@@ -37,7 +37,7 @@ export class ComponentDesignerFormComponent extends PageComponent implements OnI
               private tableComponentService: TableComponentService,
               private activatedRoute: ActivatedRoute,
               private router: Router,
-              private navigatorService: NavigatorService) {
+              private navigatorService: CommandNavigatorService) {
     super();
   }
 

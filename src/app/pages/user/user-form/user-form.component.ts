@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {PageComponent} from '../../page/page-component';
 import {UserDto} from '../../../dtos/user/user-dto';
 import {UserService} from '../../../services/crud/common/user.service';
-import {NavigatorService} from '../../../services/navigator.service';
+import {CommandNavigatorService} from '../../../services/command-navigator.service';
 import {MenuService} from '../../../services/crud/menu.service';
 import {MenuDTO} from '../../../dtos/menu/menuDTO';
 
@@ -19,7 +19,8 @@ export class UserFormComponent extends PageComponent implements OnInit {
 
   constructor(private userService: UserService,
               private menuService: MenuService,
-              private navigatorService: NavigatorService) {
+              private navigatorService: CommandNavigatorService
+  ) {
     super();
   }
 

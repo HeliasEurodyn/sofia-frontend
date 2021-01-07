@@ -11,7 +11,7 @@ import {
   Renderer2,
   ViewChild
 } from '@angular/core';
-import {NavigatorService} from '../../services/navigator.service';
+import {CommandNavigatorService} from '../../services/command-navigator.service';
 import {InternalMessageService} from '../../shared/utils/internal-message-service';
 import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 
@@ -22,7 +22,6 @@ import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 })
 export class NavigatorComponent implements OnInit, AfterViewInit {
 
-
   @ViewChild('pageDiv') pageDiv: ElementRef;
 
   constructor(private componentFactoryResolver: ComponentFactoryResolver,
@@ -32,16 +31,19 @@ export class NavigatorComponent implements OnInit, AfterViewInit {
               private internalMessageService: InternalMessageService,
               private activatedRoute: ActivatedRoute,
               private router: Router,
-              private navigatorService: NavigatorService) {
+              private commandNavigatorService: CommandNavigatorService) {
+    // this.commandNavigatorService.popupPageEmmiter.subscribe((componentRef) => {
+    //   document.getElementById('popupSelector').click();
+    //    }
+    // );
+
   }
 
   ngOnInit(): void {
+
+//    document.getElementById('popupSelector').click();
   }
 
-
-  // ngOnChanges() {
-  //
-  // }
 
   ngAfterViewInit(): void {
     this.refreshDirectionComponent();
@@ -49,29 +51,24 @@ export class NavigatorComponent implements OnInit, AfterViewInit {
   }
 
   refreshDirectionComponent() {
-
     let pageId = '';
     if (this.activatedRoute.snapshot.paramMap.has('id')) {
       pageId = this.activatedRoute.snapshot.paramMap.get('id');
     }
 
     let pageRendered = false;
-    for (const page of this.navigatorService.pages) {
+    for (const page of this.commandNavigatorService.pages) {
       if (pageId.toUpperCase() === page.instance.pageId.toUpperCase()) {
-        this.navigatorService.currentId = pageId;
+        this.commandNavigatorService.currentId = pageId;
         this.renderPage(page);
         pageRendered = true;
       }
-
-
     }
 
-    if (!pageRendered && this.navigatorService.pages.length > 0) {
-      this.renderPage(this.navigatorService.pages[0]);
+    if (!pageRendered && this.commandNavigatorService.pages.length > 0) {
+      this.renderPage(this.commandNavigatorService.pages[0]);
     }
-
   }
-
 
   subscripeRootChange() {
     this.router.events.subscribe((event) => {
@@ -98,6 +95,5 @@ export class NavigatorComponent implements OnInit, AfterViewInit {
     localStorage.removeItem('loggedin_user');
     this.router.navigateByUrl(`/login`);
   }
-
 
 }

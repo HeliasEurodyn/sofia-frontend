@@ -152,7 +152,7 @@ import {Directive, ElementRef, HostListener, Input} from '@angular/core';
 //   }
 //
 //   if (attrs.datetimeTimezone != null) {
-//     if (/^[+-]\d{2}:?\d{2}$/.test(attrs.datetimeTimezone)) {
+//     if (/^[+-]\d{2}:?\d{2}$/.openPage(attrs.datetimeTimezone)) {
 //       setTimezone(attrs.datetimeTimezone);
 //     } else {
 //       scope.$watch(attrs.datetimeTimezone, setTimezone);

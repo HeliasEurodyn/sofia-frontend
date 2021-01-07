@@ -26,8 +26,6 @@ import {ComponentDesignerFormComponent} from './pages/component-designer/compone
 import {ViewDesignerListComponent} from './pages/view-designer/view-designer-list/view-designer-list.component';
 import {ViewDesignerFormComponent} from './pages/view-designer/view-designer-form/view-designer-form.component';
 import {ListComponent} from './pages/list/list/list.component';
-import {TabContainerComponent} from './shared/main-tab-container/tab-container/tab-container.component';
-import {TabComponent} from './shared/main-tab-container/tab/tab.component';
 import {NavigatorComponent} from './pages/navigator/navigator.component';
 import {AppViewDesignerFormComponent} from './pages/appview-designer/app-view-designer-form/app-view-designer-form.component';
 import {AppViewDesignerListComponent} from './pages/appview-designer/app-view-designer-list/app-view-designer-list.component';
@@ -62,8 +60,6 @@ import { ListSelectorComponent } from './form-controlls/list-selector/list-selec
     ViewDesignerListComponent,
     ViewDesignerFormComponent,
     ListComponent,
-    TabContainerComponent,
-    TabComponent,
     NavigatorComponent,
     AppViewDesignerFormComponent,
     AppViewDesignerListComponent,

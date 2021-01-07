@@ -3,7 +3,7 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ViewService} from 'app/services/crud/view.service';
 import {ViewDTO} from '../../../dtos/view/view-dto';
-import {NavigatorService} from '../../../services/navigator.service';
+import {CommandNavigatorService} from '../../../services/command-navigator.service';
 import {PageComponent} from '../../page/page-component';
 
 @Component({
@@ -26,7 +26,7 @@ export class ViewDesignerFormComponent extends PageComponent implements OnInit {
   constructor(private activatedRoute: ActivatedRoute,
               private service: ViewService,
               private router: Router,
-              private navigatorService: NavigatorService) {
+              private navigatorService: CommandNavigatorService) {
     super();
   }
 

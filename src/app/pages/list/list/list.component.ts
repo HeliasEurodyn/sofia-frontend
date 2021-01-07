@@ -1,9 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit} from '@angular/core';
 import {ListDTO} from '../../../dtos/list/list-dto';
 import {ListService} from '../../../services/crud/list.service';
 import {PageComponent} from '../../page/page-component';
 import {ListResultsData} from '../../../dtos/list/list-results-data';
-import {NavigatorService} from '../../../services/navigator.service';
+import {CommandNavigatorService} from '../../../services/command-navigator.service';
 import {NotificationService} from '../../../services/notification.service';
 import {DatePipe} from '@angular/common';
 
@@ -21,14 +21,18 @@ export class ListComponent extends PageComponent implements OnInit {
   private showPrevPagination = false;
   private showNextPagination = false;
 
-  private listVisible: Boolean = false;
-  private filterVisible: Boolean = false;
+  private listHeaderVisible: Boolean = false;
+  private filterHeaderVisible: Boolean = false;
+
+  private filterBodyVisible: Boolean = false;
+  private listBodyVisible: Boolean = true;
   private defaultPage: String = 'filter';
 
   constructor(private service: ListService,
-              private navigatorService: NavigatorService,
+              private commandNavigatorService: CommandNavigatorService,
               private notificationService: NotificationService,
-              public datepipe: DatePipe) {
+              public datepipe: DatePipe,
+              private elRef: ElementRef) {
     super();
   }
 
@@ -41,9 +45,17 @@ export class ListComponent extends PageComponent implements OnInit {
       this.service.getDataById(id).subscribe(data => {
         this.listDto = data;
 
-        this.listVisible = this.listDto.listVisible;
-        this.filterVisible = this.listDto.filterVisible;
+        this.listHeaderVisible = this.listDto.listVisible;
+        this.filterHeaderVisible = this.listDto.filterVisible;
         this.defaultPage = this.listDto.defaultPage;
+
+        if (this.defaultPage === 'filter') {
+          this.listBodyVisible = false;
+          this.filterBodyVisible = true;
+        } else {
+          this.listBodyVisible = true;
+          this.filterBodyVisible = false;
+        }
 
         if (this.listDto.autoRun) {
           this.getListResultData();
@@ -106,9 +118,8 @@ export class ListComponent extends PageComponent implements OnInit {
     this.service.getListResultData(values, this.listDto.id).subscribe(data => {
       this.listResultsData = data;
       this.setPaginationSettings();
+      this.getGroupResultData(values);
     });
-
-    this.getGroupResultData(values);
   }
 
   setPaginationSettings() {
@@ -165,9 +176,15 @@ export class ListComponent extends PageComponent implements OnInit {
     }
   }
 
-  listButtonClick(command) {
-    command = command.replace('$PAGEID', this.pageId);
-    this.navigatorService.openLocation(command);
+  listButtonClick(row, command) {
+
+    if (command.toUpperCase() === 'RETURN') {
+      this.emitReturningValues(row);
+    } else {
+      command = command.replace('$PAGEID', this.pageId);
+      this.commandNavigatorService.navigate(command);
+    }
+
   }
 
   updateVisibility(item) {
@@ -230,10 +247,76 @@ export class ListComponent extends PageComponent implements OnInit {
   }
 
   columnFilterRefreshData(event: KeyboardEvent) {
+
+    const currentElementId: string = (event.target as Element).id;
+
+    if (event.ctrlKey && event.key === 'ArrowLeft') {
+      let prevElementId = '';
+      for (const column of this.listDto.listComponentColumnFieldList) {
+
+        if (currentElementId === 'headerFilter-' + column.code &&
+          prevElementId !== '') {
+          document.getElementById(prevElementId).focus();
+          return;
+        }
+
+        if (column.editable) {
+          prevElementId = 'headerFilter-' + column.code;
+        }
+      }
+    }
+
+    if (event.ctrlKey && event.key === 'ArrowRight') {
+      let currentElementIdFound = false;
+      for (const column of this.listDto.listComponentColumnFieldList) {
+
+        if (currentElementIdFound && column.editable) {
+          document.getElementById('headerFilter-' + column.code).focus();
+          return;
+        }
+
+        if (currentElementId === 'headerFilter-' + column.code) {
+          currentElementIdFound = true;
+        }
+      }
+    }
+
+    if (event.ctrlKey && event.key === 'Enter') {
+      if (this.listResultsData.listContent.length === 1) {
+        const row = this.listResultsData.listContent[0];
+        this.emitReturningValues(row);
+      }
+
+    }
+
     if (event.key === 'Enter') {
       this.getListResultData();
     }
+
   }
+
+  emitReturningValues(row) {
+    if (this.params.has('RETURN')) {
+
+      const emitData: string[] = [];
+      const returnCode = this.params.get('RETURN');
+      if (returnCode in row) {
+        emitData['RETURN'] = row[returnCode];
+      }
+
+      let returnDisplayString = '';
+      const displayValues: Map<string, string> = this.getReturningDisplayValues();
+      for (const [displayValueKey, displayValue] of displayValues) {
+        if (displayValueKey in row) {
+          returnDisplayString += ' ' + row[displayValueKey];
+        }
+      }
+
+      emitData['RETURN-DISLPAY'] = returnDisplayString;
+      this.selectEmmiter.emit(emitData);
+    }
+  }
+
 
   navigateToPage(page: number) {
     if (page < 0) {
@@ -251,4 +334,25 @@ export class ListComponent extends PageComponent implements OnInit {
     });
   }
 
+  setFilterBodyVisible() {
+    this.filterBodyVisible = true;
+    this.listBodyVisible = false;
+  }
+
+  setListBodyVisible() {
+    this.filterBodyVisible = false;
+    this.listBodyVisible = true;
+  }
+
+  showPreviousPageButton() {
+    if (this.previousPage === null) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  navigateToPreviousPage() {
+    this.commandNavigatorService.navigateToPreviousPage(this.pageId);
+  }
 }

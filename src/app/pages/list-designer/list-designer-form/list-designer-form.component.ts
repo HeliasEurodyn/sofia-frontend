@@ -5,7 +5,7 @@ import {TableComponentService} from 'app/services/crud/table-component.service';
 import {ListComponentDTO} from '../../../dtos/list/list-component-dto';
 import {ListComponentFieldDTO} from 'app/dtos/list/list-component-field-d-t-o';
 import {ListService} from 'app/services/crud/list.service';
-import {NavigatorService} from '../../../services/navigator.service';
+import {CommandNavigatorService} from '../../../services/command-navigator.service';
 import {PageComponent} from '../../page/page-component';
 import {ComponentPersistEntityFieldDTO} from '../../../dtos/component/component-persist-entity-field-dto';
 import {ComponentPersistEntityDTO} from '../../../dtos/component/component-persist-entity-dto';
@@ -36,7 +36,7 @@ export class ListDesignerFormComponent extends PageComponent implements OnInit {
               private tableComponentService: TableComponentService,
               private service: ListService,
               private router: Router,
-              private navigatorService: NavigatorService) {
+              private navigatorService: CommandNavigatorService) {
     super();
   }
 
@@ -395,12 +395,12 @@ export class ListDesignerFormComponent extends PageComponent implements OnInit {
     }
   }
 
-  // removeComponent(row: ListComponentDTO) {
+  // removeComponent(column: ListComponentDTO) {
   //
   //   this.selectedListComponent = undefined;
   //
   //   this.dto.listComponentList =
-  //     this.dto.listComponentList.filter(item => item !== row);
+  //     this.dto.listComponentList.filter(item => item !== column);
   // }
 
   setSelectedFilterField(column: ListComponentFieldDTO) {

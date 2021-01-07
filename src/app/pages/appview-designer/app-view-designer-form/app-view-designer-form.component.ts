@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {PageComponent} from '../../page/page-component';
 import {ActivatedRoute, Router} from '@angular/router';
-import {NavigatorService} from '../../../services/navigator.service';
+import {CommandNavigatorService} from '../../../services/command-navigator.service';
 import {AppViewDTO} from '../../../dtos/appview/app-view-dto';
 import {AppViewService} from '../../../services/crud/app-view.service';
 
@@ -25,7 +25,7 @@ export class AppViewDesignerFormComponent extends PageComponent implements OnIni
   constructor(private activatedRoute: ActivatedRoute,
               private service: AppViewService,
               private router: Router,
-              private navigatorService: NavigatorService) {
+              private navigatorService: CommandNavigatorService) {
     super();
   }
 

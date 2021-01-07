@@ -1,35 +1,39 @@
-<div class="nav-tabs-navigation">
-  <div class="nav-tabs-wrapper">
-    <ul class="nav nav-tabs">
-      <li class="nav-item">
-        <a class="nav-link"
-           [ngClass]="{'active': this.defaultPage === 'filter', 'is-hidden': !this.filterVisible }"
-           data-toggle="tab"
-           href="#filters"
-           role="tab">
-          <i class="fa fa-filter"></i>
-          Filters
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link"
-           [ngClass]="{'active': this.defaultPage !== 'filter', 'is-hidden': !this.listVisible }"
-           (click)="getListResultData()"
-           data-toggle="tab"
-           href="#list"
-           role="tab">
-          <i class="fa fa-search"></i>
-          List
-        </a>
-      </li>
-    </ul>
+
+<div class="row">
+  <div class="col-sm-7">
+    <div class="pull-left">
+      <button type="button" class="btn btn-outline-default btn-round"
+              [ngClass]="{'active': this.defaultPage === 'filter', 'is-hidden': !this.filterHeaderVisible }"
+              (click)="setFilterBodyVisible();">
+        <i class="fa fa-filter"></i>
+        Filters
+      </button>
+      <button type="button" class="btn btn-outline-default btn-round"
+              [ngClass]="{'active': this.defaultPage !== 'filter', 'is-hidden': !this.listHeaderVisible }"
+              (click)="getListResultData(); setListBodyVisible();">
+        <i class="fa fa-search"></i>
+        List
+      </button>
+    </div>
+  </div>
+  <div class="col-sm-5">
+    <div class="pull-right">
+      <button class="btn btn-outline-primary" style="margin-top: 0px;" *ngIf="showPreviousPageButton()"
+              (click)="navigateToPreviousPage()" >
+        <i class="fa fa-chevron-left"></i> Back
+      </button>
+      <button *ngIf="this.listDto?.exportExcel" type="button" title="Excel" (click)="dataExcel()"
+              class="btn btn-outline-primary btn-icon btn-sm">
+        <i class="fa fa-file-excel-o"></i>
+      </button>
+    </div>
   </div>
 </div>
 
-<div class="tab-content text-center" id="my-tab-content">
+<div class="text-center">
 
   <!-- filters -->
-  <div class="tab-pane" [ngClass]="{'active': this.defaultPage === 'filter'}" id="filters" role="tabpanel">
+  <div class="tab-pane" *ngIf="filterBodyVisible" >
     <div class="row">
       <div class="col-md-12">
         <div class="card card-user">
@@ -47,13 +51,12 @@
             </div>
           </div>
           <div class="card-body">
-
             <div class="row">
               <ng-container *ngFor="let row of this.listDto?.listComponentFilterFieldList">
 
 
                 <ng-container *ngIf="row.type === 'varchar' || row.type === 'text' ">
-                  <div class="{{row.bclass}}  L{{listDto.id}}-{{this.listDto.code}}-{{row.code}} filter-col"
+                  <div class="{{row.bclass}}  L{{listDto.id}}-{{this.listDto.code}}-{{row.code}} filter-col" id="{{row.code}}"
                        style="{{row.css}}">
                     <div class="form-group">
                       <b [ngClass]="{'text-danger': row.required}">{{row.description}}</b>
@@ -63,7 +66,7 @@
                 </ng-container>
 
                 <ng-container *ngIf="row.type === 'double' ">
-                  <div class="{{row.bclass}} L{{listDto.id}}-{{this.listDto.code}}-{{row.code}} filter-col"
+                  <div class="{{row.bclass}} L{{listDto.id}}-{{this.listDto.code}}-{{row.code}} filter-col" id="{{row.code}}"
                        style="{{row.css}}">
                     <div class="form-group">
                       <b [ngClass]="{'text-danger': row.required}" class="text-danger">{{row.description}}</b>
@@ -73,7 +76,7 @@
                 </ng-container>
 
                 <ng-container *ngIf="row.type === 'int' || row.type === 'bigint'">
-                  <div class="{{row.bclass}} L{{listDto.id}}-{{this.listDto.code}}-{{row.code}} filter-col"
+                  <div class="{{row.bclass}} L{{listDto.id}}-{{this.listDto.code}}-{{row.code}} filter-col" id="{{row.code}}"
                        style="{{row.css}}">
                     <div class="form-group">
                       <b [ngClass]="{'text-danger': row.required}">{{row.description}}</b>
@@ -86,7 +89,7 @@
                   <div class="{{row.bclass}} L{{listDto.id}}-{{this.listDto.code}}-{{row.code}} filter-col" style="{{row.css}}">
                     <div class="form-group">
                       <b [ngClass]="{'text-danger': row.required}">{{row.description}}</b>
-                        <app-list-selector></app-list-selector>
+                        <app-list-selector [command]="row.editor" id="LIST-{{row.code}}" ></app-list-selector>
                     </div>
                   </div>
                 </ng-container>
@@ -110,7 +113,7 @@
   </div>
 
   <!-- columns -->
-  <div class="tab-pane" [ngClass]="{'active': this.defaultPage !== 'filter'}" id="list" role="tabpanel">
+  <div class="tab-pane" *ngIf="listBodyVisible" >
 
     <div class="row">
       <div *ngIf="isGroupContentDivVisible()" class="col-md-2 col-sm-12 col-12">
@@ -189,9 +192,6 @@
           <div class="card-header">
             <div class="row">
               <div class="col-sm-7">
-                <h5 class="card-title pull-left">
-                  <i class="fa fa-search"></i>
-                  List</h5>
               </div>
               <div class="col-sm-5">
                 <div class="pull-right">
@@ -221,11 +221,11 @@
                 <ng-container *ngIf="this.listDto?.listComponentActionFieldList.length > 0">
                   <th style="max-width: 100px;"></th>
                 </ng-container>
-                <ng-container *ngFor="let row of this.listDto?.listComponentColumnFieldList">
-                  <th *ngIf="row.visible">
-                    <input type="text" class="form-control transparent-input" *ngIf="row.headerFilter"
-                           [readonly]="!row.editable"
-                           [(ngModel)]="row.fieldValue" (keydown)="columnFilterRefreshData($event)">
+                <ng-container *ngFor="let column of this.listDto?.listComponentColumnFieldList">
+                  <th *ngIf="column.visible">
+                    <input type="text" id="headerFilter-{{column.code}}" class="form-control transparent-input" *ngIf="column.headerFilter"
+                           [readonly]="!column.editable"
+                           [(ngModel)]="column.fieldValue" (keydown)="columnFilterRefreshData($event)">
                   </th>
                 </ng-container>
               </tr>
@@ -236,7 +236,7 @@
 
                 <td style="max-width: 100px;" *ngIf="this.listDto?.listComponentActionFieldList.length > 0">
                   <ng-container *ngFor="let field of this.listDto?.listComponentActionFieldList">
-                    <button type="button" title="{{field.description}}" (click)="listButtonClick(field.editor)"
+                    <button type="button" title="{{field.description}}" (click)="listButtonClick(row, field.editor)"
                             class="btn btn-outline-success btn-icon btn-sm">
                       <i class="fa {{field.bclass}}"></i>
                     </button>

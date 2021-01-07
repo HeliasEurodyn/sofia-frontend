@@ -18,7 +18,8 @@ export class DashboardComponent extends PageComponent implements OnInit {
   public chartHours;
 
   ngOnInit() {
-    this.title = 'Dashboard';
+    this.setTitle('Dashboard');
+
     // this.title.next('Dashboard');
     this.chartColor = '#FFFFFF';
 

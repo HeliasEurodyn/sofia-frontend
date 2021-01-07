@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {NavigatorService} from '../../services/navigator.service';
+import {CommandNavigatorService} from '../../services/command-navigator.service';
 import {UserDto} from '../../dtos/user/user-dto';
 
 
@@ -35,7 +35,7 @@ export class SidebarComponent implements OnInit {
   public menuHeaders: any[];
   public userDto: UserDto;
 
-  constructor(private navigatorService: NavigatorService) {
+  constructor(private navigatorService: CommandNavigatorService) {
   }
 
   parentMenuSelection(id: string) {
@@ -229,7 +229,7 @@ export class SidebarComponent implements OnInit {
 
 
   openMenu(menuItem) {
-    this.navigatorService.openLocation(menuItem.command);
+    this.navigatorService.navigate(menuItem.command);
     // this.internalMessageService.publishMessage('openTabEvent', {path: menuItem.path, title: menuItem.title});
   }
 

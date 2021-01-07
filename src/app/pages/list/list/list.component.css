@@ -103,7 +103,6 @@
   padding: 1px;
 }
 
-
 .table-fixed .sortable:after {
   content: "\f0dc";
   position: relative;
@@ -120,7 +119,6 @@
   max-width: 10%;
 }
 
-
 ul {
   padding-left: 7px;
 }
@@ -133,6 +131,7 @@ li { /* styles all li elements*/
 
 .btn {
   margin: 2px;
+  background: white;
 }
 
 .left-group-button {
@@ -195,4 +194,24 @@ li { /* styles all li elements*/
 
 .is-hidden {
   display: none;
+}
+
+.btn-outline-default {
+  background-color: #ffffff !important;
+}
+
+.btn-outline-default:focus,
+.btn-outline-default:active,
+.btn-outline-default:focus:active,
+.btn-outline-default.active,
+.open > .btn-outline-default.dropdown-toggle {
+  background-color: #ffffff !important;
+  color: rgb(102 97 91) !important;
+  border-color: #3cb3b3 !important;
+}
+
+.btn-outline-default:hover{
+  background-color: #ffffff !important;
+  color: #297a7a !important;
+  border-color: #3cb3b3 !important;
 }

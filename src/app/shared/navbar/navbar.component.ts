@@ -2,7 +2,7 @@ import {Component, ElementRef, OnInit, Renderer2, ViewChild} from '@angular/core
 import {ROUTES} from '../sidebar/sidebar.component';
 import {Router} from '@angular/router';
 import {Location} from '@angular/common';
-import {NavigatorService} from '../../services/navigator.service';
+import {CommandNavigatorService} from '../../services/command-navigator.service';
 import {LoadingService} from '../../services/loading.service';
 import {delay} from 'rxjs/operators';
 import {HttpErrorResponceService} from '../../services/http-error-responce.service';
@@ -23,9 +23,6 @@ export class NavbarComponent implements OnInit {
   private sidebarVisible: boolean;
   private sidebarVisibleForDesktop: boolean;
   private loading = false;
-  // private pageHeaders: Map<string, string> = new Map();
-  // private pageIdsList: string[] = [];
-
   public isCollapsed = true;
   @ViewChild('navbar-cmp', {static: false}) button;
 
@@ -33,7 +30,7 @@ export class NavbarComponent implements OnInit {
               private renderer: Renderer2,
               private element: ElementRef,
               private router: Router,
-              private navigatorService: NavigatorService,
+              private navigatorService: CommandNavigatorService,
               private loadingService: LoadingService,
               private httpErrorResponceService: HttpErrorResponceService,
               private notificationService: NotificationService
@@ -43,7 +40,6 @@ export class NavbarComponent implements OnInit {
     this.sidebarVisible = false;
     this.sidebarVisibleForDesktop = true;
   }
-
 
   ngOnInit() {
     this.listTitles = ROUTES.filter(listTitle => listTitle);
@@ -58,7 +54,7 @@ export class NavbarComponent implements OnInit {
 
   listenToLoading(): void {
     this.loadingService.loadingSub
-      .pipe(delay(0)) // This prevents a ExpressionChangedAfterItHasBeenCheckedError for subsequent requests
+      .pipe(delay(0))
       .subscribe((loading) => {
         this.loading = loading;
       });
@@ -72,7 +68,6 @@ export class NavbarComponent implements OnInit {
         }
       });
   }
-
 
   mapPagesToHeaders() {
     const headers = [];
@@ -89,7 +84,7 @@ export class NavbarComponent implements OnInit {
       headers.push(
         {
           pageId: page.instance.pageId,
-          title: page.instance.title
+          title: page.instance.getTitle()
         });
     }
     return headers;
@@ -102,7 +97,7 @@ export class NavbarComponent implements OnInit {
     }
     for (let item = 0; item < this.listTitles.length; item++) {
       if (this.listTitles[item].path === titlee) {
-        return this.listTitles[item].title;
+        return this.listTitles[item].getTitle();
       }
     }
     return 'Dashboard';
@@ -155,7 +150,6 @@ export class NavbarComponent implements OnInit {
       navbar.classList.add('navbar-transparent');
       navbar.classList.remove('bg-white');
     }
-
   }
 
   updateToggle() {
@@ -168,25 +162,6 @@ export class NavbarComponent implements OnInit {
     }
   }
 
-
-  // private subscribeToInternalMessages() {
-  //   this.internalMessageService
-  //     .accessMessage('OpenTabHeaderEvent')
-  //     .subscribe(pageHeaderData => {
-  //       this.pageHeaders.set(pageHeaderData.pageId, pageHeaderData.title);
-  //       this.pageIdsList.push(pageHeaderData.pageId);
-  //     });
-  //   //
-  //   // this.internalMessageService
-  //   //   .accessMessage('ClosePageHeaderEvent')
-  //   //   .subscribe(pageId => {
-  //   //     if (this.pageHeaders.has(pageId)) {
-  //   //       this.pageHeaders.delete(pageId);
-  //   //     }
-  //   //   });
-  //
-  // }
-
   navigateById(id: string) {
     this.navigatorService.navigateById(id);
   }
@@ -195,7 +170,6 @@ export class NavbarComponent implements OnInit {
     this.navigatorService.closeById(id);
   }
 
-
   isTheActiveId(pageId: any) {
     if (pageId.toUpperCase() === this.navigatorService.currentId.toUpperCase()) {
       return true;
@@ -203,4 +177,5 @@ export class NavbarComponent implements OnInit {
       return false;
     }
   }
+
 }

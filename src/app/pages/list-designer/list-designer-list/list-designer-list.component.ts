@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ListService} from 'app/services/crud/list.service';
-import {NavigatorService} from '../../../services/navigator.service';
+import {CommandNavigatorService} from '../../../services/command-navigator.service';
 import {PageComponent} from '../../page/page-component';
 
 @Component({
@@ -12,7 +12,7 @@ export class ListDesignerListComponent extends PageComponent implements OnInit {
   public tableData: any;
 
   constructor(private service: ListService,
-              private navigatorService: NavigatorService) {
+              private navigatorService: CommandNavigatorService) {
     super();
   }
 
@@ -39,20 +39,20 @@ export class ListDesignerListComponent extends PageComponent implements OnInit {
   openPage(id: string) {
     let command = 'STATICPAGE[NAME:list-designer-form,TITLE:Form,LOCATE:(ID=' + id + '),PARENT-PAGEID:$PAGEID]';
     command = command.replace('$PAGEID', this.pageId);
-    this.navigatorService.openLocation(command);
+    this.navigatorService.navigate(command);
   }
 
 
   openNewPage() {
     let command = 'STATICPAGE[NAME:list-designer-form,TITLE:Form,PARENT-PAGEID:$PAGEID]';
     command = command.replace('$PAGEID', this.pageId);
-    this.navigatorService.openLocation(command);
+    this.navigatorService.navigate(command);
   }
 
   clone(id: string) {
     let command = 'STATICPAGE[NAME:list-designer-form,TITLE:Form,TYPE:CLONE,LOCATE:(ID=' + id + '),PARENT-PAGEID:$PAGEID]';
     command = command.replace('$PAGEID', this.pageId);
-    this.navigatorService.openLocation(command);
+    this.navigatorService.navigate(command);
   }
 
 }

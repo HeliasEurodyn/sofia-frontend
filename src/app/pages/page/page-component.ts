@@ -1,34 +1,54 @@
+import {CommandParserService} from '../../services/command-parser.service';
+import {ComponentRef, EventEmitter, Injector} from '@angular/core';
+
 export class PageComponent {
 
-  public pageId: string;
-  public title: string;
+  injector = Injector.create({
+    providers: [
+      {provide: CommandParserService, deps: []}
+    ]
+  });
+  public commandParserService: CommandParserService;
   public params: Map<string, string> = new Map();
-
+  public pageId: string;
   public nextPage = null;
   public previousPage = null;
+  public selectEmmiter: EventEmitter<string[]> = new EventEmitter();
 
   constructor() {
+    this.commandParserService = this.injector.get(CommandParserService);
   }
 
   onFocusIn() {
   }
 
-  getLocateParams() {
-    const locateValuesKeyValMap: Map<string, string> = new Map();
-    if (this.params.has('LOCATE')) {
-      const locateValues = this.params.get('LOCATE');
-      let locateValuesInsideBrackets = locateValues.replace(/.*\(|\).*/, '');
-      locateValuesInsideBrackets = locateValuesInsideBrackets.replace(/.*\(|\).*/, '');
-      const locateValuesSplited = locateValuesInsideBrackets.split(',');
-
-      for (const locateValueSplited of locateValuesSplited) {
-        const locateValuesKeyVal: string[] = locateValueSplited.split('=');
-        locateValuesKeyValMap.set(locateValuesKeyVal[0], locateValuesKeyVal[1]);
-      }
+  hasReturningValues() {
+    if (this.params.has('RETURN')) {
+      return true;
+    } else {
+      return false;
     }
-
-    return locateValuesKeyValMap;
   }
 
+  getLocateParams() {
+    return this.commandParserService.parseMapPart(this.params, 'LOCATE');
+  }
+
+  getReturningDisplayValues(): Map<string, string> {
+    console.log(this.params);
+    return this.commandParserService.parseMapPart(this.params, 'RETURN-DISPLAY');
+  }
+
+  getTitle() {
+    if (this.params.has('TITLE')) {
+      return this.params.get('TITLE');
+    } else {
+      return '';
+    }
+  }
+
+  setTitle(titleValue) {
+    this.params.set('TITLE', titleValue);
+  }
 
 }

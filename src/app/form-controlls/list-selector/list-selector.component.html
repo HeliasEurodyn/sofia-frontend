@@ -1,28 +1,32 @@
-<div class="input-group input-group-selector no-border">
-  <div data-target="#insertComponentModal" data-toggle="modal" class="input-group-prepend">
+<div class="input-group input-group-alternative">
+
+  <div data-target="#insertComponentModal"  (keydown)="keyOpenPage($event)"  data-toggle="modal" class="input-group-prepend">
          <span class="input-group-text">
             <i class="fa fa-search"></i>
          </span>
   </div>
-  <input readonly  (click)="test()" data-target="#insertComponentModal" data-toggle="modal" type="text"
+
+  <input readonly (keydown)="keyOpenPage($event)" (click)="openPage()" id="buttonOpen" data-target="#insertComponentModal" data-toggle="modal" type="text"
          class="form-control"
-         value="">
+         value="{{returnDisplay}}">
+
   <div class="input-group-append">
         <span class="input-group-text input-group-text-rm">
            <i class="fa fa-window-close"></i>
         </span>
   </div>
+
 </div>
 
 <div aria-labelledby="ModalLabel" class="modal fade" id="insertComponentModal" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
-      <div class="modal-body" *ngIf="this.openListComponent">
-        <app-list></app-list>
+      <div class="modal-body">
+        <div #pageDiv ></div>
       </div>
       <div class="modal-footer">
         <div class="left-side">
-          <button class="btn btn-outline-danger" data-dismiss="modal" type="button">Close</button>
+          <button class="btn btn-outline-danger" id="buttonClose" data-dismiss="modal" type="button">Close</button>
         </div>
       </div>
     </div>

@@ -1,5 +1,5 @@
 export class ListResultsData {
-  public listContent: Array<Map<string, any>>;
+  public listContent: Array<string[]>;
   public groupContent: Array<Map<string, any>>;
   public totalPages: number;
   public currentPage: number;

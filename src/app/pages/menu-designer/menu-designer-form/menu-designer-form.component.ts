@@ -3,7 +3,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {MenuService} from '../../../services/crud/menu.service';
 import {MenuDTO, MenuFieldDTO} from '../../../dtos/menu/menuDTO';
 import {PageComponent} from '../../page/page-component';
-import {NavigatorService} from '../../../services/navigator.service';
+import {CommandNavigatorService} from '../../../services/command-navigator.service';
 
 @Component({
   selector: 'app-menu-designer-form',
@@ -12,7 +12,6 @@ import {NavigatorService} from '../../../services/navigator.service';
 })
 export class MenuDesignerFormComponent extends PageComponent implements OnInit {
 
-//  public fields: any;
   public tableHeaders: any;
   public menuComponent: MenuDTO;
   public menuFieldComponent: MenuFieldDTO;
@@ -29,20 +28,9 @@ export class MenuDesignerFormComponent extends PageComponent implements OnInit {
   constructor(private activatedRoute: ActivatedRoute,
               private menuDesignerService: MenuService,
               private router: Router,
-              private navigatorService: NavigatorService) {
+              private navigatorService: CommandNavigatorService) {
     super();
   }
-
-  // checkIfTableAlreadyExists() {
-  //   this.menuDesignerService.tableExists(this.menuComponent.name).subscribe(data => {
-  //     if (data) {
-  //       this.tableExists = true;
-  //     } else {
-  //       this.tableExists = false;
-  //     }
-  //   });
-  // }
-
 
   ngOnInit(): void {
 
@@ -50,7 +38,6 @@ export class MenuDesignerFormComponent extends PageComponent implements OnInit {
     this.mode = 'new-record';
     this.menuComponent = new MenuDTO();
     this.menuFieldComponent = new MenuFieldDTO;
-
 
     const locateParams = this.getLocateParams();
     if (locateParams.has('ID')) {
@@ -66,7 +53,6 @@ export class MenuDesignerFormComponent extends PageComponent implements OnInit {
     }
 
   }
-
 
   cleanIdsIfCloneEnabled() {
     if (this.params.has('TYPE')) {
