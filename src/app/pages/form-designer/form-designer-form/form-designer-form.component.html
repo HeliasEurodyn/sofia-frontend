@@ -1,0 +1,410 @@
+
+
+<div class="row">
+  <div class="col-sm-12">
+    <div class="pull-left"></div>
+    <div class="pull-right">
+
+      <button class="btn btn-outline-success" (click)="save()">
+        <i class="fa fa-save"></i> Save
+      </button>
+
+      <button class="btn btn-outline-danger" (click)="delete()">
+        <i class="fa fa-times"></i> Delete
+      </button>
+
+      <button class="btn btn-outline-primary"
+              *ngIf="showPreviousPageButton()"
+              (click)="navigateToPreviousPage()">
+        <i class="fa fa-chevron-left"></i> Back
+      </button>
+
+      <button class="btn btn-outline-primary"
+              *ngIf="showNextPageButton()"
+              (click)="navigateToNextPage()">
+        <i class="fa fa-chevron-right"></i> Next
+      </button>
+
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="card card-user">
+      <div class="card-header">
+        <div class="row">
+          <div class="col-sm-7">
+            <h5 class="card-title pull-left">Form Designer</h5>
+          </div>
+          <div class="col-sm-5">
+            <div class="pull-right">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="row">
+
+          <div class="col-md-12">
+            <div class="form-group" >
+              <label>Name</label>
+              <input  type="text" class="form-control" name="name" [(ngModel)]="dto.name">
+              <code></code>
+            </div>
+          </div>
+
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Component</label>
+              <div class="input-group input-group-selector no-border">
+                <div
+                  data-target="#selectComponentModal"
+                  data-toggle="modal"
+                  class="input-group-prepend">
+                 <span class="input-group-text">
+                    <i class="fa fa-search"></i>
+                 </span>
+                </div>
+                <input readonly
+                       data-target="#selectComponentModal"
+                       data-toggle="modal"
+                       type="text" class="form-control"
+                       value="{{this.dto?.component?.id}} {{this.dto?.component?.name}}">
+                <div class="input-group-append" (click)="selectComponent(null)">
+                 <span class="input-group-text input-group-text-rm">
+                    <i class="fa fa-window-close"></i>
+                 </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-7">
+    <div class="pull-left">
+
+      <div *ngFor="let formTab of this.dto?.formTabs" class="btn-group">
+        <button (click)="removeFormTabs(formTab, this.dto.formTabs )" style="margin-top: 0px;margin-bottom: 0px;padding: 0px 6px 0px 6px;"
+                type="button"
+                class="btn btn-outline-danger btn-round red-tab">
+          <i class="fa fa-times"></i>
+        </button>
+        <button (click)="selectFormTab(formTab)"
+                style="margin-top: 0px;margin-bottom: 0px;padding: 0px 6px 0px 6px;"
+                type="button"
+                data-target="#selectedFormTabFieldModal"
+                data-toggle="modal"
+                class="btn btn-outline-info btn-round blue-tab">
+          <i class="fa fa-pencil"></i>
+        </button>
+        <button (click)="selectFormTab(formTab);addFormArea(formTab);"
+                style="margin-top: 0px;margin-bottom: 0px;padding: 0px 6px 0px 6px;"
+                data-target="#selectedFormAreaFieldModal"
+                data-toggle="modal"
+                type="button"
+                class="btn btn-outline-success btn-round green-tab">
+          <i class="fa fa-plus"></i>
+        </button>
+        <button (click)="selectFormTab(formTab)"
+                style="margin-top: 0px;margin-bottom: 0px;padding: 10px;" type="button"
+                class="btn btn-outline-default btn-round white-tab">
+          <i class="fa {{formTab?.icon}}"></i>
+          {{formTab.description}}
+        </button>
+      </div>
+
+      <button (click)="addFormTab()" style="margin-top: 0px;margin-bottom: 0px;padding: 10px;background-color: white;"
+              data-target="#selectedFormTabFieldModal"
+              data-toggle="modal"
+              type="button" class="btn btn-outline-success">
+        <i class="fa fa-plus"></i>
+      </button>
+
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div *ngFor="let formArea of this.selectedFormTab?.formAreas" class="{{formArea.cssclass}}">
+    <div class="card">
+      <div class="card-header">
+        <div class="row">
+          <div class="col-4">
+            <h5 class="card-title">
+              <i class="fa {{formArea.icon}}"></i>
+              {{formArea.description}}
+            </h5>
+          </div>
+          <div class="col-8">
+            <div class="pull-right">
+              <button (click)="removeFormAreas(formArea)"
+                      type="button" class="btn btn-outline-danger">
+                <i class="fa fa-times"></i> Delete
+              </button>
+              <button (click)="selectFormArea(formArea)"
+                      data-target="#selectedFormAreaFieldModal"
+                      data-toggle="modal"
+                      type="button" class="btn btn-outline-info">
+                <i class="fa fa-pencil"></i> Edit
+              </button>
+              <button (click)="selectFormArea(formArea)"
+                      data-target="#insertFieldsModal"
+                      data-toggle="modal"
+                      type="button" class="btn btn-outline-success">
+                <i class="fa fa-plus-circle"></i> Add components
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div *ngFor="let formcomponent of formArea?.formComponents" class="{{formcomponent.cssclass}}">
+            <div class="form-group">
+              <label>{{formcomponent.formComponentField.description}}</label>
+              <input type="text" class="form-control" name="{{formcomponent.formComponentField.description}}">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div aria-labelledby="ModalLabel" *ngIf="selectedFormTab != null" class="modal fade" id="selectedFormTabFieldModal" role="dialog"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-select-fields">
+    <div class="modal-content">
+      <div class="modal-header justify-content-center">
+        <h4 class="title title-up modal-title">Tab fields</h4>
+        <button aria-label="Close" class="close" data-dismiss="modal" type="button"><i
+          class="nc-icon nc-simple-remove"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-10">
+            <label>Icon</label>
+            <input type="text" class="form-control" [(ngModel)]="selectedFormTab.icon">
+          </div>
+          <div class="col-2">
+            <div class="form-group">
+              <label>Prev</label>
+              <i style="font-size: 35px;" class="fa {{selectedFormTab.icon}}"></i>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <label>Description</label>
+            <input type="text" class="form-control" [(ngModel)]="selectedFormTab.description">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="left-side">
+          <button class="btn btn-outline-danger" data-dismiss="modal" type="button">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div aria-labelledby="ModalLabel" *ngIf="selectedFormArea != null" class="modal fade" id="selectedFormAreaFieldModal" role="dialog"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-select-fields">
+    <div class="modal-content">
+      <div class="modal-header justify-content-center">
+        <h4 class="title title-up modal-title">Area fields</h4>
+        <button aria-label="Close" class="close" data-dismiss="modal" type="button"><i
+          class="nc-icon nc-simple-remove"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-10">
+            <label>Icon</label>
+            <input type="text" class="form-control" [(ngModel)]="selectedFormArea.icon">
+          </div>
+          <div class="col-2">
+            <div class="form-group">
+              <label>Prev</label>
+              <i style="font-size: 35px;" class="fa {{selectedFormArea.icon}}"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12">
+            <label>Description</label>
+            <input type="text" class="form-control" [(ngModel)]="selectedFormArea.description">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12">
+            <label>Css</label>
+            <input type="text" class="form-control" [(ngModel)]="selectedFormArea.cssclass">
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <div class="left-side">
+          <button class="btn btn-outline-danger" data-dismiss="modal" type="button">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div aria-labelledby="ModalLabel" class="modal fade" id="insertFieldsModal" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-select-fields">
+    <div class="modal-content">
+      <div class="modal-header justify-content-center">
+        <h4 class="title title-up modal-title">Fields</h4>
+        <button aria-label="Close" class="close" data-dismiss="modal" type="button"><i
+          class="nc-icon nc-simple-remove"></i></button>
+      </div>
+      <div class="modal-body">
+        <ul style="padding: 0px;">
+          <li *ngFor="let row of this.dto?.component?.componentPersistEntityList">
+            <div class="row">
+              <div class="col-md-12">
+                <h6 style="margin: 0px;">
+                  <button style="margin: 0px;" *ngIf="row.persistEntity != null && row.showFieldList === true"
+                          (click)="hideChildren(row)"
+                          type="button" title="Hide"
+                          class="btn btn-outline-default btn-icon btn-sm">
+                    <i class="fa fa-compress"></i>
+                  </button>
+
+                  <button style="margin: 0px;" *ngIf="row.persistEntity != null && row.showFieldList !== true"
+                          (click)="showChildren(row)"
+                          type="button" title="Show"
+                          class="btn btn-outline-default btn-icon btn-sm">
+                    <i class="fa fa-expand"></i>
+                  </button>
+                  [{{row.code}}] {{row.persistEntity.name}}
+
+                </h6>
+              </div>
+            </div>
+
+            <table *ngIf="row.persistEntity != null && row.showFieldList === true" class="table table-striped">
+              <thead class=" text-primary">
+              <tr>
+                <th>actions</th>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Type</th>
+                <th>Editor</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let field of row.componentPersistEntityFieldList"
+                  style="cursor: pointer;">
+                <td>
+                  <button title="Add to Order βυ" type="button" class="btn btn-outline-primary btn-icon btn-sm"
+                          (click)="addField(row, field)">
+                    <i class="fa fa-plus-circle" style="color: #0aca57;"></i>
+                  </button>
+                </td>
+                <td>{{field.persistEntityField.id}}</td>
+                <td>{{field.persistEntityField.name}}</td>
+                <td>{{field.persistEntityField.description}}</td>
+                <td>{{field.persistEntityField.type}}</td>
+                <td>{{field.editor}}</td>
+              </tr>
+              </tbody>
+            </table>
+          </li>
+        </ul>
+
+      </div>
+
+
+      <div class="modal-footer">
+        <div class="left-side">
+          <button class="btn btn-outline-danger" data-dismiss="modal" type="button">Close</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div aria-labelledby="ModalLabel" class="modal fade" id="selectComponentModal" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header justify-content-center">
+        <h4 class="title title-up modal-title">Insert Component</h4>
+        <button aria-label="Close" class="close" data-dismiss="modal" type="button"><i
+          class="nc-icon nc-simple-remove"></i></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="row">
+            <div class="col-12">
+              <table class="table table-striped">
+                <thead class=" text-primary">
+                <tr>
+                  <th>Actions</th>
+                  <th>id</th>
+                  <th>name</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let row of components" (click)="selectComponent(row)" data-dismiss="modal"
+                    style="cursor: pointer;">
+                  <td>
+                    <button type="button" title="Delete" class="btn btn-outline-primary btn-icon btn-sm"
+                            (click)="selectComponent(row)">
+                      <i class="fa fa-search"></i>
+                    </button>
+                  </td>
+                  <td>
+                    <input type="text" readonly class="form-control transparent-input"
+                           value="{{row['id']}}">
+                  </td>
+                  <td>
+                    <input type="text" readonly class="form-control transparent-input"
+                           value="{{row['name']}}">
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <div class="left-side">
+          <button class="btn btn-outline-danger" data-dismiss="modal" type="button">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="fixed-plugin">
+  <div class="show-dropdown" ngbDropdown>
+    <a href="javascript:void(0)" ngbDropdownToggle id="dropdownConfig">
+      <i class="fa fa-cog fa-2x"> </i>
+    </a>
+    <ul class="" ngbDropdownMenu aria-labelledby="dropdownConfig">
+      <li class="header-title">New Tab</li>
+      <li class="button-container">
+          <input  type="text"  #newTab (keydown)="newTabKeyDown($event, newTab.value)" class="form-control" placeholder="Tab Description"
+                  [(ngModel)]="description">
+      </li>
+      <li class="button-container">
+      </li>
+    </ul>
+  </div>
+</div>

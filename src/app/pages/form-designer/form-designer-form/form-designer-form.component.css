@@ -1,0 +1,61 @@
+.fixed-plugin {
+  position: fixed;
+  right: 0;
+  width: 64px;
+  background: rgb(31 108 181);
+  z-index: 1031;
+  border-radius: 4px 0 0 4px;
+  text-align: center;
+  top: 136px;
+}
+
+.fixed-plugin .dropdown .dropdown-menu {
+  transform: translate(0px, 33px) !important;
+}
+
+.fixed-plugin .dropdown .dropdown-menu::before, .fixed-plugin .dropdown .dropdown-menu::after {
+  right: -16px;
+  bottom: -30px;
+}
+
+.newTabStyle {
+   position: relative !important;
+   display: inline-flex !important;
+   vertical-align: middle !important;
+   background-color: #FFFFFF;
+   border: 1px solid #51cbce;
+   padding: 7px;
+   border-radius: 4px;
+   color: #66615b;
+   line-height: normal;
+   font-size: 14px;
+   transition: color 0.3s ease-in-out, border-color 0.3s ease-in-out, background-color 0.3s ease-in-out;
+   box-shadow: none;
+}
+
+ul {
+  list-style-type: none;
+}
+
+li{
+  list-style-type: none;
+}
+.white-tab {
+  background-color: white;
+}
+
+.green-tab {
+  background-color: #fafffc;
+}
+
+.blue-tab {
+  background-color: #f0fcff;
+}
+
+.red-tab {
+  background-color: #fffcfb;
+}
+
+.modal-select-fields{
+  max-width: 700px;
+}

@@ -35,11 +35,9 @@ export class ListService extends CrudService<any> {
   }
 
   getListResultDataExcel(listDto: ListDTO) {
-
     const httpOptions = {
       responseType: 'blob' as 'json',
     };
-
     return this.http.post<any>(`${environment.serverUrl}/${this.endpoint}/data-excel`, listDto, httpOptions);
   }
 
@@ -50,6 +48,5 @@ export class ListService extends CrudService<any> {
     }
     return this.http.get<any>(`${environment.serverUrl}/${this.endpoint}/data/left-grouping/results` + parameters);
   }
-
 
 }

@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {ApplicationRef, Component, ComponentRef, ElementRef, EmbeddedViewRef, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {ROUTES} from '../sidebar/sidebar.component';
 import {Router} from '@angular/router';
 import {Location} from '@angular/common';
@@ -25,6 +25,7 @@ export class NavbarComponent implements OnInit {
   private loading = false;
   public isCollapsed = true;
   @ViewChild('navbar-cmp', {static: false}) button;
+  @ViewChild('pageDiv') pageDiv: ElementRef;
 
   constructor(location: Location,
               private renderer: Renderer2,
@@ -33,12 +34,31 @@ export class NavbarComponent implements OnInit {
               private navigatorService: CommandNavigatorService,
               private loadingService: LoadingService,
               private httpErrorResponceService: HttpErrorResponceService,
-              private notificationService: NotificationService
+              private notificationService: NotificationService,
+              private appRef: ApplicationRef,
   ) {
     this.location = location;
     this.nativeElement = element.nativeElement;
     this.sidebarVisible = false;
     this.sidebarVisibleForDesktop = true;
+
+    navigatorService.popupPageEmmiter.subscribe(componentRefOnNavigation => {
+      this.renderPage(componentRefOnNavigation);
+      componentRefOnNavigation.instance.selectEmmiter.subscribe((returningValues: string[]) => {
+        document.getElementById('buttonClose').click();
+      });
+    });
+
+  }
+
+  public renderPage(componentRef: ComponentRef<any>) {
+    this.appRef.attachView(componentRef.hostView);
+    const domElem = (componentRef.hostView as EmbeddedViewRef<any>).rootNodes[0] as HTMLElement;
+    const childElements = this.pageDiv.nativeElement.childNodes;
+    for (const childElement of childElements) {
+      this.renderer.removeChild(this.pageDiv.nativeElement, childElement);
+    }
+    this.renderer.appendChild(this.pageDiv.nativeElement, domElem);
   }
 
   ngOnInit() {

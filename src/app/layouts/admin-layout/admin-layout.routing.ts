@@ -25,6 +25,8 @@ import {AppViewDesignerListComponent} from '../../pages/appview-designer/app-vie
 import {AppViewDesignerFormComponent} from '../../pages/appview-designer/app-view-designer-form/app-view-designer-form.component';
 import {UserFormComponent} from '../../pages/user/user-form/user-form.component';
 import {UserListComponent} from '../../pages/user/user-list/user-list.component';
+import {FormDesignerListComponent} from '../../pages/form-designer/form-designer-list/form-designer-list.component';
+import {FormDesignerFormComponent} from '../../pages/form-designer/form-designer-form/form-designer-form.component';
 
 export const AdminLayoutRoutes: Routes = [
   {path: 'dashboard', component: DashboardComponent},
@@ -50,7 +52,9 @@ export const AdminLayoutRoutes: Routes = [
   {path: 'appview-designer-form', component: AppViewDesignerFormComponent},
   {path: 'user-form', component: UserFormComponent},
   {path: 'user-list', component: UserListComponent},
-  {path: 'list', component: ListComponent}
+  {path: 'list', component: ListComponent},
+  {path: 'form-designer-list', component: FormDesignerListComponent},
+  {path: 'form-designer-form', component: FormDesignerFormComponent}
 ];
 
 CommandNavigatorService.NavPages = AdminLayoutRoutes;

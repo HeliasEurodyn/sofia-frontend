@@ -29,7 +29,7 @@ import {ListComponent} from './pages/list/list/list.component';
 import {NavigatorComponent} from './pages/navigator/navigator.component';
 import {AppViewDesignerFormComponent} from './pages/appview-designer/app-view-designer-form/app-view-designer-form.component';
 import {AppViewDesignerListComponent} from './pages/appview-designer/app-view-designer-list/app-view-designer-list.component';
-import {NgbDateAdapter, NgbDateParserFormatter, NgbDatepickerModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgbDateAdapter, NgbDateParserFormatter, NgbDatepickerModule, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {DatePickerComponent} from './form-controlls/date-picker/date-picker.component';
 import {NgbDateFRParserFormatter} from './form-controlls/date-picker/ngb-date-frparser-formatter';
 import {NgbUTCStringAdapter} from './form-controlls/date-picker/ngb-utcstring-adapter';
@@ -41,8 +41,10 @@ import {UserListComponent} from './pages/user/user-list/user-list.component';
 import {AuthenticationHeaderInterceptor} from './interceptors/authentication-header-interceptor';
 import {HttpRequestLoadingInterceptor} from './interceptors/http-request-loading.interceptor';
 import {HttpRequestErrorInterceptor} from './interceptors/http-request-error.interceptor';
-import { ListSelectorComponent } from './form-controlls/list-selector/list-selector.component';
-
+import {ListSelectorComponent} from './form-controlls/list-selector/list-selector.component';
+import {FormDesignerFormComponent} from './pages/form-designer/form-designer-form/form-designer-form.component';
+import {FormDesignerListComponent} from './pages/form-designer/form-designer-list/form-designer-list.component';
+import {FormDesignerFormToolBoxComponent} from './pages/form-designer/form-designer-form-tool-box/form-designer-form-tool-box.component';
 
 @NgModule({
   declarations: [
@@ -67,7 +69,10 @@ import { ListSelectorComponent } from './form-controlls/list-selector/list-selec
     SofiaDateDirective,
     UserFormComponent,
     UserListComponent,
-    ListSelectorComponent
+    ListSelectorComponent,
+    FormDesignerFormComponent,
+    FormDesignerListComponent,
+    FormDesignerFormToolBoxComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -83,7 +88,7 @@ import { ListSelectorComponent } from './form-controlls/list-selector/list-selec
     FormsModule,
     HttpClientModule,
     NgbDatepickerModule,
-
+    NgbModule
   ],
   providers: [
     DatePipe,

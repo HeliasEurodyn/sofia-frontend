@@ -8,7 +8,7 @@
 
   <input readonly (keydown)="keyOpenPage($event)" (click)="openPage()" id="buttonOpen" data-target="#insertComponentModal" data-toggle="modal" type="text"
          class="form-control"
-         value="{{returnDisplay}}">
+         value="{{displayValue}}">
 
   <div class="input-group-append">
         <span class="input-group-text input-group-text-rm">
@@ -16,19 +16,4 @@
         </span>
   </div>
 
-</div>
-
-<div aria-labelledby="ModalLabel" class="modal fade" id="insertComponentModal" role="dialog" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-body">
-        <div #pageDiv ></div>
-      </div>
-      <div class="modal-footer">
-        <div class="left-side">
-          <button class="btn btn-outline-danger" id="buttonClose" data-dismiss="modal" type="button">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
 </div>

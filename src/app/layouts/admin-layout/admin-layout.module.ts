@@ -20,7 +20,6 @@ import {UpgradeComponent} from '../../pages/upgrade/upgrade.component';
   imports: [
     CommonModule,
     RouterModule.forChild(AdminLayoutRoutes),
-
     FormsModule,
   ],
   declarations: [

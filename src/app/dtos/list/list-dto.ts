@@ -5,7 +5,6 @@ import {ListComponentFieldDTO} from './list-component-field-d-t-o';
 
 export class ListDTO extends BaseDTO {
 
-  // code: string;
   public code: string;
   public name: string;
   public description: string;

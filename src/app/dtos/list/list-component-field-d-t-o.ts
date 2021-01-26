@@ -4,7 +4,7 @@ import {ComponentPersistEntityDTO} from '../component/component-persist-entity-d
 
 
 export class ListComponentFieldDTO extends BaseDTO {
-  code: string;
+  public code: string;
   editor: string;
   description: string;
   type: string

@@ -33,3 +33,7 @@
 /*.input-group-append, .input-group-prepend {*/
 /*  border: 1px solid #51cbce;*/
 /*}*/
+
+.input-group, .form-control {
+  cursor: pointer;
+}

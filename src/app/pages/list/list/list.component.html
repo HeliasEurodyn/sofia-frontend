@@ -2,6 +2,9 @@
 <div class="row">
   <div class="col-sm-7">
     <div class="pull-left">
+
+
+
       <button type="button" class="btn btn-outline-default btn-round"
               [ngClass]="{'active': this.defaultPage === 'filter', 'is-hidden': !this.filterHeaderVisible }"
               (click)="setFilterBodyVisible();">
@@ -31,9 +34,8 @@
 </div>
 
 <div class="text-center">
-
   <!-- filters -->
-  <div class="tab-pane" *ngIf="filterBodyVisible" >
+  <div class="tab-pane" [ngClass]="{'is-hidden': !this.filterBodyVisible }">
     <div class="row">
       <div class="col-md-12">
         <div class="card card-user">
@@ -53,7 +55,6 @@
           <div class="card-body">
             <div class="row">
               <ng-container *ngFor="let row of this.listDto?.listComponentFilterFieldList">
-
 
                 <ng-container *ngIf="row.type === 'varchar' || row.type === 'text' ">
                   <div class="{{row.bclass}}  L{{listDto.id}}-{{this.listDto.code}}-{{row.code}} filter-col" id="{{row.code}}"
@@ -89,7 +90,7 @@
                   <div class="{{row.bclass}} L{{listDto.id}}-{{this.listDto.code}}-{{row.code}} filter-col" style="{{row.css}}">
                     <div class="form-group">
                       <b [ngClass]="{'text-danger': row.required}">{{row.description}}</b>
-                        <app-list-selector [command]="row.editor" id="LIST-{{row.code}}" ></app-list-selector>
+                        <app-list-selector [command]="row.editor" [(value)]="row.fieldValue" id="LIST-{{row.code}}" ></app-list-selector>
                     </div>
                   </div>
                 </ng-container>
@@ -113,7 +114,7 @@
   </div>
 
   <!-- columns -->
-  <div class="tab-pane" *ngIf="listBodyVisible" >
+  <div class="tab-pane" [ngClass]="{'is-hidden': !this.listBodyVisible }" >
 
     <div class="row">
       <div *ngIf="isGroupContentDivVisible()" class="col-md-2 col-sm-12 col-12">

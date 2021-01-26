@@ -8,7 +8,8 @@
               (click)="delete()">
         <i class="fa fa-times"></i> Delete
       </button>
-      <button class="btn btn-outline-primary" style="margin-top: 0px;" *ngIf="showPreviousPageButton()"
+      <button class="btn btn-outline-primary" style="margin-top: 0px;"
+              *ngIf="showPreviousPageButton()"
               (click)="navigateToPreviousPage()">
         <i class="fa fa-chevron-left"></i> Back
       </button>
@@ -31,9 +32,6 @@
           </div>
           <div class="col-sm-5">
             <div class="pull-right">
-<!--              <button class="btn btn-outline-primary" data-target="#insertComponentModal" data-toggle="modal">-->
-<!--                <i class="fa fa-plus-circle"></i> Insert Component-->
-<!--              </button>-->
             </div>
           </div>
         </div>
@@ -46,7 +44,7 @@
           <div class="col-md-12">
             <div class="form-group " [ngClass]="{'has-danger': tableExists}">
               <label>Name</label>
-              <input type="text" class="form-control" name="name" [(ngModel)]="dto.name">
+              <input  type="text" class="form-control" name="name" [(ngModel)]="dto.name">
               <code></code>
             </div>
           </div>
@@ -55,12 +53,18 @@
             <div class="form-group">
               <label>Component</label>
               <div class="input-group input-group-selector no-border">
-                <div data-target="#insertComponentModal" data-toggle="modal" class="input-group-prepend">
+                <div
+                  data-target="#selectComponentModal"
+                  data-toggle="modal"
+                     class="input-group-prepend">
                  <span class="input-group-text">
                     <i class="fa fa-search"></i>
                  </span>
                 </div>
-                <input readonly data-target="#insertComponentModal" data-toggle="modal" type="text" class="form-control"
+                <input readonly
+                       data-target="#selectComponentModal"
+                       data-toggle="modal"
+                       type="text" class="form-control"
                        value="{{this.dto?.component?.id}} {{this.dto?.component?.name}}">
                 <div class="input-group-append" (click)="selectComponent(null)">
                  <span class="input-group-text input-group-text-rm">
@@ -70,10 +74,7 @@
               </div>
             </div>
           </div>
-
-
         </div>
-
 
         <div class="row">
           <div class="col-md-10">
@@ -112,7 +113,6 @@
             </div>
           </div>
 
-
           <div class="col-md-6">
             <div class="form-group">
               <label>Default page</label>
@@ -124,7 +124,6 @@
               <code></code>
             </div>
           </div>
-
 
           <div class="col-md-2">
             <label style="padding-bottom: 20px;"></label>
@@ -156,7 +155,6 @@
             </div>
           </div>
 
-
           <div class="col-md-2">
             <label style="padding-bottom: 10px;"></label>
             <div class="form-check">
@@ -183,7 +181,6 @@
   </div>
 </div>
 
-
 <div class="row">
   <div [ngClass]="{'col-md-12':showAllFieldsDiv === false,'col-md-8':showAllFieldsDiv}">
     <div class="card">
@@ -196,11 +193,9 @@
           <div class="col-sm-5">
             <div class="pull-right">
 
-
               <button class="btn btn-outline-primary" data-target="#insertFieldsModal" data-toggle="modal">
                 <i class="fa fa-plus-circle"></i> Insert fields
               </button>
-
 
             </div>
           </div>
@@ -238,7 +233,6 @@
         <div class="tab-content text-center" id="my-tab-content">
 
           <div aria-expanded="true" class="tab-pane active" id="columns" role="tabpanel">
-
             <div class="row" style="padding-bottom: 10px;">
               <div class="col-sm-12">
                 <div class="pull-right">
@@ -268,7 +262,6 @@
               </tr>
               </thead>
               <tbody>
-
 
               <tr *ngFor="let column of this.dto?.listComponentColumnFieldList"
                   [ngClass]="{'command-field': column.formulaType === 'command', 'sql-field': column.formulaType === 'sql'}">
@@ -743,8 +736,6 @@
               </tbody>
             </table>
           </div>
-
-
         </div>
       </div>
     </div>
@@ -753,13 +744,11 @@
   <div class="col-md-4" [ngClass]="{'hide':showAllFieldsDiv === false}">
     <div class="card">
       <div class="card-header">
-
         <div class="row">
           <div class="col-sm-12">
             <h5 class="card-title pull-left">Available Fields</h5>
           </div>
         </div>
-
 
       </div>
       <div class="card-body">
@@ -782,11 +771,9 @@
                     <i class="fa fa-expand"></i>
                   </button>
                   [{{row.code}}] {{row.persistEntity.name}}
-
                 </h6>
               </div>
             </div>
-
 
             <table *ngIf="row.persistEntity != null && row.showFieldList === true" class="table table-striped">
               <thead class=" text-primary">
@@ -822,18 +809,14 @@
 
               </tbody>
             </table>
-
-
           </li>
         </ul>
       </div>
     </div>
   </div>
-
 </div>
 
-
-<div aria-labelledby="ModalLabel" class="modal fade" id="insertComponentModal" role="dialog" aria-hidden="true">
+<div aria-labelledby="ModalLabel" class="modal fade" id="selectComponentModal" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header justify-content-center">
@@ -858,7 +841,7 @@
                     style="cursor: pointer;">
                   <td>
                     <button type="button" title="Delete" class="btn btn-outline-primary btn-icon btn-sm"
-                            (click)="setSelectedComponent(row)">
+                            (click)="selectComponent(row)">
                       <i class="fa fa-search"></i>
                     </button>
                   </td>
@@ -871,24 +854,20 @@
                            value="{{row['name']}}">
                   </td>
                 </tr>
-
                 </tbody>
               </table>
             </div>
           </div>
-
         </form>
       </div>
       <div class="modal-footer">
         <div class="left-side">
           <button class="btn btn-outline-danger" data-dismiss="modal" type="button">Close</button>
         </div>
-
       </div>
     </div>
   </div>
 </div>
-
 
 <div aria-labelledby="ModalLabel" class="modal fade" id="insertFieldsModal" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-select-fields">
@@ -980,7 +959,6 @@
   </div>
 </div>
 
-
 <div aria-labelledby="ModalLabel" class="modal fade" id="customFilterStructureModal" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-select-fields">
     <div class="modal-content">
@@ -1033,7 +1011,6 @@
     </div>
   </div>
 </div>
-
 
 <div aria-labelledby="ModalLabel" class="modal fade" id="selectedColumnFieldModal" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-select-fields">

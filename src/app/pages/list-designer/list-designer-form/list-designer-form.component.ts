@@ -41,7 +41,6 @@ export class ListDesignerFormComponent extends PageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
     this.selectedFilterField = new ListComponentFieldDTO();
 
     let id = '0';
@@ -66,7 +65,6 @@ export class ListDesignerFormComponent extends PageComponent implements OnInit {
 
   cleanIdsIfCloneEnabled() {
     if (this.params.has('TYPE')) {
-
       if (this.params.get('TYPE').toUpperCase() === 'CLONE') {
 
         this.dto.id = null;
@@ -129,12 +127,10 @@ export class ListDesignerFormComponent extends PageComponent implements OnInit {
   save() {
     if (this.mode === 'edit-record') {
       this.service.update(this.dto).subscribe(data => {
-        //   this.router.navigate(['/list-designer-list']);
         this.navigatorService.closeAndBack(this.pageId);
       });
     } else {
       this.service.save(this.dto).subscribe(data => {
-        // this.router.navigate(['/list-designer-list']);
         this.navigatorService.closeAndBack(this.pageId);
       });
     }
@@ -142,7 +138,6 @@ export class ListDesignerFormComponent extends PageComponent implements OnInit {
 
   delete() {
     this.service.delete(this.dto.id).subscribe(data => {
-      // this.router.navigate(['/list-designer-list']);
       this.navigatorService.closeAndBack(this.pageId);
     });
   }
@@ -275,7 +270,6 @@ export class ListDesignerFormComponent extends PageComponent implements OnInit {
     return (curShortOrderObject.shortOrder + 1);
   }
 
-
   addFieldToFilters(row: ComponentPersistEntityDTO, field: ComponentPersistEntityFieldDTO) {
     const dto = new ListComponentFieldDTO();
     dto.editor = field.editor;
@@ -321,7 +315,6 @@ export class ListDesignerFormComponent extends PageComponent implements OnInit {
     this.dto.listComponentLeftGroupFieldList.push(dto);
   }
 
-
   genNextGroupingLeftShortOrder() {
     if (this.dto.listComponentLeftGroupFieldList === null
       || this.dto.listComponentLeftGroupFieldList === undefined
@@ -335,7 +328,6 @@ export class ListDesignerFormComponent extends PageComponent implements OnInit {
 
     return (curShortOrderObject.shortOrder + 1);
   }
-
 
   addFieldToOrderBy(row: ComponentPersistEntityDTO, field: ComponentPersistEntityFieldDTO) {
     const dto = new ListComponentFieldDTO();
@@ -365,7 +357,6 @@ export class ListDesignerFormComponent extends PageComponent implements OnInit {
     return (curShortOrderObject.shortOrder + 1);
   }
 
-
   showHideAllFields() {
     if (this.showAllFieldsDiv === false) {
       this.showAllFieldsDiv = true;
@@ -375,10 +366,8 @@ export class ListDesignerFormComponent extends PageComponent implements OnInit {
   }
 
   removeColumn(column: ListComponentFieldDTO) {
-    // if (this.selectedListComponent !== undefined) {
     this.dto.listComponentColumnFieldList =
       this.dto.listComponentColumnFieldList.filter(item => item !== column);
-    // }
   }
 
   removeFilter(column: ListComponentFieldDTO) {
@@ -394,14 +383,6 @@ export class ListDesignerFormComponent extends PageComponent implements OnInit {
         this.dto.listComponentLeftGroupFieldList.filter(item => item !== column);
     }
   }
-
-  // removeComponent(column: ListComponentDTO) {
-  //
-  //   this.selectedListComponent = undefined;
-  //
-  //   this.dto.listComponentList =
-  //     this.dto.listComponentList.filter(item => item !== column);
-  // }
 
   setSelectedFilterField(column: ListComponentFieldDTO) {
     this.selectedFilterField = column;
@@ -454,6 +435,5 @@ export class ListDesignerFormComponent extends PageComponent implements OnInit {
       position++;
     }
   }
-
 
 }

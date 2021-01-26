@@ -50,6 +50,8 @@ export class CommandNavigatorService {
         break;
       }
     }
+
+    return this.componentRefOnNavigation;
   }
 
   private navigatoToBaseComponentRef(componentRef: ComponentRef<any>) {
@@ -189,7 +191,7 @@ export class CommandNavigatorService {
         this.pages[this.pages.length - 1].instance.onFocusIn();
       }
 
-     // this.componentRefOnNavigation = this.pages[this.pages.length - 1].instance;
+      // this.componentRefOnNavigation = this.pages[this.pages.length - 1].instance;
       this.router.navigateByUrl('/main/' + this.pages[this.pages.length - 1].instance.pageId);
     }
   }

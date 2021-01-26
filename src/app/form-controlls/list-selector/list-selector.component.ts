@@ -1,18 +1,5 @@
-import {
-  ApplicationRef,
-  Component,
-  ComponentRef,
-  ElementRef,
-  EmbeddedViewRef,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-  Renderer2,
-  ViewChild
-} from '@angular/core';
+import {Component, ComponentRef, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {CommandNavigatorService} from '../../services/command-navigator.service';
-import {CommandParserService} from '../../services/command-parser.service';
 
 @Component({
   selector: 'app-list-selector',
@@ -20,49 +7,42 @@ import {CommandParserService} from '../../services/command-parser.service';
   styleUrls: ['./list-selector.component.css']
 })
 export class ListSelectorComponent implements OnInit {
-
-  @ViewChild('pageDiv') pageDiv: ElementRef;
   @Input() command: string;
-  @Output() returnValueEmmiter = new EventEmitter<string>();
-  returnDisplay = '';
-  returnValue = '';
+  @Input() value: string;
+  @Output() valueChange = new EventEmitter<string>();
+  displayValue = '';
 
-  constructor(private commandNavigatorService: CommandNavigatorService,
-              private commandParserService: CommandParserService,
-              private appRef: ApplicationRef,
-              private renderer: Renderer2) {
+  constructor(private commandNavigatorService: CommandNavigatorService) {
   }
 
   ngOnInit(): void {
+    if (this.value != null) {
+      this.initializeDefaultValues();
+    }
+  }
+
+  initializeDefaultValues() {
+    const valueArray = this.value.split('|');
+    this.value = valueArray[0];
+    this.displayValue = valueArray[1];
+    this.valueChange.emit(this.value);
   }
 
   openPage() {
-    const commandParametersKeyValMap: Map<string, string> = this.commandParserService.parse(this.command);
-    const componentRefOnNavigation: ComponentRef<any> = this.commandNavigatorService.generateComponent(commandParametersKeyValMap);
-    this.renderPage(componentRefOnNavigation);
+    const componentRefOnNavigation: ComponentRef<any> = this.commandNavigatorService.navigate(this.command);
     componentRefOnNavigation.instance.selectEmmiter.subscribe((returningValues: string[]) => {
-        this.returnDisplay = returningValues['RETURN-DISLPAY'];
-        this.returnValue = returningValues['RETURN'];
-        this.returnValueEmmiter.emit(this.returnValue);
-        document.getElementById('buttonClose').click();
+        this.displayValue = returningValues['RETURN-DISLPAY'];
+        this.value = returningValues['RETURN'];
+        this.valueChange.emit(this.value);
       }
     );
   }
 
   keyOpenPage(event: KeyboardEvent) {
     if (event.key === 'Enter') {
+      this.openPage();
       document.getElementById('buttonOpen').click();
     }
-  }
-
-  public renderPage(componentRef: ComponentRef<any>) {
-    this.appRef.attachView(componentRef.hostView);
-    const domElem = (componentRef.hostView as EmbeddedViewRef<any>).rootNodes[0] as HTMLElement;
-    const childElements = this.pageDiv.nativeElement.childNodes;
-    for (const childElement of childElements) {
-      this.renderer.removeChild(this.pageDiv.nativeElement, childElement);
-    }
-    this.renderer.appendChild(this.pageDiv.nativeElement, domElem);
   }
 
 }
