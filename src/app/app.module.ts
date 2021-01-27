@@ -45,6 +45,7 @@ import {ListSelectorComponent} from './form-controlls/list-selector/list-selecto
 import {FormDesignerFormComponent} from './pages/form-designer/form-designer-form/form-designer-form.component';
 import {FormDesignerListComponent} from './pages/form-designer/form-designer-list/form-designer-list.component';
 import {FormDesignerFormToolBoxComponent} from './pages/form-designer/form-designer-form-tool-box/form-designer-form-tool-box.component';
+import { FormComponent } from './pages/form/form.component';
 
 @NgModule({
   declarations: [
@@ -72,7 +73,8 @@ import {FormDesignerFormToolBoxComponent} from './pages/form-designer/form-desig
     ListSelectorComponent,
     FormDesignerFormComponent,
     FormDesignerListComponent,
-    FormDesignerFormToolBoxComponent
+    FormDesignerFormToolBoxComponent,
+    FormComponent
   ],
   imports: [
     BrowserAnimationsModule,

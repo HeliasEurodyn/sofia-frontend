@@ -39,11 +39,8 @@ export class CommandNavigatorService {
         this.navigatoToPopupComponentRef(this.componentRefOnNavigation);
         break;
       }
-      case 'LIST': {
-        this.componentRefOnNavigation = this.generateComponent(commandParametersKeyValMap);
-        this.navigatoToBaseComponentRef(this.componentRefOnNavigation);
-        break;
-      }
+      case 'LIST':
+      case 'FORM':
       case 'STATICPAGE': {
         this.componentRefOnNavigation = this.generateComponent(commandParametersKeyValMap);
         this.navigatoToBaseComponentRef(this.componentRefOnNavigation);
@@ -226,6 +223,10 @@ export class CommandNavigatorService {
       }
       case 'LIST': {
         navPageName = 'LIST';
+        break;
+      }
+      case 'FORM': {
+        navPageName = 'FORM';
         break;
       }
       case 'STATICPAGE': {

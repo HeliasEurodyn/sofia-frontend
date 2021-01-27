@@ -26,6 +26,7 @@ export class FormDesignerFormComponent extends PageComponent implements OnInit {
   public selectedFormTab: FormTabDto
   public selectedFormArea: FormArea = new FormArea();
   public components: any;
+  public visibleSection = 'settings';
 
   constructor(private service: FormService,
               private tableComponentService: TableComponentService,
@@ -62,6 +63,10 @@ export class FormDesignerFormComponent extends PageComponent implements OnInit {
     this.tableComponentService.get().subscribe(data => {
       this.components = data;
     });
+  }
+
+  setVisibleSection(visibleSection: string) {
+    this.visibleSection = visibleSection;
   }
 
   newTabKeyDown(event: KeyboardEvent, description: string) {
