@@ -43,6 +43,9 @@
   color: #ffffff;
 }
 
+.footer {
+  padding: 24px 0;
+}
 /*.navbar.navbar-transparent .nav-item .nav-link:not(.btn) {*/
 /*  color: #ffffff;*/
 /*}*/
