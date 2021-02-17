@@ -1,10 +1,6 @@
-
-<div class="row">
-  <div class="col-sm-7">
+<div class="row formnav" >
+  <div class="col-sm-12">
     <div class="pull-left">
-
-
-
       <button type="button" class="btn btn-outline-default btn-round"
               [ngClass]="{'active': this.defaultPage === 'filter', 'is-hidden': !this.filterHeaderVisible }"
               (click)="setFilterBodyVisible();">
@@ -19,23 +15,11 @@
       </button>
     </div>
   </div>
-  <div class="col-sm-5">
-    <div class="pull-right">
-      <button class="btn btn-outline-primary" style="margin-top: 0px;" *ngIf="showPreviousPageButton()"
-              (click)="navigateToPreviousPage()" >
-        <i class="fa fa-chevron-left"></i> Back
-      </button>
-      <button *ngIf="this.listDto?.exportExcel" type="button" title="Excel" (click)="dataExcel()"
-              class="btn btn-outline-primary btn-icon btn-sm">
-        <i class="fa fa-file-excel-o"></i>
-      </button>
-    </div>
-  </div>
 </div>
 
 <div class="text-center">
   <!-- filters -->
-  <div class="tab-pane" [ngClass]="{'is-hidden': !this.filterBodyVisible }">
+  <div class="tab-pane form-area" [ngClass]="{'is-hidden': !this.filterBodyVisible }">
     <div class="row">
       <div class="col-md-12">
         <div class="card card-user">
@@ -71,7 +55,7 @@
                        style="{{row.css}}">
                     <div class="form-group">
                       <b [ngClass]="{'text-danger': row.required}" class="text-danger">{{row.description}}</b>
-                      <input type="number" number="true" [(ngModel)]="row.fieldValue" class="form-control">
+                      <app-numeric-input [(inputValue)]="row.fieldValue" [mask]="'0*.0000'" [editable]="row.editable" ></app-numeric-input>
                     </div>
                   </div>
                 </ng-container>
@@ -81,7 +65,8 @@
                        style="{{row.css}}">
                     <div class="form-group">
                       <b [ngClass]="{'text-danger': row.required}">{{row.description}}</b>
-                      <input type="number" number="true" [(ngModel)]="row.fieldValue" class="form-control">
+                      <app-numeric-input readonly [(inputValue)]="row.fieldValue" [mask]="'0*'" [editable]="row.editable"></app-numeric-input>
+
                     </div>
                   </div>
                 </ng-container>
@@ -100,7 +85,7 @@
                        style="{{row.css}}">
                     <div class="form-group">
                       <b [ngClass]="{'text-danger': row.required}">{{row.description}}</b>
-                      <app-date-picker [(inputDate)]="row.fieldValue"></app-date-picker>
+                      <app-date-picker [(inputDate)]="row.fieldValue" [editable]="row.editable"></app-date-picker>
                     </div>
                   </div>
                 </ng-container>
@@ -114,7 +99,7 @@
   </div>
 
   <!-- columns -->
-  <div class="tab-pane" [ngClass]="{'is-hidden': !this.listBodyVisible }" >
+  <div class="tab-pane form-area" [ngClass]="{'is-hidden': !this.listBodyVisible }" >
 
     <div class="row">
       <div *ngIf="isGroupContentDivVisible()" class="col-md-2 col-sm-12 col-12">

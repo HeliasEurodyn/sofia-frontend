@@ -11,6 +11,7 @@ export class DatePickerComponent implements OnInit {
 
   @Input() inputDate: Date;
   @Output() inputDateChange = new EventEmitter<Date>();
+  @Input() editable: Boolean;
 
   @ViewChild('ngbDatepickerIdentifier') ngbInputDatepicker: NgbInputDatepicker;
   model: string;
@@ -56,7 +57,7 @@ export class DatePickerComponent implements OnInit {
     this.model = dateStringFormated.replace(exp, '');
   }
 
-  dateModelFocusOut() {
+  onFocusOut() {
     try {
       const modelParsedToDate = this.tryModelToDate();
       if (modelParsedToDate === false) {

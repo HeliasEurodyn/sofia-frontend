@@ -427,7 +427,6 @@ export class ListDesignerFormComponent extends PageComponent implements OnInit {
     for (const listItem of list) {
       if (selectedItem === listItem && (position + 1) < list.length) {
         const nextItem = list[position + 1];
-        //   alert(nextItem.code + ' ' + listItem.code);
         list[position] = nextItem;
         list[position + 1] = listItem;
         break;

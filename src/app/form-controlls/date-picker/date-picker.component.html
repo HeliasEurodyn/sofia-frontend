@@ -2,7 +2,8 @@
 <div class="input-group input-group-alternative">
 
     <div class="input-group-prepend">
-      <span #dateIcon (click)="ngbDatepickerIdentifier.toggle()" class="input-group-text"><i class="fa fa-calendar"></i></span>
+      <span *ngIf="this.editable" #dateIcon (click)="ngbDatepickerIdentifier.toggle()" class="input-group-text"><i class="fa fa-calendar"></i></span>
+      <span *ngIf="!this.editable" class="input-group-text"><i class="fa fa-calendar"></i></span>
     </div>
 
   <input
@@ -12,6 +13,7 @@
     [autoClose]="true"
     (dateSelect)="onNgbDatepickerSelection($event)"
     #ngbDatepickerIdentifier="ngbDatepicker"
+    [readonly]="!this.editable"
   >
 
   <input
@@ -21,7 +23,8 @@
     placeholder="{{dateFormat}}"
     (keydown)="onKeyDownEvent($event)"
     [(ngModel)]="model"
-    (focusout)="dateModelFocusOut()"
+    (focusout)="onFocusOut()"
+    [readonly]="!this.editable"
   >
 
   <ng-template #t let-date="date" let-focused="focused">

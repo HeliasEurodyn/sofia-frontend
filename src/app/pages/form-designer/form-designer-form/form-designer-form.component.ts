@@ -11,6 +11,7 @@ import {ComponentPersistEntityFieldDTO} from '../../../dtos/component/component-
 import {FormComponentDto} from '../../../dtos/form/form-component-dto';
 import {FormService} from '../../../services/crud/form.service';
 import {CommandNavigatorService} from '../../../services/command-navigator.service';
+import {FormScript} from '../../../dtos/form/form-script';
 
 @Component({
   selector: 'app-form-designer-form',
@@ -25,6 +26,8 @@ export class FormDesignerFormComponent extends PageComponent implements OnInit {
   public description: string;
   public selectedFormTab: FormTabDto
   public selectedFormArea: FormArea = new FormArea();
+  public selectedformScript: FormScript ;
+  public selectedFormcomponent: FormComponentDto = new FormComponentDto();
   public components: any;
   public visibleSection = 'settings';
 
@@ -164,8 +167,11 @@ export class FormDesignerFormComponent extends PageComponent implements OnInit {
     formComponent.formComponentField.componentPersistEntityField = field;
     formComponent.formComponentField.visible = true;
     formComponent.formComponentField.editable = true;
+    formComponent.formComponentField.required = false;
     formComponent.formComponentField.description = field.description
-    formComponent.type = field.persistEntityField.type;
+    formComponent.formComponentField.type = field.persistEntityField.type;
+    formComponent.type = 'field';
+
     formComponent.shortOrder = this.getNextShortOrder(this.selectedFormArea.formComponents);
     formComponent.cssclass = 'col-12';
     this.selectedFormArea.formComponents.push(formComponent);
@@ -213,4 +219,55 @@ export class FormDesignerFormComponent extends PageComponent implements OnInit {
     }
   }
 
+  addScript() {
+    console.log(this.dto);
+    const formScript = new FormScript();
+    formScript.shortOrder = this.getNextShortOrder(this.dto.formScripts);
+    formScript.name = 'Script' + formScript.shortOrder;
+    this.dto.formScripts.push(formScript);
+  }
+
+  removeEntityFormList(entity: any, list: any[]) {
+    list =
+      list.filter(item => item !== entity);
+    return list;
+  }
+
+  removeFormScriptByField(formScript: FormScript) {
+    this.dto.formScripts =
+      this.dto.formScripts.filter(item => item !== formScript);
+  }
+
+  setSelectedFormScript(formScript: FormScript) {
+    this.selectedformScript = formScript;
+  }
+
+  moveUp(baseDTO: BaseDTO, baseDTOs: BaseDTO[]) {
+    let position = 0;
+    for (const listBaseDTO of baseDTOs) {
+      if (baseDTO === listBaseDTO && position > 0) {
+        const prevItem = baseDTOs[position - 1];
+        baseDTOs[position] = prevItem;
+        baseDTOs[position - 1] = listBaseDTO;
+      }
+      position++;
+    }
+  }
+
+  moveDown(baseDTO: BaseDTO, baseDTOs: BaseDTO[]) {
+    let position = 0;
+    for (const listBaseDTO of baseDTOs) {
+      if (baseDTO === listBaseDTO && (position + 1) < baseDTOs.length) {
+        const nextItem = baseDTOs[position + 1];
+        baseDTOs[position] = nextItem;
+        baseDTOs[position + 1] = listBaseDTO;
+        break;
+      }
+      position++;
+    }
+  }
+
+  setSelectedField(formcomponent: FormComponentDto) {
+    this.selectedFormcomponent = formcomponent;
+  }
 }

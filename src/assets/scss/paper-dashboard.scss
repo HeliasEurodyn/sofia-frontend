@@ -61,7 +61,7 @@
 @import "paper-dashboard/responsive";
 
 .row > div{
-  padding-top: 10px !important;
+  //padding-top: 10px !important;
 }
 
 @media (min-width: 991px) {
@@ -71,4 +71,13 @@
     transition-timing-function: linear, linear, ease;
     -webkit-overflow-scrolling: touch;
   }
+}
+
+.formnav button{
+  margin: 10px 2px 0px !important;
+  background-color: white !important;
+}
+
+.form-area{
+  margin-top: 10px;
 }

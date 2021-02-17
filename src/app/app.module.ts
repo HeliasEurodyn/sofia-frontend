@@ -46,6 +46,7 @@ import {FormDesignerFormComponent} from './pages/form-designer/form-designer-for
 import {FormDesignerListComponent} from './pages/form-designer/form-designer-list/form-designer-list.component';
 import {FormDesignerFormToolBoxComponent} from './pages/form-designer/form-designer-form-tool-box/form-designer-form-tool-box.component';
 import { FormComponent } from './pages/form/form.component';
+import { NumericInputComponent } from './form-controlls/numeric-input/numeric-input.component';
 
 @NgModule({
   declarations: [
@@ -74,24 +75,25 @@ import { FormComponent } from './pages/form/form.component';
     FormDesignerFormComponent,
     FormDesignerListComponent,
     FormDesignerFormToolBoxComponent,
-    FormComponent
+    FormComponent,
+    NumericInputComponent
   ],
-  imports: [
-    BrowserAnimationsModule,
-    RouterModule.forRoot(AppRoutes, {
-      useHash: true
-    }),
-    NgxMaskModule.forRoot(),
-    SidebarModule,
-    NavbarModule,
-    ToastrModule.forRoot(),
-    FooterModule,
-    FixedPluginModule,
-    FormsModule,
-    HttpClientModule,
-    NgbDatepickerModule,
-    NgbModule
-  ],
+    imports: [
+        BrowserAnimationsModule,
+        RouterModule.forRoot(AppRoutes, {
+            useHash: true
+        }),
+        NgxMaskModule.forRoot(),
+        SidebarModule,
+        NavbarModule,
+        ToastrModule.forRoot(),
+        FooterModule,
+        FixedPluginModule,
+        FormsModule,
+        HttpClientModule,
+        NgbDatepickerModule,
+        NgbModule
+    ],
   providers: [
     DatePipe,
     {

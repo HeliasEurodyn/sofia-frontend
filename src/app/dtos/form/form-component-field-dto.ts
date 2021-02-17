@@ -7,10 +7,11 @@ export class FormComponentFieldDTO extends BaseDTO {
   description: string;
   visible: Boolean;
   editable: Boolean;
+  required: Boolean;
   defaultValue: string;
   decimals: number;
   fieldtype: string;
-  cssclass: string;
+  css: string;
   fieldValue: any;
   type: string;
   public componentPersistEntity: ComponentPersistEntityDTO;

@@ -9,6 +9,8 @@ export class ComponentPersistEntityFieldDTO extends BaseDTO {
 
   defaultValue: string;
 
+  public value: string;
+
   saveStatement: string;
 
   persistEntityField: PersistEntityFieldDTO;

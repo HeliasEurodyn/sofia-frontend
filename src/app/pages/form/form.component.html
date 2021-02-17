@@ -1,21 +1,42 @@
-<div class="row">
-  <div class="col-sm-7">
+<div class="row formnav">
+  <div class="col-sm-12">
     <div class="pull-left">
-
       <button *ngFor="let formTab of this.dto?.formTabs"  (click)="selectFormTab(formTab)"
-              style="margin-top: 0px;margin-bottom: 0px;padding: 10px;background-color: white;"
               type="button"
               class="btn btn-outline-default btn-round">
         <i class="fa {{formTab?.icon}}"></i>
         {{formTab.description}}
+      </button>
+    </div>
+    <div class="pull-right">
+
+      <button class="btn btn-outline-success" (click)="save()">
+        <i class="fa fa-save"></i> Save
+      </button>
+
+      <button class="btn btn-outline-danger" (click)="delete()">
+        <i class="fa fa-times"></i> Delete
+      </button>
+
+      <button class="btn btn-outline-primary"
+              *ngIf="showPreviousPageButton()"
+              (click)="navigateToPreviousPage()">
+        <i class="fa fa-chevron-left"></i> Back
+      </button>
+
+      <button class="btn btn-outline-primary"
+              *ngIf="showNextPageButton()"
+              (click)="navigateToNextPage()">
+        <i class="fa fa-chevron-right"></i> Next
       </button>
 
     </div>
   </div>
 </div>
 
-<div class="row">
-  <div *ngFor="let formArea of this.selectedFormTab?.formAreas" class="{{formArea.cssclass}}">
+<div class="row" *ngFor="let formTab of this.dto?.formTabs" [ngClass]="{'is-hidden': selectedFormTabId !== formTab.id }" >
+  <div *ngFor="let formArea of this.formTab.formAreas"  class="{{formArea.cssclass}} form-area">
+
     <div class="card">
       <div class="card-header">
         <div class="row">
@@ -33,14 +54,66 @@
       </div>
       <div class="card-body">
         <div class="row">
-          <div *ngFor="let formcomponent of formArea?.formComponents" class="{{formcomponent.cssclass}}">
-            <div class="form-group">
-              <label>{{formcomponent.formComponentField.description}}</label>
-              <input type="text" class="form-control" name="{{formcomponent.formComponentField.description}}">
-            </div>
-          </div>
+
+          <ng-container *ngFor="let formcomponent of formArea?.formComponents">
+            <ng-container *ngIf="formcomponent.type === 'field'">
+
+              <ng-container *ngIf="formcomponent.formComponentField.type === 'varchar' || formcomponent.formComponentField.type === 'text' ">
+                <div class="{{formcomponent.cssclass}} filter-col"
+                     style="{{formcomponent.formComponentField.css}}">
+                  <div class="form-group">
+                    <b [ngClass]="{'text-danger': formcomponent.formComponentField.required}">{{formcomponent.formComponentField.description}}</b>
+                    <input type="text" class="form-control" [(ngModel)]="formcomponent.formComponentField.componentPersistEntityField.value">
+                  </div>
+                </div>
+              </ng-container>
+
+              <ng-container *ngIf="formcomponent.formComponentField.type === 'double' ">
+                <div class="{{formcomponent.cssclass}} filter-col"
+                     style="{{formcomponent.formComponentField.css}}">
+                  <div class="form-group">
+                    <b [ngClass]="{'text-danger': formcomponent.formComponentField.required}" class="text-danger">{{formcomponent.formComponentField.description}}</b>
+                    <app-numeric-input [(inputValue)]="formcomponent.formComponentField.componentPersistEntityField.value" [mask]="'0*.0000'" [editable]="formcomponent.formComponentField.editable" ></app-numeric-input>
+                  </div>
+                </div>
+              </ng-container>
+
+              <ng-container *ngIf="formcomponent.formComponentField.type === 'int' || formcomponent.formComponentField.type === 'bigint'">
+                <div class="{{formcomponent.cssclass}} filter-col"
+                     style="{{formcomponent.formComponentField.css}}">
+                  <div class="form-group">
+                    <b [ngClass]="{'text-danger': formcomponent.formComponentField.required}">{{formcomponent.formComponentField.description}}</b>
+                    <app-numeric-input readonly [(inputValue)]="formcomponent.formComponentField.componentPersistEntityField.value" [mask]="'0*'" [editable]="formcomponent.formComponentField.editable"></app-numeric-input>
+
+                  </div>
+                </div>
+              </ng-container>
+
+              <ng-container *ngIf="formcomponent.formComponentField.type === 'list'">
+                <div class="{{formcomponent.cssclass}} filter-col" style="{{formcomponent.formComponentField.css}}">
+                  <div class="form-group">
+                    <b [ngClass]="{'text-danger': formcomponent.formComponentField.required}">{{formcomponent.formComponentField.description}}</b>
+                    <app-list-selector [command]="formcomponent.formComponentField.editor" [(value)]="formcomponent.formComponentField.componentPersistEntityField.value" ></app-list-selector>
+                  </div>
+                </div>
+              </ng-container>
+
+              <ng-container *ngIf="formcomponent.formComponentField.type === 'datetime'">
+                <div class="{{formcomponent.cssclass}} filter-col"
+                     style="{{formcomponent.formComponentField.css}}">
+                  <div class="form-group">
+                    <b [ngClass]="{'text-danger': formcomponent.formComponentField.required}">{{formcomponent.formComponentField.description}}</b>
+                    <app-date-picker [(inputDate)]="formcomponent.formComponentField.componentPersistEntityField.value" [editable]="formcomponent.formComponentField.editable"></app-date-picker>
+                  </div>
+                </div>
+              </ng-container>
+
+            </ng-container>
+
+          </ng-container>
         </div>
       </div>
     </div>
   </div>
 </div>
+

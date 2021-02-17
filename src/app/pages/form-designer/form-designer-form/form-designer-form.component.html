@@ -3,17 +3,21 @@
 <div class="row">
   <div class="col-sm-12">
     <div class="pull-left">
-      <button type="button" class="btn btn-outline-default btn-round"
+      <button type="button" class="btn btn-outline-default btn-round btn-white"
               (click)="setVisibleSection('settings');">
         <i class="fa fa-sliders"></i>
         settings
       </button>
-      <button type="button" class="btn btn-outline-default btn-round"
+      <button type="button" class="btn btn-outline-default btn-round btn-white"
               (click)="setVisibleSection('designer');">
         <i class="fa fa-trello"></i>
         Design
       </button>
-
+      <button type="button" class="btn btn-outline-default btn-round btn-white"
+              (click)="setVisibleSection('scripts');">
+        <i class="fa fa-code"></i>
+        Scripts
+      </button>
     </div>
     <div class="pull-right">
 
@@ -147,13 +151,14 @@
     <div class="card">
       <div class="card-header">
         <div class="row">
-          <div class="col-4">
-            <h5 class="card-title">
-              <i class="fa {{formArea.icon}}"></i>
-              {{formArea.description}}
-            </h5>
-          </div>
-          <div class="col-8">
+          <div class="col-12">
+
+            <div class="pull-left">
+              <h5 class="card-title">
+                <i class="fa {{formArea.icon}}"></i>
+                {{formArea.description}}
+              </h5>
+            </div>
             <div class="pull-right">
               <button (click)="removeFormAreas(formArea)"
                       type="button" class="btn btn-outline-danger">
@@ -172,7 +177,9 @@
                 <i class="fa fa-plus-circle"></i> Add components
               </button>
             </div>
+
           </div>
+
         </div>
       </div>
       <div class="card-body">
@@ -180,7 +187,48 @@
           <div *ngFor="let formcomponent of formArea?.formComponents" class="{{formcomponent.cssclass}}">
             <div class="form-group">
               <label>{{formcomponent.formComponentField.description}}</label>
-              <input type="text" class="form-control" name="{{formcomponent.formComponentField.description}}">
+              <div class="input-group input-group-alternative">
+                <div (click)="formArea.formComponents = removeEntityFormList(formcomponent,formArea.formComponents);"
+                     class="input-group-prepend">
+                     <span class="input-group-text textfield-button-danger">
+                          <i class="fa fa-window-close"></i>
+                     </span>
+                </div>
+
+                <div (click)="setSelectedField(formcomponent);"
+                     data-target="#selectedFieldModal"
+                     data-toggle="modal"
+                     class="input-group-prepend">
+                     <span class="input-group-text textfield-button-info">
+                          <i class="fa fa-pencil"></i>
+                     </span>
+                </div>
+
+                <div (click)="moveUp(formcomponent,formArea.formComponents);"
+                     class="input-group-prepend">
+                     <span class="input-group-text textfield-button-warning">
+                          <i class="fa fa-angle-double-left"></i>
+                     </span>
+                </div>
+
+                <div (click)="moveDown(formcomponent,formArea.formComponents);"
+                     class="input-group-prepend">
+                     <span class="input-group-text textfield-button-warning">
+                          <i class="fa fa-angle-double-right"></i>
+                     </span>
+                </div>
+
+                <input readonly
+                       type="text"
+                       class="form-control textfield-area"
+                       value="{{formcomponent.formComponentField.componentPersistEntityField.persistEntityField.name}}">
+
+                <input readonly
+                       type="text"
+                       class="form-control textfield-area"
+                       value="Type: {{formcomponent.formComponentField.type}}">
+              </div>
+
             </div>
           </div>
         </div>
@@ -188,6 +236,99 @@
     </div>
   </div>
 </div>
+
+<div *ngIf="this.visibleSection === 'scripts'" class="row">
+  <div class="col-md-12">
+    <div class="card card-user">
+      <div class="card-header">
+        <div class="row">
+
+
+
+          <div class="col-sm-12">
+            <div class="pull-left">
+              <h5 class="card-title">
+              Scripts
+              </h5>
+            </div>
+            <div class="pull-right">
+              <button (click)="addScript()"
+                      type="button" class="btn btn-outline-success">
+                <i class="fa fa-plus-circle"></i> New
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="row">
+
+          <div class="col-md-12">
+
+            <table class="table table-striped">
+              <thead class=" text-primary">
+              <tr>
+                <th>actions</th>
+                <th>Name</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr  *ngFor="let formScript of this.dto?.formScripts"
+                   style="cursor: pointer;">
+                <td>
+
+                  <button title="Remove" (click)="removeFormScriptByField(formScript)" type="button"
+                          class="btn btn-outline-danger btn-icon btn-sm">
+                    <i class="fa fa-times"></i>
+                  </button>
+                  <button data-target="#selectedOrderByFieldModal" (click)="setSelectedFormScript(formScript);"
+                          data-toggle="modal" title="Details" type="button"
+                          class="btn btn-outline-success btn-icon btn-sm">
+                    <i class="fa fa-search"></i>
+                  </button>
+                  <button (click)="moveUp(formScript, this.dto?.formScripts)" type="button"
+                          title="Move Up" class="btn btn-outline-warning btn-icon btn-sm">
+                    <i class="fa fa-angle-up"></i>
+                  </button>
+                  <button (click)="moveDown(formScript, this.dto?.formScripts)" type="button"
+                          title="Move Down" class="btn btn-outline-warning btn-icon btn-sm">
+                    <i class="fa fa-angle-down"></i>
+                  </button>
+
+                </td>
+                <td>
+                  <input type="text" class="form-control" [(ngModel)]="formScript.name">
+                </td>
+              </tr>
+              </tbody>
+            </table>
+
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="this.visibleSection === 'scripts' && selectedformScript != null" class="row">
+  <div class="col-md-12">
+    <div class="card card-user">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group" >
+              <textarea class="form-control" style="min-height: 800px;padding: 1px 5px 1px 5px;" [(ngModel)]="selectedformScript.script"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <div aria-labelledby="ModalLabel" *ngIf="selectedFormTab != null" class="modal fade" id="selectedFormTabFieldModal" role="dialog"
      aria-hidden="true">
@@ -269,6 +410,130 @@
         <div class="left-side">
           <button class="btn btn-outline-danger" data-dismiss="modal" type="button">Close</button>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div aria-labelledby="ModalLabel" class="modal fade" id="selectedFieldModal" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-select-fields">
+    <div class="modal-content">
+      <div class="modal-header justify-content-center">
+        <h4 class="title title-up modal-title">Filter field details</h4>
+        <button aria-label="Close" class="close" data-dismiss="modal" type="button"><i
+          class="nc-icon nc-simple-remove"></i></button>
+      </div>
+      <div class="modal-body">
+
+
+        <div class="row">
+          <div class="col-12">
+            <label>Table</label>
+            <input type="text" class="form-control" readonly
+                   value=" {{selectedFormcomponent.formComponentField?.componentPersistEntity?.code}} {{selectedFormcomponent.formComponentField?.componentPersistEntity?.persistEntity?.name}}">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12">
+            <label>Field</label>
+            <input type="text" class="form-control" readonly name="code"
+                   [(ngModel)]="selectedFormcomponent.formComponentField?.componentPersistEntityField?.persistEntityField.name">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12">
+            <label>Type</label><br>
+            <select [(ngModel)]="selectedFormcomponent.formComponentField.type" name="type" class="transparent-input">
+              <option value=""></option>
+              <option value="bigint">bigint</option>
+              <option value="int">int</option>
+              <option value="double">double</option>
+              <option value="datetime">datetime</option>
+              <option value="datetimerange">datetimerange</option>
+              <option value="varchar">varchar</option>
+              <option value="text">text</option>
+              <option value="list">list</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12">
+            <label>Description</label>
+            <textarea class="form-control" [(ngModel)]="selectedFormcomponent.formComponentField.description"></textarea>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12">
+            <label>Editor</label>
+            <textarea class="form-control" [(ngModel)]="selectedFormcomponent.formComponentField.editor"></textarea>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12">
+            <label>Default Value</label>
+            <textarea class="form-control" [(ngModel)]="selectedFormcomponent.formComponentField.defaultValue"></textarea>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12">
+            <label>Custom css</label>
+            <textarea class="form-control" [(ngModel)]="selectedFormcomponent.formComponentField.css"></textarea>
+          </div>
+        </div>
+
+
+        <div class="row">
+          <div class="col-12">
+            <label>Bootstrap Column Class</label>
+            <input type="text" class="form-control" [(ngModel)]="selectedFormcomponent.cssclass">
+          </div>
+        </div>
+
+
+        <div class="row">
+          <div class="col-12">
+            <label>Visible</label><br>
+            <select class="transparent-input" [(ngModel)]="selectedFormcomponent.formComponentField.visible">
+              <option value="false">No</option>
+              <option value="true">Yes</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12">
+            <label>Editable</label><br>
+            <select class="transparent-input" [(ngModel)]="selectedFormcomponent.formComponentField.editable">
+              <option value="false">No</option>
+              <option value="true">Yes</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12">
+            <label>Required</label><br>
+            <select class="transparent-input" [(ngModel)]="selectedFormcomponent.formComponentField.required">
+              <option value="false">No</option>
+              <option value="true">Yes</option>
+            </select>
+          </div>
+        </div>
+
+      </div>
+
+
+      <div class="modal-footer">
+        <div class="left-side">
+          <button class="btn btn-outline-danger" data-dismiss="modal" type="button">Close</button>
+        </div>
+
       </div>
     </div>
   </div>
@@ -403,6 +668,8 @@
     </div>
   </div>
 </div>
+
+
 
 <div class="fixed-plugin">
   <div class="show-dropdown" ngbDropdown>

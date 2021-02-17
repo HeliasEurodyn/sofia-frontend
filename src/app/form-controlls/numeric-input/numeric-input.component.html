@@ -1,0 +1,9 @@
+<input
+  mask="{{mask}}"
+  class="form-control"
+  [showMaskTyped]="false"
+  [dropSpecialCharacters]="false"
+  (keyup)="onKeyUp($event)"
+  [(ngModel)]="inputValue"
+  [readonly]="!this.editable"
+  >

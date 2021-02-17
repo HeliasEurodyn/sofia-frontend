@@ -3,7 +3,7 @@
 
 
 .showHideSidemenuBtn, .showHideSidemenuBtn:hover{
-  background-color: #ffffff !important;
+  background-color: #1270b9  !important;
   box-shadow: 0 2px 2px 0 hsla(0,0%,60%,.14), 0 3px 1px -2px hsla(0,0%,60%,.2), 0 1px 5px 0 hsla(0,0%,60%,.12) !important;
 }
 
@@ -189,7 +189,7 @@
             }
 
             > a{
-                margin: 10px 15px 0;
+                margin: 3px 15px 0;
                 color: $white-color;
                 display: block;
                 text-decoration: none;
@@ -418,7 +418,7 @@
         //min-height: calc(100vh - 123px);
        min-height: calc(100vh - 142px);
         //margin-top: 77px;
-        margin-top: 65px;
+        margin-top: 62px;
     }
 
      .navbar{
