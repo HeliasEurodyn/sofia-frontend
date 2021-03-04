@@ -1,6 +1,4 @@
-
-
-<div class="row">
+<div class="row formnav">
   <div class="col-sm-12">
     <div class="pull-left">
       <button type="button" class="btn btn-outline-default btn-round btn-white"
@@ -45,7 +43,7 @@
   </div>
 </div>
 
-<div *ngIf="this.visibleSection === 'settings'" class="row">
+<div *ngIf="this.visibleSection === 'settings'" class="row form-area">
   <div class="col-md-12">
     <div class="card card-user">
       <div class="card-header">
@@ -101,7 +99,7 @@
   </div>
 </div>
 
-<div *ngIf="this.visibleSection === 'designer'" class="row">
+<div *ngIf="this.visibleSection === 'designer'" class="row form-area">
   <div class="col-sm-7">
     <div class="pull-left">
 
@@ -146,11 +144,12 @@
   </div>
 </div>
 
-<div *ngIf="this.visibleSection === 'designer'" class="row">
-  <div *ngFor="let formArea of this.selectedFormTab?.formAreas" class="{{formArea.cssclass}}">
+<div *ngIf="this.visibleSection === 'designer'" class="row ">
+
+  <div *ngFor="let formArea of this.selectedFormTab?.formAreas" class="{{formArea.cssclass}} form-area">
     <div class="card">
       <div class="card-header">
-        <div class="row">
+        <div class="row formnav">
           <div class="col-12">
 
             <div class="pull-left">
@@ -235,16 +234,14 @@
       </div>
     </div>
   </div>
+
 </div>
 
-<div *ngIf="this.visibleSection === 'scripts'" class="row">
+<div *ngIf="this.visibleSection === 'scripts'" class="row form-area">
   <div class="col-md-12">
     <div class="card card-user">
       <div class="card-header">
         <div class="row">
-
-
-
           <div class="col-sm-12">
             <div class="pull-left">
               <h5 class="card-title">
@@ -258,7 +255,6 @@
               </button>
             </div>
           </div>
-
         </div>
       </div>
       <div class="card-body">
@@ -306,7 +302,6 @@
 
           </div>
 
-
         </div>
       </div>
     </div>
@@ -328,7 +323,6 @@
     </div>
   </div>
 </div>
-
 
 <div aria-labelledby="ModalLabel" *ngIf="selectedFormTab != null" class="modal fade" id="selectedFormTabFieldModal" role="dialog"
      aria-hidden="true">
@@ -668,8 +662,6 @@
     </div>
   </div>
 </div>
-
-
 
 <div class="fixed-plugin">
   <div class="show-dropdown" ngbDropdown>

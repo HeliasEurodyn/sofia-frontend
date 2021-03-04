@@ -11,6 +11,24 @@ li{
   margin: 2px;
 }
 
+.textfield-button-danger {
+  padding: 10px 5px 10px 5px !important;
+  border: 2px solid #ef8157 !important;
+  color: #ff0000;
+}
+
+.textfield-button-warning{
+  padding: 10px 5px 10px 5px !important;
+  border: 2px solid #fbc658 !important;
+  color: #d28e00;
+}
+
+.textfield-button-info{
+  padding: 10px 5px 10px 5px !important;
+  border: 2px solid #17a2b8 !important;
+  color: #17a2b8;
+}
+
 /*.caret {*/
   /*cursor: pointer;*/
   /*-webkit-user-select: none; !* Safari 3.1+ *!*/

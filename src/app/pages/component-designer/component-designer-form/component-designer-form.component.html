@@ -1,6 +1,6 @@
-<div class="row">
+<div class="row formnav">
   <div class="col-sm-12">
-    <div class="pull-left">
+    <div class="pull-right">
       <button class="btn btn-outline-success" style="margin-top: 0px;" (click)="save()">
         <i class="fa fa-save"></i>
         Save
@@ -22,7 +22,7 @@
   </div>
 </div>
 
-<div class="row">
+<div class="row form-area">
   <div class="col-md-12">
     <div class="card card-user">
       <div class="card-header">
@@ -45,18 +45,16 @@
   </div>
 </div>
 
-<div class="row">
+<div class="row form-area">
   <div class="col-md-12">
     <div class="card">
       <div class="card-header">
-
-        <div class="row">
-          <div class="col-sm-7">
-            <h5 class="card-title pull-left">Schema</h5>
-          </div>
-          <div class="col-sm-5">
+        <div class="row formnav">
+          <div class="col-sm-12">
+            <div class="pull-left">
+              <h5 class="card-title pull-left">Persist Entities</h5>
+            </div>
             <div class="pull-right">
-
               <button class="btn btn-outline-primary"
                       data-target="#tableModal" data-toggle="modal">
                 <i class="fa fa-link"></i> Select Table
@@ -69,112 +67,128 @@
                       data-target="#appViewModal" data-toggle="modal">
                 <i class="fa fa-link"></i> Select App View
               </button>
-
             </div>
           </div>
         </div>
-
       </div>
+
       <div class="card-body">
-        <ul>
-          <li class="component-table" *ngFor="let row of componentDTO.componentPersistEntityList">
-            <div class="row">
-              <div class="col-md-12">
-                <h6>
-                  <button (click)="upItemInList(row,componentDTO.componentPersistEntityList)"   type="button" title="New Submenu"
-                          class="btn btn-outline-warning btn-icon btn-sm">
-                    <i class="fa fa-angle-up"></i>
-                  </button>
-                  <button (click)="downItemInList(row, componentDTO.componentPersistEntityList)"   type="button" title="New Submenu"
-                          class="btn btn-outline-warning btn-icon btn-sm">
-                    <i class="fa fa-angle-down"></i>
-                  </button>
+        <ng-container *ngFor="let row of componentDTO.componentPersistEntityList">
+          <div class="row">
+            <div class="col-md-12">
 
-                  <button (click)="removeTableComponent(row)" type="button" title="remove table"
-                          class="btn btn-outline-danger btn-icon btn-sm">
-                    <i class="fa fa-times"></i>
-                  </button>
-                  <button *ngIf="row.persistEntity != null && row.showFieldList === true" (click)="hideChildren(row)"
-                          type="button" title="Hide"
-                          class="btn btn-outline-default btn-icon btn-sm">
-                    <i class="fa fa-compress"></i>
-                  </button>
+              <div class="form-group">
+                {{row.shortOrder}}. [{{row.code}}] {{row.persistEntity.name}}
 
-                  <button *ngIf="row.persistEntity != null && row.showFieldList !== true" (click)="showChildren(row)"
-                          type="button" title="Show"
-                          class="btn btn-outline-default btn-icon btn-sm">
-                    <i class="fa fa-expand"></i>
-                  </button>
-                  [{{row.code}}] {{row.persistEntity.name}}
+                <div class="input-group input-group-alternative">
 
-                </h6>
+                  <div (click)="upItemInList(row,componentDTO.componentPersistEntityList)"
+                       class="input-group-prepend">
+                     <span class="input-group-text textfield-button-warning">
+                          <i class="fa fa-angle-up"></i>
+                     </span>
+                  </div>
+
+                  <div (click)="downItemInList(row, componentDTO.componentPersistEntityList)"
+                       class="input-group-prepend">
+                     <span class="input-group-text textfield-button-warning">
+                          <i class="fa fa-angle-down"></i>
+                     </span>
+                  </div>
+
+                  <div (click)="removeTableComponent(row)"
+                       class="input-group-prepend">
+                     <span class="input-group-text textfield-button-danger">
+                          <i class="fa fa-times"></i>
+                     </span>
+                  </div>
+
+                  <div *ngIf="row.persistEntity != null && row.showFieldList === true" (click)="hideChildren(row)"
+                       class="input-group-prepend">
+                     <span class="input-group-text textfield-button-info">
+                          <i class="fa fa-compress"></i>
+                     </span>
+                  </div>
+
+                  <div *ngIf="row.persistEntity != null && row.showFieldList !== true" (click)="showChildren(row)"
+                       class="input-group-prepend">
+                     <span class="input-group-text textfield-button-info">
+                          <i class="fa fa-expand"></i>
+                     </span>
+                  </div>
+
+                  <input type="text"
+                         placeholder="Selector"
+                         class="form-control textfield-area"
+                         [(ngModel)]="row.selector">
+
+                  <span class="input-group-text">Retrieve</span>
+                  <div class="input-group-text">
+                    <input type="checkbox" [(ngModel)]="row.allowRetrieve">
+                  </div>
+
+                  <span class="input-group-text">Save</span>
+                  <div class="input-group-text">
+                    <input type="checkbox" [(ngModel)]="row.allowSave">
+                  </div>
+                </div>
               </div>
+
             </div>
-            <div class="row">
-              <div class="col-md-12">
-                <div class="form-group">
-                  <label>selector</label>
-                  <input type="text" class="form-control" name="selector" [(ngModel)]="row.selector">
-                  <code></code>
+          </div>
+          <ul *ngIf="row.persistEntity != null && row.showFieldList === true">
+            <li *ngFor="let field of row.componentPersistEntityFieldList">
+
+              <div class="row">
+                <div class="col-md-12">
+                  <h6>
+                    {{field.persistEntityField?.name}}({{field.persistEntityField.type}})
+                  </h6>
                 </div>
               </div>
-            </div>
 
-            <ul *ngIf="row.persistEntity != null && row.showFieldList === true">
-              <li *ngFor="let field of row.componentPersistEntityFieldList">
-
-
-                <div class="row">
-                  <div class="col-md-12">
-                    <h6>
-                      {{field.persistEntityField?.name}}({{field.persistEntityField.type}})
-                    </h6>
-                  </div>
+              <div class="row">
+                <label class="col-md-auto col-form-label">Description</label>
+                <div class="col">
+                  <input type="text" class="form-control" [(ngModel)]="field.description">
                 </div>
+              </div>
 
-
-                <div class="row">
-                  <label class="col-md-auto col-form-label">Description</label>
-                  <div class="col">
-                    <input type="text" class="form-control" [(ngModel)]="field.description">
-                  </div>
+              <div class="row">
+                <label class="col-md-auto col-form-label">Default Value</label>
+                <div class="col">
+                  <input type="text" class="form-control" [(ngModel)]="field.defaultValue">
                 </div>
+              </div>
 
-
-                <div class="row">
-                  <label class="col-md-auto col-form-label">Default Value</label>
-                  <div class="col">
-                    <input type="text" class="form-control" [(ngModel)]="field.defaultValue">
-                  </div>
+              <div class="row">
+                <label class="col-md-auto col-form-label">Component Editor</label>
+                <div class="col">
+                  <input type="text" class="form-control" [(ngModel)]="field.editor">
                 </div>
+              </div>
 
-                <div class="row">
-                  <label class="col-md-auto col-form-label">Component Editor</label>
-                  <div class="col">
-                    <input type="text" class="form-control" [(ngModel)]="field.editor">
-                  </div>
+              <div class="row">
+                <label class="col-md-auto col-form-label">Locate Statement</label>
+                <div class="col">
+                  <input type="text" class="form-control" [(ngModel)]="field.locateStatement">
                 </div>
+              </div>
 
-
-                <div class="row">
-                  <label class="col-md-auto col-form-label">Save Statement</label>
-                  <div class="col">
-                    <input type="text" class="form-control" [(ngModel)]="field.saveStatement">
-                  </div>
+              <div class="row">
+                <label class="col-md-auto col-form-label">Save Statement</label>
+                <div class="col">
+                  <input type="text" class="form-control" [(ngModel)]="field.saveStatement">
                 </div>
+              </div>
 
-              </li>
-            </ul>
-
-
-          </li>
-        </ul>
+            </li>
+          </ul>
+        </ng-container>
       </div>
-
     </div>
   </div>
 </div>
-
 
 
 <div aria-labelledby="ModalLabel" class="modal fade" id="appViewModal" role="dialog" aria-hidden="true">
@@ -199,7 +213,8 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr *ngFor="let row of appViews" (click)="selectAppView(row)" data-dismiss="modal" style="cursor: pointer;">
+                <tr *ngFor="let row of appViews" (click)="selectAppView(row)" data-dismiss="modal"
+                    style="cursor: pointer;">
                   <td>{{row['id']}}</td>
                   <td>{{row['name']}}</td>
                   <td>{{row['creationVersion']}}</td>

@@ -10,6 +10,10 @@ export class ComponentPersistEntityDTO extends BaseDTO {
 
   public persistEntity: PersistEntityDTO;
 
+  allowRetrieve: boolean;
+
+  allowSave: boolean;
+
   public componentPersistEntityFieldList: ComponentPersistEntityFieldDTO[] = [];
 
   showFieldList: boolean;

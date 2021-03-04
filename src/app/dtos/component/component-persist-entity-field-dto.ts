@@ -13,6 +13,8 @@ export class ComponentPersistEntityFieldDTO extends BaseDTO {
 
   saveStatement: string;
 
+  locateStatement: string;
+
   persistEntityField: PersistEntityFieldDTO;
 
 }

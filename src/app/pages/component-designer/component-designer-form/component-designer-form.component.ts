@@ -9,8 +9,8 @@ import {PageComponent} from '../../page/page-component';
 import {ComponentPersistEntityFieldDTO} from '../../../dtos/component/component-persist-entity-field-dto';
 import {ComponentPersistEntityDTO} from '../../../dtos/component/component-persist-entity-dto';
 import {ViewService} from '../../../services/crud/view.service';
-import {MenuFieldDTO} from '../../../dtos/menu/menuDTO';
 import {AppViewService} from '../../../services/crud/app-view.service';
+import {BaseDTO} from '../../../dtos/common/base-dto';
 
 
 @Component({
@@ -66,6 +66,26 @@ export class ComponentDesignerFormComponent extends PageComponent implements OnI
     this.refreshViews();
     this.refreshAppViews();
 
+  }
+
+  save() {
+    if (this.mode === 'edit-record') {
+      this.tableComponentService.update(this.componentDTO).subscribe(data => {
+        this.navigatorService.closeAndBack(this.pageId);
+      });
+    } else {
+
+      this.tableComponentService.save(this.componentDTO).subscribe(data => {
+        this.navigatorService.closeAndBack(this.pageId);
+      });
+    }
+
+  }
+
+  delete() {
+    this.tableComponentService.delete(this.tableDesign.id).subscribe(data => {
+      this.navigatorService.closeAndBack(this.pageId);
+    });
   }
 
   cleanIdsIfCloneEnabled() {
@@ -132,27 +152,14 @@ export class ComponentDesignerFormComponent extends PageComponent implements OnI
     });
   }
 
-  save() {
-    if (this.mode === 'edit-record') {
-      this.tableComponentService.update(this.componentDTO).subscribe(data => {
-        this.navigatorService.closeAndBack(this.pageId);
-      });
-    } else {
-
-      this.tableComponentService.save(this.componentDTO).subscribe(data => {
-        this.navigatorService.closeAndBack(this.pageId);
-      });
-    }
-
-  }
-
   selectView(row) {
 
     const componentTableDTO = new ComponentPersistEntityDTO();
     componentTableDTO.persistEntity = row;
-    componentTableDTO.showFieldList = true;
-    componentTableDTO.shortOrder = this.genNextShortOrder(this.componentDTO.componentPersistEntityList);
-    componentTableDTO.code = 't' + componentTableDTO.shortOrder;
+    componentTableDTO.showFieldList = false;
+    componentTableDTO.shortOrder = this.setShortOrders();
+    //  componentTableDTO.code = 't' + componentTableDTO.shortOrder;
+    componentTableDTO.code = this.genNextComponentCode(row.name);
 
     componentTableDTO.componentPersistEntityFieldList = [];
     let shortOrder = 1;
@@ -174,9 +181,10 @@ export class ComponentDesignerFormComponent extends PageComponent implements OnI
 
     const componentTableDTO = new ComponentPersistEntityDTO();
     componentTableDTO.persistEntity = row;
-    componentTableDTO.showFieldList = true;
-    componentTableDTO.shortOrder = this.genNextShortOrder(this.componentDTO.componentPersistEntityList);
-    componentTableDTO.code = 't' + componentTableDTO.shortOrder;
+    componentTableDTO.showFieldList = false;
+    componentTableDTO.shortOrder = this.setShortOrders();
+
+    componentTableDTO.code = this.genNextComponentCode(row.name);
 
     componentTableDTO.componentPersistEntityFieldList = [];
     let shortOrder = 1;
@@ -198,9 +206,10 @@ export class ComponentDesignerFormComponent extends PageComponent implements OnI
 
     const componentTableDTO = new ComponentPersistEntityDTO();
     componentTableDTO.persistEntity = row;
-    componentTableDTO.showFieldList = true;
-    componentTableDTO.shortOrder = this.genNextShortOrder(this.componentDTO.componentPersistEntityList);
-    componentTableDTO.code = 't' + componentTableDTO.shortOrder;
+    componentTableDTO.showFieldList = false;
+    componentTableDTO.shortOrder = this.setShortOrders();
+//    componentTableDTO.code = 't' + componentTableDTO.shortOrder;
+    componentTableDTO.code = this.genNextComponentCode(row.name);
 
     componentTableDTO.componentPersistEntityFieldList = [];
     let shortOrder = 1;
@@ -218,46 +227,36 @@ export class ComponentDesignerFormComponent extends PageComponent implements OnI
 
   }
 
-  genNextShortOrder(componentTableList: ComponentPersistEntityDTO[]) {
+  genNextComponentCode(defaultCode: string) {
 
-    if (this.componentDTO.componentPersistEntityList === null
-      || this.componentDTO.componentPersistEntityList === undefined
-      || this.componentDTO.componentPersistEntityList.length === 0) {
-      return 1;
+    let prefixCount = 0;
+    let code = defaultCode;
+
+    while (true) {
+
+      let codeAlreadyExists = false;
+      for (const componentPersistEntity of this.componentDTO.componentPersistEntityList) {
+        if (componentPersistEntity.code === code) {
+          codeAlreadyExists = true;
+        }
+      }
+
+      if (codeAlreadyExists === false) {
+        return code;
+      }
+
+      prefixCount++;
+      code = defaultCode + '_' + prefixCount;
     }
 
-    const curShortOrderObject = this.componentDTO.componentPersistEntityList.reduce(function (prev, curr) {
-      return prev.shortOrder < curr.shortOrder ? curr : prev;
-    });
-
-    return (curShortOrderObject.shortOrder + 1);
   }
-
-  // toList() {
-  //   this.router.navigate(['/component-designer-list']);
-  // }
-
-  delete() {
-    this.tableComponentService.delete(this.tableDesign.id).subscribe(data => {
-      this.navigatorService.closeAndBack(this.pageId);
-    });
-  }
-
 
   removeTableComponent(selectedTableComponent) {
     if (this.componentDTO.componentPersistEntityList.indexOf(selectedTableComponent) >= 0) {
       this.componentDTO.componentPersistEntityList.splice(this.componentDTO.componentPersistEntityList.indexOf(selectedTableComponent), 1);
     }
+    this.setShortOrders();
   }
-
-  hideChildren(item) {
-    item.showFieldList = false;
-  }
-
-  showChildren(item) {
-    item.showFieldList = true;
-  }
-
 
   upItemInList(row: ComponentPersistEntityDTO, componentPersistEntityList: ComponentPersistEntityDTO[]) {
     if (componentPersistEntityList === undefined) {
@@ -269,13 +268,10 @@ export class ComponentDesignerFormComponent extends PageComponent implements OnI
       const position = componentPersistEntityList.indexOf(row);
       const item = componentPersistEntityList[position];
       const prevItem = componentPersistEntityList[position - 1];
-      const itemshortOrder = item.shortOrder;
-      item.shortOrder = prevItem.shortOrder;
-      prevItem.shortOrder = itemshortOrder;
       componentPersistEntityList[position] = prevItem;
       componentPersistEntityList[position - 1] = item;
     }
-
+    this.setShortOrders();
   }
 
   downItemInList(row: ComponentPersistEntityDTO, componentPersistEntityList: ComponentPersistEntityDTO[]) {
@@ -288,11 +284,41 @@ export class ComponentDesignerFormComponent extends PageComponent implements OnI
       const position = componentPersistEntityList.indexOf(row);
       const item = componentPersistEntityList[position];
       const prevItem = componentPersistEntityList[position + 1];
-      const itemshortOrder = item.shortOrder;
-      item.shortOrder = prevItem.shortOrder;
-      prevItem.shortOrder = itemshortOrder;
       componentPersistEntityList[position] = prevItem;
       componentPersistEntityList[position + 1] = item;
     }
+    this.setShortOrders();
+  }
+
+  setShortOrders() {
+
+    const entitiesList = this.componentDTO.componentPersistEntityList;
+
+    if (entitiesList === null
+      || entitiesList === undefined
+      || entitiesList.length === 0) {
+      return 1;
+    }
+
+    let shortOrder = 1;
+
+    for (const entity of entitiesList) {
+      entity.shortOrder = shortOrder;
+      shortOrder += 1;
+    }
+    return shortOrder;
+    // const curShortOrderObject = entitiesList.reduce(function (prev, curr) {
+    //   return prev.shortOrder < curr.shortOrder ? curr : prev;
+    // });
+
+    // return (curShortOrderObject.shortOrder + 1);
+  }
+
+  hideChildren(item) {
+    item.showFieldList = false;
+  }
+
+  showChildren(item) {
+    item.showFieldList = true;
   }
 }

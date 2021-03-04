@@ -25,7 +25,6 @@ export class FormComponent extends PageComponent implements OnInit {
   public selectedFormTabId: number;
   public test = '';
 
-  // public componentValues = new Map();
 
   constructor(private service: FormService,
               private navigatorService: CommandNavigatorService,
@@ -66,14 +65,14 @@ export class FormComponent extends PageComponent implements OnInit {
     for (const formTab of this.dto.formTabs) {
       for (const formArea of formTab.formAreas) {
         for (const formcomponent of formArea.formComponents) {
-          const componentPersistEntityField = this.assignComponents(formcomponent.formComponentField);
+          const componentPersistEntityField = this.assignComponentFieldsToFormField(formcomponent.formComponentField);
           formcomponent.formComponentField.componentPersistEntityField = componentPersistEntityField;
         }
       }
     }
   }
 
-  assignComponents(formComponentField: FormComponentFieldDTO) {
+  assignComponentFieldsToFormField(formComponentField: FormComponentFieldDTO) {
     const formComponentFieldName = formComponentField.componentPersistEntity.persistEntity.name + '.' +
       formComponentField.componentPersistEntityField.persistEntityField.name;
 
@@ -108,7 +107,6 @@ export class FormComponent extends PageComponent implements OnInit {
   // }
 
 
-
   public updateDataAction = (data: any) => {
     alert(data);
   };
@@ -128,15 +126,30 @@ export class FormComponent extends PageComponent implements OnInit {
   }
 
   save() {
+    const componentValues = new Map();
 
     for (const formTab of this.dto.formTabs) {
       for (const formArea of formTab.formAreas) {
         for (const formcomponent of formArea.formComponents) {
-          console.log(formcomponent.formComponentField.componentPersistEntityField.value);
+
+          let valuePersistEntity = new Map();
+          if (componentValues.has(formcomponent.formComponentField.componentPersistEntity.code)) {
+            valuePersistEntity = componentValues.get(formcomponent.formComponentField.componentPersistEntity.code);
+          }
+
+          if (!valuePersistEntity.has(formcomponent.formComponentField.componentPersistEntityField.persistEntityField.name)) {
+            valuePersistEntity.set(formcomponent.formComponentField.componentPersistEntityField.persistEntityField.name,
+              formcomponent.formComponentField.componentPersistEntityField.value);
+          }
+
+          componentValues.set(formcomponent.formComponentField.componentPersistEntity.code, valuePersistEntity);
         }
       }
     }
 
+    this.service.saveData(this.dto.id, componentValues).subscribe(data => {
+   //   this.navigatorService.closeAndBack(this.pageId);
+    });
 
   }
 
