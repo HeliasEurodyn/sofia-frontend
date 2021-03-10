@@ -31,6 +31,11 @@ export class ViewDesignerFormComponent extends PageComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    this.activatedRoute.queryParams.subscribe(params => {
+      this.setNavParams(params['nav']);
+    });
+
     let id = '0';
     this.mode = 'new-record';
     this.dto = new ViewDTO();

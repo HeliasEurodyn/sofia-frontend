@@ -6,7 +6,13 @@
          </span>
   </div>
 
-  <input readonly (keydown)="keyOpenPage($event)" (click)="openPage()" id="buttonOpen" data-target="#insertComponentModal" data-toggle="modal" type="text"
+  <input readonly (keydown)="keyOpenPage($event)"
+         (click)="openPage()"
+         (keydown)="onKeyDown($event)"
+         id="{{fieldId}}"
+         data-target="#insertComponentModal"
+         data-toggle="modal"
+         type="text"
          class="form-control"
          value="{{displayValue}}">
 

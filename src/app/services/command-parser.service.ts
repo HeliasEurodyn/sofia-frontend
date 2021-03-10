@@ -21,7 +21,7 @@ export class CommandParserService {
 
   public parse(command: string): Map<string, string> {
 
-    command = command.toUpperCase();
+  //  command = command.toUpperCase();
     if (command.length === 0) {
       return null;
     }

@@ -4,6 +4,8 @@ import {MenuService} from '../../../services/crud/menu.service';
 import {MenuDTO, MenuFieldDTO} from '../../../dtos/menu/menuDTO';
 import {PageComponent} from '../../page/page-component';
 import {CommandNavigatorService} from '../../../services/command-navigator.service';
+import {BaseDTO} from '../../../dtos/common/base-dto';
+import { Location } from '@angular/common'
 
 @Component({
   selector: 'app-menu-designer-form',
@@ -28,11 +30,16 @@ export class MenuDesignerFormComponent extends PageComponent implements OnInit {
   constructor(private activatedRoute: ActivatedRoute,
               private menuDesignerService: MenuService,
               private router: Router,
+              private location: Location,
               private navigatorService: CommandNavigatorService) {
     super();
   }
 
   ngOnInit(): void {
+
+    this.activatedRoute.queryParams.subscribe(params => {
+      this.setNavParams(params['nav']);
+    });
 
     let id = '0';
     this.mode = 'new-record';
@@ -156,48 +163,93 @@ export class MenuDesignerFormComponent extends PageComponent implements OnInit {
 
   }
 
-  upItemInList(selectedMenuFieldComponent: MenuFieldDTO, menuFieldList: MenuFieldDTO[]) {
-    if (menuFieldList === undefined) {
-      return;
-    }
-
-    if (menuFieldList.indexOf(selectedMenuFieldComponent) > 0) {
-
-      const position = menuFieldList.indexOf(selectedMenuFieldComponent);
-      const item = menuFieldList[position];
-      const prevItem = menuFieldList[position - 1];
-      menuFieldList[position] = prevItem;
-      menuFieldList[position - 1] = item;
+  upItemInList(baseDTO: BaseDTO, baseDTOs: BaseDTO[]) {
+    let position = 0;
+    for (const listBaseDTO of baseDTOs) {
+      if (baseDTO === listBaseDTO && position > 0) {
+        const prevItem = baseDTOs[position - 1];
+        baseDTOs[position] = prevItem;
+        baseDTOs[position - 1] = listBaseDTO;
+      }
+      position++;
     }
   }
 
-
-  downItemInList(selectedMenuFieldComponent: MenuFieldDTO, menuFieldList: MenuFieldDTO[]) {
-    if (menuFieldList === undefined) {
-      return;
-    }
-
-    if (menuFieldList.indexOf(selectedMenuFieldComponent) < menuFieldList.length - 1) {
-
-      const position = menuFieldList.indexOf(selectedMenuFieldComponent);
-      const item = menuFieldList[position];
-      const prevItem = menuFieldList[position + 1];
-      menuFieldList[position] = prevItem;
-      menuFieldList[position + 1] = item;
+  downItemInList(baseDTO: BaseDTO, baseDTOs: BaseDTO[]) {
+    let position = 0;
+    for (const listBaseDTO of baseDTOs) {
+      if (baseDTO === listBaseDTO && (position + 1) < baseDTOs.length) {
+        const nextItem = baseDTOs[position + 1];
+        baseDTOs[position] = nextItem;
+        baseDTOs[position + 1] = listBaseDTO;
+        break;
+      }
+      position++;
     }
   }
 
+  // upItemInList(selectedMenuFieldComponent: MenuFieldDTO, menuFieldList: MenuFieldDTO[]) {
+  //   if (menuFieldList === undefined) {
+  //     return;
+  //   }
+  //
+  //   if (menuFieldList.indexOf(selectedMenuFieldComponent) > 0) {
+  //
+  //     const position = menuFieldList.indexOf(selectedMenuFieldComponent);
+  //     const item = menuFieldList[position];
+  //     const prevItem = menuFieldList[position - 1];
+  //     menuFieldList[position] = prevItem;
+  //     menuFieldList[position - 1] = item;
+  //   }
+  // }
+
+  // downItemInList(selectedMenuFieldComponent: MenuFieldDTO, menuFieldList: MenuFieldDTO[]) {
+  //   if (menuFieldList === undefined) {
+  //     return;
+  //   }
+  //
+  //   if (menuFieldList.indexOf(selectedMenuFieldComponent) < menuFieldList.length - 1) {
+  //
+  //     const position = menuFieldList.indexOf(selectedMenuFieldComponent);
+  //     const item = menuFieldList[position];
+  //     const prevItem = menuFieldList[position + 1];
+  //     menuFieldList[position] = prevItem;
+  //     menuFieldList[position + 1] = item;
+  //   }
+  // }
 
   save() {
+    this.menuComponent.menuFieldList = this.updateShortOrder(this.menuComponent.menuFieldList);
+
     if (this.mode === 'edit-record') {
       this.menuDesignerService.update(this.menuComponent).subscribe(data => {
-        this.navigatorService.closeAndBack(this.pageId);
+        this.location.back();
+        // this.navigatorService.closeAndBack(this.pageId);
       });
     } else {
       this.menuDesignerService.save(this.menuComponent).subscribe(data => {
-        this.navigatorService.closeAndBack(this.pageId);
+        this.location.back();
+       // this.navigatorService.closeAndBack(this.pageId);
+       // this.router.navigate(['/menu-designer-list']);
       });
     }
+  }
+
+  updateShortOrder(menuFieldList: MenuFieldDTO[]) {
+
+    if (menuFieldList == null) {
+      return null;
+    }
+
+    let shortOrder = 1;
+    for (const menuField of menuFieldList) {
+      menuField.shortOrder = shortOrder;
+      if (menuField.menuFieldList != null) {
+        menuField.menuFieldList = this.updateShortOrder(menuField.menuFieldList);
+      }
+      shortOrder++;
+    }
+    return menuFieldList;
   }
 
   delete() {

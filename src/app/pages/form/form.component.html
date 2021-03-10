@@ -1,7 +1,7 @@
 <div class="row formnav">
   <div class="col-sm-12">
     <div class="pull-left">
-      <button *ngFor="let formTab of this.dto?.formTabs"  (click)="selectFormTab(formTab)"
+      <button *ngFor="let formTab of this.dto?.formTabs" (click)="selectFormTab(formTab)"
               type="button"
               class="btn btn-outline-default btn-round">
         <i class="fa {{formTab?.icon}}"></i>
@@ -34,57 +34,67 @@
   </div>
 </div>
 
-<div class="row" *ngFor="let formTab of this.dto?.formTabs" [ngClass]="{'is-hidden': selectedFormTabId !== formTab.id }" >
-  <div *ngFor="let formArea of this.formTab.formAreas"  class="{{formArea.cssclass}} form-area">
-
+<div class="row" *ngFor="let formTab of this.dto?.formTabs"
+     [ngClass]="{'is-hidden': selectedFormTabId !== formTab.id }">
+  <div *ngFor="let formArea of this.formTab.formAreas" class="{{formArea.cssclass}} form-area">
     <div class="card">
       <div class="card-header">
-        <div class="row">
-          <div class="col-4">
-            <h5 class="card-title">
-              <i class="fa {{formArea.icon}}"></i>
-              {{formArea.description}}
-            </h5>
-          </div>
-          <div class="col-8">
+        <div class="row formnav">
+          <div class="col-12">
+            <div class="pull-left">
+              <h5 class="card-title">
+                <i class="fa {{formArea.icon}}"></i>
+                {{formArea.description}}
+              </h5>
+            </div>
             <div class="pull-right">
             </div>
           </div>
         </div>
       </div>
+
       <div class="card-body">
-        <div class="row">
 
-          <ng-container *ngFor="let formcomponent of formArea?.formComponents">
-            <ng-container *ngIf="formcomponent.type === 'field'">
+        <ng-container *ngFor="let formcomponent of formArea?.formComponents">
 
-              <ng-container *ngIf="formcomponent.formComponentField.type === 'varchar' || formcomponent.formComponentField.type === 'text' ">
+          <ng-container *ngIf="formcomponent.type === 'field'">
+            <div class="row">
+              <ng-container
+                *ngIf="formcomponent.formComponentField.type === 'varchar' || formcomponent.formComponentField.type === 'text' ">
                 <div class="{{formcomponent.cssclass}} filter-col"
                      style="{{formcomponent.formComponentField.css}}">
                   <div class="form-group">
-                    <b [ngClass]="{'text-danger': formcomponent.formComponentField.required}">{{formcomponent.formComponentField.description}}</b>
-                    <input type="text" class="form-control" [(ngModel)]="formcomponent.formComponentField.componentPersistEntityField.value">
+                    <b
+                      [ngClass]="{'text-danger': formcomponent.formComponentField.required}">{{formcomponent.formComponentField.description}}</b>
+                    <input type="text" class="form-control"
+                           [(ngModel)]="formcomponent.formComponentField.componentPersistEntityField.value">
                   </div>
                 </div>
               </ng-container>
-
               <ng-container *ngIf="formcomponent.formComponentField.type === 'double' ">
                 <div class="{{formcomponent.cssclass}} filter-col"
                      style="{{formcomponent.formComponentField.css}}">
                   <div class="form-group">
-                    <b [ngClass]="{'text-danger': formcomponent.formComponentField.required}" class="text-danger">{{formcomponent.formComponentField.description}}</b>
-                    <app-numeric-input [(inputValue)]="formcomponent.formComponentField.componentPersistEntityField.value" [mask]="'0*.0000'" [editable]="formcomponent.formComponentField.editable" ></app-numeric-input>
+                    <b [ngClass]="{'text-danger': formcomponent.formComponentField.required}"
+                       class="text-danger">{{formcomponent.formComponentField.description}}</b>
+                    <app-numeric-input
+                      [(inputValue)]="formcomponent.formComponentField.componentPersistEntityField.value"
+                      [mask]="'0*.0000'" [editable]="formcomponent.formComponentField.editable"></app-numeric-input>
                   </div>
                 </div>
               </ng-container>
 
-              <ng-container *ngIf="formcomponent.formComponentField.type === 'int' || formcomponent.formComponentField.type === 'bigint'">
+              <ng-container
+                *ngIf="formcomponent.formComponentField.type === 'int' || formcomponent.formComponentField.type === 'bigint'">
                 <div class="{{formcomponent.cssclass}} filter-col"
                      style="{{formcomponent.formComponentField.css}}">
                   <div class="form-group">
-                    <b [ngClass]="{'text-danger': formcomponent.formComponentField.required}">{{formcomponent.formComponentField.description}}</b>
-                    <app-numeric-input readonly [(inputValue)]="formcomponent.formComponentField.componentPersistEntityField.value" [mask]="'0*'" [editable]="formcomponent.formComponentField.editable"></app-numeric-input>
-
+                    <b
+                      [ngClass]="{'text-danger': formcomponent.formComponentField.required}">{{formcomponent.formComponentField.description}}</b>
+                    <app-numeric-input readonly
+                                       [(inputValue)]="formcomponent.formComponentField.componentPersistEntityField.value"
+                                       [mask]="'0*'"
+                                       [editable]="formcomponent.formComponentField.editable"></app-numeric-input>
                   </div>
                 </div>
               </ng-container>
@@ -92,26 +102,95 @@
               <ng-container *ngIf="formcomponent.formComponentField.type === 'list'">
                 <div class="{{formcomponent.cssclass}} filter-col" style="{{formcomponent.formComponentField.css}}">
                   <div class="form-group">
-                    <b [ngClass]="{'text-danger': formcomponent.formComponentField.required}">{{formcomponent.formComponentField.description}}</b>
-                    <app-list-selector [command]="formcomponent.formComponentField.editor" [(value)]="formcomponent.formComponentField.componentPersistEntityField.value" ></app-list-selector>
+                    <b
+                      [ngClass]="{'text-danger': formcomponent.formComponentField.required}">{{formcomponent.formComponentField.description}}</b>
+                    <app-list-selector [command]="formcomponent.formComponentField.editor"
+                                       [(value)]="formcomponent.formComponentField.componentPersistEntityField.value"></app-list-selector>
                   </div>
                 </div>
               </ng-container>
-
               <ng-container *ngIf="formcomponent.formComponentField.type === 'datetime'">
                 <div class="{{formcomponent.cssclass}} filter-col"
                      style="{{formcomponent.formComponentField.css}}">
                   <div class="form-group">
-                    <b [ngClass]="{'text-danger': formcomponent.formComponentField.required}">{{formcomponent.formComponentField.description}}</b>
-                    <app-date-picker [(inputDate)]="formcomponent.formComponentField.componentPersistEntityField.value" [editable]="formcomponent.formComponentField.editable"></app-date-picker>
+                    <b
+                      [ngClass]="{'text-danger': formcomponent.formComponentField.required}">{{formcomponent.formComponentField.description}}</b>
+                    <app-date-picker [(inputDate)]="formcomponent.formComponentField.componentPersistEntityField.value"
+                                     [editable]="formcomponent.formComponentField.editable"></app-date-picker>
                   </div>
                 </div>
               </ng-container>
-
-            </ng-container>
-
+            </div>
           </ng-container>
-        </div>
+
+          <ng-container *ngIf="formcomponent.type === 'table'">
+            <table class="table table-striped">
+              <thead class=" text-primary">
+              <tr>
+                <th *ngFor="let tableFieldComponent of formcomponent.formComponentTable.formComponents">
+                  {{tableFieldComponent.formComponentField.description}}
+                </th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td *ngFor="let tableFieldComponent of formcomponent.formComponentTable.formComponents">
+
+                  <ng-container *ngIf="tableFieldComponent.type === 'field'">
+                      <ng-container
+                        *ngIf="tableFieldComponent.formComponentField.type === 'varchar' || tableFieldComponent.formComponentField.type === 'text' ">
+                            <input type="text" class="form-control" id="{{tableFieldComponent.id}}"
+                                   (keydown)="tableFieldKeyDown($event, tableFieldComponent.id, formcomponent.formComponentTable.formComponents)"
+                                   [(ngModel)]="tableFieldComponent.formComponentField.componentPersistEntityField.value">
+                      </ng-container>
+                      <ng-container *ngIf="tableFieldComponent.formComponentField.type === 'double' ">
+                            <app-numeric-input
+                              [fieldId]="tableFieldComponent.id"
+                              (keyDownChange)="tableFieldKeyDown($event, tableFieldComponent.id, formcomponent.formComponentTable.formComponents)"
+                              [(inputValue)]="tableFieldComponent.formComponentField.componentPersistEntityField.value"
+                              [mask]="'0*.0000'" [editable]="tableFieldComponent.formComponentField.editable"></app-numeric-input>
+                      </ng-container>
+
+                      <ng-container
+                        *ngIf="tableFieldComponent.formComponentField.type === 'int' || tableFieldComponent.formComponentField.type === 'bigint'">
+                            <app-numeric-input
+                                               [fieldId]="tableFieldComponent.id"
+                                               (keyDownChange)="tableFieldKeyDown($event, tableFieldComponent.id, formcomponent.formComponentTable.formComponents)"
+                                               [(inputValue)]="tableFieldComponent.formComponentField.componentPersistEntityField.value"
+                                               [mask]="'0*'"
+                                               [editable]="tableFieldComponent.formComponentField.editable"></app-numeric-input>
+                      </ng-container>
+
+                      <ng-container *ngIf="tableFieldComponent.formComponentField.type === 'list'">
+                            <app-list-selector
+                              [fieldId]="tableFieldComponent.id"
+                              (keyDownChange)="tableFieldKeyDown($event, tableFieldComponent.id, formcomponent.formComponentTable.formComponents)"
+                              [command]="tableFieldComponent.formComponentField.editor"
+                                               [(value)]="tableFieldComponent.formComponentField.componentPersistEntityField.value"></app-list-selector>
+                      </ng-container>
+
+                      <ng-container *ngIf="tableFieldComponent.formComponentField.type === 'datetime'">
+                            <app-date-picker
+                              [fieldId]="tableFieldComponent.id"
+                              (keyDownChange)="tableFieldKeyDown($event, tableFieldComponent.id, formcomponent.formComponentTable.formComponents)"
+                              [(inputDate)]="tableFieldComponent.formComponentField.componentPersistEntityField.value"
+                                             [editable]="tableFieldComponent.formComponentField.editable"></app-date-picker>
+                      </ng-container>
+
+                  </ng-container>
+
+
+
+
+                </td>
+              </tr>
+
+              </tbody>
+            </table>
+          </ng-container>
+
+        </ng-container>
+
       </div>
     </div>
   </div>

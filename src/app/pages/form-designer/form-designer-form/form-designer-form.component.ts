@@ -12,6 +12,8 @@ import {FormComponentDto} from '../../../dtos/form/form-component-dto';
 import {FormService} from '../../../services/crud/form.service';
 import {CommandNavigatorService} from '../../../services/command-navigator.service';
 import {FormScript} from '../../../dtos/form/form-script';
+import {ActivatedRoute} from '@angular/router';
+import {FormComponentTableDTO} from '../../../dtos/form/form-component-table-dto';
 
 @Component({
   selector: 'app-form-designer-form',
@@ -22,22 +24,27 @@ export class FormDesignerFormComponent extends PageComponent implements OnInit {
 
   public mode: string;
   public dto: FormDto;
-
   public description: string;
   public selectedFormTab: FormTabDto
   public selectedFormArea: FormArea = new FormArea();
-  public selectedformScript: FormScript ;
+  public selectedformScript: FormScript;
   public selectedFormcomponent: FormComponentDto = new FormComponentDto();
   public components: any;
   public visibleSection = 'settings';
 
   constructor(private service: FormService,
               private tableComponentService: TableComponentService,
-              private navigatorService: CommandNavigatorService) {
+              private navigatorService: CommandNavigatorService,
+              private activatedRoute: ActivatedRoute) {
     super();
   }
 
   ngOnInit(): void {
+
+    this.activatedRoute.queryParams.subscribe(params => {
+      this.setNavParams(params['nav']);
+    });
+
     let id = '0';
     this.dto = new FormDto();
     this.mode = 'new-record';
@@ -158,6 +165,22 @@ export class FormDesignerFormComponent extends PageComponent implements OnInit {
     this.dto.component = selectedComponent;
   }
 
+  addTable(row: ComponentPersistEntityDTO) {
+    const formComponentTableDTO = new FormComponentTableDTO();
+    const formComponent = new FormComponentDto();
+    formComponent.formComponentTable = formComponentTableDTO;
+    formComponent.formComponentTable.componentPersistEntity = row;
+    formComponent.formComponentTable.visible = true;
+    formComponent.formComponentTable.editable = true;
+    formComponent.formComponentTable.required = false;
+    formComponent.formComponentTable.description = row.code;
+    formComponent.type = 'table';
+
+    formComponent.shortOrder = this.getNextShortOrder(this.selectedFormArea.formComponents);
+    formComponent.cssclass = 'col-12';
+    this.selectedFormArea.formComponents.push(formComponent);
+  }
+
   addField(row: ComponentPersistEntityDTO, field: ComponentPersistEntityFieldDTO) {
     const formComponentField = new FormComponentFieldDTO();
     const formComponent = new FormComponentDto();
@@ -267,7 +290,29 @@ export class FormDesignerFormComponent extends PageComponent implements OnInit {
     }
   }
 
-  setSelectedField(formcomponent: FormComponentDto) {
+  setSelectedFormComponent(formcomponent: FormComponentDto) {
     this.selectedFormcomponent = formcomponent;
   }
+
+  addFieldToTable(field: ComponentPersistEntityFieldDTO) {
+    const formComponentField = new FormComponentFieldDTO();
+    const formComponent = new FormComponentDto();
+    formComponent.formComponentField = formComponentField;
+    formComponent.formComponentField.editor = field.editor;
+    // formComponent.formComponentField.componentPersistEntity = row;
+    formComponent.formComponentField.componentPersistEntityField = field;
+    formComponent.formComponentField.visible = true;
+    formComponent.formComponentField.editable = true;
+    formComponent.formComponentField.required = false;
+    formComponent.formComponentField.description = field.persistEntityField.name;
+    formComponent.formComponentField.type = field.persistEntityField.type;
+    formComponent.type = 'field';
+
+    formComponent.shortOrder = this.getNextShortOrder(this.selectedFormcomponent.formComponentTable.formComponents);
+    formComponent.cssclass = 'col-12';
+    this.selectedFormcomponent.formComponentTable.formComponents.push(formComponent);
+    console.log(this.selectedFormcomponent);
+
+  }
+
 }

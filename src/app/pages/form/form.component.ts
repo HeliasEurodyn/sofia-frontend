@@ -6,6 +6,8 @@ import {FormDto} from '../../dtos/form/form-dto';
 import {FormTabDto} from '../../dtos/form/form-tab-dto';
 import {DynamicScriptLoaderService} from '../../services/dynamic-script-loader.service';
 import {FormComponentFieldDTO} from '../../dtos/form/form-component-field-dto';
+import {ActivatedRoute} from '@angular/router';
+import {FormComponentTableComponentDTO} from '../../dtos/form/form-component-table-component-dto';
 
 declare function myfunction(param: string): any;
 
@@ -25,14 +27,18 @@ export class FormComponent extends PageComponent implements OnInit {
   public selectedFormTabId: number;
   public test = '';
 
-
-  constructor(private service: FormService,
+  constructor(private activatedRoute: ActivatedRoute,
+              private service: FormService,
               private navigatorService: CommandNavigatorService,
               private dynamicScriptLoader: DynamicScriptLoaderService) {
     super();
   }
 
   ngOnInit(): void {
+    this.activatedRoute.queryParams.subscribe(params => {
+      this.setNavParams(params['nav']);
+    });
+
     let id = '0';
     this.dto = new FormDto();
 
@@ -56,23 +62,28 @@ export class FormComponent extends PageComponent implements OnInit {
       testData.set('SSS', 'hhh');
       passArray(testData);
 
-
     }).catch(error => console.log(error));
-
   }
 
   assignComponentFieldsToFormFields() {
     for (const formTab of this.dto.formTabs) {
       for (const formArea of formTab.formAreas) {
         for (const formcomponent of formArea.formComponents) {
-          const componentPersistEntityField = this.assignComponentFieldsToFormField(formcomponent.formComponentField);
-          formcomponent.formComponentField.componentPersistEntityField = componentPersistEntityField;
+          if (formcomponent.type === 'field') {
+            const componentPersistEntityField = this.getComponentPersistEntityFieldByFormField(formcomponent.formComponentField);
+            formcomponent.formComponentField.componentPersistEntityField = componentPersistEntityField;
+          } else if (formcomponent.type === 'table') {
+            for (const formComponentTableComponent of formcomponent.formComponentTable.formComponents) {
+
+            }
+          }
+
         }
       }
     }
   }
 
-  assignComponentFieldsToFormField(formComponentField: FormComponentFieldDTO) {
+  getComponentPersistEntityFieldByFormField(formComponentField: FormComponentFieldDTO) {
     const formComponentFieldName = formComponentField.componentPersistEntity.persistEntity.name + '.' +
       formComponentField.componentPersistEntityField.persistEntityField.name;
 
@@ -86,26 +97,6 @@ export class FormComponent extends PageComponent implements OnInit {
       }
     }
   }
-
-  // findComponentValueField(formComponentField: FormComponentFieldDTO) {
-  //
-  //   const formComponentFieldName = formComponentField.componentPersistEntity.persistEntity.name + '.' +
-  //     formComponentField.componentPersistEntityField.persistEntityField.name;
-  //
-  //   for (const componentPersistEntity of this.dto.component.componentPersistEntityList) {
-  //     for (const componentPersistEntityField of componentPersistEntity.componentPersistEntityFieldList) {
-  //       const componentFieldName = componentPersistEntity.persistEntity.name + '.' + componentPersistEntityField.persistEntityField.name;
-  //
-  //       if (componentFieldName === formComponentFieldName) {
-  //         return componentPersistEntityField.value;
-  //       }
-  //       // if (!this.componentValues.has(fieldName)) {
-  //       //   this.componentValues.set(fieldName, '');
-  //       //  }
-  //     }
-  //   }
-  // }
-
 
   public updateDataAction = (data: any) => {
     alert(data);
@@ -148,7 +139,7 @@ export class FormComponent extends PageComponent implements OnInit {
     }
 
     this.service.saveData(this.dto.id, componentValues).subscribe(data => {
-   //   this.navigatorService.closeAndBack(this.pageId);
+      //   this.navigatorService.closeAndBack(this.pageId);
     });
 
   }
@@ -172,4 +163,43 @@ export class FormComponent extends PageComponent implements OnInit {
   navigateToNextPage() {
 
   }
+
+  test2(event: KeyboardEvent) {
+    alert('Hello');
+  }
+
+  tableFieldKeyDown(event: KeyboardEvent, id: number, formComponents: FormComponentTableComponentDTO[]) {
+
+    if (event.ctrlKey && event.key === 'ArrowLeft') {
+      let prevElementId;
+      for (const formComponent of formComponents) {
+
+        if (id === formComponent.id && prevElementId !== '') {
+          document.getElementById(prevElementId).focus();
+          return;
+        }
+
+        prevElementId = formComponent.id;
+      }
+    }
+
+    if (event.ctrlKey && event.key === 'ArrowRight') {
+      let currentElementIdFound = false;
+      for (const formComponent of formComponents) {
+
+        if (currentElementIdFound) {
+          document.getElementById(formComponent.id.toString()).focus();
+          return;
+        }
+
+        if (id === formComponent.id) {
+          currentElementIdFound = true;
+        }
+      }
+    }
+
+
+  }
+
+
 }

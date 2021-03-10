@@ -25,6 +25,7 @@
     [(ngModel)]="model"
     (focusout)="onFocusOut()"
     [readonly]="!this.editable"
+    id="{{fieldId}}"
   >
 
   <ng-template #t let-date="date" let-focused="focused">

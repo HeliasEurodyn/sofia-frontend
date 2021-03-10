@@ -6,6 +6,7 @@ import {ListResultsData} from '../../../dtos/list/list-results-data';
 import {CommandNavigatorService} from '../../../services/command-navigator.service';
 import {NotificationService} from '../../../services/notification.service';
 import {DatePipe} from '@angular/common';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-list',
@@ -32,11 +33,16 @@ export class ListComponent extends PageComponent implements OnInit {
               private commandNavigatorService: CommandNavigatorService,
               private notificationService: NotificationService,
               public datepipe: DatePipe,
+              private activatedRoute: ActivatedRoute,
               private elRef: ElementRef) {
     super();
   }
 
   ngOnInit(): void {
+    this.activatedRoute.queryParams.subscribe(params => {
+      this.setNavParams(params['nav']);
+    });
+
     this.listDto = new ListDTO();
 
     if (this.getLocateParams().has('ID')) {

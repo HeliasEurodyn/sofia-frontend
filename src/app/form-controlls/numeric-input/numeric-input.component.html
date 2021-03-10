@@ -4,6 +4,8 @@
   [showMaskTyped]="false"
   [dropSpecialCharacters]="false"
   (keyup)="onKeyUp($event)"
+  (keydown)="onKeyDown($event)"
   [(ngModel)]="inputValue"
   [readonly]="!this.editable"
+  id="{{fieldId}}"
   >

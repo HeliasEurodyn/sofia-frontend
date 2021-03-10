@@ -11,6 +11,8 @@ export class NumericInputComponent implements OnInit {
   @Output() inputValueChange = new EventEmitter<any>();
   @Input() mask: String = '';
   @Input() editable: Boolean;
+  @Output() keyDownChange: EventEmitter<any> = new EventEmitter<any>();
+  @Input() fieldId: any;
 
   constructor() {
   }
@@ -28,4 +30,9 @@ export class NumericInputComponent implements OnInit {
     }
     this.inputValueChange.emit(this.inputValue);
   }
+
+  onKeyDown($event: KeyboardEvent) {
+    this.keyDownChange.emit($event);
+  }
+
 }

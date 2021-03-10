@@ -9,6 +9,7 @@ export class PageComponent {
     ]
   });
   public commandParserService: CommandParserService;
+  // public params: Map<string, string> = new Map();
   public params: Map<string, string> = new Map();
   public pageId: string;
   public nextPage = null;
@@ -28,6 +29,11 @@ export class PageComponent {
     } else {
       return false;
     }
+  }
+
+  setNavParams(base64Command) {
+    const command = atob(base64Command);
+    this.params = this.commandParserService.parse(command);
   }
 
   getLocateParams() {

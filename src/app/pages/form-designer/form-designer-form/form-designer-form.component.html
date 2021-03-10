@@ -146,7 +146,7 @@
 
 <div *ngIf="this.visibleSection === 'designer'" class="row ">
 
-  <div *ngFor="let formArea of this.selectedFormTab?.formAreas" class="{{formArea.cssclass}} form-area">
+<div *ngFor="let formArea of this.selectedFormTab?.formAreas" class="{{formArea.cssclass}} form-area">
     <div class="card">
       <div class="card-header">
         <div class="row formnav">
@@ -173,7 +173,13 @@
                       data-target="#insertFieldsModal"
                       data-toggle="modal"
                       type="button" class="btn btn-outline-success">
-                <i class="fa fa-plus-circle"></i> Add components
+                <i class="fa fa-plus-circle"></i> Add fields
+              </button>
+              <button (click)="selectFormArea(formArea)"
+                      data-target="#insertTableModal"
+                      data-toggle="modal"
+                      type="button" class="btn btn-outline-success">
+                <i class="fa fa-plus-circle"></i> Add Table
               </button>
             </div>
 
@@ -184,8 +190,8 @@
       <div class="card-body">
         <div class="row">
           <div *ngFor="let formcomponent of formArea?.formComponents" class="{{formcomponent.cssclass}}">
-            <div class="form-group">
-              <label>{{formcomponent.formComponentField.description}}</label>
+
+            <div *ngIf="formcomponent.type === 'field'" class="form-group">
               <div class="input-group input-group-alternative">
                 <div (click)="formArea.formComponents = removeEntityFormList(formcomponent,formArea.formComponents);"
                      class="input-group-prepend">
@@ -194,7 +200,7 @@
                      </span>
                 </div>
 
-                <div (click)="setSelectedField(formcomponent);"
+                <div (click)="setSelectedFormComponent(formcomponent);"
                      data-target="#selectedFieldModal"
                      data-toggle="modal"
                      class="input-group-prepend">
@@ -227,8 +233,78 @@
                        class="form-control textfield-area"
                        value="Type: {{formcomponent.formComponentField.type}}">
               </div>
+            </div>
+
+            <div *ngIf="formcomponent.type === 'table'"  class="form-group">
+
+              <table class="table table-striped">
+                <thead class=" text-primary">
+                <tr>
+                  <th class="text-left">Table: {{formcomponent.formComponentTable.description}}</th>
+                  <th *ngFor="let tableFieldComponent of formcomponent.formComponentTable.formComponents">
+                    <button type="button" title="Delete" class="btn btn-outline-danger btn-icon btn-sm">
+                      <i class="fa fa-times"></i>
+                    </button>
+                    <button type="button"
+                            title="Edit"
+                            class="btn btn-outline-info btn-icon btn-sm">
+                      <i class="fa fa-pencil"></i>
+                    </button>
+                    {{tableFieldComponent.formComponentField.description}}
+                  </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <td>
+
+                    <button (click)="formArea.formComponents = removeEntityFormList(formcomponent,formArea.formComponents);"
+                            type="button"
+                            title="Delete"
+                            class="btn btn-outline-danger btn-icon btn-sm">
+                      <i class="fa fa-times"></i>
+                    </button>
+
+                    <button type="button"
+                            (click)="setSelectedFormComponent(formcomponent);"
+                            title="Add fields"
+                            class="btn btn-outline-success btn-icon btn-sm"
+                            data-target="#addTableFieldFieldModal"
+                            data-toggle="modal">
+                      <i class="fa fa-plus-circle"></i>
+                    </button>
+
+                    <button type="button"
+                            title="Edit"
+                            class="btn btn-outline-info btn-icon btn-sm">
+                      <i class="fa fa-pencil"></i>
+                    </button>
+
+                    <button type="button" title="Move Up"
+                            class="btn btn-outline-warning btn-icon btn-sm"
+                            (click)="moveUp(formcomponent,formArea.formComponents);">
+                      <i class="fa fa-angle-double-left"></i>
+                    </button>
+
+                    <button type="button"
+                            title="Move Down"
+                            class="btn btn-outline-warning btn-icon btn-sm"
+                            (click)="moveDown(formcomponent,formArea.formComponents);">
+                      <i class="fa fa-angle-double-right"></i>
+                    </button>
+                  </td>
+                  <td *ngFor="let tableFieldComponent of formcomponent.formComponentTable.formComponents">
+                    <input type="text" class="form-control transparent-input" readonly >
+                  </td>
+
+                </tr>
+
+                </tbody>
+              </table>
+
 
             </div>
+
           </div>
         </div>
       </div>
@@ -547,14 +623,14 @@
             <div class="row">
               <div class="col-md-12">
                 <h6 style="margin: 0px;">
-                  <button style="margin: 0px;" *ngIf="row.persistEntity != null && row.showFieldList === true"
+                  <button *ngIf="row.persistEntity != null && row.showFieldList === true"
                           (click)="hideChildren(row)"
                           type="button" title="Hide"
                           class="btn btn-outline-default btn-icon btn-sm">
                     <i class="fa fa-compress"></i>
                   </button>
 
-                  <button style="margin: 0px;" *ngIf="row.persistEntity != null && row.showFieldList !== true"
+                  <button *ngIf="row.persistEntity != null && row.showFieldList !== true"
                           (click)="showChildren(row)"
                           type="button" title="Show"
                           class="btn btn-outline-default btn-icon btn-sm">
@@ -609,6 +685,99 @@
     </div>
   </div>
 </div>
+
+<div aria-labelledby="ModalLabel" class="modal fade" id="addTableFieldFieldModal" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-select-fields">
+    <div class="modal-content">
+      <div class="modal-header justify-content-center">
+        <h4 class="title title-up modal-title">Fields</h4>
+        <button aria-label="Close" class="close" data-dismiss="modal" type="button"><i
+          class="nc-icon nc-simple-remove"></i></button>
+      </div>
+      <div class="modal-body">
+
+        <table class="table table-striped">
+          <thead class=" text-primary">
+          <tr>
+            <th>actions</th>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Type</th>
+            <th>Editor</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let field of this.selectedFormcomponent?.formComponentTable?.componentPersistEntity?.componentPersistEntityFieldList"
+              style="cursor: pointer;">
+            <td>
+              <button title="Add to Order βυ" type="button" class="btn btn-outline-primary btn-icon btn-sm"
+                      (click)="addFieldToTable(field)">
+                <i class="fa fa-plus-circle" style="color: #0aca57;"></i>
+              </button>
+            </td>
+            <td>{{field.persistEntityField.id}}</td>
+            <td>{{field.persistEntityField.name}}</td>
+            <td>{{field.persistEntityField.description}}</td>
+            <td>{{field.persistEntityField.type}}</td>
+            <td>{{field.editor}}</td>
+          </tr>
+          </tbody>
+        </table>
+
+      </div>
+
+
+      <div class="modal-footer">
+        <div class="left-side">
+          <button class="btn btn-outline-danger" data-dismiss="modal" type="button">Close</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div aria-labelledby="ModalLabel" class="modal fade" id="insertTableModal" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-select-fields">
+    <div class="modal-content">
+      <div class="modal-header justify-content-center">
+        <h4 class="title title-up modal-title">Tables</h4>
+        <button aria-label="Close" class="close" data-dismiss="modal" type="button"><i
+          class="nc-icon nc-simple-remove"></i></button>
+      </div>
+      <div class="modal-body">
+        <ul style="padding: 0px;">
+          <li *ngFor="let row of this.dto?.component?.componentPersistEntityList">
+            <div class="row">
+              <div class="col-md-12">
+                <h6 style="margin: 0px;">
+                  <button title="Add to Order BY" type="button" class="btn btn-outline-primary btn-icon btn-sm"
+                          (click)="addTable(row)">
+                    <i class="fa fa-plus-circle" style="color: #0aca57;"></i>
+                  </button>
+                  [{{row.code}}] {{row.persistEntity.name}}
+
+                </h6>
+              </div>
+            </div>
+
+          </li>
+        </ul>
+
+      </div>
+
+
+      <div class="modal-footer">
+        <div class="left-side">
+          <button class="btn btn-outline-danger" data-dismiss="modal" type="button">Close</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <div aria-labelledby="ModalLabel" class="modal fade" id="selectComponentModal" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">

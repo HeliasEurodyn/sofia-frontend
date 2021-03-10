@@ -43,6 +43,10 @@ export class ComponentDesignerFormComponent extends PageComponent implements OnI
 
   ngOnInit(): void {
 
+    this.activatedRoute.queryParams.subscribe(params => {
+      this.setNavParams(params['nav']);
+    });
+
     let id = '0';
     this.mode = 'new-record';
     this.componentDTO = new ComponentDTO();

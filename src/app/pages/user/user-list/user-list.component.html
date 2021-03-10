@@ -1,47 +1,35 @@
+<div class="row formnav">
+  <div class="col-sm-12">
+    <div class="pull-left">
+      <div class="numbers pull-left"></div>
+    </div>
+    <div class="pull-right">
+      <button class="btn btn-outline-success" (click)="openNewPage()">
+        <i class="fa fa-plus-circle"></i> New
+      </button>
+      <button class="btn btn-outline-primary" (click)="refresh()">
+        <i class="fa fa-refresh"></i> Refresh
+      </button>
+      <button class="btn btn-outline-primary" (click)="showNotification()">
+        <i class="fa fa-refresh"></i> Popup example
+      </button>
+    </div>
+  </div>
+</div>
 
-<!--<div class="column">-->
-<!--  <div class="col-sm-12">-->
-<!--    <div class="pull-left">-->
-<!--      <button class="btn btn-outline-primary" style="margin-top: 0px;" *ngIf="showPreviousPageButton()" (click)="navigateToPreviousPage()">-->
-<!--        <i class="fa fa-chevron-left"></i> Back-->
-<!--      </button>-->
-<!--      <button class="btn btn-outline-primary" style="margin-top: 0px;" *ngIf="showNextPageButton()" (click)="navigateToNextPage()">-->
-<!--        <i class="fa fa-chevron-right"></i> Next-->
-<!--      </button>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--</div>-->
-
-<div class="row">
+<div class="row form-area">
   <div class="col-md-12">
     <div class="card">
       <div class="card-header">
-
         <div class="row">
-          <div class="col-sm-7">
-            <div class="numbers pull-left"> Table Designer </div>
-          </div>
-          <div class="col-sm-5">
-            <div class="pull-right">
-              <button class="btn btn-outline-success" (click)="openNewPage()" >
-                <i class="fa fa-plus-circle"></i> New
-              </button>
+          <div class="col-sm-12">
+            <div class="pull-left">
+              <h5 class="card-title">
+                Users
+              </h5>
             </div>
-            <div class="pull-right">
-              <button class="btn btn-outline-primary" (click)="refresh()" >
-                <i class="fa fa-refresh"></i> Refresh
-              </button>
-              <button class="btn btn-outline-primary" (click)="showNotification()" >
-                <i class="fa fa-refresh"></i> Popup example
-              </button>
-
-
-            </div>
-
-
           </div>
         </div>
-
       </div>
       <div class="card-body">
         <div class="">
@@ -61,14 +49,15 @@
             <tr *ngFor="let row of userData.dataRows">
               <td>
                 <button type="button" title="Edit" class="btn btn-outline-success btn-icon btn-sm"
-                        (click)="openPage( row['id'])"   >
+                        (click)="openPage( row['id'])">
                   <i class="fa fa-pencil"></i>
                 </button>
-                <button type="button" title="Delete" class="btn btn-outline-danger btn-icon btn-sm" (click)="delete(row)">
+                <button type="button" title="Delete" class="btn btn-outline-danger btn-icon btn-sm"
+                        (click)="delete(row)">
                   <i class="fa fa-times"></i>
                 </button>
                 <button type="button" title="Clone" class="btn btn-outline-success btn-icon btn-sm"
-                        (click)="clone( row['id'])"   >
+                        (click)="clone( row['id'])">
                   <i class="fa fa-clone"></i>
                 </button>
               </td>

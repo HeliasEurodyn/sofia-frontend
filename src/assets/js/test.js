@@ -8,7 +8,7 @@ function myfunction(param) {
 }
 
 function passArray(params) {
-  alert(params.get('SSS')  );
+ // alert(params.get('SSS')  );
 }
 
 function test() {
@@ -16,7 +16,7 @@ function test() {
 }
 
 function test2() {
-  returnBack('hello from Js');
+  // returnBack('hello from Js');
 }
 
 function test3() {

@@ -78,7 +78,7 @@ export class LoginComponent implements OnInit {
           localStorage.setItem('jwt_token', authData['jwt']);
           this.userService.getCurrentUser().subscribe(userDto => {
             localStorage.setItem('loggedin_user', JSON.stringify(userDto));
-            this.router.navigateByUrl('/main/default');
+            this.router.navigateByUrl('/dashboard');
           });
         } else {
           this.password = '';

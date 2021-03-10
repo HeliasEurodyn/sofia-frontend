@@ -15,10 +15,10 @@ export class AdminLayoutComponent implements OnInit {
   ngOnInit() {
   }
 
-  private openPageWithPageId(pageId: string, path: string) {
-
-    const selectedRoutes = AdminLayoutRoutes.filter(
-      route => route.path === path);
-  }
+  // private openPageWithPageId(pageId: string, path: string) {
+  //
+  //   const selectedRoutes = AdminLayoutRoutes.filter(
+  //     route => route.path === path);
+  // }
 
 }

@@ -80,9 +80,7 @@ import { NumericInputComponent } from './form-controlls/numeric-input/numeric-in
   ],
     imports: [
         BrowserAnimationsModule,
-        RouterModule.forRoot(AppRoutes, {
-            useHash: true
-        }),
+        RouterModule.forRoot(AppRoutes),
         NgxMaskModule.forRoot(),
         SidebarModule,
         NavbarModule,

@@ -21,7 +21,7 @@ export class CommandNavigatorService {
               private router: Router,
               private commandParserService: CommandParserService
   ) {
-    this.navigate('STATICPAGE[NAME:dashboard,TITLE:dashboard,HIDE-HEADER:TRUE]');
+    // this.navigate('STATICPAGE[NAME:dashboard,TITLE:dashboard,HIDE-HEADER:TRUE]');
   }
 
   public navigate(command: string) {
@@ -32,7 +32,7 @@ export class CommandNavigatorService {
 
     const commandParametersKeyValMap: Map<string, string> = this.commandParserService.parse(command);
     const commandType = commandParametersKeyValMap.get('COMMAND-TYPE');
-
+    console.log(commandParametersKeyValMap);
     switch (commandType) {
       case 'POPUPLIST': {
         this.componentRefOnNavigation = this.generateComponent(commandParametersKeyValMap);
@@ -42,8 +42,40 @@ export class CommandNavigatorService {
       case 'LIST':
       case 'FORM':
       case 'STATICPAGE': {
-        this.componentRefOnNavigation = this.generateComponent(commandParametersKeyValMap);
-        this.navigatoToBaseComponentRef(this.componentRefOnNavigation);
+        let name = '';
+
+        if (commandType === 'LIST') {
+          name = 'list';
+        } else if (commandType === 'FORM') {
+          name = 'form';
+        } else {
+          name = commandParametersKeyValMap.get('NAME');
+        }
+
+
+        //  const obj = [...commandParametersKeyValMap].reduce((o, [key, value]) => (o[key] = value, o), {});
+        const base64Command = btoa(command);
+
+        const urlParamsMap: Map<string, string> = new Map();
+        urlParamsMap.set('nav', base64Command);
+        if (commandParametersKeyValMap.has('SIDEBAR-STATUS')) {
+          urlParamsMap.set('sidebar-status', commandParametersKeyValMap.get('SIDEBAR-STATUS'))
+        }
+
+        let tab = '';
+        if (commandParametersKeyValMap.has('TAB')) {
+          tab = commandParametersKeyValMap.get('TAB');
+        }
+
+        const urlParams = [...urlParamsMap].reduce((o, [key, value]) => (o[key] = value, o), {});
+
+        if (tab === 'new') {
+          const url = this.router.serializeUrl(this.router.createUrlTree(['/' + name], {queryParams: urlParams}));
+          window.open(url, '_blank');
+        } else {
+          this.router.navigate(['/' + name], {queryParams: urlParams});
+        }
+
         break;
       }
     }
@@ -51,38 +83,38 @@ export class CommandNavigatorService {
     return this.componentRefOnNavigation;
   }
 
-  private navigatoToBaseComponentRef(componentRef: ComponentRef<any>) {
-    if (componentRef !== null) {
-
-      // Check if there is Parent-pageId reference to the command
-      if (componentRef.instance.params.has('PARENT-PAGEID')) {
-
-        const parentPageId = componentRef.instance.params.get('PARENT-PAGEID');
-        // Iterate pages and try to find the referring page.
-        for (const page of this.pages) {
-          // If page is found do
-          if (parentPageId.toUpperCase() === page.instance.pageId.toUpperCase()) {
-            // If page has already next page - destroy it from memory
-            if (page.instance.nextPage !== null && page.instance.nextPage !== undefined) {
-              this.destroyNextPageBranch(page.instance.nextPage);
-            }
-
-            // Make new page as next
-            page.instance.nextPage = componentRef;
-
-            // Make new pages prefious the found page
-            componentRef.instance.previousPage = page;
-            this.pages[this.pages.indexOf(page)] = componentRef;
-
-          }
-        }
-      } else {
-        this.pages.push(componentRef);
-      }
-
-      this.router.navigateByUrl('/main/' + componentRef.instance.pageId);
-    }
-  }
+  // private navigatoToBaseComponentRef(componentRef: ComponentRef<any>) {
+  //   if (componentRef !== null) {
+  //
+  //     // Check if there is Parent-pageId reference to the command
+  //     if (componentRef.instance.params.has('PARENT-PAGEID')) {
+  //
+  //       const parentPageId = componentRef.instance.params.get('PARENT-PAGEID');
+  //       // Iterate pages and try to find the referring page.
+  //       for (const page of this.pages) {
+  //         // If page is found do
+  //         if (parentPageId.toUpperCase() === page.instance.pageId.toUpperCase()) {
+  //           // If page has already next page - destroy it from memory
+  //           if (page.instance.nextPage !== null && page.instance.nextPage !== undefined) {
+  //             this.destroyNextPageBranch(page.instance.nextPage);
+  //           }
+  //
+  //           // Make new page as next
+  //           page.instance.nextPage = componentRef;
+  //
+  //           // Make new pages prefious the found page
+  //           componentRef.instance.previousPage = page;
+  //           this.pages[this.pages.indexOf(page)] = componentRef;
+  //
+  //         }
+  //       }
+  //     } else {
+  //       this.pages.push(componentRef);
+  //     }
+  //
+  //     this.router.navigateByUrl('/main/' + componentRef.instance.pageId);
+  //   }
+  // }
 
   private navigatoToPopupComponentRef(componentRef: ComponentRef<any>) {
     if (componentRef !== null) {

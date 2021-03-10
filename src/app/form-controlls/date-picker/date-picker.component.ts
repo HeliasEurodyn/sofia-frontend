@@ -12,6 +12,8 @@ export class DatePickerComponent implements OnInit {
   @Input() inputDate: Date;
   @Output() inputDateChange = new EventEmitter<Date>();
   @Input() editable: Boolean;
+  @Output() keyDownChange: EventEmitter<any> = new EventEmitter<any>();
+  @Input() fieldId: any;
 
   @ViewChild('ngbDatepickerIdentifier') ngbInputDatepicker: NgbInputDatepicker;
   model: string;
@@ -44,6 +46,8 @@ export class DatePickerComponent implements OnInit {
     if (event.ctrlKey && event.key === 'z') {
       alert(JSON.stringify(this.inputDate));
     }
+
+    this.keyDownChange.emit(event);
   }
 
   onNgbDatepickerSelection(ngbDate: NgbDateStruct) {

@@ -1,6 +1,16 @@
-import {ApplicationRef, Component, ComponentRef, ElementRef, EmbeddedViewRef, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {
+  AfterViewInit,
+  ApplicationRef,
+  Component,
+  ComponentRef,
+  ElementRef,
+  EmbeddedViewRef,
+  OnInit,
+  Renderer2,
+  ViewChild
+} from '@angular/core';
 import {ROUTES} from '../sidebar/sidebar.component';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Location} from '@angular/common';
 import {CommandNavigatorService} from '../../services/command-navigator.service';
 import {LoadingService} from '../../services/loading.service';
@@ -36,6 +46,7 @@ export class NavbarComponent implements OnInit {
               private httpErrorResponceService: HttpErrorResponceService,
               private notificationService: NotificationService,
               private appRef: ApplicationRef,
+              private activatedRoute: ActivatedRoute
   ) {
     this.location = location;
     this.nativeElement = element.nativeElement;
@@ -68,9 +79,28 @@ export class NavbarComponent implements OnInit {
     this.router.events.subscribe((event) => {
       this.sidebarClose();
     });
+
+    /* Auto minimize sidebar if parameter says so*/
+    this.activatedRoute.queryParams.subscribe(params => {
+
+      if (params['sidebar-status'] === 'minimized') {
+        this.updateToggle();
+      }
+    });
+
     this.listenToLoading();
     this.listenToHttpErrors();
   }
+
+  // ngAfterViewInit(): void {
+  //   /* Auto minimize sidebar if parameter says so*/
+  //   this.activatedRoute.queryParams.subscribe(params => {
+  //
+  //     if (params['sidebar-status'] === 'minimized') {
+  //       this.collapse();
+  //     }
+  //   });
+  // }
 
   listenToLoading(): void {
     this.loadingService.loadingSub
@@ -149,6 +179,7 @@ export class NavbarComponent implements OnInit {
   sidebarClose() {
     const html = document.getElementsByTagName('html')[0];
     const mainPanel = <HTMLElement>document.getElementsByClassName('main-panel')[0];
+
     if (window.innerWidth < 991) {
       setTimeout(function () {
         mainPanel.style.position = '';
@@ -160,6 +191,7 @@ export class NavbarComponent implements OnInit {
   };
 
   collapse() {
+
     this.isCollapsed = !this.isCollapsed;
     const navbar = document.getElementsByTagName('nav')[0];
     console.log(navbar);
@@ -182,8 +214,8 @@ export class NavbarComponent implements OnInit {
     }
   }
 
-  navigateById(id: string) {
-    this.navigatorService.navigateById(id);
+  navigateToDashboard() {
+    this.navigatorService.navigate('STATICPAGE[NAME:dashboard,TITLE:Dashboard]');
   }
 
   closePageById(id: string) {
@@ -196,6 +228,10 @@ export class NavbarComponent implements OnInit {
     } else {
       return false;
     }
+  }
+
+  logout() {
+    this.router.navigate(['/login']);
   }
 
 }

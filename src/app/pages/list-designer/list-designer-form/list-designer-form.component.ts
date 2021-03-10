@@ -9,6 +9,7 @@ import {CommandNavigatorService} from '../../../services/command-navigator.servi
 import {PageComponent} from '../../page/page-component';
 import {ComponentPersistEntityFieldDTO} from '../../../dtos/component/component-persist-entity-field-dto';
 import {ComponentPersistEntityDTO} from '../../../dtos/component/component-persist-entity-dto';
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-list-designer-form',
@@ -36,12 +37,17 @@ export class ListDesignerFormComponent extends PageComponent implements OnInit {
               private tableComponentService: TableComponentService,
               private service: ListService,
               private router: Router,
+              private location: Location,
               private navigatorService: CommandNavigatorService) {
     super();
   }
 
   ngOnInit(): void {
     this.selectedFilterField = new ListComponentFieldDTO();
+
+    this.activatedRoute.queryParams.subscribe(params => {
+      this.setNavParams(params['nav']);
+    });
 
     let id = '0';
     this.dto = new ListDTO();
@@ -127,11 +133,11 @@ export class ListDesignerFormComponent extends PageComponent implements OnInit {
   save() {
     if (this.mode === 'edit-record') {
       this.service.update(this.dto).subscribe(data => {
-        this.navigatorService.closeAndBack(this.pageId);
+        this.location.back();
       });
     } else {
       this.service.save(this.dto).subscribe(data => {
-        this.navigatorService.closeAndBack(this.pageId);
+        this.location.back();
       });
     }
   }

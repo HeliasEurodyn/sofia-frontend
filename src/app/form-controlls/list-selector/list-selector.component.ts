@@ -11,6 +11,8 @@ export class ListSelectorComponent implements OnInit {
   @Input() value: string;
   @Output() valueChange = new EventEmitter<string>();
   displayValue = '';
+  @Output() keyDownChange: EventEmitter<any> = new EventEmitter<any>();
+  @Input() fieldId: any;
 
   constructor(private commandNavigatorService: CommandNavigatorService) {
   }
@@ -41,8 +43,12 @@ export class ListSelectorComponent implements OnInit {
   keyOpenPage(event: KeyboardEvent) {
     if (event.key === 'Enter') {
       this.openPage();
-      document.getElementById('buttonOpen').click();
+      document.getElementById(this.fieldId).click();
     }
+  }
+
+  onKeyDown($event: KeyboardEvent) {
+    this.keyDownChange.emit($event);
   }
 
 }

@@ -30,6 +30,7 @@ import {FormDesignerFormComponent} from '../../pages/form-designer/form-designer
 import {FormComponent} from '../../pages/form/form.component';
 
 export const AdminLayoutRoutes: Routes = [
+  {path: 'user', component: UserComponent},
   {path: 'dashboard', component: DashboardComponent},
   {path: 'main/:id', component: NavigatorComponent},
   {path: 'user', component: UserComponent},

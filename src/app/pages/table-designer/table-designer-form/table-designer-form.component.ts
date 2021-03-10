@@ -5,6 +5,7 @@ import {TableService} from '../../../services/crud/table.service';
 import {PageComponent} from '../../page/page-component';
 import {CommandNavigatorService} from '../../../services/command-navigator.service';
 import {TableFieldDTO} from '../../../dtos/table/table-field-dto';
+import { Location } from '@angular/common'
 
 @Component({
   selector: 'app-table-designer-form',
@@ -22,48 +23,19 @@ export class TableDesignerFormComponent extends PageComponent implements OnInit 
   constructor(private activatedRoute: ActivatedRoute,
               private service: TableService,
               private router: Router,
+              private location: Location,
               private navigatorService: CommandNavigatorService) {
     super();
   }
 
-  checkIfTableAlreadyExists() {
-    this.service.tableExists(this.dto.name).subscribe(data => {
-      if (data) {
-        this.tableExists = true;
-      } else {
-        this.tableExists = false;
-      }
-    });
-  }
-
-  showPreviousPageButton() {
-    if (this.previousPage === null) {
-      return false;
-    } else {
-      return true;
-    }
-  }
-
-  navigateToPreviousPage() {
-    this.navigatorService.navigateToPreviousPage(this.pageId);
-  }
-
-  navigateToNextPage() {
-    this.navigatorService.navigateToNextPage(this.pageId);
-  }
-
-  showNextPageButton() {
-    if (this.nextPage === null) {
-      return false;
-    } else {
-      return true;
-    }
-  }
-
   ngOnInit(): void {
     let id = '0';
+
+    this.activatedRoute.queryParams.subscribe(params => {
+      this.setNavParams(params['nav']);
+    });
+
     this.setTitle('Table Designer Entry');
-    // this.title.next('Table Designer Entry :)')
 
     this.mode = 'new-record';
     this.dto = new TableDTO();
@@ -74,7 +46,6 @@ export class TableDesignerFormComponent extends PageComponent implements OnInit 
       this.mode = 'edit-record';
     }
 
-
     if (this.mode === 'edit-record') {
       this.service.getById(id).subscribe(data => {
         this.dto = data;
@@ -82,7 +53,6 @@ export class TableDesignerFormComponent extends PageComponent implements OnInit 
         this.cleanIdsIfCloneEnabled();
       });
     }
-
 
     this.tableHeaders = ['Name', 'Description', 'Type', 'Size', 'Auto Increment', 'Primary key', 'Has default', 'Default', 'Unsigned', 'Not Null'];
 
@@ -110,6 +80,36 @@ export class TableDesignerFormComponent extends PageComponent implements OnInit 
     this.dto.tableFieldList.push(tableFieldDTO);
   }
 
+  checkIfTableAlreadyExists() {
+    this.service.tableExists(this.dto.name).subscribe(data => {
+      if (data) {
+        this.tableExists = true;
+      } else {
+        this.tableExists = false;
+      }
+    });
+  }
+
+  showPreviousPageButton() {
+      return true;
+  }
+
+  navigateToPreviousPage() {
+    this.location.back();
+   // this.navigatorService.navigateToPreviousPage(this.pageId);
+  }
+
+  navigateToNextPage() {
+    this.navigatorService.navigateToNextPage(this.pageId);
+  }
+
+  showNextPageButton() {
+    if (this.nextPage === null) {
+      return false;
+    } else {
+      return true;
+    }
+  }
 
   cleanIdsIfCloneEnabled() {
     if (this.params.has('TYPE')) {

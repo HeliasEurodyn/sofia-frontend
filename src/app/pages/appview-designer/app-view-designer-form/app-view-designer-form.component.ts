@@ -4,6 +4,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {CommandNavigatorService} from '../../../services/command-navigator.service';
 import {AppViewDTO} from '../../../dtos/appview/app-view-dto';
 import {AppViewService} from '../../../services/crud/app-view.service';
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-app-view-designer-form',
@@ -25,11 +26,17 @@ export class AppViewDesignerFormComponent extends PageComponent implements OnIni
   constructor(private activatedRoute: ActivatedRoute,
               private service: AppViewService,
               private router: Router,
+              private location: Location,
               private navigatorService: CommandNavigatorService) {
     super();
   }
 
   ngOnInit(): void {
+
+    this.activatedRoute.queryParams.subscribe(params => {
+      this.setNavParams(params['nav']);
+    });
+
     let id = '0';
     this.mode = 'new-record';
     this.dto = new AppViewDTO();
@@ -70,12 +77,12 @@ export class AppViewDesignerFormComponent extends PageComponent implements OnIni
     if (this.mode === 'edit-record') {
 
       this.service.update(this.dto).subscribe(data => {
-        this.navigatorService.closeAndBack(this.pageId);
+        this.location.back();
       });
 
     } else {
       this.service.save(this.dto).subscribe(data => {
-        this.navigatorService.closeAndBack(this.pageId);
+        this.location.back();
       });
     }
   }
