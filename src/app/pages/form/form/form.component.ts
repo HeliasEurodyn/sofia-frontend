@@ -242,7 +242,7 @@ export class FormComponent extends PageComponent implements OnInit {
       if (!componentPersistEntityMap.has(cpef.code)) {
 
         let value = null;
-        if (cpef.assignment.type === 'datetime') {
+        if (cpef?.assignment?.type === 'datetime') {
           value = this.datepipe.transform(cpef.value,
             'yyyyMMddHHmmss',
             'UTC');
@@ -273,7 +273,7 @@ export class FormComponent extends PageComponent implements OnInit {
       for (const cpef of componentPersistEntityDataLine.componentPersistEntityFieldList) {
         if (!componentPersistEntityLineMap.has(cpef.code)) {
           let value = null;
-          if (cpef.assignment.type === 'datetime') {
+          if (cpef?.assignment?.type === 'datetime') {
             value = this.datepipe.transform(cpef.value,
               'yyyyMMddHHmmss',
               'UTC');
