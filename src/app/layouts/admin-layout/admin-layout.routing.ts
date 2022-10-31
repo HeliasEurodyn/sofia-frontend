@@ -8,13 +8,13 @@ import {FormComponent} from '../../pages/form/form/form.component';
 import {EmptyComponent} from '../../pages/empty/empty.component';
 import {DashboardComponent} from '../../pages/dashboard/dashboard/dashboard.component';
 import {XlsImportComponent} from '../../pages/xls-import/xls-import.component';
-import {SearchComponent} from '../../pages/search/search/search.component';
+import {SearchComponent} from '../../pages/search/search.component';
 import {ListWrapperComponent} from '../../pages/list/list-wrapper/list-wrapper.component';
 import {AuthGuard} from '../../guards/auth.guard';
 import {FormWrapperComponent} from '../../pages/form/form-wrapper/form-wrapper.component';
 import {PivotListComponent} from '../../pages/pivot-list/pivot-list/pivot-list.component';
 import {PivotListWrapperComponent} from '../../pages/pivot-list/pivot-list-wrapper/pivot-list-wrapper.component';
-import {TimelineComponent} from '../../pages/timeline/timeline/timeline.component';
+import {TimelineComponent} from '../../pages/timeline/timeline.component';
 
 export const AdminLayoutRoutes: Routes = [
   {path: 'user', component: UserComponent, canActivate: [AuthGuard]},

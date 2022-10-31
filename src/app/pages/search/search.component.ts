@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {PageComponent} from '../../page/page-component';
+import {PageComponent} from '../page/page-component';
 import {ActivatedRoute} from '@angular/router';
-import {SearchService} from '../../../services/crud/search.service';
-import {CommandNavigatorService} from '../../../services/system/command-navigator.service';
+import {SearchService} from '../../services/crud/search.service';
+import {CommandNavigatorService} from '../../services/system/command-navigator.service';
 
 @Component({
   selector: 'app-search',
