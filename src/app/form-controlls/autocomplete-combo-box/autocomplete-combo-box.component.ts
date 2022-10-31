@@ -3,7 +3,6 @@ import {ComponentPersistEntityDTO} from '../../dtos/component/component-persist-
 import {ComponentPersistEntityFieldDTO} from '../../dtos/component/component-persist-entity-field-dto';
 import {Observable, OperatorFunction} from 'rxjs';
 import {debounceTime, distinctUntilChanged, filter, map} from 'rxjs/operators';
-import {CustomQueryDesignerService} from '../../services/crud/custom-query-designer.service';
 import {CustomQueryService} from '../../services/crud/custom-query.service';
 
 @Component({

@@ -1,5 +1,4 @@
 import {Injectable} from '@angular/core';
-import {ReportDesignerService} from '../crud/report-designer.service';
 import {ReportService} from '../crud/report.service';
 
 @Injectable({
