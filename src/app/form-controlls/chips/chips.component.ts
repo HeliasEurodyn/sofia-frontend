@@ -1,13 +1,11 @@
 import {Component, ComponentRef, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {ComponentPersistEntityFieldDTO} from '../../dtos/component/component-persist-entity-field-dto';
-import {ComponentDTO} from '../../dtos/component/componentDTO';
 import {ComponentPersistEntityDTO} from '../../dtos/component/component-persist-entity-dto';
 import {CommandParserService} from '../../services/system/command-parser.service';
 import {CommandNavigatorService} from '../../services/system/command-navigator.service';
 import {TableComponentService} from '../../services/crud/table-component.service';
 import * as uuid from 'uuid';
 import {ComponentPersistEntityDataLineDTO} from '../../dtos/component/component-persist-entity-data-line-dto';
-import {AccessControlDto} from '../../dtos/security/access-control-dto';
 import {FormScriptsService} from '../../services/system/form-scripts.service';
 
 @Component({

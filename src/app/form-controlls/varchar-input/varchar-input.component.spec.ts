@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { VarcharInputComponent } from './varchar-input.component';
+import {VarcharInputComponent} from './varchar-input.component';
 
 describe('VarcharInputComponent', () => {
   let component: VarcharInputComponent;

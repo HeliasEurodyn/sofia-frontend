@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, OnInit, QueryList, Renderer2, ViewChild, ViewChildren} from '@angular/core';
+import {Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren} from '@angular/core';
 import {PageComponent} from '../../page/page-component';
 import {FormService} from '../../../services/crud/form.service';
 import {CommandNavigatorService} from '../../../services/system/command-navigator.service';

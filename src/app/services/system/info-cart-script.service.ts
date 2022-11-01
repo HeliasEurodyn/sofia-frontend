@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {DynamicJavaScriptLoaderService} from './dynamic-java-script-loader.service';
 import {DynamicRequestService} from '../crud/dynamic-request.service';
 import {CommandNavigatorService} from './command-navigator.service';

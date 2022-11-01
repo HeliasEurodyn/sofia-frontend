@@ -40,24 +40,24 @@ import {YesNoDialogComponent} from './shared/yes-no-dialog/yes-no-dialog.compone
 import {OkDialogComponent} from './shared/ok-dialog/ok-dialog.component';
 import {XlsImportComponent} from './pages/xls-import/xls-import.component';
 import {Title} from '@angular/platform-browser';
-import { ComboBoxComponent } from './form-controlls/combo-box/combo-box.component';
-import { SearchComponent } from './pages/search/search.component';
-import { ListWrapperComponent } from './pages/list/list-wrapper/list-wrapper.component';
-import { AutocompleteComboBoxComponent } from './form-controlls/autocomplete-combo-box/autocomplete-combo-box.component';
-import { CheckBoxComponent } from './form-controlls/check-box/check-box.component';
-import { CallBackComponent } from './pages/call-back/call-back.component';
-import { FormWrapperComponent } from './pages/form/form-wrapper/form-wrapper.component';
-import { HtmlDashboardComponent } from './pages/html-dashboard/html-dashboard.component';
-import { SafeHtmlPipe } from './services/system/safe-html.pipe';
+import {ComboBoxComponent} from './form-controlls/combo-box/combo-box.component';
+import {SearchComponent} from './pages/search/search.component';
+import {ListWrapperComponent} from './pages/list/list-wrapper/list-wrapper.component';
+import {AutocompleteComboBoxComponent} from './form-controlls/autocomplete-combo-box/autocomplete-combo-box.component';
+import {CheckBoxComponent} from './form-controlls/check-box/check-box.component';
+import {CallBackComponent} from './pages/call-back/call-back.component';
+import {FormWrapperComponent} from './pages/form/form-wrapper/form-wrapper.component';
+import {HtmlDashboardComponent} from './pages/html-dashboard/html-dashboard.component';
+import {SafeHtmlPipe} from './services/system/safe-html.pipe';
 import {AceModule} from 'ngx-ace-wrapper';
-import { ChipsComponent } from './form-controlls/chips/chips.component';
-import { PivotListComponent } from './pages/pivot-list/pivot-list/pivot-list.component';
-import { PivotListWrapperComponent } from './pages/pivot-list/pivot-list-wrapper/pivot-list-wrapper.component';
-import { DashboardWrapperComponent } from './pages/dashboard/dashboard-wrapper/dashboard-wrapper.component';
+import {ChipsComponent} from './form-controlls/chips/chips.component';
+import {PivotListComponent} from './pages/pivot-list/pivot-list/pivot-list.component';
+import {PivotListWrapperComponent} from './pages/pivot-list/pivot-list-wrapper/pivot-list-wrapper.component';
+import {DashboardWrapperComponent} from './pages/dashboard/dashboard-wrapper/dashboard-wrapper.component';
 import {ChartsModule} from 'ng2-charts';
-import { PasswordInputComponent } from './form-controlls/password-input/password-input.component';
-import { FileSelectorComponent } from './form-controlls/file-selector/file-selector.component';
-import { TimelineComponent } from './pages/timeline/timeline.component';
+import {PasswordInputComponent} from './form-controlls/password-input/password-input.component';
+import {FileSelectorComponent} from './form-controlls/file-selector/file-selector.component';
+import {TimelineComponent} from './pages/timeline/timeline.component';
 
 @NgModule({
   declarations: [

@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { XlsImportComponent } from './xls-import.component';
+import {XlsImportComponent} from './xls-import.component';
 
 describe('XlsImportComponent', () => {
   let component: XlsImportComponent;

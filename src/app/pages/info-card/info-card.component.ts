@@ -3,7 +3,6 @@ import {InfoCardDTO} from '../../dtos/info-card/info-card-dto';
 import {InfoCardService} from '../../services/crud/info-card.service';
 import {CommandNavigatorService} from '../../services/system/command-navigator.service';
 import {DomSanitizer} from '@angular/platform-browser';
-import {ListScriptsService} from '../../services/system/list-scripts.service';
 import {InfoCartScriptService} from '../../services/system/info-cart-script.service';
 
 @Component({

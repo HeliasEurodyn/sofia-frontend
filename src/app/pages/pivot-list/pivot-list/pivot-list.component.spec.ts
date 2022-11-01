@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { PivotListComponent } from './pivot-list.component';
+import {PivotListComponent} from './pivot-list.component';
 
 describe('PivolListComponent', () => {
   let component: PivotListComponent;

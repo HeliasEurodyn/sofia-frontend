@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { DashboardWrapperComponent } from './dashboard-wrapper.component';
+import {DashboardWrapperComponent} from './dashboard-wrapper.component';
 
 describe('DashboardWrapperComponent', () => {
   let component: DashboardWrapperComponent;

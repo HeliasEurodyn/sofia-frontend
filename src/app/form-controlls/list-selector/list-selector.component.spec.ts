@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ListSelectorComponent } from './list-selector.component';
+import {ListSelectorComponent} from './list-selector.component';
 
 describe('ListSelectorComponent', () => {
   let component: ListSelectorComponent;

@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { NumericInputComponent } from './numeric-input.component';
+import {NumericInputComponent} from './numeric-input.component';
 
 describe('NumericInputComponent', () => {
   let component: NumericInputComponent;

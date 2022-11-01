@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { AutocompleteComboBoxComponent } from './autocomplete-combo-box.component';
+import {AutocompleteComboBoxComponent} from './autocomplete-combo-box.component';
 
 describe('AutocompleteComboBoxComponent', () => {
   let component: AutocompleteComboBoxComponent;

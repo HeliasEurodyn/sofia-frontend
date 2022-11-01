@@ -4,7 +4,8 @@ import {
   Component,
   ComponentRef,
   ElementRef,
-  EmbeddedViewRef, OnDestroy,
+  EmbeddedViewRef,
+  OnDestroy,
   OnInit,
   Renderer2,
   ViewChild
@@ -21,7 +22,7 @@ import {UserDto} from '../../dtos/user/user-dto';
 import {ListSearchService} from '../../services/system/list-search.service';
 import {LanguageDTO} from '../../dtos/language/language-dto';
 import {LanguageService} from '../../services/system/language.service';
-import { UserService } from 'app/services/crud/user.service';
+import {UserService} from 'app/services/crud/user.service';
 import {SseNotificationService} from '../../services/crud/sse-notification.service';
 
 @Component({

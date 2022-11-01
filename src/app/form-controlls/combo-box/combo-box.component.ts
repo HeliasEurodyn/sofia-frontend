@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ComponentPersistEntityDTO} from '../../dtos/component/component-persist-entity-dto';
 import {ComponentPersistEntityFieldDTO} from '../../dtos/component/component-persist-entity-field-dto';
 

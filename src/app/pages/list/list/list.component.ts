@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
+import {AfterViewInit, Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {ListDTO} from '../../../dtos/list/list-dto';
 import {ListService} from '../../../services/crud/list.service';
 import {PageComponent} from '../../page/page-component';

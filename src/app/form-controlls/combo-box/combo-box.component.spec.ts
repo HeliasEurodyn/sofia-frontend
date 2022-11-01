@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ComboBoxComponent } from './combo-box.component';
+import {ComboBoxComponent} from './combo-box.component';
 
 describe('ComboBoxComponent', () => {
   let component: ComboBoxComponent;

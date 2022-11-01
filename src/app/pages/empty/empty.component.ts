@@ -1,4 +1,4 @@
-import {AfterContentInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {AfterContentInit, Component, OnInit} from '@angular/core';
 import * as d3 from 'd3';
 
 @Component({

@@ -1,13 +1,4 @@
-import {
-  Component,
-  ComponentRef,
-  ElementRef,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-  ViewChild
-} from '@angular/core';
+import {Component, ComponentRef, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {CommandNavigatorService} from '../../services/system/command-navigator.service';
 import * as uuid from 'uuid';
 import {CommandParserService} from '../../services/system/command-parser.service';

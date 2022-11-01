@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { FormTableComponent } from './form-table.component';
+import {FormTableComponent} from './form-table.component';
 
 describe('FormTableComponent', () => {
   let component: FormTableComponent;
