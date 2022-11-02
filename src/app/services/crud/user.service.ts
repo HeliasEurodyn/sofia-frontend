@@ -4,6 +4,8 @@ import {Observable} from 'rxjs';
 import {CrudService} from './common/crud.service';
 import {LoginInfoDto} from '../../dtos/user/login-info-dto';
 import {environment} from '../../../environments/environment';
+import {ChangePasswordRequest} from '../../dtos/user/change-password-request';
+import {UserDto} from '../../dtos/user/user-dto';
 
 
 /**
@@ -41,6 +43,10 @@ export class UserService extends CrudService<any> {
   updateCurrentLanguage(languageId: any): Observable<string> {
     return this.http.put<any>(
       `${environment.serverUrl}/${this.endpoint}/current-language?language-id=${languageId}`, null);
+  }
+
+  changePassword(changePasswordRequest: ChangePasswordRequest): Observable<UserDto> {
+    return this.http.put<UserDto>(`${environment.serverUrl}/${this.endpoint}/change-password`, changePasswordRequest);
   }
 
 }

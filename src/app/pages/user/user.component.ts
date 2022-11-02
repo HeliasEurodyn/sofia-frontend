@@ -7,6 +7,7 @@ import {CommandNavigatorService} from '../../services/system/command-navigator.s
 import {ActivatedRoute} from '@angular/router';
 import {Location} from '@angular/common';
 import {PageComponent} from '../page/page-component';
+import {ChangePasswordRequest} from '../../dtos/user/change-password-request';
 
 @Component({
   selector: 'app-user-cmp',
@@ -15,6 +16,7 @@ import {PageComponent} from '../page/page-component';
 export class UserComponent extends PageComponent implements OnInit {
 
   public userDTO: UserDto = new UserDto();
+  public changePasswordRequest: ChangePasswordRequest = new ChangePasswordRequest();
   public menuDTOS: MenuDTO[];
   public mode: string;
 
@@ -34,7 +36,8 @@ export class UserComponent extends PageComponent implements OnInit {
   }
 
   save() {
-      this.userService.update(this.userDTO).subscribe(data => {
+      this.setNewPassword();
+      this.userService.changePassword(this.changePasswordRequest).subscribe(data => {
         this.location.back();
       });
   }
@@ -69,5 +72,11 @@ export class UserComponent extends PageComponent implements OnInit {
 
   selectHeaderMenu(menu: MenuDTO) {
     this.userDTO.headerMenu = menu;
+  }
+
+  setNewPassword() {
+    this.changePasswordRequest.username = this?.userDTO?.username;
+    this.changePasswordRequest.password = this?.userDTO?.password;
+    this.changePasswordRequest.repeatPassword = this?.userDTO?.repeatPassword;
   }
 }
