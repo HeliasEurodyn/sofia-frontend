@@ -13,7 +13,11 @@ export class HttpRequestLoadingInterceptor implements HttpInterceptor {
   }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    this.loadingService.setLoading(true, request.url);
+
+    if (!request.headers.has('no-global-loader')) {
+      this.loadingService.setLoading(true, request.url);
+    }
+
     return next.handle(request)
       .pipe(catchError((err) => {
         this.loadingService.setLoading(false, request.url);

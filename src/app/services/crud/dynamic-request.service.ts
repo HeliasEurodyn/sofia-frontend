@@ -1,7 +1,8 @@
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {environment} from '../../../environments/environment';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
+import {catchError, timeout} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,36 @@ export class DynamicRequestService {
 
   getFromBackend(url: string): Observable<any> {
     return this.http.get<any>(`${environment.serverUrl}${url}`);
+  }
+
+  getFromBackendWithCustomHeaders(url: string, customHeaders: []): Observable<any> {
+    let headers = new HttpHeaders();
+    for (const index of Object.keys(customHeaders)) {
+      headers = headers.set(index, customHeaders[index]);
+    }
+    return this.http.get(`${environment.serverUrl}${url}`, {headers});
+  }
+
+  getFromUrlWithCustomHeaders(url: string, customHeaders: []): Observable<any> {
+    let headers = new HttpHeaders();
+    for (const index of Object.keys(customHeaders)) {
+      headers = headers.set(index, customHeaders[index]);
+    }
+    return this.http.get<any>(`${url}`, {headers});
+  }
+
+  handleError(error) {
+    let errorMessage = '';
+
+    if (error.error instanceof ErrorEvent) {
+      // client-side error
+      errorMessage = error.error.message;
+    } else {
+      // server-side error
+      errorMessage = error.error.message;
+    }
+    window.alert(errorMessage);
+    return null;
   }
 
   getFromUrl(url: string): Observable<any> {

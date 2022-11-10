@@ -15,19 +15,26 @@ export class AuthenticationHeaderInterceptor implements HttpInterceptor {
       return next.handle(request)
     }
 
+    let headers = new HttpHeaders();
+    if (request.headers.has('no-global-error')) {
+      headers = headers.set('no-global-error', 'yes');
+    }
+
+    if (request.headers.has('no-global-loader')) {
+      headers = headers.set('no-global-loader', 'yes');
+    }
+
     let updatedRequest
     if (request.headers.has('Content-Type') && request.headers.get('Content-Type') === 'multipart/form-data' ) {
+      headers =  headers.set( 'Authorization', 'Bearer ' + localStorage.getItem('jwt_token'));
       updatedRequest = request.clone({
-        headers: new HttpHeaders({
-          'Authorization': 'Bearer ' + localStorage.getItem('jwt_token')
-        })
+        headers: headers
       });
     } else {
+      headers = headers.set( 'Content-Type', 'application/json');
+      headers = headers.set( 'Authorization', 'Bearer ' + localStorage.getItem('jwt_token'));
       updatedRequest = request.clone({
-        headers: new HttpHeaders({
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + localStorage.getItem('jwt_token')
-        })
+        headers: headers
       });
     }
     return next.handle(updatedRequest);

@@ -17,7 +17,8 @@ export class InfoCardComponent implements OnInit {
   public dto: InfoCardDTO = null;
 
   constructor(private service: InfoCardService,
-              private sanitizer: DomSanitizer, private infoCartScriptService: InfoCartScriptService,
+              private sanitizer: DomSanitizer,
+              private infoCartScriptService: InfoCartScriptService,
               private navigatorService: CommandNavigatorService) {
   }
 
@@ -45,6 +46,14 @@ export class InfoCardComponent implements OnInit {
 
   trustResource(resource) {
     return this.sanitizer.bypassSecurityTrustHtml(resource);
+  }
+
+  public getFromBackendWithCustomHeaders(url: string, customHeaders: [], callback: (n: any, result: boolean) => any) {
+    this.infoCartScriptService.getFromBackendWithCustomHeaders(url, customHeaders, callback);
+  }
+
+  public  getFromUrlWithCustomHeaders(url: string, headers: [], callback: (n: any, result: boolean) => any) {
+    this.infoCartScriptService.getFromUrlWithCustomHeaders(url, headers, callback);
   }
 
 }
