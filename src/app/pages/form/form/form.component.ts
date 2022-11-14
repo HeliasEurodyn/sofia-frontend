@@ -430,4 +430,12 @@ export class FormComponent extends PageComponent implements OnInit {
     }
   }
 
+  public getFromBackendWithCustomHeaders(url: string, customHeaders: [], callback: (n: any, result: boolean) => any) {
+    this.formScriptsService.getFromBackendWithCustomHeaders(url, customHeaders, callback);
+  }
+
+  public  getFromUrlWithCustomHeaders(url: string, headers: [], callback: (n: any, result: boolean) => any) {
+    this.formScriptsService.getFromUrlWithCustomHeaders(url, headers, callback);
+  }
+
 }

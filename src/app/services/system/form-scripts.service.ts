@@ -709,8 +709,21 @@ export class FormScriptsService {
     document.getElementById('formPopupCloseModalHandlerId').click();
   };
 
-  // public updateDataAction = (data: any) => {
-  //  // alert(data);
-  // };
+  public getFromBackendWithCustomHeaders(url: string, customHeaders: [], callback: (n: any, result: boolean) => any) {
+    this.dynamicRequestService.getFromBackendWithCustomHeaders(url, customHeaders).subscribe((response) => {
+        callback(response, true);
+      }, (error) => {
+        callback(null, false);
+      }
+    );
+  }
 
+  public getFromUrlWithCustomHeaders(url: string, customHeaders: [], callback: (n: any, result: boolean) => any) {
+    this.dynamicRequestService.getFromUrlWithCustomHeaders(url, customHeaders).subscribe((response) => {
+        callback(response, true);
+      }, (error) => {
+        callback(null, false);
+      }
+    );
+  }
 }
