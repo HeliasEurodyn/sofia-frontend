@@ -17,8 +17,9 @@ export class HttpRequestErrorInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-    if (request.headers.has('no-global-error')) {
-      return next.handle(request);
+    if (request.headers.has('no-global-error') ) {
+      const headers = request.headers.delete('no-global-error');
+      return next.handle(request.clone({headers: headers}));
     }
 
     return next.handle(request)
