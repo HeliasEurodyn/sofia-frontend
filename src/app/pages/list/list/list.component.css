@@ -258,13 +258,13 @@ li { /* styles all li elements*/
 }
 
 .header-pagination {
-  border: 2px solid #51ccce !important;
+  border: 1px solid #51ccce !important;
   background-color: #ffffffe6;
   padding: 4px;
   padding-left: 10px;
   padding-right: 10px;
   border-radius: 0px;
-  margin: 10px 1px 1px 5px;
+  margin: 11px 1px 1px 5px;
   font-weight: 600;
   font-size: 0.8571em;
   font-style: normal;
