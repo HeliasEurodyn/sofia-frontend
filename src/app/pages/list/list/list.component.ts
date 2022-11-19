@@ -176,8 +176,6 @@ export class ListComponent extends PageComponent implements OnInit, OnDestroy, A
         values.set(filterField.code, fieldValue);
       }
     }
-    console.log('values');
-    console.log(values);
 
     if (this.selectedShortCode !== '') {
       values.set('sel-sort-code', this.selectedShortCode);

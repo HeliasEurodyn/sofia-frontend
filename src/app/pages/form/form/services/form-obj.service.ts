@@ -40,6 +40,12 @@ export class FormObjService {
               }
             }
           }
+          if (formControl.type === 'table' && formControl.formControlTable != null) {
+              const curCode = formControl.formControlTable.componentPersistEntity.code;
+              if (code === curCode) {
+                formControls.push(formControl);
+              }
+          }
         }
       }
     }

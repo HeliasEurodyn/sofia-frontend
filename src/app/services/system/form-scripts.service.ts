@@ -165,7 +165,6 @@ export class FormScriptsService {
         defineDeleteFromBackend(form.dto.id, this.deleteFromBackend);
         defineDeleteFromUrl(form.dto.id, this.deleteFromUrl);
 
-
         defineAppendLineToTable(form.dto.id, this.appendLineToTable);
         defineClearTableLines(form.dto.id, this.clearTableLines);
         defineAppendLineToComponent(form.dto.id, this.appendLineToComponent);

@@ -14,5 +14,4 @@ export class FormControlTableLineDTO extends BaseDTO {
     this.formControlCells = [];
   }
 
-
 }
