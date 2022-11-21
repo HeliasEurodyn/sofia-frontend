@@ -16,7 +16,7 @@ export class SseNotificationService extends CrudService<any> {
 
   constructor(public http: HttpClient) {
     super(http, 'sse-notification');
-    this.startConnectionStatusTimer();
+  //  this.startConnectionStatusTimer();
   }
 
   private startConnectionStatusTimer() {
