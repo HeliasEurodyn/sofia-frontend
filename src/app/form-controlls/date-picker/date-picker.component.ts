@@ -118,7 +118,8 @@ export class DatePickerComponent implements OnInit {
       year = currentDate.getFullYear();
     }
 
-    this.inputDate = new Date(year, month - 1, day);
+    const now = new Date();
+    this.inputDate = new Date(year, month - 1, day, now.getHours(), now.getMinutes());
     return true;
   }
 

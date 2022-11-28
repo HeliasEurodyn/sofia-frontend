@@ -7,6 +7,7 @@ import {TimelineContentDTO} from '../../dtos/timeline/timeline-content-dto';
 import {TimelineDTO} from '../../dtos/timeline/timeline-dto';
 import {concatMap, map} from 'rxjs/operators';
 import {TimelineResponseDTO} from '../../dtos/timeline/timeline-response-dto';
+import {DatePipe} from '@angular/common';
 
 @Component({
   selector: 'app-timeline',
@@ -25,6 +26,7 @@ export class TimelineComponent extends PageComponent implements OnInit {
   public resultList: Array<TimelineContentDTO> = new Array<TimelineContentDTO>();
 
   constructor(private service: TimelineService,
+              private datepipe: DatePipe,
               private activatedRoute: ActivatedRoute,
               private navigatorService: CommandNavigatorService) {
     super();
@@ -79,17 +81,29 @@ export class TimelineComponent extends PageComponent implements OnInit {
 
   fieldEventOccurred(event: any) {
     if (['listselected', 'listcleared'].includes(event.eventtype)) {
+      this.refreshByFilters()
+    }
+  }
+
+  refreshByFilters() {
       this.generateFilterParams();
       this.resultList = [];
       this.currentPage = 1;
       this.refresh();
-    }
   }
 
   generateFilterParams() {
     this.filterParams = '';
+    console.log(this.timelineDTO?.filterList);
     this.timelineDTO?.filterList.forEach(filter => {
-      this.filterParams += '&' + encodeURI(filter.code) + '=' + encodeURI((filter.fieldValue == null ? '' : filter.fieldValue))
+      let fieldValue = '';
+      if (filter?.type === 'datetime') {
+        fieldValue = (filter.fieldValue == null ? '' : filter?.fieldValue?.toISOString());
+      } else {
+        fieldValue = (filter.fieldValue == null ? '' : filter.fieldValue);
+      }
+
+      this.filterParams += '&' + encodeURI(filter.code) + '=' + encodeURI(fieldValue);
     });
   }
 
