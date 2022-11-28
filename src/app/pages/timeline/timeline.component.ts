@@ -55,6 +55,7 @@ export class TimelineComponent extends PageComponent implements OnInit {
     if (this.id !== '0') {
       this.service.getById(this.id).pipe(concatMap(timelineHeader => {
         this.timelineDTO = timelineHeader;
+        this.sortFilters();
         this.generateFilterParams();
         return this.service
           .getByIdWithParams(this.id, this.extraParams + this.filterParams, this.currentPage)
@@ -100,5 +101,9 @@ export class TimelineComponent extends PageComponent implements OnInit {
   goToTheNextPage() {
     this.currentPage += 1;
     this.refresh();
+  }
+
+  sortFilters() {
+    this.timelineDTO?.filterList.sort((a, b) => (a.shortOrder > b.shortOrder) ? 1 : -1 )
   }
 }
