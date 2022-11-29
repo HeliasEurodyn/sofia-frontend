@@ -58,6 +58,7 @@ export class DatePickerComponent implements OnInit {
   onNgbDatepickerSelection(ngbDate: NgbDateStruct) {
     this.inputDate = new Date(ngbDate.year, ngbDate.month - 1, ngbDate.day);
     this.inputDateToModel();
+    this.onFocusOut();
   }
 
   inputDateToModel() {
