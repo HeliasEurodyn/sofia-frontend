@@ -195,6 +195,11 @@ export class ListSelectorComponent implements OnInit {
 
   private setComponentDislpayValue(): void {
     this.displayValue = '';
+    if ( this.componentPersistEntityFieldList.length !== this.displayFieldNames.length) {
+      this.displayValue = ' **** ';
+      return;
+    }
+
     const displayValueArray: string[] = [];
     this.componentPersistEntityFieldList.forEach(componentPersistEntityField => {
       if (componentPersistEntityField.value != null) {
