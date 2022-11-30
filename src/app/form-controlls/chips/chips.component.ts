@@ -15,21 +15,10 @@ import {FormScriptsService} from '../../services/system/form-scripts.service';
 })
 export class ChipsComponent implements OnInit {
   @Input() command: string;
-  // @Input() listRow: string[];
-  // @Input() defaultValue: string;
-  // @Input() value: string;
-  // @Output() valueChange = new EventEmitter<string>();
-  // private displayValue = '';
   @Output() keyDownChange: EventEmitter<any> = new EventEmitter<any>();
   @Input() fieldClass: any;
   private uuid = '';
   displayFieldNames: string[] = [];
-
-  // componentPersistEntityFieldList: ComponentPersistEntityFieldDTO[] = [];
-  // @Input() component: ComponentDTO;
-  // @Input() lineComponentPersistEntity: ComponentPersistEntityDTO = null;
-
-
   @Input() editable: Boolean;
   @Input() componentPersistEntity: ComponentPersistEntityDTO;
   @Input() componentPersistEntityFieldDTO: ComponentPersistEntityFieldDTO;
@@ -83,7 +72,10 @@ export class ChipsComponent implements OnInit {
   generateDisplayValuesForComponent() {
     this.displayValues = [];
     this.selectedComponentPersistEntity.componentPersistEntityDataLines.forEach(dataline => {
-      const display = this.generateDisplayValueForDataline(this.selectedComponentPersistEntity.code, dataline);
+      let display = this.generateDisplayValueForDataline(this.selectedComponentPersistEntity.code, dataline);
+      if ( (display == null ? '' : display) === '') {
+        display = ' **** '
+      }
       this.displayValues.push({'dataline': dataline, 'display': display});
     });
   }
