@@ -8,6 +8,7 @@ import {TimelineDTO} from '../../dtos/timeline/timeline-dto';
 import {concatMap, map} from 'rxjs/operators';
 import {TimelineResponseDTO} from '../../dtos/timeline/timeline-response-dto';
 import {DatePipe} from '@angular/common';
+import {DateConverterService} from "../../services/system/date-converter.service";
 
 @Component({
   selector: 'app-timeline',
@@ -27,6 +28,7 @@ export class TimelineComponent extends PageComponent implements OnInit {
 
   constructor(private service: TimelineService,
               private datepipe: DatePipe,
+              private dateConverterService: DateConverterService,
               private activatedRoute: ActivatedRoute,
               private navigatorService: CommandNavigatorService) {
     super();
@@ -63,6 +65,13 @@ export class TimelineComponent extends PageComponent implements OnInit {
           .getByIdWithParams(this.id, this.extraParams + this.filterParams, this.currentPage)
           .pipe(map(timelineResponse => {
             this.timelineResponseDTO = timelineResponse;
+
+            this.timelineResponseDTO?.resultList
+              .forEach(result => result.title = this.dateConverterService.replaceIsoToClientDateFormatsInText(result.title));
+
+            this.timelineResponseDTO?.resultList
+              .forEach(result => result.description =  this.dateConverterService.replaceIsoToClientDateFormatsInText(result.description));
+
             this.resultList.push(...this.timelineResponseDTO?.resultList);
           }));
       })).subscribe();
@@ -72,8 +81,16 @@ export class TimelineComponent extends PageComponent implements OnInit {
   refresh(): void {
 
     if (this.id !== '0') {
+
       this.service.getByIdWithParams(this.id, this.extraParams + this.filterParams, this.currentPage).subscribe(timelineResponse => {
         this.timelineResponseDTO = timelineResponse;
+
+        this.timelineResponseDTO?.resultList
+          .forEach(result => result.title = this.dateConverterService.replaceIsoToClientDateFormatsInText(result.title));
+
+        this.timelineResponseDTO?.resultList
+          .forEach(result => result.description =  this.dateConverterService.replaceIsoToClientDateFormatsInText(result.description));
+
         this.resultList.push(...this.timelineResponseDTO?.resultList);
       });
     }
