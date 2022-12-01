@@ -1,9 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {Title} from '@angular/platform-browser';
 import {ActivatedRoute} from '@angular/router';
 import {HttpErrorResponceService} from './services/system/http-error-responce.service';
 import {NotificationService} from './services/system/notification.service';
 import {SettingsService} from './services/crud/settings.service';
+import {environment} from "../environments/environment";
 
 @Component({
   selector: 'app-root',
@@ -27,9 +28,15 @@ export class AppComponent implements OnInit {
     this.activatedRoute.queryParamMap.subscribe(params => {
       this.title.setTitle(this.appTitle);
     });
+
     this.listenToHttpErrors();
     this.defineIcon();
     this.defineTitle();
+
+    if(environment.serverOnProxyPath != ''){
+      environment.serverUrl = location.origin + environment.serverOnProxyPath;
+    }
+
   }
 
   listenToHttpErrors(): void {
@@ -61,4 +68,6 @@ export class AppComponent implements OnInit {
       this.title.setTitle(this.appTitle);
     });
   }
+
+
 }
