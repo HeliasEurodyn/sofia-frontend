@@ -18,7 +18,7 @@ import {UserDto} from '../../dtos/user/user-dto';
 export class UserService extends CrudService<any> {
 
   public static getJwt(): string {
-    return localStorage.getItem('JWT');
+    return localStorage.getItem('jwt_token');
   }
 
   constructor(public http: HttpClient) {
@@ -29,6 +29,11 @@ export class UserService extends CrudService<any> {
     return this.http.post<string>(
       `${environment.serverUrl}/${this.endpoint}/auth`,
       loginInfoDTO);
+  }
+
+  logout(): Observable<any> {
+    return this.http.post<string>(
+      `${environment.serverUrl}/${this.endpoint}/logout`, UserService.getJwt());
   }
 
   getCurrentUser(): Observable<any> {

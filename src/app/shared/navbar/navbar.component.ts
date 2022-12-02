@@ -258,6 +258,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   logout() {
+    this.userService.logout().subscribe();
     this.router.navigate(['/login']);
   }
 
@@ -272,13 +273,14 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
   navigate(command: string) {
     if (command === '#logout#') {
+      this.logout();
       localStorage.removeItem('jwt_token');
       localStorage.removeItem('loggedin_user');
       sessionStorage.removeItem('sidebarMenu');
-      this.logout();
       return;
     }
     if (command === '#clear-cache#') {
+      this.logout();
       localStorage.clear();
       sessionStorage.clear();
       this.logout();
