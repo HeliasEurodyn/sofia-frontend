@@ -283,7 +283,6 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
       this.logout();
       localStorage.clear();
       sessionStorage.clear();
-      this.logout();
       return;
     }
     this.navigatorService.navigate(command);
