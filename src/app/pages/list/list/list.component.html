@@ -261,6 +261,20 @@
                           </div>
                         </div>
                       </ng-container>
+                      <ng-container *ngIf="row.type === 'datetime_det'">
+                        <div class="{{row.bclass}} L{{listDto.id}}-{{this.listDto.code}}-{{row.code}} filter-col"
+                             [ngClass]="{'is-hidden': !row.visible}"
+                             style="{{row.css}}">
+                          <div class="form-group">
+                            <div [ngClass]="{'text-danger': row.required}">{{row.description}}</div>
+                            <app-date-time-picker [(inputDate)]="row.fieldValue"
+                                             [mask]="'dd/MM/yyyy'"
+                                             [editable]="row.editable">
+                            </app-date-time-picker>
+                          </div>
+                        </div>
+                      </ng-container>
+
                       <ng-container
                         *ngIf="row.type === 'combo'">
                         <div class="{{row.bclass}} L{{listDto.id}}-{{this.listDto.code}}-{{row.code}} filter-col"
@@ -434,6 +448,14 @@
                                 [(inputDate)]="row[column.code]"
                                 [mask]="'dd/MM/yyyy'">
                               </app-date-picker>
+                          </ng-container>
+
+                          <ng-container *ngIf="column.type === 'datetime_det'">
+                            <app-date-time-picker
+                              [editable]="column.editable"
+                              [(inputDate)]="row[column.code]"
+                              [mask]="'dd/MM/yyyy'">
+                            </app-date-time-picker>
                           </ng-container>
 
                           <ng-container *ngIf="column.type === 'int' || column.type === 'bigint'">

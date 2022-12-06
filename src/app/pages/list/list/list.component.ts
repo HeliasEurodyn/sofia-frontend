@@ -168,8 +168,8 @@ export class ListComponent extends PageComponent implements OnInit, OnDestroy, A
     for (const filterField of filterFieldList) {
       if (filterField.fieldValue != null && filterField.fieldValue !== '') {
         let fieldValue = '';
-        if (filterField.type === 'datetime') {
-          fieldValue = this.datepipe.transform(filterField.fieldValue, 'yyyyMMddHHmmss', 'UTC');
+        if (['datetime', 'datetime_det'].includes(filterField.type)) {
+          fieldValue = (filterField.fieldValue == null ? '' : filterField?.fieldValue?.toISOString());
         } else {
           fieldValue = filterField.fieldValue;
         }
@@ -410,8 +410,8 @@ export class ListComponent extends PageComponent implements OnInit, OnDestroy, A
     for (const filterField of filterFieldList) {
       if (filterField.fieldValue != null && filterField.fieldValue !== '') {
         let fieldValue = '';
-        if (filterField.type === 'datetime') {
-          fieldValue = this.datepipe.transform(filterField.fieldValue, 'yyyyMMddHHmmss', 'UTC');
+        if (['datetime', 'datetime_det'].includes(filterField.type)) {
+          fieldValue = (filterField.fieldValue == null ? '' : filterField?.fieldValue?.toISOString());
         } else {
           fieldValue = filterField.fieldValue;
         }
@@ -580,7 +580,7 @@ export class ListComponent extends PageComponent implements OnInit, OnDestroy, A
 
     let focusedVal;
     let newVal;
-    if (column.type === 'datetime') {
+    if (['datetime', 'datetime_det'].includes(column.type)) {
       focusedVal = (this.focusedFieldValue == null ? '' : this.focusedFieldValue.toString())
       newVal = (row[column.code] == null ? '' : row[column.code].toString())
     } else {
@@ -620,10 +620,8 @@ export class ListComponent extends PageComponent implements OnInit, OnDestroy, A
     }
 
     let value = null;
-    if (column.type === 'datetime') {
-      value = this.datepipe.transform(row[column.code],
-        'yyyyMMddHHmmss',
-        'UTC');
+    if (['datetime', 'datetime_det'].includes(column.type)) {
+      value = (row[column.code] == null ? '' : row[column.code].toISOString());
     } else {
       value = row[column.code]
     }

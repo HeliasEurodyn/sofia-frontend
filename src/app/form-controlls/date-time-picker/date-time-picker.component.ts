@@ -1,15 +1,15 @@
 import {Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2, ViewChild} from '@angular/core';
-import {NgbDateParserFormatter, NgbDateStruct, NgbInputDatepicker} from '@ng-bootstrap/ng-bootstrap';
-import {DatePipe} from '@angular/common';
-import {ComponentPersistEntityDTO} from '../../dtos/component/component-persist-entity-dto';
-import {ComponentPersistEntityFieldDTO} from '../../dtos/component/component-persist-entity-field-dto';
+import {ComponentPersistEntityDTO} from "../../dtos/component/component-persist-entity-dto";
+import {ComponentPersistEntityFieldDTO} from "../../dtos/component/component-persist-entity-field-dto";
+import {NgbDateParserFormatter, NgbDateStruct, NgbInputDatepicker} from "@ng-bootstrap/ng-bootstrap";
+import {DatePipe} from "@angular/common";
 
 @Component({
-  selector: 'app-date-picker',
-  templateUrl: './date-picker.component.html',
-  styleUrls: ['./date-picker.component.css']
+  selector: 'app-date-time-picker',
+  templateUrl: './date-time-picker.component.html',
+  styleUrls: ['./date-time-picker.component.scss']
 })
-export class DatePickerComponent implements OnInit {
+export class DateTimePickerComponent implements OnInit {
 
   @Input() inputDate: Date;
   @Output() inputDateChange = new EventEmitter<Date>();
@@ -21,10 +21,14 @@ export class DatePickerComponent implements OnInit {
   @Input() componentPersistEntityDTO: ComponentPersistEntityDTO;
   @Input() componentPersistEntityFieldDTO: ComponentPersistEntityFieldDTO;
 
+  hourValue = '0';
+  minuteValue = '0';
+
   @ViewChild('ngbDatepickerIdentifier') ngbInputDatepicker: NgbInputDatepicker;
-  model: string;
+  dateModel: string;
   convertedMask: String = '';
   @Input() mask = '';
+
   constructor(element: ElementRef,
               private renderer: Renderer2,
               private _parserFormatter: NgbDateParserFormatter,
@@ -37,19 +41,12 @@ export class DatePickerComponent implements OnInit {
   }
 
   setMaskFormatFromDateFormat() {
-    const DExp = /D/gi;
-    const MExp = /M/gi;
-    const YExp = /Y/gi;
-    this.convertedMask = this.mask.toUpperCase().replace(DExp, '0').replace(MExp, '0').replace(YExp, '0');
+    this.convertedMask = this.mask.toUpperCase().replace(/D/gi, '0').replace(/M/gi, '0').replace(/Y/gi, '0');
   }
 
   onKeyDownEvent(event: KeyboardEvent) {
     if (event.key === 'c') {
       this.ngbInputDatepicker.toggle();
-    }
-
-    if (event.ctrlKey && event.key === 'z') {
-      // alert(JSON.stringify(this.inputDate));
     }
 
     this.keyDownChange.emit(event);
@@ -66,23 +63,25 @@ export class DatePickerComponent implements OnInit {
       return;
     }
     const dateStringFormated = this.datepipe.transform(this.inputDate, this.mask);
-    const exp = /\/|\\|-/gi;
-    this.model = dateStringFormated.replace(exp, '');
+    this.dateModel = dateStringFormated.replace(/\/|\\|-/gi, '');
+
+    this.hourValue = this.datepipe.transform(this.inputDate, 'hh');
+    this.minuteValue = this.datepipe.transform(this.inputDate, 'mm');
   }
 
   onFocusOut() {
     try {
       const modelParsedToDate = this.tryModelToDate();
       if (modelParsedToDate === false) {
-        this.model = '';
+        this.dateModel = '';
         this.inputDate = null;
       } else {
         const dateStringFormated = this.datepipe.transform(this.inputDate, this.mask);
         const exp = /\/|\\|-/gi;
-        this.model = dateStringFormated.replace(exp, '');
+        this.dateModel = dateStringFormated.replace(exp, '');
       }
     } catch (error) {
-      this.model = '';
+      this.dateModel = '';
       this.inputDate = null;
     }
     this.inputDateChange.emit(this.inputDate);
@@ -103,9 +102,9 @@ export class DatePickerComponent implements OnInit {
     const fistIndexOfY = modelFormat.indexOf('y');
     const lastIndexOfY = modelFormat.lastIndexOf('y');
 
-    const day: number = +this.model.substring(fistIndexOfD, lastIndexOfD + 1);
-    let month: number = +this.model.substring(fistIndexOfM, lastIndexOfM + 1);
-    let year: number = +this.model.substring(fistIndexOfY, lastIndexOfY + 1);
+    const day: number = +this.dateModel.substring(fistIndexOfD, lastIndexOfD + 1);
+    let month: number = +this.dateModel.substring(fistIndexOfM, lastIndexOfM + 1);
+    let year: number = +this.dateModel.substring(fistIndexOfY, lastIndexOfY + 1);
 
     if (day <= 0) {
       return false;
@@ -119,7 +118,10 @@ export class DatePickerComponent implements OnInit {
       year = currentDate.getFullYear();
     }
 
-    this.inputDate = new Date(year, month - 1, day, 12, 0);
+    const hour = Number((this.hourValue === '' ? '0' : this.hourValue));
+    const min = Number((this.minuteValue === '' ? '0' : this.minuteValue));
+
+    this.inputDate = new Date(year, month - 1, day, hour, min);
     return true;
   }
 
@@ -142,4 +144,43 @@ export class DatePickerComponent implements OnInit {
       }
     );
   }
+
+  hourKeyCheck(ev: KeyboardEvent) {
+
+    if (ev.keyCode < 48 || ev.keyCode > 57) {
+      return false;
+    }
+
+    if (this.hourValue.length >= 2) {
+      return false;
+    }
+
+    const numValue = Number(this.hourValue + ev.key);
+
+    if (numValue < 0 || numValue > 23) {
+      return false;
+    }
+
+    return true;
+  }
+
+  minuteKeyCheck(ev: KeyboardEvent) {
+
+    if (ev.keyCode < 48 || ev.keyCode > 57) {
+      return false;
+    }
+
+    if (this.minuteValue.length >= 2) {
+      return false;
+    }
+
+    const numValue = Number(this.minuteValue + ev.key);
+
+    if (numValue < 0 || numValue > 59) {
+      return false;
+    }
+
+    return true;
+  }
+
 }

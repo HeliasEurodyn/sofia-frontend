@@ -58,6 +58,7 @@ import {ChartsModule} from 'ng2-charts';
 import {PasswordInputComponent} from './form-controlls/password-input/password-input.component';
 import {FileSelectorComponent} from './form-controlls/file-selector/file-selector.component';
 import {TimelineComponent} from './pages/timeline/timeline.component';
+import { DateTimePickerComponent } from './form-controlls/date-time-picker/date-time-picker.component';
 
 @NgModule({
   declarations: [
@@ -96,6 +97,7 @@ import {TimelineComponent} from './pages/timeline/timeline.component';
     PasswordInputComponent,
     FileSelectorComponent,
     TimelineComponent,
+    DateTimePickerComponent,
   ],
   imports: [
     BrowserAnimationsModule,

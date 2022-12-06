@@ -343,6 +343,24 @@
                 </div>
               </ng-container>
               <ng-container
+                *ngIf="formcontrol.formControlField.componentPersistEntityField.assignment.type === 'datetime_det'">
+                <div class="{{formcontrol.cssclass}} form-field-{{formcontrol.id}}"
+                     style="{{formcontrol.formControlField.css}}">
+                  <div class="form-group">
+                    <b>{{formcontrol.formControlField.description}}</b>
+                    <app-date-time-picker class="form-input-field"
+                                     [(inputDate)]="formcontrol.formControlField.componentPersistEntityField.value"
+                                     [editable]="formcontrol.formControlField.editable"
+                                     [componentPersistEntityDTO]="formcontrol.formControlField.componentPersistEntity"
+                                     [componentPersistEntityFieldDTO]="formcontrol.formControlField.componentPersistEntityField"
+                                     [mask]="(!!formcontrol.formControlField.mask)?formcontrol.formControlField.mask:'dd/MM/yyyy'"
+                                     (eventOccured)="fieldEventOccured($event)">
+                    </app-date-time-picker>
+                    <div class="category">{{formcontrol.formControlField.message}}</div>
+                  </div>
+                </div>
+              </ng-container>
+              <ng-container
                 *ngIf="formcontrol.formControlField.componentPersistEntityField.assignment.type === 'chips'">
                 <div [ngClass]="{'hidden-field': !formcontrol.formControlField.visible}"
                      class="{{formcontrol.cssclass}} form-field-{{formcontrol.id}}"

@@ -13,7 +13,7 @@ export class ComponentPersistEntityFieldDTO extends BaseDTO {
 
   editor: string;
 
-  public value: string;
+  public value: any;
 
   saveStatement: string;
 

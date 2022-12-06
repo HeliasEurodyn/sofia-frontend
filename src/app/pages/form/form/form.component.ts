@@ -48,7 +48,6 @@ export class FormComponent extends PageComponent implements OnInit {
               private formScriptsService: FormScriptsService,
               private formAssignmentsService: FormAssignmentsService,
               private formTableLinesService: FormTableLinesService,
-              private tableComponentService: TableComponentService,
               private el: ElementRef,
   ) {
     super();
@@ -242,12 +241,10 @@ export class FormComponent extends PageComponent implements OnInit {
       if (!componentPersistEntityMap.has(cpef.code)) {
 
         let value = null;
-        if (cpef?.assignment?.type === 'datetime') {
-          value = this.datepipe.transform(cpef.value,
-            'yyyyMMddHHmmss',
-            'UTC');
+        if (['datetime', 'datetime_det'].includes(cpef?.assignment?.type) && (cpef?.value instanceof Date) ) {
+          value = (cpef.value == null ? '' : cpef?.value?.toISOString());
         } else {
-          value = cpef.value
+          value = cpef.value;
         }
 
         componentPersistEntityMap.set(cpef.code,
@@ -273,16 +270,13 @@ export class FormComponent extends PageComponent implements OnInit {
       for (const cpef of componentPersistEntityDataLine.componentPersistEntityFieldList) {
         if (!componentPersistEntityLineMap.has(cpef.code)) {
           let value = null;
-          if (cpef?.assignment?.type === 'datetime') {
-            value = this.datepipe.transform(cpef.value,
-              'yyyyMMddHHmmss',
-              'UTC');
+          if (['datetime', 'datetime_det'].includes(cpef?.assignment?.type) && (cpef?.value instanceof Date) ) {
+            value = (cpef.value == null ? '' : cpef?.value?.toISOString());
           } else {
-            value = cpef.value
+            value = cpef.value;
           }
 
-          componentPersistEntityLineMap.set(cpef.code,
-            value);
+          componentPersistEntityLineMap.set(cpef.code, value);
         }
       }
 
