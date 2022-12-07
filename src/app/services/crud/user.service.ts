@@ -34,7 +34,7 @@ export class UserService extends CrudService<any> {
 
   logout(logoutDTO: LogoutDTO): Observable<any> {
     return this.http.post<string>(
-      `${environment.serverUrl}/${this.endpoint}/exit`, logoutDTO);
+      `${environment.serverUrl}/${this.endpoint}/logout`, logoutDTO);
   }
 
   getCurrentUser(): Observable<any> {
