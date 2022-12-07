@@ -6,6 +6,7 @@ import {LoginInfoDto} from '../../dtos/user/login-info-dto';
 import {environment} from '../../../environments/environment';
 import {ChangePasswordRequest} from '../../dtos/user/change-password-request';
 import {UserDto} from '../../dtos/user/user-dto';
+import {LogoutDTO} from '../../dtos/security/logout-dto';
 
 
 /**
@@ -31,9 +32,9 @@ export class UserService extends CrudService<any> {
       loginInfoDTO);
   }
 
-  logout(): Observable<any> {
+  logout(logoutDTO: LogoutDTO): Observable<any> {
     return this.http.post<string>(
-      `${environment.serverUrl}/${this.endpoint}/exit`, UserService.getJwt());
+      `${environment.serverUrl}/${this.endpoint}/exit`, logoutDTO);
   }
 
   getCurrentUser(): Observable<any> {

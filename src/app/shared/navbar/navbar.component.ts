@@ -24,6 +24,7 @@ import {LanguageDTO} from '../../dtos/language/language-dto';
 import {LanguageService} from '../../services/system/language.service';
 import {UserService} from 'app/services/crud/user.service';
 import {SseNotificationService} from '../../services/crud/sse-notification.service';
+import {LogoutDTO} from '../../dtos/security/logout-dto';
 
 @Component({
   moduleId: module.id,
@@ -48,6 +49,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('insertComponentModal') insertComponentModal: ElementRef;
 
   public userDto: UserDto;
+  public logoutDTO = new LogoutDTO();
   public popupTitle = '';
 
   constructor(location: Location,
@@ -258,7 +260,8 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   logout() {
-    this.userService.logout().subscribe();
+    this.logoutDTO.jwt = UserService.getJwt();
+    this.userService.logout(this?.logoutDTO).subscribe();
     this.router.navigate(['/login']);
   }
 
