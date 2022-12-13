@@ -67,10 +67,10 @@ export class TimelineComponent extends PageComponent implements OnInit {
             this.timelineResponseDTO = timelineResponse;
 
             this.timelineResponseDTO?.resultList
-              .forEach(result => result.title = this.dateConverterService.replaceIsoToClientDateFormatsInText(result.title));
+              .forEach(result => result.title = this.dateConverterService.replaceIsoToClientDateFormatsInText(result?.title));
 
             this.timelineResponseDTO?.resultList
-              .forEach(result => result.description =  this.dateConverterService.replaceIsoToClientDateFormatsInText(result.description));
+              .forEach(result => result.description =  this.dateConverterService.replaceIsoToClientDateFormatsInText(result?.description));
 
             this.resultList.push(...this.timelineResponseDTO?.resultList);
           }));
