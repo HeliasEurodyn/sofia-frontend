@@ -9,8 +9,8 @@
 }
 
 .background{
-  background-image: url('/assets/img/bg/dark-material-bg.jpg');
-  background-size: cover;
+  background-image: url('/assets/img/bg/background.jpg');
+  background-repeat: repeat;
 }
 
 .wrapper.wrapper-full-page {
