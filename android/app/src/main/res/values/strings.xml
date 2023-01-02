@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">onenet</string>
+    <string name="title_activity_main">onenet</string>
+    <string name="package_name">com.ed.onenet</string>
+    <string name="custom_url_scheme">com.ed.onenet</string>
+</resources>
