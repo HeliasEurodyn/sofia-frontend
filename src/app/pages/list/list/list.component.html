@@ -157,11 +157,11 @@
 
                   <div class="row" style="padding-right: 15px;padding-left: 15px;">
                     <ng-container *ngFor="let item of this.listDto?.listComponentLeftGroupFieldList; first as isFirst">
-                      <div class="col-md-auto" style="padding-left: 0px;padding-right: 0px;"
+                      <div class="" style="padding-left: 0px;padding-right: 0px;"
                            *ngIf="(item.fieldValue==null?'':item.fieldValue) != '' && !isFirst">
                         <i class="fas fa-angle-double-right" style="padding-top: 8px;"></i>
                       </div>
-                      <div class="col-md-auto" style="padding-left: 0px;padding-right: 0px;padding-top: 2px;"
+                      <div class="" style="padding-left: 0px;padding-right: 0px;padding-top: 2px;"
                            *ngIf="(item.fieldValue==null?'':item.fieldValue) != ''">
                         <div class="text-center">
                           <button (click)="filterGroupOnField(item)" class="btn left-group-button btn-outline-default"
