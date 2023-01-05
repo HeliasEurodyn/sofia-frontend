@@ -68,3 +68,36 @@
   opacity: 0.4;
   font-size: 11px;
 }
+
+.table-fixed tbody td span {
+  display: none;
+  font-weight: 700;
+}
+
+@media
+only screen and (max-width: 992px) {
+
+  .table-fixed thead{
+    display: none;
+  }
+
+  .table-fixed tbody {
+    margin-bottom: 10px;
+    margin-top: 10px;
+  }
+
+  .table-fixed tbody td {
+    min-width: 100%;
+    border-top: none;
+  }
+
+  .table-fixed tbody td span {
+    display: block;
+  }
+
+  .table-fixed tbody tr {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-top: 1px solid #bbbbbb;
+  }
+}
