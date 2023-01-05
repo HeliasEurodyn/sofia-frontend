@@ -1,10 +1,8 @@
-
 .nav-tabs .nav-link {
   margin: 0px 1px 0px 1px;
   background-color: transparent !important;
   color: #66615B !important;
   border: 2px solid #66615B !important;
-
   border-width: 1px;
   border-radius: 30px;
   padding-right: 23px;
@@ -17,12 +15,8 @@
 }
 
 .nav-tabs .nav-link:hover {
-  /*background-color: #9ad0d0 !important;*/
-  /*color: #66615B !important;*/
-
   background-color: #a5a19d !important;
   color: #ffffff !important;
-
 }
 
 .nav-tabs {
@@ -70,8 +64,6 @@
 }
 
 .table-fixed tbody {
-  /*height: 675px;*/
-  /*overflow-y: auto;*/
   width: 100%;
 }
 
@@ -125,7 +117,7 @@ ul {
   padding-left: 7px;
 }
 
-li { /* styles all li elements*/
+li {
   list-style-type: none;
   padding-left: 0px;
   text-align: left;
@@ -270,18 +262,37 @@ li { /* styles all li elements*/
   font-style: normal;
   color: #309ea0;
 }
-/*.list-table-body, .list-table-head{*/
-/*  width: 100%;*/
-/*  display: block;*/
-/*}*/
 
-/*.list-table-body tr, .list-table-head tr{*/
-/*  display: flex;*/
-/*  width: 100%;*/
-/*}*/
+.table-fixed tbody td span {
+  display: none;
+  font-weight: 700;
+}
 
-/*.list-table-body tr td, .list-table-head tr td{*/
-/*  display: flex;*/
-/*  width: 100%;*/
-/*}*/
+@media
+only screen and (max-width: 992px){
 
+  .table-fixed thead{
+    display: none;
+  }
+
+  .table-fixed tbody {
+    margin-bottom: 10px;
+    margin-top: 10px;
+  }
+
+  .table-fixed tbody td {
+    min-width: 100%;
+    border-top: none;
+  }
+
+  .table-fixed tbody td span {
+    display: block;
+  }
+
+  .table-fixed tbody tr {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-top: 1px solid #dee2e6;
+  }
+
+}
