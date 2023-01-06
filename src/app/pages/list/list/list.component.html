@@ -105,11 +105,17 @@
                       <li *ngFor="let item of list">
                         <ng-container *ngIf="(item['value']==null?'':item['value']) != ''">
                           <div class="btn-group">
-                            <button *ngIf="groupHasChildred(item['children'])" (click)="updateVisibility(item)"
+                            <button *ngIf="groupHasChildred(item['children']) && !item['childrenVisible']" (click)="updateVisibility(item)"
                                     type="button"
                                     class="btn left-group-button btn-outline-info active-header"
                                     style="padding: 2px;font-size: 10px;">
                               <i class="fa fa-plus"></i>
+                            </button>
+                            <button *ngIf="groupHasChildred(item['children']) && item['childrenVisible']" (click)="updateVisibility(item)"
+                                    type="button"
+                                    class="btn left-group-button btn-outline-success active-header"
+                                    style="padding: 2px;font-size: 10px;">
+                              <i class="fa fa-minus"></i>
                             </button>
                             <button *ngIf="!groupHasChildred(item['children'])"
                                     type="button"
@@ -151,11 +157,11 @@
 
                   <div class="row" style="padding-right: 15px;padding-left: 15px;">
                     <ng-container *ngFor="let item of this.listDto?.listComponentLeftGroupFieldList; first as isFirst">
-                      <div class="col-md-auto" style="padding-left: 0px;padding-right: 0px;"
+                      <div class="" style="padding-left: 0px;padding-right: 0px;"
                            *ngIf="(item.fieldValue==null?'':item.fieldValue) != '' && !isFirst">
                         <i class="fas fa-angle-double-right" style="padding-top: 8px;"></i>
                       </div>
-                      <div class="col-md-auto" style="padding-left: 0px;padding-right: 0px;padding-top: 2px;"
+                      <div class="" style="padding-left: 0px;padding-right: 0px;padding-top: 2px;"
                            *ngIf="(item.fieldValue==null?'':item.fieldValue) != ''">
                         <div class="text-center">
                           <button (click)="filterGroupOnField(item)" class="btn left-group-button btn-outline-default"
@@ -311,7 +317,7 @@
                            class="fa {{this.listDto.icon}}"></i>
                         {{this.listDto.title}}
                       </h5>
-                      <p style=" margin-bottom: 5px;" [innerHTML]="this.listDto.description"></p>
+                      <p style="margin-bottom: 5px;" [innerHTML]="this.listDto.description"></p>
                     </div>
                     <div class="pull-right">
                       <button *ngIf="this.listDto?.exportExcel" type="button" title="Excel" (click)="dataExcel()"
@@ -431,7 +437,7 @@
                                col-{{column.code}}-{{rowIndex}}
                                row-{{rowIndex}}-col-{{colIndex}}
                                row-col">
-
+                          <span>{{column.description}}</span>
                           <ng-container *ngIf="column.type === 'list'">
                                 <app-list-selector
                                   [editable]="column.editable"
