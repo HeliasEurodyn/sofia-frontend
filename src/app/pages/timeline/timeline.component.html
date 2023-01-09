@@ -64,7 +64,6 @@
             </ng-container>
             <li>
                 <div (click)="goToTheNextPage()"
-                     [disabled]="timelineResponseDTO?.isTheLastPage"
                      [ngStyle]="{ 'background-color': timelineResponseDTO?.isTheLastPage ? '#9A9A9A' : 'darkgreen', 'cursor' : timelineResponseDTO?.isTheLastPage ? 'not-allowed' : 'pointer' }"
                      class="timeline-badge">
                   <i class="fa fa-chevron-down"></i>
