@@ -1,11 +1,10 @@
-
 <div class="row formnav">
   <div class="col-sm-12">
     <div class="pull-left">
       <div class="col-12">
         <h3 style="margin-top: 20px;margin: 0px;margin-top: 10px;">
           <i class="fa {{timelineDTO?.icon}}" style="padding-right: 5px;"></i>
-             {{timelineDTO?.title}}
+          {{timelineDTO?.title}}
         </h3>
         <p style=" margin-bottom: 5px;"> {{timelineDTO?.description}} </p>
       </div>
@@ -13,25 +12,25 @@
     <div class="pull-right">
       <div class="row filter-row">
         <ng-container *ngFor="let filter of this?.timelineDTO?.filterList">
-            <div *ngIf="filter.type === 'datetime'" class="form-group col-3" style="min-width: 300px;">
-              <app-date-picker [(inputDate)]="filter.fieldValue"
-                               [mask]="'dd/MM/yyyy'"
-                               [editable]="filter.editable">
-              </app-date-picker>
-              <div class="category">{{filter.description}}</div>
-            </div>
-            <div *ngIf="filter.type === 'list'" class="form-group col-3" style="min-width: 300px;">
-              <app-list-selector
-                [(value)]="filter.fieldValue"
-                [command]="filter.editor"
-                [defaultValue]="filter.defaultValue"
-                [displayValue]="filter.displayValue"
-                [editable]="filter.editable"></app-list-selector>
-              <div class="category">{{filter.description}}</div>
-            </div>
-          </ng-container>
-        <button *ngIf="this?.timelineDTO?.filterList.length > 0"
-                (click)="refreshByFilters()"
+          <div *ngIf="filter.type === 'datetime'" class="form-group col-3" style="min-width: 300px;">
+            <app-date-picker [(inputDate)]="filter.fieldValue"
+                             [editable]="filter.editable"
+                             [mask]="'dd/MM/yyyy'">
+            </app-date-picker>
+            <div class="category">{{filter.description}}</div>
+          </div>
+          <div *ngIf="filter.type === 'list'" class="form-group col-3" style="min-width: 300px;">
+            <app-list-selector
+              [(value)]="filter.fieldValue"
+              [command]="filter.editor"
+              [defaultValue]="filter.defaultValue"
+              [displayValue]="filter.displayValue"
+              [editable]="filter.editable"></app-list-selector>
+            <div class="category">{{filter.description}}</div>
+          </div>
+        </ng-container>
+        <button (click)="refreshByFilters()"
+                *ngIf="this?.timelineDTO?.filterList.length > 0"
                 class="btn btn-outline-info  btn-round btn-icon">
           <i class="fa fa-filter"></i>
         </button>
@@ -46,34 +45,36 @@
       <div class="card card-timeline card-plain">
         <div class="card-body">
           <ul class="timeline">
-            <ng-container *ngFor="let content of resultList" >
+            <ng-container *ngFor="let content of resultList">
               <li [ngClass]="{ 'timeline-inverted': !content?.left_side}">
-                <div class="timeline-badge" [style.background-color] ="content?.color">
+                <div [style.background-color]="content?.color" class="timeline-badge">
                   <i class="fa {{content.icon}}"></i>
                 </div>
                 <div class="timeline-panel">
                   <div class="timeline-heading">
-                    <span class="badge badge-pill" [style.background-color] ="content?.color" style="color: white">{{content?.title}}</span>
+                    <span [style.background-color]="content?.color" class="badge badge-pill"
+                          style="color: white">{{content?.title}}</span>
                   </div>
                   <div class="timeline-body">
                     <p [innerHTML]="content?.description"></p>
                   </div>
-                  <h6 class="min-title" (click)="minTitleClicked(content?.nav)" [innerHTML]="content?.min_title"></h6>
+                  <h6 (click)="minTitleClicked(content?.nav)" [innerHTML]="content?.min_title" class="min-title"></h6>
                 </div>
               </li>
             </ng-container>
+            <li>
+                <div (click)="goToTheNextPage()"
+                     [disabled]="timelineResponseDTO?.isTheLastPage"
+                     [ngStyle]="{ 'background-color': timelineResponseDTO?.isTheLastPage ? '#9A9A9A' : 'darkgreen', 'cursor' : timelineResponseDTO?.isTheLastPage ? 'not-allowed' : 'pointer' }"
+                     class="timeline-badge">
+                  <i class="fa fa-chevron-down"></i>
+                </div>
+            </li>
           </ul>
         </div>
       </div>
     </div>
-    <div  class="col-md-12">
-      <button class="btn next-page-button "
-              [disabled]="timelineResponseDTO?.isTheLastPage"
-              [ngStyle]="{ 'background-color': timelineResponseDTO?.isTheLastPage ? '#9A9A9A' : 'darkgreen' }"
-              (click)="goToTheNextPage()">
-        <i class="fa fa-chevron-down"></i>
-      </button>
-    </div>
+
   </div>
 </div>
 
