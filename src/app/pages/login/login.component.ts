@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit {
 
   googleURL = environment.serverUrl + '/oauth2/authorization/google?redirect_uri=' + environment.frontendUrl + '/callback';
   facebookURL = environment.serverUrl + '/oauth2/authorization/facebook?redirect_uri=' + environment.frontendUrl + '/callback';
-  keycloakURL = environment.serverUrl + '/oauth2/authorization/keycloak?redirect_uri=' + environment.frontendUrl + '/callback';
+  keycloakURL = environment.serverUrl + '/oauth2/authorization/keycloak?redirect_uri=' + location.origin + '/callback';
   githubURL = environment.serverUrl + '/oauth2/authorization/github?redirect_uri=' + environment.frontendUrl + '/callback';
   linkedinURL = environment.serverUrl + '/oauth2/authorization/linkedin?redirect_uri=' + environment.frontendUrl + '/callback';
   keyrockURL = environment.serverUrl + '/oauth2/authorization/keyrock?redirect_uri=' + environment.frontendUrl + '/callback';
