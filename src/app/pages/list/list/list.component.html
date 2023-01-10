@@ -437,7 +437,7 @@
                                col-{{column.code}}-{{rowIndex}}
                                row-{{rowIndex}}-col-{{colIndex}}
                                row-col">
-                          <span>{{column.description}}</span>
+                          <span class="cell-headers-descr">{{column.description}}</span>
                           <ng-container *ngIf="column.type === 'list'">
                                 <app-list-selector
                                   [editable]="column.editable"
