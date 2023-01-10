@@ -18,12 +18,12 @@ export class LoginComponent implements OnInit {
   username = '';
   password = '';
 
-  googleURL = environment.serverUrl + '/oauth2/authorization/google?redirect_uri=' + environment.frontendUrl + '/callback';
-  facebookURL = environment.serverUrl + '/oauth2/authorization/facebook?redirect_uri=' + environment.frontendUrl + '/callback';
+  googleURL = environment.serverUrl + '/oauth2/authorization/google?redirect_uri=' + location.origin + '/callback';
+  facebookURL = environment.serverUrl + '/oauth2/authorization/facebook?redirect_uri=' + location.origin + '/callback';
   keycloakURL = environment.serverUrl + '/oauth2/authorization/keycloak?redirect_uri=' + location.origin + '/callback';
-  githubURL = environment.serverUrl + '/oauth2/authorization/github?redirect_uri=' + environment.frontendUrl + '/callback';
-  linkedinURL = environment.serverUrl + '/oauth2/authorization/linkedin?redirect_uri=' + environment.frontendUrl + '/callback';
-  keyrockURL = environment.serverUrl + '/oauth2/authorization/keyrock?redirect_uri=' + environment.frontendUrl + '/callback';
+  githubURL = environment.serverUrl + '/oauth2/authorization/github?redirect_uri=' + location.origin + '/callback';
+  linkedinURL = environment.serverUrl + '/oauth2/authorization/linkedin?redirect_uri=' + location.origin + '/callback';
+  keyrockURL = environment.serverUrl + '/oauth2/authorization/keyrock?redirect_uri=' + location.origin + '/callback';
   loginImage = '';
 
   constructor(private authService: AuthService,
