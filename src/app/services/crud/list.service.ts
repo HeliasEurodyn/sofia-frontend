@@ -43,32 +43,33 @@ export class ListService extends CrudService<any> {
     return this.http.get<any>(`${environment.serverUrl}/${this.endpoint}/instance-version?id=${id}`, requestOptions);
   }
 
-  getListResult(parametersMap: Map<string, string>, page: number, id: string) {
+  getListResult(parametersMap: Map<string, string>, page: number, id: string, languageId: string) {
     let parameters = '?id=' + id;
     for (const key of parametersMap.keys()) {
       parameters += '&' + encodeURIComponent(key) + '=' + encodeURIComponent(parametersMap.get(key));
     }
-    return this.http.get<any>(`${environment.serverUrl}/${this.endpoint}/results/page/${page}${parameters}`, );
+    return this.http.get<any>(`${environment.serverUrl}/${this.endpoint}/results/page/${page}${parameters}&language-id=${languageId}`, );
   }
 
-  getListResultDataExcel(listDto: ListDTO) {
+  getListResultDataExcel(listDto: ListDTO, languageId: string) {
     const httpOptions = {
       responseType: 'blob' as 'json',
     };
-    return this.http.post<any>(`${environment.serverUrl}/${this.endpoint}/data-excel`, listDto, httpOptions);
+    return this.http.post<any>(`${environment.serverUrl}/${this.endpoint}/data-excel&language-id=${languageId}`, listDto, httpOptions);
   }
 
-  getGroupResult(parametersMap: Map<string, string>, id: string) {
+  getGroupResult(parametersMap: Map<string, string>, id: string, languageId: string) {
     let parameters = '?id=' + id;
     for (const key of parametersMap.keys()) {
       parameters += '&' + encodeURIComponent(key) + '=' + encodeURIComponent(parametersMap.get(key));
     }
+    parameters += '&language-id='+languageId;
     return this.http.get<any>(`${environment.serverUrl}/${this.endpoint}/left-grouping/results` + parameters);
   }
 
-  updateField(id, relIdFieldValue, fieldCode, FieldValue ) {
+  updateField(id, relIdFieldValue, fieldCode, FieldValue, languageId: string ) {
     return this.http.put<any>(
-      `${environment.serverUrl}/${this.endpoint}/update-field?id=${id}&rel=${relIdFieldValue}&field=${fieldCode}&field-value=${FieldValue}`,
+      `${environment.serverUrl}/${this.endpoint}/update-field?id=${id}&rel=${relIdFieldValue}&field=${fieldCode}&field-value=${FieldValue}&language-id=${languageId}`,
       null);
   }
 
