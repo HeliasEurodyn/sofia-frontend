@@ -725,4 +725,12 @@ export class FormScriptsService {
       }
     );
   }
+
+  public printHtmlReport(htmlReportId: string, selectionId: string, callback: (n: any) => any) {
+    this.dynamicRequestService.getHtmlReport(htmlReportId, selectionId).subscribe((response) => {
+        callback(response);
+      }
+    );
+  }
+
 }

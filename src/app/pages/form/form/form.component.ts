@@ -58,7 +58,7 @@ export class FormComponent extends PageComponent implements OnInit, AfterViewIni
               private dynamicCssScriptLoader: DynamicCssScriptLoaderService,
               public datepipe: DatePipe,
               private title: Title,
-              private formScriptsService: FormScriptsService,
+              public formScriptsService: FormScriptsService,
               private formAssignmentsService: FormAssignmentsService,
               private formTableLinesService: FormTableLinesService,
               private languageService: LanguageService,
