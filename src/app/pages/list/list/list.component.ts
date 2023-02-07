@@ -192,7 +192,6 @@ export class ListComponent extends PageComponent implements OnInit, OnDestroy, A
       }
       this.listScriptsService.triggerListEvent(this.listDto.id, 'onListDataLoaded', data);
     });
-
   }
 
   setPaginationSettings() {
