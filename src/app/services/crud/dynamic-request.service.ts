@@ -15,6 +15,20 @@ export class DynamicRequestService {
     return this.http.get<any>(`${environment.serverUrl}${url}`);
   }
 
+  getHtmlReport(htmlReportId: string, selectionId: string): Observable<any> {
+  
+    const headers = new HttpHeaders({
+      'Content-Type': 'multipart/form-data'
+    });
+
+    return this.http.get(`${environment.serverUrl}/html-template/download?id=${htmlReportId}&selection-id=${selectionId}`,
+    {
+      headers : headers,
+      observe: 'response',
+      responseType: 'blob'
+    });
+  }
+
   getFromBackendWithCustomHeaders(url: string, customHeaders: []): Observable<any> {
     let headers = new HttpHeaders();
     for (const index of Object.keys(customHeaders)) {
