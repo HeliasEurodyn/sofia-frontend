@@ -1,4 +1,13 @@
-import {Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren} from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  QueryList,
+  ViewChild,
+  ViewChildren
+} from '@angular/core';
 import {PageComponent} from '../../page/page-component';
 import {FormService} from '../../../services/crud/form.service';
 import {CommandNavigatorService} from '../../../services/system/command-navigator.service';
@@ -19,6 +28,7 @@ import {concatMap} from 'rxjs/operators';
 import {FormAssignmentsService} from './services/form-assignments.service';
 import {FormTableLinesService} from './services/form-table-lines.service';
 import {TableComponentService} from '../../../services/crud/table-component.service';
+import {LanguageService} from "../../../services/system/language.service";
 
 
 @Component({
@@ -26,7 +36,7 @@ import {TableComponentService} from '../../../services/crud/table-component.serv
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.css']
 })
-export class FormComponent extends PageComponent implements OnInit {
+export class FormComponent extends PageComponent implements OnInit, AfterViewInit,  OnDestroy {
 
   @ViewChildren('formFields') formFields: QueryList<any>;
   public dto: FormDto;
@@ -35,7 +45,10 @@ export class FormComponent extends PageComponent implements OnInit {
   @ViewChild('yesNoDialog') yesNoDialog: YesNoDialogComponent;
   @ViewChild('okDialog') okDialog: OkDialogComponent;
   public selectedActionButton: FormActionButton
+  id = '';
   selectionId = '';
+  languageSelectionSubject;
+  clonedData = false;
 
   constructor(private activatedRoute: ActivatedRoute,
               private service: FormService,
@@ -48,6 +61,7 @@ export class FormComponent extends PageComponent implements OnInit {
               public formScriptsService: FormScriptsService,
               private formAssignmentsService: FormAssignmentsService,
               private formTableLinesService: FormTableLinesService,
+              private languageService: LanguageService,
               private el: ElementRef,
   ) {
     super();
@@ -55,13 +69,13 @@ export class FormComponent extends PageComponent implements OnInit {
 
   ngOnInit(): void {
     this.initNav(this.activatedRoute);
-    let id = '0';
+
     this.selectionId = '';
     this.dto = new FormDto();
-    let clone = false;
+
     const locateParams = this.getLocateParams();
     if (locateParams.has('ID')) {
-      id = locateParams.get('ID');
+      this.id = locateParams.get('ID');
     }
 
     if (locateParams.has('SELECTION-ID')) {
@@ -70,16 +84,26 @@ export class FormComponent extends PageComponent implements OnInit {
 
     if (this.params.has('TYPE')) {
       if (this.params.get('TYPE').toUpperCase() === 'CLONE') {
-        clone = true;
+        this.clonedData = true;
       }
     }
 
-    this.loadDynamicCssScript(id).then(data => {
-      if (!clone) {
-        this.retrieveAndAssignData(id, this.selectionId);
-      } else {
-        this.retrieveCloneAndAssignData(id, this.selectionId);
-      }
+    this.loadDynamicCssScript(this.id).then(data => {
+        this.retrieveAndAssignData(this.id, this.selectionId);
+    });
+  }
+
+  ngAfterViewInit() {
+    this.applyLanguageSelection();
+  }
+
+  ngOnDestroy() {
+    this.languageSelectionSubject.unsubscribe();
+  }
+
+  applyLanguageSelection() {
+    this.languageSelectionSubject = this.languageService.languageSelectionEmmiter.subscribe((languageCode: string) => {
+      this.retrieveAndAssignData(this.id, this.selectionId);
     });
   }
 
@@ -94,11 +118,14 @@ export class FormComponent extends PageComponent implements OnInit {
   }
 
   retrieveAndAssignData(id: string, selectionId: string) {
+    const language = JSON.parse(localStorage.getItem('loggedin_user')).currentLanguage;
+    const languageId = language == null ? 0 : language.id;
+
     this.service.getUiVersion(id)
-      .pipe(concatMap(instanceVersion => this.service.getUi(id, instanceVersion))
+      .pipe(concatMap(instanceVersion => this.service.getUi(id,languageId, instanceVersion))
       ).subscribe(dto => {
-      localStorage.setItem('cachedForm' + id, JSON.stringify(dto));
-      this.service.getData(id, selectionId).subscribe(componentDTO => {
+      localStorage.setItem('cachedForm' + id + '-' + languageId , JSON.stringify(dto));
+      this.service.getData(id, selectionId, languageId, this.clonedData).subscribe(componentDTO => {
         dto.component = componentDTO;
         this.dto = dto;
         this.setSelectedComponentPersistEntityFieldsToTables(this.dto.component.componentPersistEntityList);
@@ -115,27 +142,27 @@ export class FormComponent extends PageComponent implements OnInit {
     });
   }
 
-  retrieveCloneAndAssignData(id: string, selectionId: string) {
-    this.service.getUiVersion(id)
-      .pipe(concatMap(instanceVersion => this.service.getUi(id, instanceVersion))
-      ).subscribe(dto => {
-      localStorage.setItem('cachedForm' + id, JSON.stringify(dto));
-      this.service.getCloneData(id, selectionId).subscribe(componentDTO => {
-        dto.component = componentDTO;
-        this.dto = dto;
-        this.setSelectedComponentPersistEntityFieldsToTables(this.dto.component.componentPersistEntityList);
-
-        this.dto.component.componentPersistEntityList =
-          this.formAssignmentsService.addAssignmentsToTableDataLines(this.dto.component.componentPersistEntityList);
-
-        this.dto = this.formAssignmentsService.assignComponentFieldsToFormFields(this.dto);
-        this.dto = this.formTableLinesService.generateFormTableLines(this.dto);
-        this.setDefaultSelectedTab();
-        this.formScriptsService.load(this);
-        this.defineTitle();
-      });
-    });
-  }
+  // retrieveCloneAndAssignData(id: string, selectionId: string) {
+  //   this.service.getUiVersion(id)
+  //     .pipe(concatMap(instanceVersion => this.service.getUi(id, instanceVersion))
+  //     ).subscribe(dto => {
+  //     localStorage.setItem('cachedForm' + id, JSON.stringify(dto));
+  //     this.service.getCloneData(id, selectionId).subscribe(componentDTO => {
+  //       dto.component = componentDTO;
+  //       this.dto = dto;
+  //       this.setSelectedComponentPersistEntityFieldsToTables(this.dto.component.componentPersistEntityList);
+  //
+  //       this.dto.component.componentPersistEntityList =
+  //         this.formAssignmentsService.addAssignmentsToTableDataLines(this.dto.component.componentPersistEntityList);
+  //
+  //       this.dto = this.formAssignmentsService.assignComponentFieldsToFormFields(this.dto);
+  //       this.dto = this.formTableLinesService.generateFormTableLines(this.dto);
+  //       this.setDefaultSelectedTab();
+  //       this.formScriptsService.load(this);
+  //       this.defineTitle();
+  //     });
+  //   });
+  // }
 
   defineTitle() {
     if (this.commandShowCustomTitle()) {
