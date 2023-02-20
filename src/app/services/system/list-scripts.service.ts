@@ -3,6 +3,7 @@ import {DynamicJavaScriptLoaderService} from './dynamic-java-script-loader.servi
 import {CommandNavigatorService} from './command-navigator.service';
 import {DynamicStaticJavascriptLoaderService} from './dynamic-static-javascript-loader.service';
 import {DynamicRequestService} from '../crud/dynamic-request.service';
+import {environment} from "../../../environments/environment";
 
 declare function registerListDynamicScript(id, list): any;
 
@@ -152,5 +153,49 @@ export class ListScriptsService {
   public pivotCellClick(id, field) {
     pivotCellClick(id, field);
   }
+
+
+  public printHtmlReport(id, selectionId) {
+    this.dynamicRequestService.getFromBackend(`/html-template/instant-access-token?id=${id}&selection-id=${selectionId}`).subscribe(response => {
+
+      const element: HTMLIFrameElement = document.createElement('iframe');
+      element.setAttribute('src',
+        `${environment.serverUrl}/html-template/preview-page.html?token=${response.token}`);
+      console.log(`${environment.serverUrl}/html-template/preview-page.html?token=${response.token}`);
+      element.style.display = 'none';
+      document.body.appendChild(element);
+      setTimeout( ()=>{
+        document.body.removeChild(element);
+      },500);
+
+    });
+  }
+
+  // public printHtmlReport(id, selectionId){
+  //   const element: HTMLIFrameElement = document.createElement('iframe');
+  //   element.setAttribute('src',
+  //     `${environment.serverUrl}/html-template/preview-page.html?id=${id}&selection-id=${selectionId}`);
+  //   console.log(`${environment.serverUrl}/html-template/preview-page.html?id=${id}&selection-id=${selectionId}`);
+  //   element.style.display = 'none';
+  //   document.body.appendChild(element);
+  //   setTimeout( ()=>{
+  //     document.body.removeChild(element);
+  //   },500);
+  // }
+
+  public downloadHtmlReport(id, selectionId){
+    // const blob = new Blob([downloadedData], {type: 'application/html' });
+    // const url = window.URL.createObjectURL(blob);
+    // const downloadedReportFile = document.createElement('a');
+    // document.body.appendChild(downloadedReportFile);
+    // downloadedReportFile.setAttribute('style', 'display: none');
+    // downloadedReportFile.href = url;
+    // downloadedReportFile.download = 'report.html';
+    // downloadedReportFile.click();
+    // window.URL.revokeObjectURL(url);
+    // downloadedReportFile.remove();
+  }
+
+
 
 }
