@@ -27,12 +27,9 @@ export class HttpRequestErrorInterceptor implements HttpInterceptor {
 
         if (this.isJsonString(errorResponce.error)) {
           const response = JSON.parse(errorResponce.error);
-          this.httpErrorResponceService.setNewErrorMessage(response.message);
-          return throwError(errorResponce);
-        }
-
-        if (errorResponce?.error?.isVisible === 'true' && errorResponce?.error?.message != null) {
-          this.httpErrorResponceService.setNewErrorMessage(errorResponce?.error?.message);
+          if(response.isVisible) {
+            this.httpErrorResponceService.setNewErrorMessage(response.message);
+          }
           return throwError(errorResponce);
         }
 
