@@ -49,7 +49,7 @@ export class ListComponent extends PageComponent implements OnInit, OnDestroy, A
 
   constructor(private service: ListService,
               private commandNavigatorService: CommandNavigatorService,
-              private notificationService: NotificationService,
+              public notificationService: NotificationService,
               public datepipe: DatePipe,
               private activatedRoute: ActivatedRoute,
               private tableComponentService: TableComponentService,
