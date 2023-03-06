@@ -57,7 +57,7 @@
                 <i class="fa fa-sign-in"> </i>
                 Login
               </a>
-                <p class="social-login text-center social">
+                <p *ngIf="this.keycloakLogin" class="social-login text-center social">
                  or log in with:
                   <a href="{{ keycloakURL }}">
                     <img src="./assets/img/oauthServer.png" style="width: 165px;" alt="Login with Authorization Server">

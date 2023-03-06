@@ -6,5 +6,6 @@
 export const environment = {
   production: false,
   serverUrl: 'http://localhost:15502/api',
-  serverOnProxyPath: ''
+  serverOnProxyPath: '',
+  keycloakLogin :  window['keycloak_login']
 };
