@@ -206,6 +206,21 @@
             [ngClass]="{'hidden-field': !formComponentCell.formControl.formControlField.visible}"
           ></app-date-picker>
         </ng-container>
+
+        <ng-container
+          *ngIf="formComponentCell.formControl.formControlField.componentPersistEntityField.assignment.type === 'datetime_det'">
+              <app-date-time-picker class="form-input-field"
+                                    [(inputDate)]="formComponentCell.componentPersistEntityField.value"
+                                    [editable]="formComponentCell.formControl.formControlField.editable"
+                                    [componentPersistEntityDTO]="formComponentCell.formControl.formControlField.componentPersistEntity"
+                                    [componentPersistEntityFieldDTO]="formComponentCell.componentPersistEntityField"
+                                    [mask]="(!!formComponentCell.formControl.formControlField.mask)?formComponentCell.formControl.formControlField.mask:'dd/MM/yyyy'"
+                                    (eventOccured)="tableEventOccured($event,
+                                      formcontrol.formControlTable.componentPersistEntity,
+                                      formControlLine.componentPersistEntityDataLine)">
+              </app-date-time-picker>
+        </ng-container>
+
       </ng-container>
     </td>
   </tr>
