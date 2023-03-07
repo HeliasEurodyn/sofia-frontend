@@ -38,6 +38,11 @@
     (resize)="eventOccuredActions('resize',$event)">
 
   <div class="input-group-append">
+
+    <span class="input-group-text" style="padding: 10px;padding-right: 0px;background-color: transparent;">
+      <i class="fa fa-clock" style=""></i>
+    </span>
+
     <input type="text" [(ngModel)]="hourValue" (keypress)="hourKeyCheck($event)" (focusout)="onFocusOut()" [readonly]="!this.editable" class="form-control hour" placeholder="hour">
     <input type="text" [(ngModel)]="minuteValue" (keypress)="minuteKeyCheck($event)" (focusout)="onFocusOut()" [readonly]="!this.editable" class="form-control hour" placeholder="min">
   </div>
