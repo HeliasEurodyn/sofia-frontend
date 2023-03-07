@@ -65,7 +65,7 @@ export class DateTimePickerComponent implements OnInit {
     const dateStringFormated = this.datepipe.transform(this.inputDate, this.mask);
     this.dateModel = dateStringFormated.replace(/\/|\\|-/gi, '');
 
-    this.hourValue = this.datepipe.transform(this.inputDate, 'hh');
+    this.hourValue = this.datepipe.transform(this.inputDate, 'HH');
     this.minuteValue = this.datepipe.transform(this.inputDate, 'mm');
   }
 
