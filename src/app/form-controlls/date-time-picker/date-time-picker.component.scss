@@ -37,3 +37,7 @@
   border-right: 1px solid #DDDDDD !important;
 }
 
+.input-group-append .input-group-text, .input-group-prepend .input-group-text {
+  border: 1px solid #51cbce;
+  border-right: 0px;
+}
