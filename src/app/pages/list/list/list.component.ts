@@ -170,7 +170,7 @@ export class ListComponent extends PageComponent implements OnInit, OnDestroy, A
     for (const filterField of filterFieldList) {
       if (filterField.fieldValue != null && filterField.fieldValue !== '') {
         let fieldValue = '';
-        if (['datetime', 'datetime_det'].includes(filterField.type)) {
+        if (['datetime', 'datetime_det'].includes(filterField.type) &&  typeof filterField?.fieldValue?.toISOString === 'function') {
           fieldValue = (filterField.fieldValue == null ? '' : filterField?.fieldValue?.toISOString());
         } else {
           fieldValue = filterField.fieldValue;
