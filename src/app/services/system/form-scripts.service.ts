@@ -18,6 +18,7 @@ import {FormObjService} from '../../pages/form/form/services/form-obj.service';
 import {CommandNavigatorService} from './command-navigator.service';
 import {DynamicStaticJavascriptLoaderService} from './dynamic-static-javascript-loader.service';
 import {NotificationService} from './notification.service';
+import {environment} from "../../../environments/environment";
 
 /*
  *  Definition functions that passes function pointers.
@@ -726,11 +727,20 @@ export class FormScriptsService {
     );
   }
 
-  public printHtmlReport(htmlReportId: string, selectionId: string, callback: (n: any) => any) {
-    this.dynamicRequestService.getHtmlReport(htmlReportId, selectionId).subscribe((response) => {
-        callback(response);
-      }
-    );
+  public printHtmlReport(id, selectionId) {
+    this.dynamicRequestService.getFromBackend(`/html-template/instant-access-token?id=${id}&selection-id=${selectionId}`).subscribe(response => {
+
+      const element: HTMLIFrameElement = document.createElement('iframe');
+      element.setAttribute('src',
+        `${environment.serverUrl}/html-template/preview-page.html?token=${response.token}`);
+      console.log(`${environment.serverUrl}/html-template/preview-page.html?token=${response.token}`);
+      element.style.display = 'none';
+      document.body.appendChild(element);
+      setTimeout( ()=>{
+        document.body.removeChild(element);
+      },500);
+
+    });
   }
 
 }
