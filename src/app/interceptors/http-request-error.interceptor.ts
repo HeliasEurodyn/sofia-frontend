@@ -25,10 +25,9 @@ export class HttpRequestErrorInterceptor implements HttpInterceptor {
     return next.handle(request)
       .pipe(catchError((errorResponce) => {
 
-        if (this.isJsonString(errorResponce.error)) {
-          const response = JSON.parse(errorResponce.error);
-          if(response.isVisible) {
-            this.httpErrorResponceService.setNewErrorMessage(response.message);
+        if (this.isJsonObject(errorResponce.error)) {
+          if (errorResponce.error.isVisible) {
+            this.httpErrorResponceService.setNewErrorMessage(errorResponce.error.message);
           }
           return throwError(errorResponce);
         }
@@ -71,13 +70,8 @@ export class HttpRequestErrorInterceptor implements HttpInterceptor {
 
   }
 
-  private isJsonString(str) {
-    try {
-      JSON.parse(str);
-    } catch (e) {
-      return false;
-    }
-    return true;
+  private isJsonObject(error) {
+   return typeof error === 'object';
   }
 
 }
