@@ -8,6 +8,7 @@ export class FormControlTableControlDTO extends BaseDTO {
   public cssclass: string;
   public formControlField: FormControlFieldDTO;
   public formControlButton: FormControlButtonDTO;
+  public searchSelected: boolean;
 
   constructor() {
     super();
