@@ -8,5 +8,6 @@ export class FormControlTableCellDTO extends BaseDTO {
   public formControl: FormControlTableControlDTO;
   public componentPersistEntityField: ComponentPersistEntityFieldDTO;
   public componentPersistEntity: ComponentPersistEntityDTO
+  public searchSelected: boolean;
 
 }

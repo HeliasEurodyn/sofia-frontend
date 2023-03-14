@@ -12,4 +12,6 @@ export class FormTabDto extends BaseDTO {
   public editable: Boolean;
 
   public formAreas: FormArea[] = [];
+
+  public searchSelected: boolean;
 }

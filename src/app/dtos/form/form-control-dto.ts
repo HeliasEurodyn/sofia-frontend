@@ -12,11 +12,12 @@ export class FormControlDto extends BaseDTO {
   public formControlButton: FormControlButtonDTO;
 
   public refreshUuid: string;
-
+  public searchSelected: boolean;
   constructor() {
     super();
     this.formControlField = new FormControlFieldDTO();
     this.formControlTable = new FormControlTableDTO();
+    this.searchSelected = false;
   }
 
 }

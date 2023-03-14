@@ -13,4 +13,5 @@ export class FormPopupDto extends BaseDTO {
 
   public formAreas: FormArea[] = [];
 
+  public searchSelected: boolean;
 }
