@@ -29,7 +29,7 @@ export class CommandParserService {
     *
     * */
     const parsedCommand = this.tryParseJSONObject(command);
-    if(parsedCommand != false){
+    if (parsedCommand != false) {
       return new Map(Object.entries(parsedCommand));  ;
     }
 
