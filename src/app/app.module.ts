@@ -60,6 +60,8 @@ import {FileSelectorComponent} from './form-controlls/file-selector/file-selecto
 import {TimelineComponent} from './pages/timeline/timeline.component';
 import { DateTimePickerComponent } from './form-controlls/date-time-picker/date-time-picker.component';
 import { HtmlTemplatePreviewComponent } from './pages/html-template-preview/html-template-preview.component';
+import { ImageSelectorComponent } from './form-controlls/image-selector/image-selector.component';
+import { UiPluginComponent } from './pages/ui-plugin/ui-plugin.component';
 
 @NgModule({
   declarations: [
@@ -100,6 +102,8 @@ import { HtmlTemplatePreviewComponent } from './pages/html-template-preview/html
     TimelineComponent,
     DateTimePickerComponent,
     HtmlTemplatePreviewComponent,
+    ImageSelectorComponent,
+    UiPluginComponent,
   ],
   imports: [
     BrowserAnimationsModule,
