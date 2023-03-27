@@ -9,7 +9,7 @@ import {DatePipe} from '@angular/common';
 import {ActivatedRoute} from '@angular/router';
 import {ListActionButton} from '../../../dtos/list/list-action-button';
 import {TableComponentService} from '../../../services/crud/table-component.service';
-import {Title} from '@angular/platform-browser';
+import {DomSanitizer, Title} from '@angular/platform-browser';
 import {concatMap} from 'rxjs/operators';
 import {ListScriptsService} from '../../../services/system/list-scripts.service';
 import {ListComponentFieldDTO} from '../../../dtos/list/list-component-field-d-t-o';
@@ -57,7 +57,8 @@ export class ListComponent extends PageComponent implements OnInit, OnDestroy, A
               public listScriptsService: ListScriptsService,
               private dynamicCssScriptLoader: DynamicCssScriptLoaderService,
               private languageService: LanguageService,
-              private listSearchService: ListSearchService) {
+              private listSearchService: ListSearchService,
+              private sanitizer: DomSanitizer) {
     super();
   }
 
@@ -729,5 +730,9 @@ export class ListComponent extends PageComponent implements OnInit, OnDestroy, A
     }
 
     return false;
+  }
+
+  trustResource(resource) {
+    return this.sanitizer.bypassSecurityTrustResourceUrl(resource);
   }
 }
