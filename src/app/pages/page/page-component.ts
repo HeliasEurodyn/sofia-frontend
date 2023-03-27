@@ -14,7 +14,7 @@ export class PageComponent {
   });
   public commandParserService: CommandParserService;
   public windowTitle: Title;
-  public params: Map<string, string> = new Map();
+  public params: Map<string, any> = new Map();
   public pageId: string;
   public nextPage = null;
   public previousPage = null;
