@@ -1,12 +1,13 @@
 ﻿
 ![](md-images/logo.png)
 
-A highly sophisticated platform allowing fast and easy application creation & extreme customization according to your business needs.
+Revolutionize the way you create applications with our highly sophisticated platform! Our innovative tool allows you to easily and quickly create applications that perfectly meet your business needs, all while enjoying extreme levels of customization.
 
-It implements dynamic presentations and dashboards, customized to each specific need, can be created by customizing dynamically Database schemas, Users, Menus, Forms, Lists, Access controls, Reports, Charts and Dashboards all can be dynamically configured to. Access control configures the access to different resources per User Role, ensuring high level of security and allowing requirement-oriented data exposure based on your needs.
+With our dynamic customization options, you can tweak every aspect of your application - from database schemas to users, menus, forms, lists, access controls, reports, charts, and dashboards. And with our Access control feature, you can configure resource access per user role, ensuring your data is always secure and that your team members only see what they need to see.
 
-​It comes with a rich ui specially designed for the mobile generation of users, providing a true mobile user experience, that requires little to no training.​
+But that's not all - our platform also comes with a rich UI that's tailor-made for the mobile generation of users. Whether you're using a phone or a tablet, you'll enjoy a seamless mobile experience that requires little to no training.
 
+Ready to take your business to the next level? Try our platform today and see the difference for yourself!
 ![](md-images/a.png)
 
 SOFIA comprises 2 applications: The **Author Application** which is used to dynamically configure the presentation of the data, the menus, graphs, and user access and the WebApplication which visualizes the data in various configurations and graphics. It is built on **JAVA Springboot**, **Angular**, **Redis**, **Mysql** Databases and **Docker** technologies.  
