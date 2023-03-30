@@ -11,6 +11,7 @@
     </div>
     <div class="pull-right">
       <button class="btn btn-outline-success" style="margin-top: 0px;" onclick="myFunction()"><i class="fa fa-save"></i> Popup </button>
+      <button class="btn btn-outline-info" style="margin-top: 0px;" onclick="getUser()"><i class="fa fa-user"></i> Current User </button>
       <button class="btn btn-outline-danger" style="margin-top: 0px;"><i class="fa fa-times"></i> Test </button>
     </div>
   </div>
@@ -38,14 +39,14 @@
           <div class="col-12 form-field-76c54793-71dd-4acb-80e3-e9bb28285a59" >
             <div class="form-group">
               <b >Id</b>
-              <input class="ctrl-field form-control ng-untouched ng-pristine ng-valid" readonly="">
+              <input id="user_id" class="ctrl-field form-control ng-untouched ng-pristine ng-valid" readonly="">
               <div class="category"></div>
             </div>
           </div>
           <div class="col-12 form-field-6b99465a-c17e-4b71-a3e2-c21312d67023" >
             <div class="form-group">
               <b>Name</b>
-              <input class="ctrl-field form-control ng-untouched ng-pristine ng-valid" >
+              <input id="username" class="ctrl-field form-control ng-untouched ng-pristine ng-valid" >
               <div class="category">
                 <div>* Required Field</div>
               </div>
@@ -53,8 +54,8 @@
           </div>
           <div class="col-12 form-field-1a11930c-db0f-4e32-959f-bf946f40d795" >
             <div class="form-group">
-              <b>Phone</b>
-              <input class="ctrl-field form-control ng-untouched ng-pristine ng-valid">
+              <b>Email</b>
+              <input id="user_email" class="ctrl-field form-control ng-untouched ng-pristine ng-valid">
               <div class="category"></div>
             </div>
           </div>

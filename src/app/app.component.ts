@@ -37,6 +37,8 @@ export class AppComponent implements OnInit {
       environment.serverUrl = location.origin + environment.serverOnProxyPath;
     }
 
+    localStorage.setItem('serverUrl', environment.serverUrl);
+
   }
 
   listenToHttpErrors(): void {
