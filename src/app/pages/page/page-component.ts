@@ -27,6 +27,7 @@ export class PageComponent {
   }
 
   public initNav(activatedRoute: ActivatedRoute) {
+
     this.commandParserService = this.injector.get(CommandParserService);
     this.windowTitle = this.injector.get(Title);
     activatedRoute.queryParams.subscribe(params => {
@@ -119,7 +120,5 @@ export class PageComponent {
     return '';
   }
 
-  setTitle(titleValue) {
-  }
 
 }

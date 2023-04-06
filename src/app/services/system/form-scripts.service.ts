@@ -733,7 +733,6 @@ export class FormScriptsService {
       const element: HTMLIFrameElement = document.createElement('iframe');
       element.setAttribute('src',
         `${environment.serverUrl}/html-template/preview-page.html?token=${response.token}`);
-      console.log(`${environment.serverUrl}/html-template/preview-page.html?token=${response.token}`);
       element.style.display = 'none';
       document.body.appendChild(element);
       setTimeout( ()=>{

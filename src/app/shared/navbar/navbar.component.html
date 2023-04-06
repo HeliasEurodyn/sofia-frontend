@@ -70,9 +70,7 @@
               <div class="rect rect5"></div>
             </div>
           </li>
-          <li *ngIf="menuField.command.startsWith('POPUPPAGE[') &&
-          menuField.command.toUpperCase().includes('NAME:SEARCH') &&
-          menuField.command.toUpperCase().includes('##SEARCH##')" class="nav-item" style="padding: 0px 5px 0px 15px;">
+          <li *ngIf="isSearchMenu(menuField.command)" class="nav-item" style="padding: 0px 5px 0px 15px;">
             <div class="search-field">
               <div class="input-group no-border">
                 <input type="text"
@@ -131,9 +129,7 @@
           </li>
 
           <li *ngIf="menuField.command !== '#parent-menu#'
-          && !(menuField.command.startsWith('POPUPPAGE[') &&
-          menuField.command.toUpperCase().includes('NAME:SEARCH') &&
-          menuField.command.toUpperCase().includes('##SEARCH##'))
+          && !isSearchMenu(menuField.command)
           && menuField.command !== '#languages#'
           && menuField.command !== '#loader#'
           && menuField.command !== '#hidden-loader#'"

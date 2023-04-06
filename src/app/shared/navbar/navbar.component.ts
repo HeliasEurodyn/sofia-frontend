@@ -107,7 +107,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     this.listenToLoading();
 
     this.userDto = JSON.parse(localStorage.getItem('loggedin_user'));
-   // this.sseNotificationService.subscribe(this.userDto.id, this.notifySSEServerEvent);
+    // this.sseNotificationService.subscribe(this.userDto.id, this.notifySSEServerEvent);
   }
 
   notifySSEServerEvent = (event) => {
@@ -120,15 +120,15 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-   // this.sseNotificationService.closeEventSource();
+    // this.sseNotificationService.closeEventSource();
   }
 
   onModalClosingActions(event) {
     setTimeout(() => {
-       if (this.insertComponentModal.nativeElement.style.display === 'none') {
-         this.componentRef.instance.popupCloseEmmiter.emit(true);
-         this.componentRef.destroy();
-       }
+      if (this.insertComponentModal.nativeElement.style.display === 'none') {
+        this.componentRef.instance.popupCloseEmmiter.emit(true);
+        this.componentRef.destroy();
+      }
     }, 200);
   }
 
@@ -292,10 +292,18 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   searchKeyDown(event: KeyboardEvent, command: string, searchVaule: string) {
-    if ((event.ctrlKey && event.key) === 'Enter' || (event.metaKey && event.key) ) {
-      let commandUpdated = command.replace('##search##', btoa(searchVaule));
-      commandUpdated = commandUpdated.replace('##SEARCH##', btoa(searchVaule));
-      this.navigatorService.navigate(commandUpdated);
+
+    this.searchHasQueryConfig(command);
+    if (
+      ((event.ctrlKey && event.key) === 'Enter' || (event.metaKey && event.key)) && this.searchHasQueryConfig(command) ) {
+
+      const parsedCommand = JSON.parse(command);
+      parsedCommand['VALUE'] = btoa(searchVaule);
+   //   let commandUpdated = command.replace('##search##', btoa(searchVaule));
+   //   commandUpdated = commandUpdated.replace('##SEARCH##', btoa(searchVaule));
+      this.navigatorService.navigate(JSON.stringify(parsedCommand));
+
+
     } else if (event.key === 'Enter') {
       this.listSearchService.listSearchEmmiter.emit(searchVaule);
     }
@@ -303,9 +311,61 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
   getCurrentLanguageImage() {
     if (this.userDto.currentLanguage == null) {
-      return  this.userDto.defaultLanguage.image
+      return this.userDto.defaultLanguage.image
     } else {
       return this.userDto.currentLanguage.image;
     }
   }
+
+  isSearchMenu(command: string) {
+    const parsedCommand = this.tryParseJSONObject(command);
+
+    if (parsedCommand == false) {
+      return false;
+    }
+
+    const parsedMap = new Map(Object.entries(parsedCommand));
+
+
+    if (!parsedMap.has('NAME')) {
+      return false;
+    }
+
+    if (parsedMap.get('NAME') == 'search') {
+      return true;
+    }
+
+    return false;
+  }
+
+  searchHasQueryConfig(command: string) {
+    const parsedCommand = this.tryParseJSONObject(command);
+
+    if (parsedCommand == false) {
+      return false;
+    }
+
+    const parsedMap = new Map(Object.entries(parsedCommand));
+
+    if (parsedMap.has('LOCATE')) {
+      return true;
+    }
+
+
+    return false;
+  }
+
+  private tryParseJSONObject(jsonString) {
+    try {
+      var o = JSON.parse(jsonString);
+
+      if (o && typeof o === "object") {
+        return o;
+      }
+    } catch (e) {
+    }
+
+    return false;
+  }
+
 }
