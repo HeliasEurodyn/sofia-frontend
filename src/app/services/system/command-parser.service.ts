@@ -106,6 +106,11 @@ export class CommandParserService {
 
     if (params.has(paramPart)) {
       const locateValues = params.get(paramPart);
+
+      if(typeof(locateValues) !== 'string' ){
+        return new Map(Object.entries(locateValues));
+      }
+
       let locateValuesInsideBrackets = locateValues.replace(/.*\(|\).*/, '');
       locateValuesInsideBrackets = locateValuesInsideBrackets.replace(/.*\(|\).*/, '');
       const locateValuesSplited = locateValuesInsideBrackets.split(';');
