@@ -17,7 +17,6 @@ import {PivotListWrapperComponent} from '../../pages/pivot-list/pivot-list-wrapp
 import {TimelineComponent} from '../../pages/timeline/timeline.component';
 import { HtmlTemplatePreviewComponent } from 'app/pages/html-template-preview/html-template-preview.component';
 import {UiPluginComponent} from "../../pages/ui-plugin/ui-plugin.component";
-import {SofiaLib1Component} from "../../../../projects/sofia-lib1/src/lib/sofia-lib1.component";
 import {RuleDesignerComponent} from "../../pages/rule-designer/rule-designer.component";
 
 export const AdminLayoutRoutes: Routes = [
@@ -38,8 +37,7 @@ export const AdminLayoutRoutes: Routes = [
   {path: 'timeline', component: TimelineComponent, canActivate: [AuthGuard]},
   {path: 'html-template-preview', component: HtmlTemplatePreviewComponent, canActivate: [AuthGuard]},
   {path: 'ui-plugin', component: UiPluginComponent, canActivate: [AuthGuard]},
-  {path: 'rule-designer', component: RuleDesignerComponent, canActivate: [AuthGuard]},
-  {path: 'lib1', component: SofiaLib1Component, canActivate: [AuthGuard]}
+  {path: 'rule-designer', component: RuleDesignerComponent, canActivate: [AuthGuard]}
 ];
 
 CommandNavigatorService.NavPages = AdminLayoutRoutes;
