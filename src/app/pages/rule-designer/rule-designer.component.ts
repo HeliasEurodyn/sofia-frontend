@@ -40,19 +40,35 @@ export class RuleDesignerComponent extends PageComponent implements OnInit {
     this.ruleExpressionDTO = new RuleExpressionDTO();
 
     const locateParams = this.getLocateParams();
-    if (locateParams.has('ID')) {
-      id = locateParams.get('ID');
+    if (locateParams.has('SELECTION-ID')) {
+      id = locateParams.get('SELECTION-ID');
       this.mode = 'edit-record';
     }
 
     if (this.mode === 'edit-record') {
       this.service.getById(id).subscribe(data => {
         this.dto = data;
+
+       if(this.dto.ruleExpressionList != null){
+          this.expandAll(this.dto.ruleExpressionList);
+        }
+
         this.cleanIdsIfCloneEnabled();
       });
     }
 
     this.refreshComponents();
+  }
+
+  private expandAll(ruleExpressionList: RuleExpressionDTO[]) {
+    if(ruleExpressionList != null){
+      ruleExpressionList.forEach(x => {
+        x.expanded = true;
+        if(x.ruleExpressionList != null){
+          this.expandAll(x.ruleExpressionList);
+        }
+      });
+    }
   }
 
   refreshComponents() {
@@ -130,7 +146,6 @@ export class RuleDesignerComponent extends PageComponent implements OnInit {
     } else {
       selectedParentMenuFieldComponent.expanded = true;
       selectedParentMenuFieldComponent.ruleExpressionList.push(ruleExpressionDTO);
-      ruleExpressionDTO.parrent = selectedParentMenuFieldComponent;
       ruleExpressionDTO.color = selectedParentMenuFieldComponent.childrenColor;
     }
   }
@@ -223,7 +238,6 @@ export class RuleDesignerComponent extends PageComponent implements OnInit {
     let shortOrder = 1;
     for (const ruleExpression of ruleExpressionList) {
       ruleExpression.shortOrder = shortOrder;
-      ruleExpression.parrent = null;
       if (ruleExpression.ruleExpressionList != null) {
         ruleExpression.ruleExpressionList = this.updateShortOrderAndClearParrents(ruleExpression.ruleExpressionList);
       }

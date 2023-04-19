@@ -28,8 +28,6 @@ export class RuleExpressionDTO extends BaseDTO {
 
   color: string = '';
 
-  parrent: RuleExpressionDTO = null;
-
   ruleExpressionList: RuleExpressionDTO[] = [];
 
   expanded: Boolean = false;
@@ -41,4 +39,5 @@ export class RuleExpressionDTO extends BaseDTO {
   constructor() {
     super();
   }
+
 }

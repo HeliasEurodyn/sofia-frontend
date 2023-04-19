@@ -122,7 +122,7 @@
                     <div class="input-group input-group-alternative">
 
                       <div class="input-group-prepend">
-                         <span [ngStyle]="{'background-color': item.parrent == null ? 'antiquewhite': item.parrent.color}"
+                         <span [ngStyle]="{'background-color': item.color}"
                                class="input-group-text textfield-button-info expand-button rule-field-icon">
                               <i style="color: #000000;" class="fa-solid fa-bars-staggered"></i>
                          </span>
@@ -131,7 +131,7 @@
                       <div class="input-group-prepend">
                         <input type="text"
                                readonly
-                               [ngStyle]="{'background-color': item.parrent == null ? 'antiquewhite': item.parrent.color}"
+                               [ngStyle]="{'background-color': item.color}"
                                placeholder="Select Field"
                                (click)="setSelected(item)"  data-target="#fieldSelectionArea" data-toggle="modal"
                                class="form-control textfield-area expr-unit-type rule-field"
@@ -140,14 +140,14 @@
 
 
                       <div class="input-group-prepend">
-                         <span [ngStyle]="{'background-color': item.parrent == null ? 'antiquewhite': item.parrent.color}"
+                         <span [ngStyle]="{'background-color': item.color}"
                                class="input-group-text textfield-button-info expand-button expand-button2 rule-type-icon">
                               <i style="color: #000000;"  class="fa-solid fa-grip-vertical"></i>
                          </span>
                       </div>
 
                       <div class="input-group-prepend">
-                        <input [ngStyle]="{'background-color': item.parrent == null ? 'antiquewhite': item.parrent.color}"
+                        <input [ngStyle]="{'background-color': item.color}"
                                type="text"
                                readonly
                                (click)="setSelected(item)"
@@ -217,10 +217,10 @@
 
                 <div *ngIf="hasChildren(item)" style="padding-left: 5px" class="btn-group">
                   <button class="btn btn-outline-default"
-                          [ngStyle]="{'background-color': item.childrenJoinType == 'and' ? item.color : 'white', 'color' : '#404040'}"
+                          [ngStyle]="{'background-color': item.childrenJoinType == 'and' ? item.childrenColor : 'white', 'color' : '#404040'}"
                           (click)="item.childrenJoinType = 'and';" type="button">And</button>
                   <button class="btn btn-outline-default and-or-left-btn"
-                          [ngStyle]="{'background-color': item.childrenJoinType == 'or' ? item.color : 'white', 'color' : '#404040'}"
+                          [ngStyle]="{'background-color': item.childrenJoinType == 'or' ? item.childrenColor : 'white', 'color' : '#404040'}"
                           (click)="item.childrenJoinType = 'or';" type="button">Or</button>
                 </div>
 
