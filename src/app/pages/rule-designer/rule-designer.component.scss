@@ -96,3 +96,7 @@ li { /* styles all li elements*/
 .and-or-left-btn{
   border-left: 0px !important;
 }
+
+input::placeholder {
+  color: red;
+}
