@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ComponentRef, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {Location} from "@angular/common";
 import {CommandNavigatorService} from "../../services/system/command-navigator.service";
@@ -21,7 +21,7 @@ export class RuleDesignerComponent extends PageComponent implements OnInit {
   public settingsDTO: RuleSettingsDTO;
 
 
-  public ruleExpressionDTO: RuleExpressionDTO;
+ // public ruleExpressionDTO: RuleExpressionDTO;
 
   linecounter = 0;
 
@@ -33,7 +33,8 @@ export class RuleDesignerComponent extends PageComponent implements OnInit {
               private location: Location,
               private navigatorService: CommandNavigatorService,
               private notificationService: NotificationService,
-              private sanitizer: DomSanitizer) {
+              private sanitizer: DomSanitizer,
+              private commandNavigatorService: CommandNavigatorService) {
     super();
   }
 
@@ -46,7 +47,7 @@ export class RuleDesignerComponent extends PageComponent implements OnInit {
     this.mode = 'new-record';
     this.dto = new RuleDTO();
     this.settingsDTO = new RuleSettingsDTO();
-    this.ruleExpressionDTO = new RuleExpressionDTO();
+   // this.ruleExpressionDTO = new RuleExpressionDTO();
 
     const locateParams = this.getLocateParams();
 
@@ -140,8 +141,22 @@ export class RuleDesignerComponent extends PageComponent implements OnInit {
     }
   }
 
-  setSelected(ruleExpressionDTO: RuleExpressionDTO) {
-    this.ruleExpressionDTO = ruleExpressionDTO;
+  selectField(ruleExpressionDTO: RuleExpressionDTO) {
+    const componentRefOnNavigation: ComponentRef<any> = this.commandNavigatorService.navigate(this.settingsDTO.fieldCommand);
+    componentRefOnNavigation.instance.setPresetCommand(this.settingsDTO.fieldCommand);
+    componentRefOnNavigation.instance.selectEmmiter.subscribe((returningValues: string[]) => {
+      ruleExpressionDTO.fieldCode = returningValues['RETURN'];
+      ruleExpressionDTO.fieldName = returningValues['RETURN-DISLPAY'];
+    });
+  }
+
+  selectOperator(ruleExpressionDTO: RuleExpressionDTO) {
+    const componentRefOnNavigation: ComponentRef<any> = this.commandNavigatorService.navigate(this.settingsDTO.operatorCommand);
+    componentRefOnNavigation.instance.setPresetCommand(this.settingsDTO.operatorCommand);
+    componentRefOnNavigation.instance.selectEmmiter.subscribe((returningValues: string[]) => {
+      ruleExpressionDTO.operatorCode = returningValues['RETURN'];
+      ruleExpressionDTO.operatorName = returningValues['RETURN-DISLPAY'];
+    });
   }
 
   addMenuField(selectedParentMenuFieldComponent: RuleExpressionDTO) {
@@ -295,13 +310,13 @@ export class RuleDesignerComponent extends PageComponent implements OnInit {
     this.visibleSection = visibleSection;
   }
 
-  setRuleField(field: string) {
-    this.ruleExpressionDTO.field = field;
-  }
+  // setRuleField(field: string) {
+  //   this.ruleExpressionDTO.fieldName = field;
+  // }
 
-  setOperatorField(operator: string) {
-    this.ruleExpressionDTO.operator = operator;
-  }
+  // setOperatorField(operator: string) {
+  //   this.ruleExpressionDTO.operatorName = operator;
+  // }
 
   createPreview() {
 
@@ -319,8 +334,8 @@ export class RuleDesignerComponent extends PageComponent implements OnInit {
   checkEmptyExpressionFields(ruleExpressionList: RuleExpressionDTO[]) :boolean {
 
     for (const item of ruleExpressionList) {
-      if(item.field == null || item.field == '' ||
-        item.operator == null || item.operator == '' ||
+      if(item.fieldName == null || item.fieldName == '' ||
+        item.operatorName == null || item.operatorName == '' ||
         item.command == null || item.command == ''){
         return true;
       }
@@ -356,9 +371,9 @@ export class RuleDesignerComponent extends PageComponent implements OnInit {
       rulePreview +=
         `<button class="btn btn-round" style="border: 2px solid ${item.color}; padding: 6px;"> `
       rulePreview +=
-        `<b style="color: #385f89"> ${item.field}</b>`;
+        `<b style="color: #385f89"> ${item.fieldName}</b>`;
       rulePreview +=
-        ` <b style="color: #476636">${item.operator}</b>` ;
+        ` <b style="color: #476636">${item.operatorName}</b>` ;
 
       rulePreview +=
         ` <b style="color: #385f89"> ${item.command}  </b> </button>` ;

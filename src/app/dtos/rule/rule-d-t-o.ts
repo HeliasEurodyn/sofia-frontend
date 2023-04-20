@@ -20,9 +20,13 @@ export class RuleDTO extends BaseDTO {
 
 export class RuleExpressionDTO extends BaseDTO {
 
-  field: string;
+  fieldCode: string;
 
-  operator: string;
+  fieldName: string;
+
+  operatorCode: string;
+
+  operatorName: string;
 
   public command: string;
 

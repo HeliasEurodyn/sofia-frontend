@@ -39,7 +39,6 @@
         <i class="fa fa-sliders-h"></i>
         General
       </button>
-
     </div>
   </div>
 </div>
@@ -100,8 +99,7 @@
               </h5>
               <p style=" margin-bottom: 5px;" [innerHTML]="this.trustResource(this.settingsDTO.ruleSectionDescription)"> </p>
             </div>
-          </div>
-          <div class="col-sm-5">
+
             <div class="pull-right">
               <button class="btn btn-round btn-outline-primary"
                       (click)="createPreview()">
@@ -115,7 +113,11 @@
                 <i class="fa fa-plus-circle"></i>
                 Expression  </button>
             </div>
+
           </div>
+
+
+
         </div>
 
       </div>
@@ -143,10 +145,9 @@
                                readonly
                                [ngStyle]="{'background-color': item.color}"
                                placeholder="Select Field"
-                               (click)="setSelected(item)"
-                               data-target="#fieldSelectionArea" data-toggle="modal"
+                               (click)="selectField(item)"
                                class="form-control textfield-area expr-unit-type ruleSettings-field"
-                               value="{{item.field}}">
+                               value="{{item.fieldName}}">
                       </div>
 
 
@@ -161,11 +162,10 @@
                         <input [ngStyle]="{'background-color': item.color}"
                                type="text"
                                readonly
-                               (click)="setSelected(item)"
-                               data-target="#operatorSelectionArea" data-toggle="modal"
+                               (click)="selectOperator(item)"
                                placeholder="Select Operator"
                                class="form-control textfield-area expr-unit-type ruleSettings-type"
-                               value="{{item.operator}}">
+                               value="{{item.operatorName}}">
                       </div>
 
                       <div class="input-group-prepend">
@@ -280,8 +280,7 @@
                 <tr>
                   <td>
                     <button type="button" title="Select" class="btn btn-outline-success btn-icon btn-sm"
-                            data-dismiss="modal"
-                            (click)="setRuleField('First Name');">
+                            data-dismiss="modal">
                       <i class="fa fa-plus"></i>
                     </button>
                   </td>
@@ -292,8 +291,7 @@
                 <tr>
                   <td>
                     <button type="button" title="Select" class="btn btn-outline-success btn-icon btn-sm"
-                            data-dismiss="modal"
-                            (click)="setRuleField('Last Name');">
+                            data-dismiss="modal">
                       <i class="fa fa-plus"></i>
                     </button>
                   </td>
@@ -304,8 +302,7 @@
                 <tr>
                   <td>
                     <button type="button" title="Select" class="btn btn-outline-success btn-icon btn-sm"
-                            data-dismiss="modal"
-                            (click)="setRuleField('Telephone');">
+                            data-dismiss="modal">
                       <i class="fa fa-plus"></i>
                     </button>
                   </td>
@@ -316,8 +313,7 @@
                 <tr>
                   <td>
                     <button type="button" title="Select" class="btn btn-outline-success btn-icon btn-sm"
-                            data-dismiss="modal"
-                            (click)="setRuleField('Address');">
+                            data-dismiss="modal">
                       <i class="fa fa-plus"></i>
                     </button>
                   </td>
@@ -366,8 +362,7 @@
                 <tr>
                   <td>
                     <button type="button" title="Select" class="btn btn-outline-success btn-icon btn-sm"
-                            data-dismiss="modal"
-                            (click)="setOperatorField('Equals');">
+                            data-dismiss="modal">
                       <i class="fa fa-plus"></i>
                     </button>
                   </td>
@@ -378,8 +373,7 @@
                 <tr>
                   <td>
                     <button type="button" title="Select" class="btn btn-outline-success btn-icon btn-sm"
-                            data-dismiss="modal"
-                            (click)="setOperatorField('Greater Than');">
+                            data-dismiss="modal">
                       <i class="fa fa-plus"></i>
                     </button>
                   </td>
@@ -390,8 +384,7 @@
                 <tr>
                   <td>
                     <button type="button" title="Select" class="btn btn-outline-success btn-icon btn-sm"
-                            data-dismiss="modal"
-                            (click)="setOperatorField('Smaller Than');">
+                            data-dismiss="modal">
                       <i class="fa fa-plus"></i>
                     </button>
                   </td>
@@ -402,8 +395,7 @@
                 <tr>
                   <td>
                     <button type="button" title="Select" class="btn btn-outline-success btn-icon btn-sm"
-                            data-dismiss="modal"
-                            (click)="setOperatorField('Starts With');">
+                            data-dismiss="modal">
                       <i class="fa fa-plus"></i>
                     </button>
                   </td>

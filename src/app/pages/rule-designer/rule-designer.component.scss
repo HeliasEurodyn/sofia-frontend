@@ -100,3 +100,7 @@ li { /* styles all li elements*/
 input::placeholder {
   color: red;
 }
+
+.ruleSettings-type, .ruleSettings-field{
+  cursor: pointer;
+}
