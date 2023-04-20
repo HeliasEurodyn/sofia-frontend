@@ -10,6 +10,8 @@ export class RuleDTO extends BaseDTO {
 
   ruleExpressionList: RuleExpressionDTO[] = [];
 
+  expressionPreview = '';
+
   constructor() {
     super();
   }
@@ -22,7 +24,7 @@ export class RuleExpressionDTO extends BaseDTO {
 
   operator: string;
 
-  command: string;
+  public command: string;
 
   childrenColor: string = '';
 

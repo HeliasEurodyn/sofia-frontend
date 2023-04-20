@@ -6,6 +6,9 @@ import {BaseDTO} from "../../dtos/common/base-dto";
 import {PageComponent} from "../page/page-component";
 import {RuleDTO, RuleExpressionDTO} from 'app/dtos/rule/rule-d-t-o';
 import {RuleService} from "../../services/crud/rule.service";
+import {NotificationService} from "../../services/system/notification.service";
+import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
+import {RuleSettingsDTO} from "../../dtos/rule/rule-settings-dto";
 
 @Component({
   selector: 'app-rule-designer',
@@ -13,51 +16,64 @@ import {RuleService} from "../../services/crud/rule.service";
   styleUrls: ['./rule-designer.component.scss']
 })
 export class RuleDesignerComponent extends PageComponent implements OnInit {
-
-
+  mode: string;
   public dto: RuleDTO;
+  public settingsDTO: RuleSettingsDTO;
+
+
   public ruleExpressionDTO: RuleExpressionDTO;
-  public selectedParentRuleExpressionDTO: RuleExpressionDTO;
 
   linecounter = 0;
-  public mode: string;
+
   public visibleSection = 'general';
 
   constructor(private activatedRoute: ActivatedRoute,
               private service: RuleService,
               private router: Router,
               private location: Location,
-              private navigatorService: CommandNavigatorService) {
+              private navigatorService: CommandNavigatorService,
+              private notificationService: NotificationService,
+              private sanitizer: DomSanitizer) {
     super();
   }
 
   ngOnInit(): void {
     this.initNav(this.activatedRoute);
 
-    let id = '0';
+    let id = '';
+    let selectionId = '';
+
     this.mode = 'new-record';
     this.dto = new RuleDTO();
+    this.settingsDTO = new RuleSettingsDTO();
     this.ruleExpressionDTO = new RuleExpressionDTO();
 
     const locateParams = this.getLocateParams();
+
+    if (locateParams.has('ID')) {
+      id = locateParams.get('ID');
+    }
+
     if (locateParams.has('SELECTION-ID')) {
-      id = locateParams.get('SELECTION-ID');
+      selectionId = locateParams.get('SELECTION-ID');
       this.mode = 'edit-record';
     }
 
+    this.service.getSettingsById(id).subscribe(data => {
+      this.settingsDTO = data;
+    });
+
     if (this.mode === 'edit-record') {
-      this.service.getById(id).subscribe(data => {
+      this.service.getById(selectionId).subscribe(data => {
         this.dto = data;
 
-       if(this.dto.ruleExpressionList != null){
+        if(this.dto.ruleExpressionList != null){
           this.expandAll(this.dto.ruleExpressionList);
         }
 
         this.cleanIdsIfCloneEnabled();
       });
     }
-
-    this.refreshComponents();
   }
 
   private expandAll(ruleExpressionList: RuleExpressionDTO[]) {
@@ -69,9 +85,6 @@ export class RuleDesignerComponent extends PageComponent implements OnInit {
         }
       });
     }
-  }
-
-  refreshComponents() {
   }
 
   cleanIdsIfCloneEnabled() {
@@ -89,14 +102,14 @@ export class RuleDesignerComponent extends PageComponent implements OnInit {
     }
   }
 
-  cleanFieldListIdsIfCloneEnabled(menuFieldList: RuleExpressionDTO[]) {
+  cleanFieldListIdsIfCloneEnabled(ruleExpressionDTOS: RuleExpressionDTO[]) {
     if (this.params.has('TYPE')) {
       if (this.params.get('TYPE').toUpperCase() === 'CLONE') {
-        for (const menuField of menuFieldList) {
-          menuField.id = null;
-          menuField.version = null;
-          if (menuField.ruleExpressionList != null) {
-            this.cleanFieldListIdsIfCloneEnabled(menuField.ruleExpressionList);
+        for (const ruleExpressionDTO of ruleExpressionDTOS) {
+          ruleExpressionDTO.id = null;
+          ruleExpressionDTO.version = null;
+          if (ruleExpressionDTO.ruleExpressionList != null) {
+            this.cleanFieldListIdsIfCloneEnabled(ruleExpressionDTO.ruleExpressionList);
           }
         }
       }
@@ -131,7 +144,7 @@ export class RuleDesignerComponent extends PageComponent implements OnInit {
     this.ruleExpressionDTO = ruleExpressionDTO;
   }
 
-  addChildMenuField(selectedParentMenuFieldComponent: RuleExpressionDTO) {
+  addMenuField(selectedParentMenuFieldComponent: RuleExpressionDTO) {
     this.linecounter++;
 
     const ruleExpressionDTO = new RuleExpressionDTO();
@@ -141,7 +154,7 @@ export class RuleDesignerComponent extends PageComponent implements OnInit {
     ruleExpressionDTO.childrenColor = this.getRandomColor();
 
     if (selectedParentMenuFieldComponent == null) {
-      ruleExpressionDTO.color = '#404040';
+      ruleExpressionDTO.color = '#FDEDD7';
       this.dto.ruleExpressionList.push(ruleExpressionDTO);
     } else {
       selectedParentMenuFieldComponent.expanded = true;
@@ -159,35 +172,17 @@ export class RuleDesignerComponent extends PageComponent implements OnInit {
     return color;
   }
 
-  addMenuField() {
-    this.linecounter++;
-    this.selectedParentRuleExpressionDTO = null;
-    this.ruleExpressionDTO = new RuleExpressionDTO();
-    this.ruleExpressionDTO.ruleExpressionList = [];
-    this.ruleExpressionDTO.shortOrder = this.linecounter;
-    this.ruleExpressionDTO.childrenColor = this.getRandomColor();
-    this.ruleExpressionDTO.color = 'antiquewhite';
-
-    if (this.selectedParentRuleExpressionDTO == null) {
-      this.dto.ruleExpressionList.push(this.ruleExpressionDTO);
-    } else {
-      this.selectedParentRuleExpressionDTO.ruleExpressionList.push(this.ruleExpressionDTO);
-      // this.ruleExpressionDTO.parrent = this.selectedParentRuleExpressionDTO;
-    }
-
-  }
-
-  removeMenuFieldLine(selectedMenuFieldComponent: RuleExpressionDTO, menuFieldList: RuleExpressionDTO[]) {
-    if (menuFieldList === undefined) {
+  removeRuleExpression(selectedRuleExpressionDTO: RuleExpressionDTO, ruleExpressionDTOS: RuleExpressionDTO[]) {
+    if (ruleExpressionDTOS === undefined) {
       return;
     }
 
-    if (menuFieldList.indexOf(selectedMenuFieldComponent) >= 0) {
-      menuFieldList.splice(menuFieldList.indexOf(selectedMenuFieldComponent), 1);
+    if (ruleExpressionDTOS.indexOf(selectedRuleExpressionDTO) >= 0) {
+      ruleExpressionDTOS.splice(ruleExpressionDTOS.indexOf(selectedRuleExpressionDTO), 1);
     }
 
-    for (const menuField of menuFieldList) {
-      this.removeMenuFieldLine(selectedMenuFieldComponent, menuField.ruleExpressionList);
+    for (const ruleExpressionDTO of ruleExpressionDTOS) {
+      this.removeRuleExpression(selectedRuleExpressionDTO, ruleExpressionDTO.ruleExpressionList);
     }
   }
 
@@ -217,6 +212,27 @@ export class RuleDesignerComponent extends PageComponent implements OnInit {
   }
 
   save() {
+
+
+    if(this.dto.code == null || this.dto.code == '' ){
+      this.notificationService.showNotification('top', 'center', 'alert-danger', 'fa-exclamation', 'The Code Field Cannot be empty!');
+      return;
+    }
+
+    if(this.dto.name == null || this.dto.name == '' ){
+      this.notificationService.showNotification('top', 'center', 'alert-danger', 'fa-exclamation', 'The Name Field Cannot be empty!');
+      return;
+    }
+
+    const emptyExpressionFound = this.checkEmptyExpressionFields(this.dto.ruleExpressionList);
+    if(emptyExpressionFound){
+      this.notificationService.showNotification('top', 'center', 'alert-danger', 'fa-exclamation', 'There are empty fields on the expression! <br> Fill them to be able to Save!');
+      return;
+    }
+
+    let rulePreview = this.createExpressionPreview(this.dto.ruleExpressionList);
+    this.dto.expressionPreview = rulePreview;
+
     this.dto.ruleExpressionList = this.updateShortOrderAndClearParrents(this.dto.ruleExpressionList);
 
     if (this.mode === 'edit-record') {
@@ -229,6 +245,9 @@ export class RuleDesignerComponent extends PageComponent implements OnInit {
       });
     }
   }
+
+
+
 
   updateShortOrderAndClearParrents(ruleExpressionList: RuleExpressionDTO[]) {
     if (ruleExpressionList == null) {
@@ -282,5 +301,92 @@ export class RuleDesignerComponent extends PageComponent implements OnInit {
 
   setOperatorField(operator: string) {
     this.ruleExpressionDTO.operator = operator;
+  }
+
+  createPreview() {
+
+    const emptyFound = this.checkEmptyExpressionFields(this.dto.ruleExpressionList)
+    if(emptyFound){
+      this.notificationService.showNotification('top', 'center', 'alert-danger', 'fa-exclamation', 'There are empty fields on the expression! <br> Fill them to be able to Preview or Save!');
+      return;
+    }
+
+    let rulePreview = this.createExpressionPreview(this.dto.ruleExpressionList);
+    this.dto.expressionPreview = rulePreview;
+    document.getElementById('openPreviewButton').click();
+  }
+
+  checkEmptyExpressionFields(ruleExpressionList: RuleExpressionDTO[]) :boolean {
+
+    for (const item of ruleExpressionList) {
+      if(item.field == null || item.field == '' ||
+        item.operator == null || item.operator == '' ||
+        item.command == null || item.command == ''){
+        return true;
+      }
+
+      if(item.ruleExpressionList != null && item.ruleExpressionList.length > 0){
+        const emptyFound = this.checkEmptyExpressionFields(item.ruleExpressionList);
+        if(emptyFound){
+        return true;
+        }
+      }
+
+    }
+
+    return false;
+  }
+
+  createExpressionPreview(ruleExpressionList: RuleExpressionDTO[]) {
+    let rulePreview = '';
+
+    ruleExpressionList.forEach((item, index) => {
+
+      let joinType = '';
+      if(item.joinType == 'and'){
+        joinType = `<button class="btn" class="col" style="border: 2px solid ${item.color}; padding: 6px;"><b style="color: #0c5460">AND</b></button>`;
+      } else {
+        joinType = `<button class="btn" class="col" style="border: 2px solid ${item.color}; padding: 6px;"><b style="color: #0c5460">OR</b></button>`;
+      }
+
+      if (index === ruleExpressionList.length - 1) {
+        joinType = '';
+      }
+
+      rulePreview +=
+        `<button class="btn btn-round" style="border: 2px solid ${item.color}; padding: 6px;"> `
+      rulePreview +=
+        `<b style="color: #385f89"> ${item.field}</b>`;
+      rulePreview +=
+        ` <b style="color: #476636">${item.operator}</b>` ;
+
+      rulePreview +=
+        ` <b style="color: #385f89"> ${item.command}  </b> </button>` ;
+
+      if(item.ruleExpressionList != null && item.ruleExpressionList.length > 0){
+
+        let childrenJoinType = '';
+        if(item.childrenJoinType == 'and'){
+          childrenJoinType = `<button class="btn" class="col" style="border: 2px solid ${item.childrenColor};background-color: ${item.color}; padding: 6px;"><b style="color: #0c5460">AND</b></button>`;
+        } else {
+          childrenJoinType = `<button class="btn" class="col" style="border: 2px solid ${item.childrenColor};background-color: ${item.color}; padding: 6px;"><b style="color: #0c5460">OR</b></button>`;
+        }
+        rulePreview += childrenJoinType;
+
+        rulePreview += `<button class="btn" class="col" style="border: 2px solid ${item.childrenColor};background-color: ${item.color}; padding: 6px;"><b style="color: #0c5460">(</b></button>`;
+        rulePreview += this.createExpressionPreview(item.ruleExpressionList);
+        rulePreview += `<button class="btn" class="col" style="border: 2px solid ${item.childrenColor};background-color: ${item.color}; padding: 6px;"><b style="color: #0c5460">)</b></button>`;
+      }
+
+      rulePreview +=
+        `${joinType}` ;
+
+    });
+
+   return rulePreview;
+  }
+
+  trustResource(resource) {
+    return this.sanitizer.bypassSecurityTrustHtml(resource);
   }
 }
