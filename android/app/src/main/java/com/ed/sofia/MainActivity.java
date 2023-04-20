@@ -1,4 +1,4 @@
-package com.ed.onenet;
+package com.ed.sofia;
 
 import com.getcapacitor.BridgeActivity;
 

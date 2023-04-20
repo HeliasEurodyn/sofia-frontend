@@ -26,6 +26,7 @@
     "@angular/router": "13.3.11",
     "@capacitor/android": "^3.4.3",
     "@capacitor/core": "^3.4.3",
+    "@capacitor/filesystem": "^4.1.4",
     "@ng-bootstrap/ng-bootstrap": "6.0.0",
     "@ngstack/code-editor": "^2.1.1",
     "@ngui/map": "0.30.3",
