@@ -3,6 +3,7 @@ import {DynamicJavaScriptLoaderService} from './dynamic-java-script-loader.servi
 import {CommandNavigatorService} from './command-navigator.service';
 import {DynamicStaticJavascriptLoaderService} from './dynamic-static-javascript-loader.service';
 import {DynamicRequestService} from '../crud/dynamic-request.service';
+import {environment} from "../../../environments/environment";
 
 declare function registerListDynamicScript(id, list): any;
 
@@ -152,5 +153,25 @@ export class ListScriptsService {
   public pivotCellClick(id, field) {
     pivotCellClick(id, field);
   }
+
+
+  public printHtmlReport(id, selectionId) {
+    this.dynamicRequestService.getFromBackend(`/html-template/instant-access-token?id=${id}&selection-id=${selectionId}`).subscribe(response => {
+
+      const element: HTMLIFrameElement = document.createElement('iframe');
+      element.setAttribute('src',
+        `${environment.serverUrl}/html-template/preview-page.html?token=${response.token}`);
+      console.log(`${environment.serverUrl}/html-template/preview-page.html?token=${response.token}`);
+      element.style.display = 'none';
+      document.body.appendChild(element);
+      setTimeout( ()=>{
+        document.body.removeChild(element);
+      },500);
+
+    });
+  }
+
+
+
 
 }

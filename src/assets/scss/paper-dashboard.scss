@@ -140,3 +140,16 @@
 .sidebar-mini .avatar-info{
   display: none !important;
 }
+
+.found-by-search-bar input, .found-by-search-bar  textarea{
+ // background-color: rgba(255, 0, 0, 0.34) !important;
+  background-color: #007e361c !important;
+}
+
+.found-by-search-bar .form-group b{
+  color: #007e36 !important;
+}
+
+.tab-found-by-search-bar, .table-found-by-search-bar{
+  color: #007e36;
+}

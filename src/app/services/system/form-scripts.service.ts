@@ -18,6 +18,8 @@ import {FormObjService} from '../../pages/form/form/services/form-obj.service';
 import {CommandNavigatorService} from './command-navigator.service';
 import {DynamicStaticJavascriptLoaderService} from './dynamic-static-javascript-loader.service';
 import {NotificationService} from './notification.service';
+import {environment} from '../../../environments/environment';
+import {response} from 'express';
 
 /*
  *  Definition functions that passes function pointers.
@@ -725,4 +727,28 @@ export class FormScriptsService {
       }
     );
   }
+
+  public printHtmlReport(id, selectionId) {
+    this.dynamicRequestService.getFromBackend(`/html-template/instant-access-token?id=${id}&selection-id=${selectionId}`).subscribe(response => {
+
+      const element: HTMLIFrameElement = document.createElement('iframe');
+      element.setAttribute('src',
+        `${environment.serverUrl}/html-template/preview-page.html?token=${response.token}`);
+      element.style.display = 'none';
+      document.body.appendChild(element);
+      setTimeout( () => {
+        document.body.removeChild(element);
+      }, 500);
+
+    });
+  }
+
+  public sendEmail(id, selectionId, subject, recipients: []) {
+    this.dynamicRequestService
+      .postToBackend(`/html-template/send-email?id=${id}&selection-id=${selectionId}&subject=${subject}`, recipients)
+      .subscribe(data => {
+        this.notificationService.showNotification('top', 'center', 'alert-success', 'fa-id-card', data?.message);
+      })
+  }
+
 }

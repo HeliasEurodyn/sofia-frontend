@@ -15,6 +15,8 @@ import {FormWrapperComponent} from '../../pages/form/form-wrapper/form-wrapper.c
 import {PivotListComponent} from '../../pages/pivot-list/pivot-list/pivot-list.component';
 import {PivotListWrapperComponent} from '../../pages/pivot-list/pivot-list-wrapper/pivot-list-wrapper.component';
 import {TimelineComponent} from '../../pages/timeline/timeline.component';
+import { HtmlTemplatePreviewComponent } from 'app/pages/html-template-preview/html-template-preview.component';
+import {UiPluginComponent} from "../../pages/ui-plugin/ui-plugin.component";
 
 export const AdminLayoutRoutes: Routes = [
   {path: 'user', component: UserComponent, canActivate: [AuthGuard]},
@@ -32,6 +34,8 @@ export const AdminLayoutRoutes: Routes = [
   {path: 'default', component: EmptyComponent, canActivate: [AuthGuard]},
   {path: 'search', component: SearchComponent, canActivate: [AuthGuard]},
   {path: 'timeline', component: TimelineComponent, canActivate: [AuthGuard]},
+  {path: 'html-template-preview', component: HtmlTemplatePreviewComponent, canActivate: [AuthGuard]},
+  {path: 'ui-plugin', component: UiPluginComponent, canActivate: [AuthGuard]}
 ];
 
 CommandNavigatorService.NavPages = AdminLayoutRoutes;

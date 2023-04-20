@@ -263,7 +263,7 @@ li {
   color: #309ea0;
 }
 
-.table-fixed tbody td span {
+.table-fixed tbody td .cell-headers-descr {
   display: none;
   font-weight: 700;
 }
@@ -285,7 +285,7 @@ only screen and (max-width: 992px){
     border-top: none;
   }
 
-  .table-fixed tbody td span {
+  .table-fixed tbody td .cell-headers-descr {
     display: block;
   }
 

@@ -58,7 +58,7 @@
     <div *ngIf="this.dto?.formTabs.length > 1" class="pull-left">
       <button *ngFor="let formTab of this.dto?.formTabs"
               [disabled]="!formTab.editable"
-              [ngClass]="{'selected-tab': selectedFormTabId === formTab.id }"
+              [ngClass]="{'selected-tab': selectedFormTabId === formTab.id, 'tab-found-by-search-bar' : formTab.searchSelected}"
               (click)="selectFormTab(formTab)"
               type="button "
               class="btn btn-outline-default btn-round">
@@ -69,7 +69,7 @@
   </div>
 </div>
 
-<div class="row" *ngFor="let formTab of this.dto?.formTabs"
+<div class="row form-tab" *ngFor="let formTab of this.dto?.formTabs"
      [ngClass]="{'is-hidden': selectedFormTabId !== formTab.id }">
 
   <ng-container
@@ -117,7 +117,7 @@
             <ng-container *ngIf="formcontrol.type === 'field'">
               <ng-container
                 *ngIf="formcontrol.formControlField.componentPersistEntityField.assignment.type === 'varchar'">
-                <div [ngClass]="{'hidden-field': !formcontrol.formControlField.visible}"
+                <div [ngClass]="{'hidden-field': !formcontrol.formControlField.visible, 'found-by-search-bar' : formcontrol.searchSelected}"
                      class="{{formcontrol.cssclass}} form-field-{{formcontrol.id}}"
                      style="{{formcontrol.formControlField.css}}">
                   <div class="form-group">
@@ -127,7 +127,7 @@
                                        [componentPersistEntityDTO]="formcontrol.formControlField.componentPersistEntity"
                                        [componentPersistEntityFieldDTO]="formcontrol.formControlField.componentPersistEntityField"
                                        (eventOccured)="fieldEventOccured($event)"
-                                       [mask]="(!!formcontrol.formControlField.mask)?formcontrol.formControlField.mask:''"
+                                       [mask]="(!!formcontrol.formControlField.mask)?formcontrol.formControlField.mask.toString():''"
                                        [editable]="formcontrol.formControlField.editable">
                     </app-varchar-input>
                     <div class="category" [innerHTML]="formcontrol.formControlField.message"></div>
@@ -136,7 +136,7 @@
               </ng-container>
               <ng-container
                 *ngIf="formcontrol.formControlField.componentPersistEntityField.assignment.type === 'file-selector'">
-                <div [ngClass]="{'hidden-field': !formcontrol.formControlField.visible}"
+                <div [ngClass]="{'hidden-field': !formcontrol.formControlField.visible, 'found-by-search-bar' : formcontrol.searchSelected}"
                      class="{{formcontrol.cssclass}} form-field-{{formcontrol.id}}"
                      style="{{formcontrol.formControlField.css}}">
                   <div class="form-group">
@@ -154,7 +154,7 @@
               </ng-container>
               <ng-container
                 *ngIf="formcontrol.formControlField.componentPersistEntityField.assignment.type === 'password'">
-                <div [ngClass]="{'hidden-field': !formcontrol.formControlField.visible}"
+                <div [ngClass]="{'hidden-field': !formcontrol.formControlField.visible, 'found-by-search-bar' : formcontrol.searchSelected}"
                      class="{{formcontrol.cssclass}} form-field-{{formcontrol.id}}"
                      style="{{formcontrol.formControlField.css}}">
                   <div class="form-group">
@@ -163,7 +163,7 @@
                                        [componentPersistEntityDTO]="formcontrol.formControlField.componentPersistEntity"
                                        [componentPersistEntityFieldDTO]="formcontrol.formControlField.componentPersistEntityField"
                                        (eventOccured)="fieldEventOccured($event)"
-                                       [mask]="(!!formcontrol.formControlField.mask)?formcontrol.formControlField.mask:''"
+                                       [mask]="(!!formcontrol.formControlField.mask)?formcontrol.formControlField.mask.toString():''"
                                        [editable]="formcontrol.formControlField.editable">
                     </app-password-input>
                     <div class="category" [innerHTML]="formcontrol.formControlField.message"></div>
@@ -172,7 +172,7 @@
               </ng-container>
               <ng-container
                 *ngIf="formcontrol.formControlField.componentPersistEntityField.assignment.type === 'checkbox'">
-                <div [ngClass]="{'hidden-field': !formcontrol.formControlField.visible}"
+                <div [ngClass]="{'hidden-field': !formcontrol.formControlField.visible, 'found-by-search-bar' : formcontrol.searchSelected}"
                      class="{{formcontrol.cssclass}} form-field-{{formcontrol.id}}"
                      style="{{formcontrol.formControlField.css}}">
                   <div class="form-group">
@@ -181,7 +181,7 @@
                                    [componentPersistEntityDTO]="formcontrol.formControlField.componentPersistEntity"
                                    [componentPersistEntityFieldDTO]="formcontrol.formControlField.componentPersistEntityField"
                                    (eventOccured)="fieldEventOccured($event)"
-                                   [mask]="(!!formcontrol.formControlField.mask)?formcontrol.formControlField.mask:''"
+                                   [mask]="(!!formcontrol.formControlField.mask)?formcontrol.formControlField.mask.toString():''"
                                    [editable]="formcontrol.formControlField.editable">
                     </app-check-box>
                     <span
@@ -192,7 +192,7 @@
               </ng-container>
               <ng-container
                 *ngIf="formcontrol.formControlField.componentPersistEntityField.assignment.type === 'text'">
-                <div [ngClass]="{'hidden-field': !formcontrol.formControlField.visible}"
+                <div [ngClass]="{'hidden-field': !formcontrol.formControlField.visible, 'found-by-search-bar' : formcontrol.searchSelected}"
                      class="{{formcontrol.cssclass}} form-field-{{formcontrol.id}}"
                      style="{{formcontrol.formControlField.css}}">
                   <div class="form-group">
@@ -201,7 +201,7 @@
                                     [componentPersistEntityDTO]="formcontrol.formControlField.componentPersistEntity"
                                     [componentPersistEntityFieldDTO]="formcontrol.formControlField.componentPersistEntityField"
                                     (eventOccured)="fieldEventOccured($event)"
-                                    [mask]="(!!formcontrol.formControlField.mask)?formcontrol.formControlField.mask:''"
+                                    [mask]="(!!formcontrol.formControlField.mask)?formcontrol.formControlField.mask.toString():''"
                                     [editable]="formcontrol.formControlField.editable">
                     </app-text-input>
                     <div class="category" [innerHTML]="formcontrol.formControlField.message"></div>
@@ -210,7 +210,7 @@
               </ng-container>
               <ng-container
                 *ngIf="formcontrol.formControlField.componentPersistEntityField.assignment.type === 'combo'">
-                <div [ngClass]="{'hidden-field': !formcontrol.formControlField.visible}"
+                <div [ngClass]="{'hidden-field': !formcontrol.formControlField.visible, 'found-by-search-bar' : formcontrol.searchSelected}"
                      class="{{formcontrol.cssclass}} form-field-{{formcontrol.id}} "
                      style="{{formcontrol.formControlField.css}}">
                   <div class="form-group">
@@ -228,7 +228,7 @@
               </ng-container>
               <ng-container
                 *ngIf="formcontrol.formControlField.componentPersistEntityField.assignment.type === 'autocomplete-combo'">
-                <div [ngClass]="{'hidden-field': !formcontrol.formControlField.visible}"
+                <div [ngClass]="{'hidden-field': !formcontrol.formControlField.visible, 'found-by-search-bar' : formcontrol.searchSelected}"
                      class="{{formcontrol.cssclass}} form-field-{{formcontrol.id}} "
                      style="{{formcontrol.formControlField.css}}">
                   <div class="form-group">
@@ -246,14 +246,14 @@
               </ng-container>
               <ng-container
                 *ngIf="formcontrol.formControlField.componentPersistEntityField.assignment.type === 'double' ">
-                <div [ngClass]="{'hidden-field': !formcontrol.formControlField.visible}"
+                <div [ngClass]="{'hidden-field': !formcontrol.formControlField.visible, 'found-by-search-bar' : formcontrol.searchSelected}"
                      class="{{formcontrol.cssclass}} form-field-{{formcontrol.id}}"
                      style="{{formcontrol.formControlField.css}}">
                   <div class="form-group">
                     <b>{{formcontrol.formControlField.description}}</b>
                     <app-numeric-input class="form-input-field"
                                        [(inputValue)]="formcontrol.formControlField.componentPersistEntityField.value"
-                                       [mask]="(!!formcontrol.formControlField.mask)?formcontrol.formControlField.mask:'0*.0000'"
+                                       [mask]="(!!formcontrol.formControlField.mask)?formcontrol.formControlField.mask.toString():'0*.0000'"
                                        (eventOccured)="fieldEventOccured($event)"
                                        [editable]="formcontrol.formControlField.editable"
                                        [componentPersistEntityDTO]="formcontrol.formControlField.componentPersistEntity"
@@ -265,14 +265,14 @@
               <ng-container
                 *ngIf="formcontrol.formControlField.componentPersistEntityField.assignment.type === 'int' ||
                 formcontrol.formControlField.componentPersistEntityField.assignment.type === 'bigint'">
-                <div [ngClass]="{'hidden-field': !formcontrol.formControlField.visible}"
+                <div [ngClass]="{'hidden-field': !formcontrol.formControlField.visible, 'found-by-search-bar' : formcontrol.searchSelected}"
                      class="{{formcontrol.cssclass}} form-field-{{formcontrol.id}} "
                      style="{{formcontrol.formControlField.css}}">
                   <div class="form-group">
                     <b>{{formcontrol.formControlField.description}}</b>
                     <app-numeric-input class="form-input-field"
                                        [(inputValue)]="formcontrol.formControlField.componentPersistEntityField.value"
-                                       [mask]="(!!formcontrol.formControlField.mask)?formcontrol.formControlField.mask:'0*'"
+                                       [mask]="(!!formcontrol.formControlField.mask)?formcontrol.formControlField.mask.toString():'0*'"
                                        (eventOccured)="fieldEventOccured($event)"
                                        [componentPersistEntityDTO]="formcontrol.formControlField.componentPersistEntity"
                                        [componentPersistEntityFieldDTO]="formcontrol.formControlField.componentPersistEntityField"
@@ -284,7 +284,7 @@
               </ng-container>
               <ng-container
                 *ngIf="formcontrol.formControlField.componentPersistEntityField.assignment.type === 'list'">
-                <div [ngClass]="{'hidden-field': !formcontrol.formControlField.visible}"
+                <div [ngClass]="{'hidden-field': !formcontrol.formControlField.visible, 'found-by-search-bar' : formcontrol.searchSelected}"
                      class="{{formcontrol.cssclass}} form-field-{{formcontrol.id}}"
                      style="{{formcontrol.formControlField.css}}">
                   <div class="form-group">
@@ -304,29 +304,10 @@
                 </div>
               </ng-container>
               <ng-container
-                *ngIf="formcontrol.formControlField.componentPersistEntityField.assignment.type === 'cve'">
-                <div [ngClass]="{'hidden-field': !formcontrol.formControlField.visible}"
-                     class="{{formcontrol.cssclass}} form-field-{{formcontrol.id}}"
-                     style="{{formcontrol.formControlField.css}}">
-                  <div class="form-group">
-                    <b>{{formcontrol.formControlField.description}}</b>
-                    <app-cve-search-selector
-                      [ngClass]="{'hidden-field': !formcontrol.formControlField.visible}"
-                      [command]="formcontrol.formControlField.componentPersistEntityField.assignment.editor"
-                      [editable]="formcontrol.formControlField.editable"
-                      [component]="this.dto.component"
-                      [(value)]="formcontrol.formControlField.componentPersistEntityField.value"
-                      [componentPersistEntityDTO]="formcontrol.formControlField.componentPersistEntity"
-                      [componentPersistEntityFieldDTO]="formcontrol.formControlField.componentPersistEntityField"
-                      (eventOccured)="fieldEventOccured($event)"
-                    ></app-cve-search-selector>
-                    <div class="category">{{formcontrol.formControlField.message}}</div>
-                  </div>
-                </div>
-              </ng-container>
-              <ng-container
                 *ngIf="formcontrol.formControlField.componentPersistEntityField.assignment.type === 'datetime'">
-                <div class="{{formcontrol.cssclass}} form-field-{{formcontrol.id}}"
+                <div
+                  [ngClass]="{'hidden-field': !formcontrol.formControlField.visible, 'found-by-search-bar' : formcontrol.searchSelected}"
+                  class="{{formcontrol.cssclass}}  form-field-{{formcontrol.id}}"
                      style="{{formcontrol.formControlField.css}}">
                   <div class="form-group">
                     <b>{{formcontrol.formControlField.description}}</b>
@@ -335,7 +316,7 @@
                                      [editable]="formcontrol.formControlField.editable"
                                      [componentPersistEntityDTO]="formcontrol.formControlField.componentPersistEntity"
                                      [componentPersistEntityFieldDTO]="formcontrol.formControlField.componentPersistEntityField"
-                                     [mask]="(!!formcontrol.formControlField.mask)?formcontrol.formControlField.mask:'dd/MM/yyyy'"
+                                     [mask]="(!!formcontrol.formControlField.mask)?formcontrol.formControlField.mask.toString():'dd/MM/yyyy'"
                                      (eventOccured)="fieldEventOccured($event)">
                     </app-date-picker>
                     <div class="category">{{formcontrol.formControlField.message}}</div>
@@ -344,7 +325,9 @@
               </ng-container>
               <ng-container
                 *ngIf="formcontrol.formControlField.componentPersistEntityField.assignment.type === 'datetime_det'">
-                <div class="{{formcontrol.cssclass}} form-field-{{formcontrol.id}}"
+                <div
+                  [ngClass]="{'hidden-field': !formcontrol.formControlField.visible, 'found-by-search-bar' : formcontrol.searchSelected}"
+                  class="{{formcontrol.cssclass}} form-field-{{formcontrol.id}}"
                      style="{{formcontrol.formControlField.css}}">
                   <div class="form-group">
                     <b>{{formcontrol.formControlField.description}}</b>
@@ -353,7 +336,7 @@
                                      [editable]="formcontrol.formControlField.editable"
                                      [componentPersistEntityDTO]="formcontrol.formControlField.componentPersistEntity"
                                      [componentPersistEntityFieldDTO]="formcontrol.formControlField.componentPersistEntityField"
-                                     [mask]="(!!formcontrol.formControlField.mask)?formcontrol.formControlField.mask:'dd/MM/yyyy'"
+                                     [mask]="(!!formcontrol.formControlField.mask)?formcontrol.formControlField.mask.toString():'dd/MM/yyyy'"
                                      (eventOccured)="fieldEventOccured($event)">
                     </app-date-time-picker>
                     <div class="category">{{formcontrol.formControlField.message}}</div>
@@ -377,6 +360,23 @@
                       [componentPersistEntity]="formcontrol.formControlField.componentPersistEntity"
                       [componentPersistEntityFieldDTO]="formcontrol.formControlField.componentPersistEntityField">
                     </app-chips>
+                  </div>
+                </div>
+              </ng-container>
+              <ng-container
+                *ngIf="formcontrol.formControlField.componentPersistEntityField.assignment.type === 'image'">
+                <div [ngClass]="{'hidden-field': !formcontrol.formControlField.visible, 'found-by-search-bar' : formcontrol.searchSelected}"
+                     class="{{formcontrol.cssclass}} form-field-{{formcontrol.id}}"
+                     style="{{formcontrol.formControlField.css}}">
+                  <div class="form-group">
+                    <b>{{formcontrol.formControlField.description}}</b>
+
+                    <app-image-selector class="form-input-field"
+                                       [componentPersistEntityFieldDTO]="formcontrol.formControlField.componentPersistEntityField"
+                                       (eventOccured)="fieldEventOccured($event)"
+                                       [editable]="formcontrol.formControlField.editable">
+                    </app-image-selector>
+                    <div class="category" [innerHTML]="formcontrol.formControlField.message"></div>
                   </div>
                 </div>
               </ng-container>

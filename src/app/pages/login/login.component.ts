@@ -18,6 +18,8 @@ export class LoginComponent implements OnInit {
   username = '';
   password = '';
 
+  keycloakLogin = false;
+
   googleURL = environment.serverUrl + '/oauth2/authorization/google?redirect_uri=' + location.origin + '/callback';
   facebookURL = environment.serverUrl + '/oauth2/authorization/facebook?redirect_uri=' + location.origin + '/callback';
   keycloakURL = environment.serverUrl + '/oauth2/authorization/keycloak?redirect_uri=' + location.origin + '/callback';
@@ -37,6 +39,11 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.defineLoginLogo();
+
+    if(environment.keycloakLogin == 'yes'){
+      this.keycloakLogin = true;
+    }
+
   }
 
   defineLoginLogo() {

@@ -1,4 +1,13 @@
-import {Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren} from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  QueryList,
+  ViewChild,
+  ViewChildren
+} from '@angular/core';
 import {PageComponent} from '../../page/page-component';
 import {FormService} from '../../../services/crud/form.service';
 import {CommandNavigatorService} from '../../../services/system/command-navigator.service';
@@ -18,7 +27,8 @@ import {DynamicCssScriptLoaderService} from '../../../services/system/dynamic-cs
 import {concatMap} from 'rxjs/operators';
 import {FormAssignmentsService} from './services/form-assignments.service';
 import {FormTableLinesService} from './services/form-table-lines.service';
-import {TableComponentService} from '../../../services/crud/table-component.service';
+import {LanguageService} from "../../../services/system/language.service";
+import {ListSearchService} from "../../../services/system/list-search.service";
 
 
 @Component({
@@ -26,7 +36,7 @@ import {TableComponentService} from '../../../services/crud/table-component.serv
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.css']
 })
-export class FormComponent extends PageComponent implements OnInit {
+export class FormComponent extends PageComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @ViewChildren('formFields') formFields: QueryList<any>;
   public dto: FormDto;
@@ -35,7 +45,11 @@ export class FormComponent extends PageComponent implements OnInit {
   @ViewChild('yesNoDialog') yesNoDialog: YesNoDialogComponent;
   @ViewChild('okDialog') okDialog: OkDialogComponent;
   public selectedActionButton: FormActionButton
+  id = '';
   selectionId = '';
+  languageSelectionSubject;
+  clonedData = false;
+  searchSubject;
 
   constructor(private activatedRoute: ActivatedRoute,
               private service: FormService,
@@ -45,23 +59,24 @@ export class FormComponent extends PageComponent implements OnInit {
               private dynamicCssScriptLoader: DynamicCssScriptLoaderService,
               public datepipe: DatePipe,
               private title: Title,
-              private formScriptsService: FormScriptsService,
+              public formScriptsService: FormScriptsService,
               private formAssignmentsService: FormAssignmentsService,
               private formTableLinesService: FormTableLinesService,
+              private languageService: LanguageService,
               private el: ElementRef,
-  ) {
+              private listSearchService: ListSearchService) {
     super();
   }
 
   ngOnInit(): void {
     this.initNav(this.activatedRoute);
-    let id = '0';
+
     this.selectionId = '';
     this.dto = new FormDto();
-    let clone = false;
+
     const locateParams = this.getLocateParams();
     if (locateParams.has('ID')) {
-      id = locateParams.get('ID');
+      this.id = locateParams.get('ID');
     }
 
     if (locateParams.has('SELECTION-ID')) {
@@ -70,22 +85,103 @@ export class FormComponent extends PageComponent implements OnInit {
 
     if (this.params.has('TYPE')) {
       if (this.params.get('TYPE').toUpperCase() === 'CLONE') {
-        clone = true;
+        this.clonedData = true;
       }
     }
 
-    this.loadDynamicCssScript(id).then(data => {
-      if (!clone) {
-        this.retrieveAndAssignData(id, this.selectionId);
-      } else {
-        this.retrieveCloneAndAssignData(id, this.selectionId);
+    this.loadDynamicCssScript(this.id).then(data => {
+      this.retrieveAndAssignData(this.id, this.selectionId);
+    });
+  }
+
+  ngAfterViewInit() {
+    this.applyLanguageSelection();
+    this.applyHeaderSearchFilter();
+  }
+
+  ngOnDestroy() {
+    this.languageSelectionSubject.unsubscribe();
+    this.searchSubject.unsubscribe();
+  }
+
+  applyHeaderSearchFilter() {
+    this.searchSubject = this.listSearchService.listSearchEmmiter.subscribe((searchVaule: string) => {
+
+        if (this.dto.formTabs != null) {
+          this.dto.formTabs
+            .filter(formTab => formTab.formAreas != null)
+            .forEach(formTab => {
+              formTab.searchSelected = false;
+              formTab.formAreas
+                .filter(formArea => formArea.formControls != null)
+                .forEach(formArea => {
+
+                  formArea.formControls
+                    .filter(formControl => formControl.type === 'field')
+                    .forEach(formControl => {
+                      const value = formControl.formControlField.componentPersistEntityField.value == null ? "" : formControl.formControlField.componentPersistEntityField.value;
+                      const fieldDescription = formControl.formControlField.description == null ? "" : formControl.formControlField.description;
+                      formControl.searchSelected = false;
+                      if ((value.toString().toLowerCase().includes(searchVaule.toLowerCase()) ||
+                          fieldDescription.toString().toLowerCase().includes(searchVaule.toLowerCase()))
+                        && searchVaule !== '') {
+                        formControl.searchSelected = true;
+                        formTab.searchSelected = true;
+                      }
+                    });
+
+                  formArea.formControls
+                    .filter(formControl => formControl.type === 'table')
+                    .forEach(formControl => {
+                      formControl.formControlTable.formControlLines
+                        .forEach(formControlLine => {
+                          formControlLine.formControlCells.forEach(formControlCell => {
+                            const value = formControlCell.componentPersistEntityField.value == null ? "" : formControlCell.componentPersistEntityField.value;
+                            const fieldDescription = formControlCell.formControl.formControlField.description == null ? "" : formControlCell.formControl.formControlField.description;
+                            formControlCell.searchSelected = false;
+                            if ((value.toString().toLowerCase().includes(searchVaule.toLowerCase()) ||
+                                fieldDescription.toString().toLowerCase().includes(searchVaule.toLowerCase()))
+                              && searchVaule !== '') {
+                              formControlCell.searchSelected = true;
+                              formTab.searchSelected = true;
+                            }
+                          });
+                        });
+                    });
+
+                  formArea.formControls
+                    .filter(formControl => formControl.type === 'table')
+                    .forEach(formControl => {
+                      formControl.formControlTable.formControls.forEach(tableFieldComponent => {
+
+                        const fieldDescription = tableFieldComponent.formControlField.description == null ? "" : tableFieldComponent.formControlField.description;
+                        tableFieldComponent.searchSelected = false;
+                        if ( fieldDescription.toString().toLowerCase().includes(searchVaule.toLowerCase()) && searchVaule !== '') {
+                          tableFieldComponent.searchSelected = true;
+                          formTab.searchSelected = true;
+                        }
+                      });
+                    });
+
+
+                });
+            });
+        }
+
       }
+    )
+
+  }
+
+  applyLanguageSelection() {
+    this.languageSelectionSubject = this.languageService.languageSelectionEmmiter.subscribe((languageCode: string) => {
+      this.retrieveAndAssignData(this.id, this.selectionId);
     });
   }
 
   refreshFormField(code: string): void {
     this.formFields
-      .filter((formField: any) => formField.componentPersistEntityDTO.code + '.' + formField.componentPersistEntityFieldDTO.code  === code)
+      .filter((formField: any) => formField.componentPersistEntityDTO.code + '.' + formField.componentPersistEntityFieldDTO.code === code)
       .forEach((formField: any) => formField.refresh());
   }
 
@@ -94,11 +190,14 @@ export class FormComponent extends PageComponent implements OnInit {
   }
 
   retrieveAndAssignData(id: string, selectionId: string) {
+    const language = JSON.parse(localStorage.getItem('loggedin_user')).currentLanguage;
+    const languageId = language == null ? 0 : language.id;
+
     this.service.getUiVersion(id)
-      .pipe(concatMap(instanceVersion => this.service.getUi(id, instanceVersion))
+      .pipe(concatMap(instanceVersion => this.service.getUi(id, languageId, instanceVersion))
       ).subscribe(dto => {
-      localStorage.setItem('cachedForm' + id, JSON.stringify(dto));
-      this.service.getData(id, selectionId).subscribe(componentDTO => {
+      localStorage.setItem('cachedForm' + id + '-' + languageId, JSON.stringify(dto));
+      this.service.getData(id, selectionId, languageId, this.clonedData).subscribe(componentDTO => {
         dto.component = componentDTO;
         this.dto = dto;
         this.setSelectedComponentPersistEntityFieldsToTables(this.dto.component.componentPersistEntityList);
@@ -115,27 +214,27 @@ export class FormComponent extends PageComponent implements OnInit {
     });
   }
 
-  retrieveCloneAndAssignData(id: string, selectionId: string) {
-    this.service.getUiVersion(id)
-      .pipe(concatMap(instanceVersion => this.service.getUi(id, instanceVersion))
-      ).subscribe(dto => {
-      localStorage.setItem('cachedForm' + id, JSON.stringify(dto));
-      this.service.getCloneData(id, selectionId).subscribe(componentDTO => {
-        dto.component = componentDTO;
-        this.dto = dto;
-        this.setSelectedComponentPersistEntityFieldsToTables(this.dto.component.componentPersistEntityList);
-
-        this.dto.component.componentPersistEntityList =
-          this.formAssignmentsService.addAssignmentsToTableDataLines(this.dto.component.componentPersistEntityList);
-
-        this.dto = this.formAssignmentsService.assignComponentFieldsToFormFields(this.dto);
-        this.dto = this.formTableLinesService.generateFormTableLines(this.dto);
-        this.setDefaultSelectedTab();
-        this.formScriptsService.load(this);
-        this.defineTitle();
-      });
-    });
-  }
+  // retrieveCloneAndAssignData(id: string, selectionId: string) {
+  //   this.service.getUiVersion(id)
+  //     .pipe(concatMap(instanceVersion => this.service.getUi(id, instanceVersion))
+  //     ).subscribe(dto => {
+  //     localStorage.setItem('cachedForm' + id, JSON.stringify(dto));
+  //     this.service.getCloneData(id, selectionId).subscribe(componentDTO => {
+  //       dto.component = componentDTO;
+  //       this.dto = dto;
+  //       this.setSelectedComponentPersistEntityFieldsToTables(this.dto.component.componentPersistEntityList);
+  //
+  //       this.dto.component.componentPersistEntityList =
+  //         this.formAssignmentsService.addAssignmentsToTableDataLines(this.dto.component.componentPersistEntityList);
+  //
+  //       this.dto = this.formAssignmentsService.assignComponentFieldsToFormFields(this.dto);
+  //       this.dto = this.formTableLinesService.generateFormTableLines(this.dto);
+  //       this.setDefaultSelectedTab();
+  //       this.formScriptsService.load(this);
+  //       this.defineTitle();
+  //     });
+  //   });
+  // }
 
   defineTitle() {
     if (this.commandShowCustomTitle()) {
@@ -241,7 +340,7 @@ export class FormComponent extends PageComponent implements OnInit {
       if (!componentPersistEntityMap.has(cpef.code)) {
 
         let value = null;
-        if (['datetime', 'datetime_det'].includes(cpef?.assignment?.type) && (cpef?.value instanceof Date) ) {
+        if (['datetime', 'datetime_det'].includes(cpef?.assignment?.type) && (cpef?.value instanceof Date)) {
           value = (cpef.value == null ? '' : cpef?.value?.toISOString());
         } else {
           value = cpef.value;
@@ -270,7 +369,7 @@ export class FormComponent extends PageComponent implements OnInit {
       for (const cpef of componentPersistEntityDataLine.componentPersistEntityFieldList) {
         if (!componentPersistEntityLineMap.has(cpef.code)) {
           let value = null;
-          if (['datetime', 'datetime_det'].includes(cpef?.assignment?.type) && (cpef?.value instanceof Date) ) {
+          if (['datetime', 'datetime_det'].includes(cpef?.assignment?.type) && (cpef?.value instanceof Date)) {
             value = (cpef.value == null ? '' : cpef?.value?.toISOString());
           } else {
             value = cpef.value;
@@ -334,8 +433,7 @@ export class FormComponent extends PageComponent implements OnInit {
   navigateToNextPage() {
   }
 
-  setSelectedTableLineComponentTree(componentPersistEntity: ComponentPersistEntityDTO,
-                                    formControlLineComponentPersistEntity: ComponentPersistEntityDTO) {
+  setSelectedTableLineComponentTree(componentPersistEntity: ComponentPersistEntityDTO, formControlLineComponentPersistEntity: ComponentPersistEntityDTO) {
 
     componentPersistEntity.componentPersistEntityFieldList
       .forEach(cpef => {
@@ -390,11 +488,17 @@ export class FormComponent extends PageComponent implements OnInit {
 
   }
 
-  setSelectedActionButton(actionButton: FormActionButton) {
+  setSelectedActionButton(actionButton
+                            :
+                            FormActionButton
+  ) {
     this.selectedActionButton = actionButton;
   }
 
-  fieldEventOccured(event: any) {
+  fieldEventOccured(event
+                      :
+                      any
+  ) {
     this.formScriptsService.fieldEventOccured(this.dto.id,
       event.entityCode,
       event.fieldCode,
@@ -402,7 +506,10 @@ export class FormComponent extends PageComponent implements OnInit {
       event.event);
   }
 
-  mapTreeToArrays(data: Map<any, any>) {
+  mapTreeToArrays(data
+                    :
+                    Map<any, any>
+  ) {
     return this.service.mapTreeToArrays(data);
   }
 
@@ -424,11 +531,13 @@ export class FormComponent extends PageComponent implements OnInit {
     }
   }
 
-  public getFromBackendWithCustomHeaders(url: string, customHeaders: [], callback: (n: any, result: boolean) => any) {
+  public
+
+  getFromBackendWithCustomHeaders(url: string, customHeaders: [], callback: (n: any, result: boolean) => any) {
     this.formScriptsService.getFromBackendWithCustomHeaders(url, customHeaders, callback);
   }
 
-  public  getFromUrlWithCustomHeaders(url: string, headers: [], callback: (n: any, result: boolean) => any) {
+  public getFromUrlWithCustomHeaders(url: string, headers: [], callback: (n: any, result: boolean) => any) {
     this.formScriptsService.getFromUrlWithCustomHeaders(url, headers, callback);
   }
 

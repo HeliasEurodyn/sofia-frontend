@@ -9,7 +9,7 @@ import {DatePipe} from '@angular/common';
 import {ActivatedRoute} from '@angular/router';
 import {ListActionButton} from '../../../dtos/list/list-action-button';
 import {TableComponentService} from '../../../services/crud/table-component.service';
-import {Title} from '@angular/platform-browser';
+import {DomSanitizer, Title} from '@angular/platform-browser';
 import {concatMap} from 'rxjs/operators';
 import {ListScriptsService} from '../../../services/system/list-scripts.service';
 import {ListComponentFieldDTO} from '../../../dtos/list/list-component-field-d-t-o';
@@ -49,15 +49,16 @@ export class ListComponent extends PageComponent implements OnInit, OnDestroy, A
 
   constructor(private service: ListService,
               private commandNavigatorService: CommandNavigatorService,
-              private notificationService: NotificationService,
+              public notificationService: NotificationService,
               public datepipe: DatePipe,
               private activatedRoute: ActivatedRoute,
               private tableComponentService: TableComponentService,
               private title: Title,
-              private listScriptsService: ListScriptsService,
+              public listScriptsService: ListScriptsService,
               private dynamicCssScriptLoader: DynamicCssScriptLoaderService,
               private languageService: LanguageService,
-              private listSearchService: ListSearchService) {
+              private listSearchService: ListSearchService,
+              private sanitizer: DomSanitizer) {
     super();
   }
 
@@ -145,6 +146,8 @@ export class ListComponent extends PageComponent implements OnInit, OnDestroy, A
   }
 
   getListResultData(reloadGrouping = true) {
+    const language = JSON.parse(localStorage.getItem('loggedin_user')).currentLanguage;
+    const languageId = language == null ? 0 : language.id;
 
     let requiredFiledsEmpty = false;
     for (const filterField of this.listDto.listComponentFilterFieldList) {
@@ -168,7 +171,7 @@ export class ListComponent extends PageComponent implements OnInit, OnDestroy, A
     for (const filterField of filterFieldList) {
       if (filterField.fieldValue != null && filterField.fieldValue !== '') {
         let fieldValue = '';
-        if (['datetime', 'datetime_det'].includes(filterField.type)) {
+        if (['datetime', 'datetime_det'].includes(filterField.type) &&  typeof filterField?.fieldValue?.toISOString === 'function') {
           fieldValue = (filterField.fieldValue == null ? '' : filterField?.fieldValue?.toISOString());
         } else {
           fieldValue = filterField.fieldValue;
@@ -182,7 +185,7 @@ export class ListComponent extends PageComponent implements OnInit, OnDestroy, A
       values.set('sel-sort-order', this.selectedShortOrder);
     }
 
-    this.service.getListResult(values, 0, this.listDto.id).subscribe(data => {
+    this.service.getListResult(values, 0, this.listDto.id, languageId).subscribe(data => {
       this.listResultsData = data;
       this.setPaginationSettings();
       if (reloadGrouping) {
@@ -190,7 +193,6 @@ export class ListComponent extends PageComponent implements OnInit, OnDestroy, A
       }
       this.listScriptsService.triggerListEvent(this.listDto.id, 'onListDataLoaded', data);
     });
-
   }
 
   setPaginationSettings() {
@@ -212,6 +214,8 @@ export class ListComponent extends PageComponent implements OnInit, OnDestroy, A
   }
 
   getGroupResultData(parametersMap: Map<string, string>) {
+    const language = JSON.parse(localStorage.getItem('loggedin_user')).currentLanguage;
+    const languageId = language == null ? 0 : language.id;
 
     if (this.listDto.listComponentLeftGroupFieldList == null) {
       return;
@@ -221,7 +225,7 @@ export class ListComponent extends PageComponent implements OnInit, OnDestroy, A
       return;
     }
 
-    this.service.getGroupResult(parametersMap, this.listDto.id).subscribe(data => {
+    this.service.getGroupResult(parametersMap, this.listDto.id, languageId).subscribe(data => {
       this.groupContent = data;
       this.initializeGroupContentVisibility(this.listResultsData.groupContent, false);
       this.initializeGroupContentParrents(this.listResultsData.groupContent);
@@ -323,7 +327,10 @@ export class ListComponent extends PageComponent implements OnInit, OnDestroy, A
   }
 
   dataExcel() {
-    this.service.getListResultDataExcel(this.listDto).subscribe(data => {
+    const language = JSON.parse(localStorage.getItem('loggedin_user')).currentLanguage;
+    const languageId = language == null ? 0 : language.id;
+
+    this.service.getListResultDataExcel(this.listDto, languageId).subscribe(data => {
       const blob = new Blob([data], {type: 'application/xlsx'});
       const downloadURL = window.URL.createObjectURL(data);
       const link = document.createElement('a');
@@ -391,6 +398,9 @@ export class ListComponent extends PageComponent implements OnInit, OnDestroy, A
   }
 
   navigateToPage(page: number) {
+    const language = JSON.parse(localStorage.getItem('loggedin_user')).currentLanguage;
+    const languageId = language == null ? 0 : language.id;
+
     if (page < 0) {
       return;
     }
@@ -424,7 +434,7 @@ export class ListComponent extends PageComponent implements OnInit, OnDestroy, A
       values.set('sel-sort-order', this.selectedShortOrder);
     }
 
-    this.service.getListResult(values, page, this.listDto.id).subscribe(data => {
+    this.service.getListResult(values, page, this.listDto.id, languageId).subscribe(data => {
       this.listResultsData = data;
       this.setPaginationSettings();
     });
@@ -602,6 +612,8 @@ export class ListComponent extends PageComponent implements OnInit, OnDestroy, A
   }
 
   updateListField(column: ListComponentFieldDTO, row: string[]) {
+    const language = JSON.parse(localStorage.getItem('loggedin_user')).currentLanguage;
+    const languageId = language == null ? 0 : language.id;
 
     if (column.editableRelFieldCode == null) {
       return;
@@ -626,7 +638,7 @@ export class ListComponent extends PageComponent implements OnInit, OnDestroy, A
       value = row[column.code]
     }
 
-    this.service.updateField(this.listDto.id, row[column.editableRelFieldCode], column.code, value).subscribe();
+    this.service.updateField(this.listDto.id, row[column.editableRelFieldCode], column.code, value, languageId).subscribe();
   }
 
   shortByColumnField(shortCode: string) {
@@ -718,5 +730,9 @@ export class ListComponent extends PageComponent implements OnInit, OnDestroy, A
     }
 
     return false;
+  }
+
+  trustResource(resource) {
+    return this.sanitizer.bypassSecurityTrustResourceUrl(resource);
   }
 }

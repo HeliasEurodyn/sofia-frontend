@@ -14,7 +14,7 @@ export class PageComponent {
   });
   public commandParserService: CommandParserService;
   public windowTitle: Title;
-  public params: Map<string, string> = new Map();
+  public params: Map<string, any> = new Map();
   public pageId: string;
   public nextPage = null;
   public previousPage = null;
@@ -27,6 +27,7 @@ export class PageComponent {
   }
 
   public initNav(activatedRoute: ActivatedRoute) {
+
     this.commandParserService = this.injector.get(CommandParserService);
     this.windowTitle = this.injector.get(Title);
     activatedRoute.queryParams.subscribe(params => {
@@ -119,7 +120,5 @@ export class PageComponent {
     return '';
   }
 
-  setTitle(titleValue) {
-  }
 
 }

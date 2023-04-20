@@ -85,15 +85,15 @@ export class FormService extends CrudService<FormDto> {
     return this.http.get<any>(`${environment.serverUrl}/${this.endpoint}/by-id?id=${id}&selection-id=${selectionId}`);
   }
 
-  getUi(id: any, instanceVersion: string): Observable<FormDto> {
-    const dtoString = localStorage.getItem('cachedForm' + id)
+  getUi(id: any, languageId: string, instanceVersion: string): Observable<FormDto> {
+    const dtoString = localStorage.getItem('cachedForm' + id + '-' + languageId)
     if (dtoString != null) {
       const dto = JSON.parse(dtoString);
       if (dto.instanceVersion.toString() === instanceVersion) {
         return new Observable(observer => observer.next(dto));
       }
     }
-    return this.requestUiFromBackend(id);
+    return this.requestUiFromBackend(id, languageId);
   }
 
   getUiVersion(id: any): Observable<string> {
@@ -106,17 +106,21 @@ export class FormService extends CrudService<FormDto> {
     return this.http.get<any>(`${environment.serverUrl}/${this.endpoint}/instance-version?id=${id}`, requestOptions);
   }
 
-  private requestUiFromBackend(id: any): Observable<FormDto> {
-    const observable = this.http.get<any>(`${environment.serverUrl}/${this.endpoint}/ui?id=${id}`);
+  private requestUiFromBackend(id: any, languageId: string): Observable<FormDto> {
+    const observable = this.http.get<any>(`${environment.serverUrl}/${this.endpoint}/ui?id=${id}&language-id=${languageId}`);
     // observable.subscribe(dto => localStorage.setItem('cachedForm' + id, JSON.stringify(dto)));
     return observable;
   }
 
-  getData(id: any, selectionId: any): Observable<ComponentDTO> {
-    return this.http.get<any>(`${environment.serverUrl}/${this.endpoint}/data?id=${id}&selection-id=${selectionId}`);
+  getData(id: any, selectionId: any, languageId: string, cloned: boolean): Observable<ComponentDTO> {
+
+    let domain = 'data';
+    if (cloned) domain = 'clone-data';
+
+    return this.http.get<any>(`${environment.serverUrl}/${this.endpoint}/${domain}?id=${id}&selection-id=${selectionId}&language-id=${languageId}`);
   }
 
-  getCloneData(id: any, selectionId: any): Observable<ComponentDTO> {
-    return this.http.get<any>(`${environment.serverUrl}/${this.endpoint}/clone-data?id=${id}&selection-id=${selectionId}`);
-  }
+  // getCloneData(id: any, selectionId: any): Observable<ComponentDTO> {
+  //   return this.http.get<any>(`${environment.serverUrl}/${this.endpoint}/clone-data?id=${id}&selection-id=${selectionId}`);
+  // }
 }
