@@ -4,9 +4,9 @@
       <div class="col-12">
         <h3 style="margin-top: 20px;margin: 0px;margin-top: 10px;">
           <i class="fa fa-puzzle-piece" style="padding-right: 5px;"></i>
-          Rule Designer
+          {{this.settingsDTO.title}}
         </h3>
-        <p style=" margin-bottom: 5px;"> Rule Designer Form </p>
+        <p style=" margin-bottom: 5px;" [innerHTML]="this.trustResource(this.settingsDTO.description)"> </p>
       </div>
     </div>
     <div class="pull-right">
@@ -52,7 +52,7 @@
         <div class="row">
           <div class="col-12">
             <div class="form-group">
-              <label>Id</label>
+              <b>Id</b>
               <input
                 type="text" class="form-control" readonly value="{{dto.id}}">
               <code></code>
@@ -61,22 +61,22 @@
 
           <div class="col-12">
             <div class="form-group ">
-              <label>Code</label>
+              <b>Code</b>
               <input type="text" class="form-control"   mask="S*"
                      [(ngModel)]="dto.code">
-              <code></code>
+              <code>*Required Field</code>
             </div>
           </div>
           <div class="col-12">
             <div class="form-group ">
-              <label>Name</label>
+              <b>Name</b>
               <input type="text" class="form-control" [(ngModel)]="dto.name">
-              <code></code>
+              <code>*Required Field</code>
             </div>
           </div>
           <div class="col-12">
             <div class="form-group">
-              <label>Description</label>
+              <b>Description</b>
               <textarea
                 class="form-control textarea" name="description" [(ngModel)]="dto.description"></textarea>
             </div>
@@ -87,21 +87,31 @@
   </div>
 </div>
 
-
 <div class="row form-area">
   <div class="col-md-12">
     <div class="card">
       <div class="card-header">
         <div class="row">
-          <div class="col-sm-7">
-            <h5 class="card-title pull-left">
-              <i class="fa-regular fa-clipboard"></i>
-              Rule Definition</h5>
+          <div class="col-12">
+            <div class="pull-left" >
+              <h5 class="card-title" style="margin-bottom: 0px;">
+                <i class="fa-regular fa-clipboard"></i>
+                {{settingsDTO.ruleSectionTitle}}
+              </h5>
+              <p style=" margin-bottom: 5px;" [innerHTML]="this.trustResource(this.settingsDTO.ruleSectionDescription)"> </p>
+            </div>
           </div>
           <div class="col-sm-5">
             <div class="pull-right">
-              <button class="btn btn-round btn-outline-primary "
-                      (click)="addMenuField()">
+              <button class="btn btn-round btn-outline-primary"
+                      (click)="createPreview()">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                Preview  </button>
+              <button id="openPreviewButton" style="display: none;"
+                      data-target="#expressionPreview" data-toggle="modal">
+                <i class="fa-solid fa-magnifying-glass"></i></button>
+              <button class="btn btn-round btn-outline-success"
+                      (click)="addMenuField(null)">
                 <i class="fa fa-plus-circle"></i>
                 Expression  </button>
             </div>
@@ -112,7 +122,7 @@
       <div class="card-body">
         <div class="empty-table-row" *ngIf="dto.ruleExpressionList.length == 0">Empty!</div>
         <ul>
-          <ng-template #recursiveList let-list>
+          <ng-template #recursiveList let-list : RuleExpressionDTO[]>
 
             <li *ngFor="let item of list; let last = last;">
 
@@ -123,7 +133,7 @@
 
                       <div class="input-group-prepend">
                          <span [ngStyle]="{'background-color': item.color}"
-                               class="input-group-text textfield-button-info expand-button rule-field-icon">
+                               class="input-group-text textfield-button-info expand-button ruleSettings-field-icon">
                               <i style="color: #000000;" class="fa-solid fa-bars-staggered"></i>
                          </span>
                       </div>
@@ -133,15 +143,16 @@
                                readonly
                                [ngStyle]="{'background-color': item.color}"
                                placeholder="Select Field"
-                               (click)="setSelected(item)"  data-target="#fieldSelectionArea" data-toggle="modal"
-                               class="form-control textfield-area expr-unit-type rule-field"
+                               (click)="setSelected(item)"
+                               data-target="#fieldSelectionArea" data-toggle="modal"
+                               class="form-control textfield-area expr-unit-type ruleSettings-field"
                                value="{{item.field}}">
                       </div>
 
 
                       <div class="input-group-prepend">
                          <span [ngStyle]="{'background-color': item.color}"
-                               class="input-group-text textfield-button-info expand-button expand-button2 rule-type-icon">
+                               class="input-group-text textfield-button-info expand-button expand-button2 ruleSettings-type-icon">
                               <i style="color: #000000;"  class="fa-solid fa-grip-vertical"></i>
                          </span>
                       </div>
@@ -153,21 +164,20 @@
                                (click)="setSelected(item)"
                                data-target="#operatorSelectionArea" data-toggle="modal"
                                placeholder="Select Operator"
-                               class="form-control textfield-area expr-unit-type rule-type"
+                               class="form-control textfield-area expr-unit-type ruleSettings-type"
                                value="{{item.operator}}">
                       </div>
 
-
                       <div class="input-group-prepend">
-                         <span class="input-group-text textfield-button-info expand-button expand-button2 rule-expression-icon">
+                         <span class="input-group-text textfield-button-info expand-button expand-button2 ruleSettings-expression-icon">
                              <i class="fa-solid fa-marker"></i>
                          </span>
                       </div>
 
                       <input type="text"
                              placeholder="Write Expression"
-                             class="form-control textfield-area expr-unit-type rule-expression"
-                             [ngModel]="item.command">
+                             class="form-control textfield-area expr-unit-type ruleSettings-expression"
+                             [(ngModel)]="item.command">
                     </div>
                   </div>
 
@@ -188,19 +198,19 @@
               </div>
 
               <h6>
-                <button (click)="upItemInList(item,list)"   type="button" title="New Submenu"
+                <button (click)="upItemInList(item,list)"   type="button" title="Move Up"
                         class="btn btn-round btn-outline-warning btn-icon btn-sm">
                   <i class="fa fa-angle-up"></i>
                 </button>
-                <button (click)="downItemInList(item, list)"   type="button" title="New Submenu"
+                <button (click)="downItemInList(item, list)"   type="button" title="Move Down"
                         class="btn btn-round btn-outline-warning btn-icon btn-sm">
                   <i class="fa fa-angle-down"></i>
                 </button>
-                <button (click)="addChildMenuField(item)"  type="button" title="New Rule Area"
-                        class="btn btn-round btn-outline-primary btn-icon btn-sm">
+                <button (click)="addMenuField(item)" type="button" title="New Sub Expression"
+                        class="btn btn-round btn-outline-success btn-icon btn-sm">
                   <i class="fa fa-plus-circle"></i>
                 </button>
-                <button (click)="removeMenuFieldLine(item,dto.ruleExpressionList )" type="button" title="Delete"
+                <button (click)="removeRuleExpression(item,dto.ruleExpressionList )" type="button" title="Delete"
                         class="btn btn-round btn-outline-danger btn-icon btn-sm">
                   <i class="fa fa-times"></i>
                 </button>
@@ -240,8 +250,6 @@
             *ngTemplateOutlet="recursiveList; context:{ $implicit: dto.ruleExpressionList }"></ng-container>
         </ul>
       </div>
-
-
     </div>
   </div>
 </div>
@@ -408,6 +416,31 @@
             </div>
           </div>
         </form>
+      </div>
+      <div class="modal-footer">
+        <div class="left-side">
+          <button class="btn btn-outline-danger" data-dismiss="modal" type="button">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div aria-labelledby="ModalLabel" class="modal fade" id="expressionPreview" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" style="max-width: 800px;">
+    <div class="modal-content">
+      <div class="modal-header justify-content-center">
+        <h4 class="title title-up modal-title">
+          <i class="fa fa-puzzle-piece"></i>
+          Expression Preview</h4>
+        <button aria-label="Close" class="close" data-dismiss="modal" type="button"><i
+          class="fa fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+          <div class="row">
+            <div class="col-12" [innerHTML]="this.trustResource(this.dto.expressionPreview)">
+            </div>
+          </div>
       </div>
       <div class="modal-footer">
         <div class="left-side">
