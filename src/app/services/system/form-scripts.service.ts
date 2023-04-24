@@ -129,6 +129,8 @@ declare function nativeFieldEventsHandler(id, entityCode: string, fieldCode: str
 
 declare function nativeTableButtonClickHandler(id, param: string, formControlTable: any, dataLine: any): any;
 
+declare function nativeTableButtonNewLineHandler(id, formControlTable: any, added: boolean): any;
+
 declare function nativeTableFieldEventsHandler(id, entityCode: string, fieldCode: string, eventtype: string, event: any,
                                                formControlTable: any, dataLine: any): any;
 
@@ -237,6 +239,10 @@ export class FormScriptsService {
 
   public tableButtonClickOccured(id, param: string, formControlTable: any, dataLine: any) {
     nativeTableButtonClickHandler(id, param, formControlTable, dataLine);
+  }
+
+  public nativeTableButtonNewLineHandler(id, formControlTable: any, added: boolean) {
+    nativeTableButtonNewLineHandler(id, formControlTable, added);
   }
 
   /*

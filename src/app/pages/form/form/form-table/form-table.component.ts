@@ -108,8 +108,14 @@ export class FormTableComponent implements OnInit, OnChanges {
       requiderFieldsFilled = this.checkRequiredFields(prevFormControlTableLineDTO);
     }
 
+    this.formScriptsService.nativeTableButtonNewLineHandler(
+        this.form.dto.id,
+        formControlTableDTO,
+        requiderFieldsFilled
+    );
+
     if (requiderFieldsFilled) {
-      const componentPersistEntityDataLine = this.newComponentPersistEntityDataLine(formControlTableDTO.componentPersistEntity);
+      this.newComponentPersistEntityDataLine(formControlTableDTO.componentPersistEntity);
       this.refershTableFields(formControlTableDTO);
       this.tableFocusNextLineFirstField(formControlTableLineDTOS, prevFormControlTableLineDTO);
     }
