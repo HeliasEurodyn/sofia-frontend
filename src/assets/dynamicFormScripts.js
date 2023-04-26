@@ -20,6 +20,12 @@ function nativeTableButtonClickHandler(id, entityCode, fieldCode, eventtype, eve
     formDynamicScripts[id].nativeTableButtonClickHandler(entityCode, fieldCode, eventtype, event, formControlTable, dataLine);
 }
 
+function nativeTableButtonNewLineHandler(id, formControlTable, added) {
+  if (typeof formDynamicScripts[id].nativeTableButtonNewLineHandler == "function") {
+    formDynamicScripts[id].nativeTableButtonNewLineHandler(formControlTable, added);
+  }
+}
+
 function nativeTableFieldEventsHandler(id, entityCode, fieldName, eventtype, eventData, formControlTable, dataLine) {
   if (typeof formDynamicScripts[id].nativeTableFieldEventsHandler == "function")
     formDynamicScripts[id].nativeTableFieldEventsHandler(entityCode, fieldName, eventtype, eventData, formControlTable, dataLine);

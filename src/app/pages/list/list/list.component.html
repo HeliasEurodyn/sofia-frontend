@@ -68,8 +68,6 @@
   </div>
 </div>
 
-  <!-- Pagination -->
-
 <div class="tab-pane form-area" [ngClass]="{'is-hidden': this.listResultsData == null }">
   <div class="row">
     <div class="col">
@@ -499,8 +497,6 @@
                           <ng-container *ngIf="column.type === 'image-viewer'">
                             <img *ngIf="row[column.code] != '' && row[column.code] != null" [src]="this.trustResource(row[column.code])">
                           </ng-container>
-
-
                         </td>
                       </ng-container>
                     </tr>

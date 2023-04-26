@@ -7,6 +7,32 @@
       {{tableFieldComponent.formControlField.description}}
     </th>
   </tr>
+  <tr>
+    <th *ngIf="formcontrol.formControlTable.formControlButtons.length > 0"></th>
+    <th *ngFor="let formControl of formcontrol.formControlTable.formControls"
+        class="col-{{formControl.formControlField.id}}" [ngClass]="{'table-found-by-search-bar' : formControl.searchSelected}">
+
+      <app-list-selector
+        *ngIf="formControl.formControlField.componentPersistEntityField.assignment.type === 'list' &&
+               formControl.formControlField.headerFilter"
+        [editable]="true"
+        [command]="formControl.formControlField.componentPersistEntityField.assignment.filterEditor"
+        [(value)]="formControl.filterValue"
+        [lineComponentPersistEntity]="null"
+        [componentPersistEntityDTO]="null"
+        [componentPersistEntityFieldDTO]="null"
+        [component]="this.component"
+        (eventOccured)="filterListRefreshData($event, formcontrol.formControlTable)"></app-list-selector>
+
+      <input type="text"
+             style="padding: 10px;"
+             *ngIf="formControl.formControlField.componentPersistEntityField.assignment.type !== 'list' &&
+                    formControl.formControlField.headerFilter"
+             class="form-control transparent-input header-filter-{{formControl.formControlField.id}} ctrl-field"
+             [(ngModel)]="formControl.filterValue"
+             (keydown)="filterRefreshData($event,formcontrol.formControlTable)">
+    </th>
+  </tr>
   </thead>
   <tbody class="list-table-body list-table-body-{{this.formcontrol.formControlTable.id}}">
   <tr
@@ -17,8 +43,8 @@
     *ngIf="formcontrol.formControlTable.formControlLines?.length === 0 && formcontrol.formControlTable.formControlButtons.length > 0">
     <td [attr.colspan]="formcontrol.formControlTable.formControls.length+1" class="empty-table-row">Empty!</td>
   </tr>
-  <tr *ngFor="let formControlLine of formcontrol.formControlTable.formControlLines">
-
+  <ng-container *ngFor="let formControlLine of formcontrol.formControlTable.formControlLines; let rowIndex = index">
+  <tr *ngIf="formControlLine.hideLine != true">
     <td *ngIf="formcontrol.formControlTable.formControlButtons.length > 0">
       <button
         (click)="formButtonClicked(tableFormControl,
@@ -33,9 +59,10 @@
         <i class="fa {{tableFormControl.formControlButton.icon}}"> </i>
       </button>
     </td>
-    <td *ngFor="let formComponentCell of formControlLine.formControlCells"
+    <ng-container *ngFor="let formComponentCell of formControlLine.formControlCells; let colIndex = index">
+    <td (keydown)="cellsKeyDown($event, formcontrol, rowIndex, colIndex )"
         [ngClass]="{'found-by-search-bar' : formComponentCell.searchSelected}"
-        class="col-{{formComponentCell.formControl.id}}">
+        class="col-{{formComponentCell.formControl.id}} cell-{{formComponentCell.id}} tbl-{{formcontrol.id}}-cell-{{rowIndex}}-{{colIndex}}">
       <span [ngClass]="{'table-found-by-search-bar' : formComponentCell.searchSelected}" >{{formComponentCell.formControl.formControlField.description}}</span>
 
       <ng-container *ngIf="formComponentCell.formControl.type === 'field'">
@@ -48,9 +75,6 @@
             formControlLine.componentPersistEntityDataLine)"
             (focusEvent)="setSelectedTableLineComponentTree(formcontrol.formControlTable.componentPersistEntity,
                                    formControlLine.componentPersistEntityDataLine)"
-            (keydownEvent)="tableFieldKeyDown($event, formComponentCell.id, formControlLine,
-                                   formcontrol.formControlTable.formControlLines,
-                                   formcontrol.formControlTable)"
             [componentPersistEntityDTO]="formComponentCell.formControl.formControlField.componentPersistEntity"
             [componentPersistEntityFieldDTO]="formComponentCell.componentPersistEntityField"
             [editable]="formComponentCell.formControl.formControlField.editable"
@@ -78,9 +102,6 @@
             formControlLine.componentPersistEntityDataLine)"
                          (focusEvent)="setSelectedTableLineComponentTree(formcontrol.formControlTable.componentPersistEntity,
                                    formControlLine.componentPersistEntityDataLine)"
-                         (keydownEvent)="tableFieldKeyDown($event, formComponentCell.id, formControlLine,
-                                   formcontrol.formControlTable.formControlLines,
-                                   formcontrol.formControlTable)"
                          [componentPersistEntityDTO]="formComponentCell.formControl.formControlField.componentPersistEntity"
                          [componentPersistEntityFieldDTO]="formComponentCell.componentPersistEntityField"
                          [editable]="formComponentCell.formControl.formControlField.editable"
@@ -112,9 +133,6 @@
             formControlLine.componentPersistEntityDataLine)"
             (focusEvent)="setSelectedTableLineComponentTree(formcontrol.formControlTable.componentPersistEntity,
                                    formControlLine.componentPersistEntityDataLine)"
-            (keyDownChange)="tableFieldKeyDown($event, formComponentCell.id, formControlLine,
-                               formcontrol.formControlTable.formControlLines,
-                               formcontrol.formControlTable)"
             [(inputValue)]="formComponentCell.componentPersistEntityField.value"
             [componentPersistEntityDTO]="formComponentCell.formControl.formControlField.componentPersistEntity"
             [componentPersistEntityFieldDTO]="formComponentCell.componentPersistEntityField"
@@ -134,9 +152,6 @@
             formControlLine.componentPersistEntityDataLine)"
             (focusEvent)="setSelectedTableLineComponentTree(formcontrol.formControlTable.componentPersistEntity,
                                    formControlLine.componentPersistEntityDataLine)"
-            (keyDownChange)="tableFieldKeyDown($event, formComponentCell.id, formControlLine,
-                                               formcontrol.formControlTable.formControlLines,
-                                               formcontrol.formControlTable)"
             [(inputValue)]="formComponentCell.componentPersistEntityField.value"
             [editable]="formComponentCell.formControl.formControlField.editable"
             [fieldClass]="formComponentCell.id"
@@ -153,9 +168,6 @@
             formControlLine.componentPersistEntityDataLine)"
             (focusEvent)="setSelectedTableLineComponentTree(formcontrol.formControlTable.componentPersistEntity,
                                    formControlLine.componentPersistEntityDataLine)"
-            (keyDownChange)="tableFieldKeyDown($event, formComponentCell.id, formControlLine,
-                              formcontrol.formControlTable.formControlLines,
-                               formcontrol.formControlTable)"
             [(value)]="formComponentCell.componentPersistEntityField.value"
             [command]="formComponentCell.componentPersistEntityField.assignment.editor"
             [componentPersistEntityDTO]="formComponentCell.formControl.formControlField.componentPersistEntity"
@@ -175,9 +187,6 @@
             formControlLine.componentPersistEntityDataLine)"
             (focusEvent)="setSelectedTableLineComponentTree(formcontrol.formControlTable.componentPersistEntity,
                                    formControlLine.componentPersistEntityDataLine)"
-            (keyDownChange)="tableFieldKeyDown($event, formComponentCell.id, formControlLine,
-                              formcontrol.formControlTable.formControlLines,
-                               formcontrol.formControlTable)"
             [command]="formComponentCell.componentPersistEntityField.assignment.editor"
             [componentPersistEntityFieldDTO]="formComponentCell.componentPersistEntityField"
             [componentPersistEntity]="formControlLine.componentPersistEntity"
@@ -194,9 +203,6 @@
             formControlLine.componentPersistEntityDataLine)"
             (focusEvent)="setSelectedTableLineComponentTree(formcontrol.formControlTable.componentPersistEntity,
                                    formControlLine.componentPersistEntityDataLine)"
-            (keyDownChange)="tableFieldKeyDown($event, formComponentCell.id, formControlLine,
-                               formcontrol.formControlTable.formControlLines,
-                                formcontrol.formControlTable)"
             [(inputDate)]="formComponentCell.componentPersistEntityField.value"
             [componentPersistEntityDTO]="formComponentCell.formControl.formControlField.componentPersistEntity"
             [componentPersistEntityFieldDTO]="formComponentCell.componentPersistEntityField"
@@ -206,7 +212,6 @@
             [ngClass]="{'hidden-field': !formComponentCell.formControl.formControlField.visible}"
           ></app-date-picker>
         </ng-container>
-
         <ng-container
           *ngIf="formComponentCell.formControl.formControlField.componentPersistEntityField.assignment.type === 'datetime_det'">
               <app-date-time-picker class="form-input-field"
@@ -220,10 +225,11 @@
                                       formControlLine.componentPersistEntityDataLine)">
               </app-date-time-picker>
         </ng-container>
-
       </ng-container>
     </td>
+    </ng-container>
   </tr>
+  </ng-container>
   </tbody>
 </table>
 
