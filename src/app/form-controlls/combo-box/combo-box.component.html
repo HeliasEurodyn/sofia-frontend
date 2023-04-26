@@ -28,7 +28,7 @@
     (resize)="eventOccuredActions('resize',$event)"
     [(ngModel)]="value"
     (ngModelChange)="selectItem($event)"
-    class="form-control ng-pristine ng-valid ng-touched">
+    class="form-control ctrl-field ng-pristine ng-valid ng-touched">
     <option *ngFor="let comboOption of comboOptions['data']" value="{{comboOption['value']}}">{{comboOption['display']}}</option>
   </select>
 

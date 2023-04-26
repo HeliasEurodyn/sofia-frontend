@@ -716,7 +716,6 @@ export class ListComponent extends PageComponent implements OnInit, OnDestroy, A
   private findContorlField(elements: HTMLCollection) {
     for (let i = 0; i < elements.length; i++) {
       if (elements[i].classList.contains('ctrl-field')) {
-
         (elements[i] as HTMLElement).focus();
         return true;
       }

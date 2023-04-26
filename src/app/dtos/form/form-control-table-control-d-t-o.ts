@@ -9,6 +9,7 @@ export class FormControlTableControlDTO extends BaseDTO {
   public formControlField: FormControlFieldDTO;
   public formControlButton: FormControlButtonDTO;
   public searchSelected: boolean;
+  public filterValue: string;
 
   constructor() {
     super();

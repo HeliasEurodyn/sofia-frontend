@@ -8,6 +8,7 @@ export class FormControlTableLineDTO extends BaseDTO {
   public formControlCells: FormControlTableCellDTO[] = [];
   public componentPersistEntity: ComponentPersistEntityDTO;
   public componentPersistEntityDataLine: ComponentPersistEntityDataLineDTO;
+  public hideLine: boolean;
 
   constructor() {
     super();

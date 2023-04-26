@@ -172,9 +172,13 @@ export class ListSelectorComponent implements OnInit {
     if (commandParts.has('FORM-NEW-TAB')) {
       this.openFormOnNewTab = true;
     }
-    if (commandParts.has('HIDE-DELETE')) {
-      this.showDeleteButton = false;
+
+    if (commandParts.has('HIDE-DELETE') ) {
+      if (commandParts.get('HIDE-DELETE').toString().toUpperCase() === 'YES' ) {
+        this.showDeleteButton = false;
+      }
     }
+
   }
 
   refreshComponent(): void {

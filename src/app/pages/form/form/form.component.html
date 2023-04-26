@@ -36,7 +36,6 @@
             <div ngbDropdownMenu class="dropdown-menu-right">
               <ng-container *ngFor="let subActionButton of actionButton?.formActionButtons">
                 <div *ngIf="subActionButton.editor === '#divider#'" class="dropdown-divider"></div>
-
                 <button ngbDropdownItem
                         class="submenu-button"
                         *ngIf="subActionButton.editor !== '#divider#'"
