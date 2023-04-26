@@ -1,3 +1,2 @@
-window['backend_url'] = '';
-window['backend_on_proxy_path'] = '/api';
-window['keycloak_login'] = 'no';
+window['backend_url'] = 'http://10.100.62.11:15502/api';
+

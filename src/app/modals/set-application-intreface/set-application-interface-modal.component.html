@@ -1,0 +1,18 @@
+<div class="modal-header">
+  <h4 class="title title-up modal-title" style="margin: 0;">Set API url</h4>
+  <button type="button" class="btn" style="cursor: default"></button>
+</div>
+<div class="modal-body">
+  <input type="text" class="form-control" name="url" [(ngModel)]="url">
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-success " (click)="passBack()" >
+    <i class="fa fa-save"> </i>
+     Save
+  </button>
+  <button type="button" class="btn btn-outline-warning " (click)="dismiss()" >
+    <i class="fa fa-times"> </i>
+    close
+  </button>
+
+</div>

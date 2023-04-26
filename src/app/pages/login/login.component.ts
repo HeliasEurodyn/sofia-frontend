@@ -7,6 +7,9 @@ import {Router} from '@angular/router';
 import {CommandNavigatorService} from '../../services/system/command-navigator.service';
 import {SettingsService} from '../../services/crud/settings.service';
 import {DomSanitizer} from '@angular/platform-browser';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {SetApplicationInterfaceModalComponent} from '../../modals/set-application-intreface/set-application-interface-modal.component';
+import {Filesystem, Directory, Encoding} from '@capacitor/filesystem';
 
 @Component({
   selector: 'app-login',
@@ -29,6 +32,7 @@ export class LoginComponent implements OnInit {
   loginImage = '';
 
   constructor(private authService: AuthService,
+              private modalService: NgbModal,
               private notificationService: NotificationService,
               private userService: UserService,
               private router: Router,
@@ -38,11 +42,21 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.defineLoginLogo();
+    Filesystem.readFile({
+      path: 'api.txt',
+      directory: Directory.Library,
+      encoding: Encoding.UTF8,
+    }).then(r => {
+      environment.serverUrl = r.data
+    }).then(() => {
+      this.defineLoginLogo();
+    })
+      .catch(ex => {
+        this.notificationService.showNotification('top', 'center', 'alert-danger', 'fa-thumbs-down', ex);
+      })
 
-    if(environment.keycloakLogin == 'yes'){
-      this.keycloakLogin = true;
-    }
+
+    localStorage.setItem('serverUrl', environment.serverUrl);
 
   }
 
@@ -53,6 +67,8 @@ export class LoginComponent implements OnInit {
       } else {
         this.loginImage = './assets/img/sofia.png';
       }
+    }, () => {
+      this.loginImage = './assets/img/sofia.png';
     });
   }
 
@@ -91,5 +107,40 @@ export class LoginComponent implements OnInit {
   onEnterMethod() {
     this.authenticateUser();
   }
+
+  openModal() {
+    const modalReference = this.modalService.open(SetApplicationInterfaceModalComponent);
+
+    const filePath = 'api.txt';
+    const directory = Directory.Library;
+    const encoding = Encoding.UTF8;
+
+    Filesystem.readFile({path: filePath, directory, encoding})
+      .then(r => {
+        modalReference.componentInstance.url = r.data;
+      })
+      .catch(ex => {
+        modalReference.componentInstance.url = '';
+      })
+
+    modalReference.result.then((url) => {
+      Filesystem.writeFile({ path: filePath, data: url, directory, encoding })
+        .then(() => {
+          environment.serverUrl =  url;
+        }).then(() => {
+        this.settingsService.getLoginImage().subscribe(icon => {
+          if (icon != null) {
+            this.loginImage = icon;
+          } else {
+            this.loginImage = './assets/img/sofia.png';
+          }
+        });
+      })
+        .catch((ex) => {
+          this.notificationService.showNotification('top', 'center', 'alert-danger', 'fa-id-card', ex);
+        });
+    });
+  }
+
 
 }

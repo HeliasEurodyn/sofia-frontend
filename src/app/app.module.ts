@@ -62,6 +62,7 @@ import { DateTimePickerComponent } from './form-controlls/date-time-picker/date-
 import { HtmlTemplatePreviewComponent } from './pages/html-template-preview/html-template-preview.component';
 import { ImageSelectorComponent } from './form-controlls/image-selector/image-selector.component';
 import { UiPluginComponent } from './pages/ui-plugin/ui-plugin.component';
+import {SetApplicationInterfaceModalComponent} from './modals/set-application-intreface/set-application-interface-modal.component';
 
 @NgModule({
   declarations: [
@@ -104,6 +105,7 @@ import { UiPluginComponent } from './pages/ui-plugin/ui-plugin.component';
     HtmlTemplatePreviewComponent,
     ImageSelectorComponent,
     UiPluginComponent,
+    SetApplicationInterfaceModalComponent
   ],
   imports: [
     BrowserAnimationsModule,

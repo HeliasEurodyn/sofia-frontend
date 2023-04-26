@@ -4,7 +4,7 @@ import {ActivatedRoute} from '@angular/router';
 import {HttpErrorResponceService} from './services/system/http-error-responce.service';
 import {NotificationService} from './services/system/notification.service';
 import {SettingsService} from './services/crud/settings.service';
-import {environment} from "../environments/environment";
+import { App as CapacitorApp } from '@capacitor/app';
 
 @Component({
   selector: 'app-root',
@@ -16,6 +16,7 @@ export class AppComponent implements OnInit {
 
   favIcon: HTMLLinkElement = document.querySelector('#appIcon');
   appTitle = '';
+  loginImage = '';
 
   public constructor(private activatedRoute: ActivatedRoute,
                      private httpErrorResponceService: HttpErrorResponceService,
@@ -33,11 +34,13 @@ export class AppComponent implements OnInit {
     this.defineIcon();
     this.defineTitle();
 
-    if(environment.serverOnProxyPath != ''){
-      environment.serverUrl = location.origin + environment.serverOnProxyPath;
-    }
-
-    localStorage.setItem('serverUrl', environment.serverUrl);
+    CapacitorApp.addListener('backButton', ({canGoBack}) => {
+      if (!canGoBack) {
+        CapacitorApp.exitApp();
+      } else {
+        window.history.back();
+      }
+    });
 
   }
 
@@ -68,6 +71,18 @@ export class AppComponent implements OnInit {
         this.appTitle = 'Sofia';
       }
       this.title.setTitle(this.appTitle);
+    });
+  }
+
+  defineLoginLogo() {
+    this.settingsService.getLoginImage().subscribe(icon => {
+      if (icon != null) {
+        this.loginImage = icon;
+      } else {
+        this.loginImage = './assets/img/sofia.png';
+      }
+    }, () => {
+      this.loginImage = './assets/img/sofia.png';
     });
   }
 
