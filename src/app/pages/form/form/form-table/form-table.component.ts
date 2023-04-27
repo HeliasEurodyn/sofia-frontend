@@ -229,7 +229,6 @@ export class FormTableComponent implements OnInit, OnChanges {
 
   public tableAppendNewLine(formControlTableLineDTOS: FormControlTableLineDTO[],
                             formControlTableDTO: FormControlTableDTO) {
-
     let prevFormControlTableLineDTO = null;
 
     if (formControlTableLineDTOS.length > 0) {
@@ -240,6 +239,10 @@ export class FormTableComponent implements OnInit, OnChanges {
 
   public tableDeleteLine(formControlTableDTO: FormControlTableDTO,
                          formControlTableLineDTOS: FormControlTableLineDTO[], formControlTableLineDTO: FormControlTableLineDTO) {
+
+    if (!formControlTableDTO.editable) {
+      return;
+    }
 
     let elementPosition = 0;
     for (const curFormControlTableLineDTO of formControlTableLineDTOS) {
@@ -514,15 +517,7 @@ export class FormTableComponent implements OnInit, OnChanges {
     });
   }
 
-  updateConnadForFiltering(editor: string) {
-    let editorObject = JSON.parse(editor);
-    editorObject['HIDE-DELETE'] = 'NO';
-    let result = JSON.stringify(editorObject);
-    console.log(result);
-    return result;
-  }
-
-  cellsKeyDown(event,formcontrol: FormControlDto, rowIndex: number, colIndex: number) {
+  cellsKeyDown(event, formcontrol: FormControlDto, formControlLine: FormControlTableLineDTO, rowIndex: number, colIndex: number) {
     const formControlLines = formcontrol.formControlTable.formControlLines;
 
     if (event.shiftKey && event.key === 'ArrowLeft') {
@@ -566,6 +561,14 @@ export class FormTableComponent implements OnInit, OnChanges {
       const tds = document.getElementsByClassName('tbl-'+formcontrol.id+'-cell-' + newRowIndex + '-' + colIndex );
       console.log(tds.length);
       console.log('tbl-'+formcontrol.id+'-cell-' + newRowIndex + '-' + colIndex );
+      if (tds.length > 0) {
+        this.focusContorlField((tds[0] as HTMLElement).children);
+      }
+    }
+
+    if (event.altKey && event.key === 'Delete') {
+      this.tableDeleteLine(formcontrol.formControlTable, formControlLines, formControlLine);
+      const tds = document.getElementsByClassName('tbl-'+formcontrol.id+'-cell-' + (rowIndex-1) + '-' + colIndex );
       if (tds.length > 0) {
         this.focusContorlField((tds[0] as HTMLElement).children);
       }
