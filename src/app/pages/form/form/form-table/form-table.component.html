@@ -60,11 +60,10 @@
       </button>
     </td>
     <ng-container *ngFor="let formComponentCell of formControlLine.formControlCells; let colIndex = index">
-    <td (keydown)="cellsKeyDown($event, formcontrol, rowIndex, colIndex )"
+    <td (keydown)="cellsKeyDown($event, formcontrol, formControlLine, rowIndex, colIndex )"
         [ngClass]="{'found-by-search-bar' : formComponentCell.searchSelected}"
         class="col-{{formComponentCell.formControl.id}} cell-{{formComponentCell.id}} tbl-{{formcontrol.id}}-cell-{{rowIndex}}-{{colIndex}}">
       <span [ngClass]="{'table-found-by-search-bar' : formComponentCell.searchSelected}" >{{formComponentCell.formControl.formControlField.description}}</span>
-
       <ng-container *ngIf="formComponentCell.formControl.type === 'field'">
         <ng-container
           *ngIf="formComponentCell.formControl.formControlField.componentPersistEntityField.assignment.type === 'varchar' ||
