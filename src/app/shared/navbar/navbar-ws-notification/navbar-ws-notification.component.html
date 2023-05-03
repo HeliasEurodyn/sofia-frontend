@@ -1,0 +1,29 @@
+<li *ngIf="this.notifications.length > 0" class="nav-item btn-rotate"
+    ngbDropdown
+    placement="bottom-left"
+    style="cursor: pointer;">
+  <a class="nav-link" href="javascript:void(0)" id="navbarDropdownMenuLink" ngbDropdownToggle>
+    <i class="fas {{menuField.icon}}" style="padding-right: 4px;font-size: 18px;"></i>
+    <span *ngIf="this.notifications.length > 0" class="notification-total">{{this.notifications.length}}</span>
+    <p>
+      <span class="d-lg-none d-md-block" style="padding-right: 5px;">{{menuField.name}} </span>
+    </p>
+  </a>
+  <div aria-labelledby="navbarDropdownMenuLink"
+       class="dropdown-menu dropdown-menu-right" ngbDropdownMenu>
+    <ng-container *ngFor="let notification of notifications">
+      <a (click)="navigate(notification)" ngbDropdownItem>
+        <i class="fa fa-circle-notch"></i>
+        <p>
+          <span style="padding-left: 5px;">{{notification.title}}</span>
+        </p>
+      </a>
+    </ng-container>
+  </div>
+</li>
+
+<li *ngIf="this.notifications.length === 0" class="nav-item btn-rotate" placement="bottom-left">
+  <a href="javascript:void(0)" class="nav-link btn-magnify">
+    <i class="fas {{menuField.icon}}" style="padding-right: 4px;font-size: 18px;"></i>
+  </a>
+</li>

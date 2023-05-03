@@ -1,0 +1,32 @@
+<div *ngIf="data != null" class="row formnav">
+  <div class="col-sm-12">
+    <div class="pull-left">
+      <div class="col-12">
+        <h3 style="margin-top: 20px;margin: 0px;margin-top: 10px;" >
+          <i class="fa-solid fa-circle-notch" style="padding-right: 5px;"></i>
+          <span [innerHTML]="this.data.title"></span>
+        </h3>
+        <p style=" margin-bottom: 5px;"> Notification created at {{this.data.createdOn | date:'medium'}} </p>
+      </div>
+    </div>
+    <div class="pull-right">
+    </div>
+  </div>
+</div>
+
+<div *ngIf="data != null" class="row form-area">
+  <div class="col-md-12">
+    <div class="card card-user">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12">
+            <div class="form-group">
+              <b>Description</b>
+              <span [innerHTML]="this.data.message"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
