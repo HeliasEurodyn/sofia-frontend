@@ -5,6 +5,7 @@ import {HttpErrorResponceService} from './services/system/http-error-responce.se
 import {NotificationService} from './services/system/notification.service';
 import {SettingsService} from './services/crud/settings.service';
 import {environment} from "../environments/environment";
+import {WebSocketService} from "./services/system/web-socket.service";
 
 @Component({
   selector: 'app-root',
@@ -21,10 +22,20 @@ export class AppComponent implements OnInit {
                      private httpErrorResponceService: HttpErrorResponceService,
                      private notificationService: NotificationService,
                      private title: Title,
+                     private webSocketService: WebSocketService,
                      private settingsService: SettingsService) {
   }
 
   ngOnInit(): void {
+    // this.websocketService.getMessageObservable().subscribe((message) => {
+    //   console.log(message);
+    // });
+    this.webSocketService.initializeConnections();
+    this.webSocketService.getMessageObservable2().subscribe((message) => {
+      console.log(' ..1.. '+message.body);
+    });
+
+
     this.activatedRoute.queryParamMap.subscribe(params => {
       this.title.setTitle(this.appTitle);
     });

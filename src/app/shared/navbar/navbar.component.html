@@ -7,7 +7,6 @@
        style="width: 100%">
   </div>
 </div>
-
 <nav class="navbar navbar-expand-lg navbar-absolute fixed-top navbar-transparent" [ngClass]="{'navbar-hidden-border':loading}">
   <div class="container-fluid">
     <div class="navbar-wrapper">
@@ -38,7 +37,6 @@
         </button>
       </div>
     </div>
-
     <button class="navbar-toggler" type="button" (click)="collapse()"
             [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample">
       <span class="navbar-toggler-bar navbar-kebab"></span>
@@ -48,6 +46,8 @@
     <div class="collapse navbar-collapse justify-content-end" id="collapseExample" [ngbCollapse]="isCollapsed">
       <ul class="navbar-nav" *ngIf="this.userDto.headerMenu != null">
         <ng-container *ngFor="let menuField of this.userDto.headerMenu.menuFieldList">
+          <app-navbar-ws-notification *ngIf="isWsNotificationMenu(menuField.command)"
+                                      [menuField]="menuField"></app-navbar-ws-notification>
           <li *ngIf="menuField.command === '#loader#'" class="nav-item loading-nav-item" style="padding: 1px 5px 0px 5px;">
             <div class="spinner stopped-spinner" style="border: 1px solid #DDDDDD;padding: 10px;"
                  [ngClass]="{'running-spinner':loading,'stopped-spinner':!loading}">
@@ -130,6 +130,7 @@
 
           <li *ngIf="menuField.command !== '#parent-menu#'
           && !isSearchMenu(menuField.command)
+          && !isWsNotificationMenu(menuField.command)
           && menuField.command !== '#languages#'
           && menuField.command !== '#loader#'
           && menuField.command !== '#hidden-loader#'"

@@ -18,6 +18,7 @@ import {TimelineComponent} from '../../pages/timeline/timeline.component';
 import { HtmlTemplatePreviewComponent } from 'app/pages/html-template-preview/html-template-preview.component';
 import {UiPluginComponent} from "../../pages/ui-plugin/ui-plugin.component";
 import {RuleDesignerComponent} from "../../pages/rule-designer/rule-designer.component";
+import {WsNotificationComponent} from "../../pages/ws-notification/ws-notification.component";
 
 export const AdminLayoutRoutes: Routes = [
   {path: 'user', component: UserComponent, canActivate: [AuthGuard]},
@@ -37,7 +38,9 @@ export const AdminLayoutRoutes: Routes = [
   {path: 'timeline', component: TimelineComponent, canActivate: [AuthGuard]},
   {path: 'html-template-preview', component: HtmlTemplatePreviewComponent, canActivate: [AuthGuard]},
   {path: 'ui-plugin', component: UiPluginComponent, canActivate: [AuthGuard]},
-  {path: 'rule-designer', component: RuleDesignerComponent, canActivate: [AuthGuard]}
+  {path: 'rule-designer', component: RuleDesignerComponent, canActivate: [AuthGuard]},
+  {path: 'ws-notification', component: WsNotificationComponent, canActivate: [AuthGuard]},
+
 ];
 
 CommandNavigatorService.NavPages = AdminLayoutRoutes;

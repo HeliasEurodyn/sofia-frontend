@@ -63,6 +63,7 @@ import { HtmlTemplatePreviewComponent } from './pages/html-template-preview/html
 import { ImageSelectorComponent } from './form-controlls/image-selector/image-selector.component';
 import { UiPluginComponent } from './pages/ui-plugin/ui-plugin.component';
 import { RuleDesignerComponent } from './pages/rule-designer/rule-designer.component';
+import { WsNotificationComponent } from './pages/ws-notification/ws-notification.component';
 
 @NgModule({
   declarations: [
@@ -106,6 +107,7 @@ import { RuleDesignerComponent } from './pages/rule-designer/rule-designer.compo
     ImageSelectorComponent,
     UiPluginComponent,
     RuleDesignerComponent,
+    WsNotificationComponent,
   ],
   imports: [
     BrowserAnimationsModule,

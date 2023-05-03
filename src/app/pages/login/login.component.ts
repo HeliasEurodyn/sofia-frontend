@@ -74,6 +74,7 @@ export class LoginComponent implements OnInit {
         localStorage.setItem('jwt_token', data.accessToken);
         localStorage.setItem('loggedin_user', JSON.stringify(data.user));
         sessionStorage.setItem('sidebarMenu', JSON.stringify(data.user['sidebarMenu']));
+
         const loginNavCommand = data.user['loginNavCommand'];
         if (loginNavCommand == null || loginNavCommand === '') {
           this.router.navigateByUrl('/d-dashboard');

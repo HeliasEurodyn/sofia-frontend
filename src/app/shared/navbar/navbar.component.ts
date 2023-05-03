@@ -23,7 +23,6 @@ import {ListSearchService} from '../../services/system/list-search.service';
 import {LanguageDTO} from '../../dtos/language/language-dto';
 import {LanguageService} from '../../services/system/language.service';
 import {UserService} from 'app/services/crud/user.service';
-import {SseNotificationService} from '../../services/crud/sse-notification.service';
 import {LogoutDTO} from '../../dtos/security/logout-dto';
 
 @Component({
@@ -64,9 +63,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
               private appRef: ApplicationRef,
               private activatedRoute: ActivatedRoute,
               private listSearchService: ListSearchService,
-              private userService: UserService,
-              private sseNotificationService: SseNotificationService
-  ) {
+              private userService: UserService) {
     this.location = location;
     this.nativeElement = element.nativeElement;
     this.sidebarVisible = false;
@@ -105,10 +102,23 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     });
 
     this.listenToLoading();
-
     this.userDto = JSON.parse(localStorage.getItem('loggedin_user'));
-    // this.sseNotificationService.subscribe(this.userDto.id, this.notifySSEServerEvent);
+    // this.initializeWebSockets();
   }
+
+  // initializeWebSockets(){
+  //   /* Initialize Web Sockets */
+  //   this.webSocketService.initializeUserConnection(this.userDto.id);
+  //
+  //   this.webSocketService.getUserMessageObservable().subscribe((message) => {
+  //     console.log(' ..User Message.. '+message.body);
+  //   });
+  //
+  //   /* Get Unread Messages */
+  //   this.wsNotificationService.getUnread().subscribe(notifications => {
+  //     this.notifications = notifications;
+  //   });
+  // }
 
   notifySSEServerEvent = (event) => {
     this.notificationService.showNotification('top', 'center', 'alert-info', 'fa-id-card', '<b>Server Event</b> ' + event.data);
@@ -234,6 +244,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   updateToggle() {
+    //this.webSocketService.sendMessage("eeee");
     if (this.sidebarVisibleForDesktop === true) {
       this.renderer.addClass(document.body, 'sidebar-mini');
       this.sidebarVisibleForDesktop = false;
@@ -295,12 +306,12 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.searchHasQueryConfig(command);
     if (
-      ((event.ctrlKey && event.key) === 'Enter' || (event.metaKey && event.key)) && this.searchHasQueryConfig(command) ) {
+      ((event.ctrlKey && event.key) === 'Enter' || (event.metaKey && event.key)) && this.searchHasQueryConfig(command)) {
 
       const parsedCommand = JSON.parse(command);
       parsedCommand['VALUE'] = btoa(searchVaule);
-   //   let commandUpdated = command.replace('##search##', btoa(searchVaule));
-   //   commandUpdated = commandUpdated.replace('##SEARCH##', btoa(searchVaule));
+      //   let commandUpdated = command.replace('##search##', btoa(searchVaule));
+      //   commandUpdated = commandUpdated.replace('##SEARCH##', btoa(searchVaule));
       this.navigatorService.navigate(JSON.stringify(parsedCommand));
 
 
@@ -332,6 +343,26 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     if (parsedMap.get('NAME') == 'search') {
+      return true;
+    }
+
+    return false;
+  }
+
+  isWsNotificationMenu(command: string) {
+    const parsedCommand = this.tryParseJSONObject(command);
+
+    if (parsedCommand == false) {
+      return false;
+    }
+
+    const parsedMap = new Map(Object.entries(parsedCommand));
+
+    if (!parsedMap.has('COMMAND-TYPE')) {
+      return false;
+    }
+
+    if (parsedMap.get('COMMAND-TYPE') === 'WS-HEADER-NOTIFICATION') {
       return true;
     }
 
