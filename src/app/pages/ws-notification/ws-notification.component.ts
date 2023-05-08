@@ -20,9 +20,7 @@ export class WsNotificationComponent extends PageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
     this.initNav(this.activatedRoute);
-
 
     const locateParams = this.getLocateParams();
     let id = locateParams.get('ID');
@@ -30,7 +28,6 @@ export class WsNotificationComponent extends PageComponent implements OnInit {
     this.service.getById(id).subscribe(data => {
       this.data = data;
     });
-
   }
 
 }

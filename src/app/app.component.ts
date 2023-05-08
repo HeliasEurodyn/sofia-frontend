@@ -35,7 +35,6 @@ export class AppComponent implements OnInit {
       console.log(' ..1.. '+message.body);
     });
 
-
     this.activatedRoute.queryParamMap.subscribe(params => {
       this.title.setTitle(this.appTitle);
     });
