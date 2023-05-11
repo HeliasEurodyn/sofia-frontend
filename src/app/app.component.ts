@@ -48,7 +48,6 @@ export class AppComponent implements OnInit {
     }
 
     localStorage.setItem('serverUrl', environment.serverUrl);
-
   }
 
   listenToHttpErrors(): void {
@@ -80,6 +79,5 @@ export class AppComponent implements OnInit {
       this.title.setTitle(this.appTitle);
     });
   }
-
 
 }
