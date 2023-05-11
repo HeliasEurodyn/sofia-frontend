@@ -28,7 +28,13 @@
     </div>
   </div>
   <div class="card-body graph-prev-body">
-    <canvas id="{{chartInstanceId}}" width="400" height="100"></canvas>
+    <canvas
+      baseChart
+      [type]="this.chartOptions['type']"
+      [datasets]="this.chartOptions['data']['datasets']"
+      [labels]="this.chartOptions['data']['labels']"
+      [options]="this.chartOptions['options']"
+    ></canvas>
   </div>
   <div class="card-footer" *ngIf="this.dto?.refreshButton">
     <hr>

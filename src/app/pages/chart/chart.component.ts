@@ -1,9 +1,12 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import * as uuid from 'uuid';
 import {ChartDTO} from '../../dtos/chart/chart-dto';
 import {ChartService} from '../../services/crud/chart.service';
-import {Chart} from 'chart.js';
-import 'chartjs-plugin-zoom';
+import { Chart } from 'chart.js';
+import zoomPlugin from 'chartjs-plugin-zoom';
+Chart.register(zoomPlugin);
+
+import 'chart.js';
 
 @Component({
   selector: 'app-chart',
@@ -13,9 +16,9 @@ import 'chartjs-plugin-zoom';
 export class ChartComponent implements OnInit {
   @Input() id: number;
   @Input() public extraParamsMap: Map<any, any>;
-
   public chartInstanceId = uuid.v4();
   public dto: ChartDTO;
+  private chartOptions;
 
   constructor(private service: ChartService) {
   }
@@ -40,7 +43,6 @@ export class ChartComponent implements OnInit {
     }.bind(this), this.dto.executionInterval);
 
   }
-
   refresh() {
     this.service.getChartById(this.id, this.extraParamsMap).subscribe(dto => {
       this.dto = dto;
@@ -56,7 +58,6 @@ export class ChartComponent implements OnInit {
   }
 
   updateGraph() {
-    const chartCanvas: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById(this.chartInstanceId);
     const datasets: any[] = [];
 
     const verticalAxesFieldList = this.dto.chartFieldList.filter(chartField => chartField.name !== this.dto.horizontalAxe);
@@ -76,9 +77,8 @@ export class ChartComponent implements OnInit {
     mainDataset['labels'] = horizontalAxesField.dataset;
     mainDataset['datasets'] = datasets;
 
-    const chartOptions = JSON.parse(this.dto.optionsJson);
-    chartOptions['data'] = mainDataset;
-    const lineChart = new Chart(chartCanvas, chartOptions);
+    this.chartOptions = JSON.parse(this.dto.optionsJson);
+    this.chartOptions['data'] = mainDataset;
   }
 
   fieldEventOccured(event: any) {
