@@ -12,7 +12,7 @@ import {MenuFieldDTO} from "../../../dtos/menu/menuDTO";
 export class NavbarWsNotificationComponent implements OnInit {
 
   @Input() public menuField: MenuFieldDTO;
-  private notifications: any[] = [];
+  public notifications: any[] = [];
 
   constructor(private webSocketService: WebSocketService, private wsNotificationService: WsNotificationService, private navigatorService: CommandNavigatorService) {
   }
