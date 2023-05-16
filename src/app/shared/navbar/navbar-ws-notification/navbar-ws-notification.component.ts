@@ -24,7 +24,8 @@ export class NavbarWsNotificationComponent implements OnInit {
   initializeWebSockets() {
     /* Initialize Web Sockets */
     const userDto = JSON.parse(localStorage.getItem('loggedin_user'));
-    this.webSocketService.initializeUserConnection(userDto.id);
+    this.webSocketService.initializeSockets();
+    this.webSocketService.subscribeToUserTopic(userDto.id);
 
     /* Subscribe to Websockets of User Message */
     this.webSocketService.getUserMessageObservable().subscribe((message) => {
