@@ -6,6 +6,8 @@ import {NotificationService} from './services/system/notification.service';
 import {SettingsService} from './services/crud/settings.service';
 import {environment} from "../environments/environment";
 import {WebSocketService} from "./services/system/web-socket.service";
+import {Observable} from "rxjs";
+import {Message} from "@stomp/stompjs";
 
 @Component({
   selector: 'app-root',
@@ -27,13 +29,13 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.websocketService.getMessageObservable().subscribe((message) => {
-    //   console.log(message);
-    // });
-    this.webSocketService.initializeConnections();
-    this.webSocketService.getMessageObservable2().subscribe((message) => {
-      console.log(' ..1.. '+message.body);
-    });
+
+    const messageObservable: Observable<Message> = this.webSocketService.getMessageObservable2();
+    if(messageObservable != undefined){
+      messageObservable.subscribe((message) => {
+        console.log(' ..1.. '+message.body);
+      });
+    }
 
     this.activatedRoute.queryParamMap.subscribe(params => {
       this.title.setTitle(this.appTitle);

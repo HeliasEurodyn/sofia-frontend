@@ -8,27 +8,24 @@
       <p class="card-category">{{this.dto?.secondTitle}}</p>
     </div>
     <div class="pull-right">
-<div class="row filter-row">
-  <ng-container *ngFor="let filter of this.dto?.filterList">
-    <div class="form-group col" style="min-width: 300px;" *ngIf="filter.type === 'list'">
-          <app-list-selector
-            [editable]="filter.editable"
-            [command]="filter.editor"
-            [defaultValue]="filter.defaultValue"
-            [displayValue]="filter.displayValue"
-            [(value)]="filter.fieldValue"
-            (eventOccured)="fieldEventOccured($event)"></app-list-selector>
-      <div class="category">{{filter.description}}</div>
-    </div>
-  </ng-container>
-
-</div>
-
-
+      <div class="row filter-row">
+        <ng-container *ngFor="let filter of this.dto?.filterList">
+          <div class="form-group col" style="min-width: 300px;" *ngIf="filter.type === 'list'">
+                <app-list-selector
+                  [editable]="filter.editable"
+                  [command]="filter.editor"
+                  [defaultValue]="filter.defaultValue"
+                  [displayValue]="filter.displayValue"
+                  [(value)]="filter.fieldValue"
+                  (eventOccured)="fieldEventOccured($event)"></app-list-selector>
+            <div class="category">{{filter.description}}</div>
+          </div>
+        </ng-container>
+      </div>
     </div>
   </div>
   <div class="card-body graph-prev-body">
-    <canvas
+    <canvas *ngIf="chartOptions != null"
       baseChart
       [type]="this.chartOptions['type']"
       [datasets]="this.chartOptions['data']['datasets']"

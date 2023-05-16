@@ -18,7 +18,7 @@ export class ChartComponent implements OnInit {
   @Input() public extraParamsMap: Map<any, any>;
   public chartInstanceId = uuid.v4();
   public dto: ChartDTO;
-  public chartOptions;
+  public chartOptions = null;
 
   constructor(private service: ChartService) {
   }

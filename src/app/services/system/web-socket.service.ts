@@ -15,6 +15,19 @@ export class WebSocketService {
   private messageSubject2: Observable<Message>;
 
   constructor() {
+    // const ws = new SockJS(`${environment.serverUrl}/sockjs`);
+    // this.stompClient = Stomp.over(ws);
+    // this.stompClient.configure({
+    //   reconnectDelay: 5000,
+    //   heartbeatIncoming: 0,
+    //   heartbeatOutgoing: 20000,
+    //   debug: (msg: string) => { console.log(msg); }
+    // });
+    // this.stompClient.activate();
+  //  this.initializeConnections();
+  }
+
+  initializeSockets() {
     const ws = new SockJS(`${environment.serverUrl}/sockjs`);
     this.stompClient = Stomp.over(ws);
     this.stompClient.configure({
@@ -24,10 +37,10 @@ export class WebSocketService {
       debug: (msg: string) => { console.log(msg); }
     });
     this.stompClient.activate();
-  //  this.initializeConnections();
+    //  this.initializeConnections();
   }
 
-  public initializeUserConnection(userId: string): void {
+  public subscribeToUserTopic(userId: string): void {
     this.userMessageSubject = new Observable<Message>((observer) => {
       let subscription: StompSubscription = null;
       const connectCallback = () => {
@@ -47,7 +60,7 @@ export class WebSocketService {
     });
   }
 
-  public initializeConnections(): void {
+  public subscribeToTopic(): void {
     this.messageSubject2 = new Observable<Message>((observer) => {
       let subscription: StompSubscription = null;
       const connectCallback = () => {
@@ -78,6 +91,5 @@ export class WebSocketService {
   public sendMessage(message: string): void {
    // this.stompClient.publish({ destination: '/hello', body: message });
     this.stompClient.send('/app/hello', {}, JSON.stringify({ 'message': message }));
-
   }
 }
