@@ -73,6 +73,7 @@ export class LoginComponent implements OnInit {
 
         localStorage.setItem('jwt_token', data.accessToken);
         localStorage.setItem('loggedin_user', JSON.stringify(data.user));
+        localStorage.setItem('uiVersion', '1.1');
         sessionStorage.setItem('sidebarMenu', JSON.stringify(data.user['sidebarMenu']));
 
         const loginNavCommand = data.user['loginNavCommand'];
