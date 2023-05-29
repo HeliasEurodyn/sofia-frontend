@@ -182,7 +182,9 @@ export class FormComponent extends PageComponent implements OnInit, AfterViewIni
   refreshFormField(code: string): void {
     this.formFields
       .filter((formField: any) => formField.componentPersistEntityDTO.code + '.' + formField.componentPersistEntityFieldDTO.code === code)
-      .forEach((formField: any) => formField.refresh());
+      .forEach((formField: any) => {
+         formField.refresh();
+      } );
   }
 
   loadDynamicCssScript(id: any): Promise<any> {
@@ -290,9 +292,9 @@ export class FormComponent extends PageComponent implements OnInit, AfterViewIni
         formActionButton.editable = false;
       });
     }
-
-    if (this.dto.formTabs != null) {
-      this.dto.formTabs
+    const formSections = this.dto.formTabs.concat(this.dto.formPopups);
+    if (formSections != null) {
+      formSections
         .filter(formTab => formTab.formAreas != null)
         .forEach(formTab => {
           formTab.formAreas
@@ -305,10 +307,11 @@ export class FormComponent extends PageComponent implements OnInit, AfterViewIni
                   }
                   if (formControl.type === 'table') {
                     formControl.formControlTable.editable = false;
+                    formControl.formControlTable.formControls.forEach(formControl => formControl.formControlField.editable = false);
                   }
-                  if (formControl.type === 'table') {
-                    formControl.formControlTable.formControlButtons = [];
-                  }
+                  // if (formControl.type === 'table') {
+                  //   formControl.formControlTable.formControlButtons = [];
+                  // }
                 });
             });
         });

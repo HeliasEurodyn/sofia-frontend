@@ -10,7 +10,8 @@
   <tr>
     <th *ngIf="formcontrol.formControlTable.formControlButtons.length > 0"></th>
     <th *ngFor="let formControl of formcontrol.formControlTable.formControls"
-        class="col-{{formControl.formControlField.id}}" [ngClass]="{'table-found-by-search-bar' : formControl.searchSelected}">
+        class="col-{{formControl.formControlField.id}}"
+        [ngClass]="{'table-found-by-search-bar' : formControl.searchSelected}">
 
       <app-list-selector
         *ngIf="formControl.formControlField.componentPersistEntityField.assignment.type === 'list' &&

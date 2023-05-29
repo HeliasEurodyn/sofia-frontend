@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
 import {ComponentPersistEntityDTO} from '../../dtos/component/component-persist-entity-dto';
 import {ComponentPersistEntityFieldDTO} from '../../dtos/component/component-persist-entity-field-dto';
 
@@ -7,7 +7,7 @@ import {ComponentPersistEntityFieldDTO} from '../../dtos/component/component-per
   templateUrl: './numeric-input.component.html',
   styleUrls: ['./numeric-input.component.css']
 })
-export class NumericInputComponent implements OnInit {
+export class NumericInputComponent implements OnInit, OnChanges {
 
   @Input() inputValue: any;
   @Output() inputValueChange = new EventEmitter<any>();
@@ -24,6 +24,13 @@ export class NumericInputComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  }
+
+  ngOnChanges() {
+  }
+
+  refresh(){
+    console.log("value: " + this.inputValue);
   }
 
   onKeyUp($event: KeyboardEvent) {

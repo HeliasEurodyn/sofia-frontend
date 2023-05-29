@@ -269,7 +269,7 @@
                      style="{{formcontrol.formControlField.css}}">
                   <div class="form-group">
                     <b>{{formcontrol.formControlField.description}}</b>
-                    <app-numeric-input class="form-input-field"
+                    <app-numeric-input #formFields class="form-input-field "
                                        [(inputValue)]="formcontrol.formControlField.componentPersistEntityField.value"
                                        [mask]="(!!formcontrol.formControlField.mask)?formcontrol.formControlField.mask.toString():'0*'"
                                        (eventOccured)="fieldEventOccured($event)"
