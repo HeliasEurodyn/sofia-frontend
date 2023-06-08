@@ -115,6 +115,19 @@
 
             <ng-container *ngIf="formcontrol.type === 'field'">
               <ng-container
+                *ngIf="formcontrol.formControlField.componentPersistEntityField.assignment.type === 'html'">
+                <div [ngClass]="{'hidden-field': !formcontrol.formControlField.visible, 'found-by-search-bar' : formcontrol.searchSelected}"
+                     class="{{formcontrol.cssclass}} form-field-{{formcontrol.id}}"
+                     style="{{formcontrol.formControlField.css}}">
+                  <div class="form-group">
+                    <b>{{formcontrol.formControlField.description}}</b>
+                    <div [innerHTML]="trustResource(formcontrol.formControlField.componentPersistEntityField.value)"></div>
+                    <div class="category" [innerHTML]="formcontrol.formControlField.message"></div>
+                  </div>
+                </div>
+              </ng-container>
+
+              <ng-container
                 *ngIf="formcontrol.formControlField.componentPersistEntityField.assignment.type === 'varchar'">
                 <div [ngClass]="{'hidden-field': !formcontrol.formControlField.visible, 'found-by-search-bar' : formcontrol.searchSelected}"
                      class="{{formcontrol.cssclass}} form-field-{{formcontrol.id}}"

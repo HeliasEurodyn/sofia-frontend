@@ -123,10 +123,10 @@
                                  style="color: #959494;"
                               ></i>
                             </button>
-                            <button (click)="filterGroup(item)"
+                            <button (click)="filterGroup(item)" [innerHTML]="item['value']"
                                     class="btn left-group-button btn-outline-default"
                                     style="border: 1px solid #66615b !important; text-align: left;">
-                              {{item['value']}}
+
                             </button>
                           </div>
                           <ul *ngIf="item['children'] != undefined && item['childrenVisible']">
@@ -162,9 +162,10 @@
                       <div class="" style="padding-left: 0px;padding-right: 0px;padding-top: 2px;"
                            *ngIf="(item.fieldValue==null?'':item.fieldValue) != ''">
                         <div class="text-center">
-                          <button (click)="filterGroupOnField(item)" class="btn left-group-button btn-outline-default"
+                          <button [innerHTML]="item.fieldValue"
+                            (click)="filterGroupOnField(item)"
+                                  class="btn left-group-button btn-outline-default"
                                   style="border: 1px solid #66615b !important">
-                            {{item.fieldValue}}
                           </button>
                         </div>
                       </div>
@@ -278,7 +279,6 @@
                           </div>
                         </div>
                       </ng-container>
-
                       <ng-container
                         *ngIf="row.type === 'combo'">
                         <div class="{{row.bclass}} L{{listDto.id}}-{{this.listDto.code}}-{{row.code}} filter-col"
@@ -460,6 +460,10 @@
                               [(inputDate)]="row[column.code]"
                               [mask]="'dd/MM/yyyy'">
                             </app-date-time-picker>
+                          </ng-container>
+
+                          <ng-container *ngIf="column.type === 'datetime_det_simple'">
+                            {{ row[column.code] | date:'dd/MM/yyyy h:mm a' }}
                           </ng-container>
 
                           <ng-container *ngIf="column.type === 'int' || column.type === 'bigint'">

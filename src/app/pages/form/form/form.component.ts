@@ -20,7 +20,7 @@ import {YesNoDialogComponent} from '../../../shared/yes-no-dialog/yes-no-dialog.
 import {FormControlButtonDTO} from '../../../dtos/form/form-control-button-dto';
 import {OkDialogComponent} from '../../../shared/ok-dialog/ok-dialog.component';
 import {PreviousRouteService} from '../../../services/system/previous-route.service';
-import {Title} from '@angular/platform-browser';
+import {DomSanitizer, Title} from '@angular/platform-browser';
 import {FormScriptsService} from '../../../services/system/form-scripts.service';
 import {FormActionButton} from '../../../dtos/form/form-action-button';
 import {DynamicCssScriptLoaderService} from '../../../services/system/dynamic-css-script-loader.service';
@@ -64,7 +64,8 @@ export class FormComponent extends PageComponent implements OnInit, AfterViewIni
               private formTableLinesService: FormTableLinesService,
               private languageService: LanguageService,
               private el: ElementRef,
-              private listSearchService: ListSearchService) {
+              private listSearchService: ListSearchService,
+              private sanitizer: DomSanitizer) {
     super();
   }
 
@@ -533,15 +534,16 @@ export class FormComponent extends PageComponent implements OnInit, AfterViewIni
       }
     }
   }
-
-  public
-
-  getFromBackendWithCustomHeaders(url: string, customHeaders: [], callback: (n: any, result: boolean) => any) {
+  public getFromBackendWithCustomHeaders(url: string, customHeaders: [], callback: (n: any, result: boolean) => any) {
     this.formScriptsService.getFromBackendWithCustomHeaders(url, customHeaders, callback);
   }
 
   public getFromUrlWithCustomHeaders(url: string, headers: [], callback: (n: any, result: boolean) => any) {
     this.formScriptsService.getFromUrlWithCustomHeaders(url, headers, callback);
+  }
+
+  trustResource(resource) {
+    return this.sanitizer.bypassSecurityTrustHtml(resource);
   }
 
 }
