@@ -15,14 +15,6 @@ export class ComponentPersistEntityFieldDTO extends BaseDTO {
 
   public value: any;
 
-  saveStatement: string;
-
-  locateStatement: string;
-
-  joinPersistEntityCode: string;
-
-  joinPersistEntity: ComponentPersistEntityDTO;
-
   persistEntityField: PersistEntityFieldDTO;
 
   assignment: ComponentPersistEntityFieldAssignmentDTO;

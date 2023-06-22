@@ -323,7 +323,7 @@
                      style="{{formcontrol.formControlField.css}}">
                   <div class="form-group">
                     <b>{{formcontrol.formControlField.description}}</b>
-                    <app-date-picker class="form-input-field"
+                    <app-date-picker #formFields class="form-input-field"
                                      [(inputDate)]="formcontrol.formControlField.componentPersistEntityField.value"
                                      [editable]="formcontrol.formControlField.editable"
                                      [componentPersistEntityDTO]="formcontrol.formControlField.componentPersistEntity"
@@ -390,6 +390,21 @@
                     </app-image-selector>
                     <div class="category" [innerHTML]="formcontrol.formControlField.message"></div>
                   </div>
+                </div>
+              </ng-container>
+              <ng-container
+                *ngIf="formcontrol.formControlField.componentPersistEntityField.assignment.type === 'rule'">
+                <div [ngClass]="{'hidden-field': !formcontrol.formControlField.visible, 'found-by-search-bar' : formcontrol.searchSelected}"
+                     class="{{formcontrol.cssclass}} form-field-{{formcontrol.id}}"
+                     style="{{formcontrol.formControlField.css}}">
+                  <app-rule-designer #formFields
+                    [componentPersistEntityFieldDTO]="formcontrol.formControlField.componentPersistEntityField"
+                    [componentPersistEntityDTO]="formcontrol.formControlField.componentPersistEntity"
+                    [command]="formcontrol.formControlField.componentPersistEntityField.assignment.editor"
+                    [id]="formcontrol.formControlField.componentPersistEntityField.id"
+                    (eventOccured)="fieldEventOccured($event)"
+                    [editable]="formcontrol.formControlField.editable"
+                  ></app-rule-designer>
                 </div>
               </ng-container>
             </ng-container>

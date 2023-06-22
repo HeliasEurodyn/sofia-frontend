@@ -58,6 +58,7 @@ export class ListSelectorComponent implements OnInit {
     this.setComponentDislpayValue();
     this.setDefaultValue();
     this.setDefaultListValue();
+    console.log(this.value);
   }
 
   private setDefaultValue() {

@@ -20,6 +20,8 @@ import {DynamicStaticJavascriptLoaderService} from './dynamic-static-javascript-
 import {NotificationService} from './notification.service';
 import {environment} from '../../../environments/environment';
 import {response} from 'express';
+import {ComponentDTO} from "../../dtos/component/componentDTO";
+import {ComponentPersistEntityFieldDTO} from "../../dtos/component/component-persist-entity-field-dto";
 
 /*
  *  Definition functions that passes function pointers.
@@ -755,6 +757,25 @@ export class FormScriptsService {
       .subscribe(data => {
         this.notificationService.showNotification('top', 'center', 'alert-success', 'fa-id-card', data?.message);
       })
+  }
+
+  public getComponentPersistEntityByCode(componentPersistEntityList: ComponentPersistEntityDTO[] , code: string){
+    const componentPersistEntity = componentPersistEntityList.find(entity => entity.code === code);
+    if(componentPersistEntity == undefined){
+      for (const cpe of componentPersistEntityList) {
+        const componentPersistEntity = this.getComponentPersistEntityByCode(cpe.componentPersistEntityList, code);
+        if(componentPersistEntity != null){
+          return componentPersistEntity;
+        }
+      }
+    }
+
+    return componentPersistEntity;
+  }
+
+  public getComponentPersistEntityFieldByCode(componentPersistEntityFieldList: ComponentPersistEntityFieldDTO[] , code: string){
+    const componentPersistEntityField = componentPersistEntityFieldList.find(entity => entity.code === code);
+    return componentPersistEntityField;
   }
 
 }

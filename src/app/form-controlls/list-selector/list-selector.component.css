@@ -5,8 +5,9 @@
   padding-right: 20px;
 }
 
-.form-control[disabled], .form-control[readonly] {
-  border: 1px solid #51cbce;
+.form-control[disabled], .form-control[readonly] , .form-control[active] {
+  border: 1px solid #51cbce !important;
+  border-left: 0px !important;
 }
 
 .input-group-prepend .input-group-text {

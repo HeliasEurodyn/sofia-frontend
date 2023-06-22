@@ -1,4 +1,4 @@
-import {Component, ComponentRef, OnInit} from '@angular/core';
+import {Component, ComponentRef, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {Location} from "@angular/common";
 import {CommandNavigatorService} from "../../services/system/command-navigator.service";
@@ -7,8 +7,12 @@ import {PageComponent} from "../page/page-component";
 import {RuleDTO, RuleExpressionDTO} from 'app/dtos/rule/rule-d-t-o';
 import {RuleService} from "../../services/crud/rule.service";
 import {NotificationService} from "../../services/system/notification.service";
-import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
+import {DomSanitizer} from "@angular/platform-browser";
 import {RuleSettingsDTO} from "../../dtos/rule/rule-settings-dto";
+import {ComponentPersistEntityFieldDTO} from "../../dtos/component/component-persist-entity-field-dto";
+import {ComponentPersistEntityDTO} from "../../dtos/component/component-persist-entity-dto";
+import {RuleFieldService} from "../../services/crud/rule-field.service";
+import {RuleOperatorService} from "../../services/crud/rule-operator.service";
 
 @Component({
   selector: 'app-rule-designer',
@@ -19,9 +23,14 @@ export class RuleDesignerComponent extends PageComponent implements OnInit {
   mode: string;
   public dto: RuleDTO;
   public settingsDTO: RuleSettingsDTO;
+  public  showSaveButton = false;
 
-
- // public ruleExpressionDTO: RuleExpressionDTO;
+  @Input() command: string;
+  @Input() public componentPersistEntityFieldDTO: ComponentPersistEntityFieldDTO;
+  @Input() public componentPersistEntityDTO: ComponentPersistEntityDTO;
+  @Input() fieldId: string;
+  @Input() editable: Boolean;
+  @Output() eventOccured = new EventEmitter<any>();
 
   linecounter = 0;
 
@@ -34,12 +43,19 @@ export class RuleDesignerComponent extends PageComponent implements OnInit {
               private navigatorService: CommandNavigatorService,
               private notificationService: NotificationService,
               private sanitizer: DomSanitizer,
-              private commandNavigatorService: CommandNavigatorService) {
+              private commandNavigatorService: CommandNavigatorService,
+              private ruleFieldService: RuleFieldService,
+              private ruleOperatorService: RuleOperatorService,
+              ) {
     super();
   }
 
   ngOnInit(): void {
     this.initNav(this.activatedRoute);
+    this.refresh();
+  }
+
+  public refresh(): void {
 
     let id = '';
     let selectionId = '';
@@ -47,16 +63,19 @@ export class RuleDesignerComponent extends PageComponent implements OnInit {
     this.mode = 'new-record';
     this.dto = new RuleDTO();
     this.settingsDTO = new RuleSettingsDTO();
-   // this.ruleExpressionDTO = new RuleExpressionDTO();
 
-    const locateParams = this.getLocateParams();
+    const locateParams: Map<string, string> = this.commandParserService.parse(this.command);
 
     if (locateParams.has('ID')) {
       id = locateParams.get('ID');
     }
 
-    if (locateParams.has('SELECTION-ID')) {
-      selectionId = locateParams.get('SELECTION-ID');
+    if(locateParams.get('SHOW-SAVE-BUTTON') === 'YES'){
+      this.showSaveButton = true;
+    }
+
+    if (this.componentPersistEntityFieldDTO.value) {
+      selectionId = this.componentPersistEntityFieldDTO.value;
       this.mode = 'edit-record';
     }
 
@@ -68,7 +87,7 @@ export class RuleDesignerComponent extends PageComponent implements OnInit {
       this.service.getById(selectionId).subscribe(data => {
         this.dto = data;
 
-        if(this.dto.ruleExpressionList != null){
+        if (this.dto.ruleExpressionList != null) {
           this.expandAll(this.dto.ruleExpressionList);
         }
 
@@ -78,10 +97,10 @@ export class RuleDesignerComponent extends PageComponent implements OnInit {
   }
 
   private expandAll(ruleExpressionList: RuleExpressionDTO[]) {
-    if(ruleExpressionList != null){
+    if (ruleExpressionList != null) {
       ruleExpressionList.forEach(x => {
         x.expanded = true;
-        if(x.ruleExpressionList != null){
+        if (x.ruleExpressionList != null) {
           this.expandAll(x.ruleExpressionList);
         }
       });
@@ -145,8 +164,10 @@ export class RuleDesignerComponent extends PageComponent implements OnInit {
     const componentRefOnNavigation: ComponentRef<any> = this.commandNavigatorService.navigate(this.settingsDTO.fieldCommand);
     componentRefOnNavigation.instance.setPresetCommand(this.settingsDTO.fieldCommand);
     componentRefOnNavigation.instance.selectEmmiter.subscribe((returningValues: string[]) => {
-      ruleExpressionDTO.fieldCode = returningValues['RETURN'];
-      ruleExpressionDTO.fieldName = returningValues['RETURN-DISLPAY'];
+      console.log(returningValues);
+      this.ruleFieldService.getById(returningValues['RETURN']).subscribe(ruleField => {
+        ruleExpressionDTO.ruleField = ruleField;
+      });
     });
   }
 
@@ -154,8 +175,9 @@ export class RuleDesignerComponent extends PageComponent implements OnInit {
     const componentRefOnNavigation: ComponentRef<any> = this.commandNavigatorService.navigate(this.settingsDTO.operatorCommand);
     componentRefOnNavigation.instance.setPresetCommand(this.settingsDTO.operatorCommand);
     componentRefOnNavigation.instance.selectEmmiter.subscribe((returningValues: string[]) => {
-      ruleExpressionDTO.operatorCode = returningValues['RETURN'];
-      ruleExpressionDTO.operatorName = returningValues['RETURN-DISLPAY'];
+      this.ruleOperatorService.getById(returningValues['RETURN']).subscribe(ruleOperator => {
+        ruleExpressionDTO.ruleOperator = ruleOperator;
+      });
     });
   }
 
@@ -226,23 +248,12 @@ export class RuleDesignerComponent extends PageComponent implements OnInit {
     }
   }
 
-  save() {
-
-
-    if(this.dto.code == null || this.dto.code == '' ){
-      this.notificationService.showNotification('top', 'center', 'alert-danger', 'fa-exclamation', 'The Code Field Cannot be empty!');
-      return;
-    }
-
-    if(this.dto.name == null || this.dto.name == '' ){
-      this.notificationService.showNotification('top', 'center', 'alert-danger', 'fa-exclamation', 'The Name Field Cannot be empty!');
-      return;
-    }
-
+  save(callback) {
     const emptyExpressionFound = this.checkEmptyExpressionFields(this.dto.ruleExpressionList);
-    if(emptyExpressionFound){
-      this.notificationService.showNotification('top', 'center', 'alert-danger', 'fa-exclamation', 'There are empty fields on the expression! <br> Fill them to be able to Save!');
-      return;
+    if (emptyExpressionFound) {
+      this.dto.emptyExpressionFound = true;
+    }else {
+      this.dto.emptyExpressionFound = false;
     }
 
     let rulePreview = this.createExpressionPreview(this.dto.ruleExpressionList);
@@ -251,18 +262,32 @@ export class RuleDesignerComponent extends PageComponent implements OnInit {
     this.dto.ruleExpressionList = this.updateShortOrderAndClearParrents(this.dto.ruleExpressionList);
 
     if (this.mode === 'edit-record') {
-      this.service.update(this.dto).subscribe(data => {
-        this.location.back();
+      this.service.update(this.dto).subscribe((data: RuleDTO) => {
+          this.dto = data;
+          this.componentPersistEntityFieldDTO.value =this.dto.id;
+
+          if (this.dto.ruleExpressionList != null) {
+            this.expandAll(this.dto.ruleExpressionList);
+          }
+
+          if(callback != null) callback(data);
       });
     } else {
-      this.service.save(this.dto).subscribe(data => {
-        this.location.back();
+      this.service.save(this.dto).subscribe((data: RuleDTO) => {
+          this.dto = data;
+          this.componentPersistEntityFieldDTO.value =this.dto.id;
+
+          if (this.dto.ruleExpressionList != null) {
+            this.expandAll(this.dto.ruleExpressionList);
+          }
+
+         if(callback != null) callback(data);
+
+          this.mode = 'edit-record';
       });
     }
+
   }
-
-
-
 
   updateShortOrderAndClearParrents(ruleExpressionList: RuleExpressionDTO[]) {
     if (ruleExpressionList == null) {
@@ -310,40 +335,31 @@ export class RuleDesignerComponent extends PageComponent implements OnInit {
     this.visibleSection = visibleSection;
   }
 
-  // setRuleField(field: string) {
-  //   this.ruleExpressionDTO.fieldName = field;
-  // }
-
-  // setOperatorField(operator: string) {
-  //   this.ruleExpressionDTO.operatorName = operator;
-  // }
-
   createPreview() {
-
-    const emptyFound = this.checkEmptyExpressionFields(this.dto.ruleExpressionList)
-    if(emptyFound){
-      this.notificationService.showNotification('top', 'center', 'alert-danger', 'fa-exclamation', 'There are empty fields on the expression! <br> Fill them to be able to Preview or Save!');
-      return;
-    }
+    // const emptyFound = this.checkEmptyExpressionFields(this.dto.ruleExpressionList)
+    // if (emptyFound) {
+    //   this.notificationService.showNotification('top', 'center', 'alert-danger', 'fa-exclamation', 'There are empty fields on the expression! <br> Fill them to be able to Preview or Save!');
+    //   return;
+    // }
 
     let rulePreview = this.createExpressionPreview(this.dto.ruleExpressionList);
     this.dto.expressionPreview = rulePreview;
     document.getElementById('openPreviewButton').click();
   }
 
-  checkEmptyExpressionFields(ruleExpressionList: RuleExpressionDTO[]) :boolean {
+  checkEmptyExpressionFields(ruleExpressionList: RuleExpressionDTO[]): boolean {
 
     for (const item of ruleExpressionList) {
-      if(item.fieldName == null || item.fieldName == '' ||
+      if (item.fieldName == null || item.fieldName == '' ||
         item.operatorName == null || item.operatorName == '' ||
-        item.command == null || item.command == ''){
+        item.command == null || item.command == '') {
         return true;
       }
 
-      if(item.ruleExpressionList != null && item.ruleExpressionList.length > 0){
+      if (item.ruleExpressionList != null && item.ruleExpressionList.length > 0) {
         const emptyFound = this.checkEmptyExpressionFields(item.ruleExpressionList);
-        if(emptyFound){
-        return true;
+        if (emptyFound) {
+          return true;
         }
       }
 
@@ -357,8 +373,13 @@ export class RuleDesignerComponent extends PageComponent implements OnInit {
 
     ruleExpressionList.forEach((item, index) => {
 
+      if (item.ruleExpressionList != null && item.ruleExpressionList.length > 0) {
+        rulePreview += `<button class="btn" class="col" style="border: 2px solid ${item.childrenColor};background-color: ${item.color}; padding: 6px;"><b style="color: #0c5460">(</b></button>`;
+      }
+
+
       let joinType = '';
-      if(item.joinType == 'and'){
+      if (item.joinType == 'and') {
         joinType = `<button class="btn" class="col" style="border: 2px solid ${item.color}; padding: 6px;"><b style="color: #0c5460">AND</b></button>`;
       } else {
         joinType = `<button class="btn" class="col" style="border: 2px solid ${item.color}; padding: 6px;"><b style="color: #0c5460">OR</b></button>`;
@@ -368,37 +389,37 @@ export class RuleDesignerComponent extends PageComponent implements OnInit {
         joinType = '';
       }
 
-      rulePreview +=
-        `<button class="btn btn-round" style="border: 2px solid ${item.color}; padding: 6px;"> `
-      rulePreview +=
-        `<b style="color: #385f89"> ${item.fieldName}</b>`;
-      rulePreview +=
-        ` <b style="color: #476636">${item.operatorName}</b>` ;
+      let fieldName = item.ruleField?.name || '<span style="color: #ff4b4b">empty-field</span>';
+      let operatorName = item.ruleOperator?.name || '<span style="color: #ff4b4b">empty-operator</span>';
+      let command = item.command || '<span style="color: #ff4b4b">empty-expression</span>';
 
-      rulePreview +=
-        ` <b style="color: #385f89"> ${item.command}  </b> </button>` ;
+      rulePreview += `
+        <button class="btn btn-round" style="border: 2px solid ${item.color}; padding: 6px;">
+          <b style="color: #385f89">${fieldName}</b>
+          <b style="color: #476636">${operatorName}</b>
+          <b style="color: #385f89">${command}</b>
+        </button>`;
 
-      if(item.ruleExpressionList != null && item.ruleExpressionList.length > 0){
+      if (item.ruleExpressionList != null && item.ruleExpressionList.length > 0) {
 
         let childrenJoinType = '';
-        if(item.childrenJoinType == 'and'){
+        if (item.childrenJoinType == 'and') {
           childrenJoinType = `<button class="btn" class="col" style="border: 2px solid ${item.childrenColor};background-color: ${item.color}; padding: 6px;"><b style="color: #0c5460">AND</b></button>`;
         } else {
           childrenJoinType = `<button class="btn" class="col" style="border: 2px solid ${item.childrenColor};background-color: ${item.color}; padding: 6px;"><b style="color: #0c5460">OR</b></button>`;
         }
         rulePreview += childrenJoinType;
 
-        rulePreview += `<button class="btn" class="col" style="border: 2px solid ${item.childrenColor};background-color: ${item.color}; padding: 6px;"><b style="color: #0c5460">(</b></button>`;
         rulePreview += this.createExpressionPreview(item.ruleExpressionList);
         rulePreview += `<button class="btn" class="col" style="border: 2px solid ${item.childrenColor};background-color: ${item.color}; padding: 6px;"><b style="color: #0c5460">)</b></button>`;
       }
 
       rulePreview +=
-        `${joinType}` ;
+        `${joinType}`;
 
     });
 
-   return rulePreview;
+    return rulePreview;
   }
 
   trustResource(resource) {

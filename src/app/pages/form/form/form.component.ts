@@ -164,14 +164,11 @@ export class FormComponent extends PageComponent implements OnInit, AfterViewIni
                       });
                     });
 
-
                 });
             });
         }
-
       }
     )
-
   }
 
   applyLanguageSelection() {
@@ -185,7 +182,13 @@ export class FormComponent extends PageComponent implements OnInit, AfterViewIni
       .filter((formField: any) => formField.componentPersistEntityDTO.code + '.' + formField.componentPersistEntityFieldDTO.code === code)
       .forEach((formField: any) => {
          formField.refresh();
+         console.log(formField);
       } );
+  }
+
+  findFormField(code: string): void {
+    return this.formFields
+      .find((formField: any) => formField.componentPersistEntityDTO.code + '.' + formField.componentPersistEntityFieldDTO.code  == code);
   }
 
   loadDynamicCssScript(id: any): Promise<any> {

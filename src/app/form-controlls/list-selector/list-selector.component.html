@@ -98,7 +98,7 @@
          (resize)="eventOccuredActions('resize',$event)">
 
   <div
-    *ngIf="this.editable"
+    *ngIf="this.editable && this.showDeleteButton"
     class="input-group-append">
         <span *ngIf="this.showDeleteButton"
           (click)="clear()"
@@ -111,7 +111,7 @@
   </div>
 
   <div
-    *ngIf="!this.editable"
+    *ngIf="!this.editable && this.showDeleteButton"
     class="input-group-append">
         <span
           class="input-group-text input-group-text-rm">
