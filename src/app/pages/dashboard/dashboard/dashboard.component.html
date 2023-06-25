@@ -35,4 +35,13 @@
       </div>
     </div>
   </ng-container>
+  <div class="chat-div" [hidden] = isChatComponentHidden>
+    <app-chat></app-chat>
+  </div>
+  <div>
+    <button  type="button" class="btn  chat-button btn-round btn-icon btn-lg"  (click)="openChat()">
+      <i class="fa-regular fa-comment-dots fa-2xl" *ngIf="isChatComponentHidden"></i>
+      <i class="fas fa-times fa-2xl" *ngIf="!isChatComponentHidden"></i>
+    </button>
+  </div>
 </div>

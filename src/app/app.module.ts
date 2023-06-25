@@ -64,6 +64,7 @@ import { UiPluginComponent } from './pages/ui-plugin/ui-plugin.component';
 import { RuleDesignerComponent } from './pages/rule-designer/rule-designer.component';
 import { WsNotificationComponent } from './pages/ws-notification/ws-notification.component';
 import { NgChartsModule } from 'ng2-charts';
+import { ChatComponent } from './pages/chat/chat.component';
 
 @NgModule({
   declarations: [
@@ -108,6 +109,7 @@ import { NgChartsModule } from 'ng2-charts';
     UiPluginComponent,
     RuleDesignerComponent,
     WsNotificationComponent,
+    ChatComponent,
   ],
   imports: [
     BrowserAnimationsModule,

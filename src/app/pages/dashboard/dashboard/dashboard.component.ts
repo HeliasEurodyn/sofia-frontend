@@ -6,6 +6,7 @@ import {PageComponent} from '../../page/page-component';
 import {DashboardService} from '../../../services/crud/dashboard.service';
 import {Title} from '@angular/platform-browser';
 import {ListComponent} from '../../list/list/list.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -18,12 +19,14 @@ export class DashboardComponent extends PageComponent implements OnInit {
   public dto: DashboardDTO = null;
   public extraParams = '';
   public extraParamsMap: Map<any, any>;
+  public isChatComponentHidden = true;
 
   constructor(
     private service: DashboardService,
     private navigatorService: CommandNavigatorService,
     private activatedRoute: ActivatedRoute,
-    private title: Title) {
+    private title: Title,
+    private router: Router) {
     super();
   }
 
@@ -60,4 +63,7 @@ export class DashboardComponent extends PageComponent implements OnInit {
     }
   }
 
+  openChat() {
+    this.isChatComponentHidden = !this.isChatComponentHidden;
+  }
 }

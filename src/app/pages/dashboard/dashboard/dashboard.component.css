@@ -10,3 +10,19 @@
 .main-dashboard-row{
   padding: 10px;
 }
+
+.chat-button{
+  background-color: #00B2FF;
+  position: fixed;
+  bottom: 0;
+  right: 1%;
+
+}
+
+.chat-div{
+  position: fixed;
+  bottom: 8%;
+  right: 1%;
+}
+
+
