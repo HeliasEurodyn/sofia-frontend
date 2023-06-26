@@ -122,9 +122,19 @@ export class CommandParserService {
     return locateValuesKeyValMap;
   }
 
-  public parseListPart(params: Map<string, string> = new Map(), paramPart: string): string[] {
+  public parseListPart(params: Map<string, any> = new Map(), paramPart: string): string[] {
     const locateValuesKeyValMap: string[] = [];
     if (params.has(paramPart)) {
+      const paramValue = params.get(paramPart);
+
+      if(typeof(params.get(paramPart)) !== 'string' ){
+        if (Array.isArray(paramValue)) {
+          return paramValue.map(String);
+        } else {
+          return [String(paramValue)];
+        }
+      }
+
       const locateValues = params.get(paramPart);
       let locateValuesInsideBrackets = locateValues.replace(/.*\(|\).*/, '');
       locateValuesInsideBrackets = locateValuesInsideBrackets.replace(/.*\(|\).*/, '');

@@ -6,25 +6,29 @@
         <div class="row">
           <div class="col-12">
             <div class="pull-right">
-              <button class="btn btn-round btn-outline-primary"
-                      (click)="createPreview()">
-                <i class="fa-solid fa-magnifying-glass"></i>
-                Preview  </button>
-              <button id="openPreviewButton" style="display: none;"
-                      data-target="#expressionPreview" data-toggle="modal">
-                <i class="fa-solid fa-magnifying-glass"></i></button>
-              <button class="btn btn-round btn-outline-success"
+
+              <button class="btn btn-round btn-outline-info"
                       (click)="addMenuField(null)">
                 <i class="fa fa-plus-circle"></i>
                 Expression  </button>
-            </div>
 
-            <div class="pull-left">
+              <button class="btn btn-round btn-outline-default"
+                      (click)="createPreview()">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                Preview  </button>
+
+              <button id="openPreviewButton" style="display: none;"
+                      data-target="#expressionPreview" data-toggle="modal">
+                <i class="fa-solid fa-magnifying-glass"></i></button>
+
+              <span *ngIf="this.showSaveButton"> &nbsp; </span>
               <button *ngIf="this.showSaveButton" class="btn btn-round btn-outline-success"
                       (click)="save(null)">
                 <i class="fa fa-save"></i>
                 Save  </button>
             </div>
+
+
           </div>
         </div>
       </div>
@@ -68,7 +72,7 @@
                                (click)="selectOperator(item)"
                                placeholder="Select Operator"
                                class="form-control textfield-area expr-unit-type ruleSettings-type"
-                               value="{{item?.ruleOperator?.code}}">
+                               value="{{item?.ruleOperator?.name}}">
 
                       </div>
                       <div class="input-group-prepend">

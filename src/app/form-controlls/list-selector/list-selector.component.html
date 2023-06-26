@@ -57,45 +57,47 @@
          </span>
   </div>
 
-  <input *ngIf="this.editable"
-         readonly
-         (keydown)="keyOpenPage($event)"
-         (click)="openList()"
-         (keydown)="onKeyDown($event)"
-         id="{{uuid}}"
-         type="text"
-         #selectorField
-         class="form-control bg-color {{fieldClass}} ctrl-field"
-         [value]="displayValue"
-         (click)="eventOccuredActions('click',$event)"
-         (change)="eventOccuredActions('change',$event)"
-         (focus)="eventOccuredActions('focus',$event)"
-         (focus)="focusTriggered($event)"
-         (focusout)="eventOccuredActions('focusout',$event)"
-         (drag)="eventOccuredActions('drag',$event)"
-         (dragend)="eventOccuredActions('dragend',$event)"
-         (mousemove)="eventOccuredActions('mousemove',$event)"
-         (mouseout)="eventOccuredActions('mouseout',$event)"
-         (mouseover)="eventOccuredActions('mouseover',$event)"
-         (mouseup)="eventOccuredActions('mouseup',$event)"
-         (resize)="eventOccuredActions('resize',$event)">
+  <div class="input-group-text form-control bg-color {{fieldClass}} ctrl-field"
+        *ngIf="this.editable"
+        (keydown)="keyOpenPage($event)"
+        (click)="openList()"
+        (keydown)="onKeyDown($event)"
+        (click)="eventOccuredActions('click',$event)"
+        (change)="eventOccuredActions('change',$event)"
+        (focus)="eventOccuredActions('focus',$event)"
+        (focus)="focusTriggered($event)"
+        (focusout)="eventOccuredActions('focusout',$event)"
+        (drag)="eventOccuredActions('drag',$event)"
+        (dragend)="eventOccuredActions('dragend',$event)"
+        (mousemove)="eventOccuredActions('mousemove',$event)"
+        (mouseout)="eventOccuredActions('mouseout',$event)"
+        (mouseover)="eventOccuredActions('mouseover',$event)"
+        (mouseup)="eventOccuredActions('mouseup',$event)"
+        (resize)="eventOccuredActions('resize',$event)"
+        id="{{uuid}}"
+        #selectorField
+        [innerHTML]="this.trustResource(displayValue)">
 
-  <input type="text" readonly
-         *ngIf="!this.editable"
-         class="form-control {{fieldClass}}"
-         [value]="displayValue"
-         (click)="eventOccuredActions('click',$event)"
-         (change)="eventOccuredActions('change',$event)"
-         (focus)="eventOccuredActions('focus',$event)"
-         (focus)="focusTriggered($event)"
-         (focusout)="eventOccuredActions('focusout',$event)"
-         (drag)="eventOccuredActions('drag',$event)"
-         (dragend)="eventOccuredActions('dragend',$event)"
-         (mousemove)="eventOccuredActions('mousemove',$event)"
-         (mouseout)="eventOccuredActions('mouseout',$event)"
-         (mouseover)="eventOccuredActions('mouseover',$event)"
-         (mouseup)="eventOccuredActions('mouseup',$event)"
-         (resize)="eventOccuredActions('resize',$event)">
+  </div>
+
+  <div class="input-group-text form-control bg-color {{fieldClass}} ctrl-field"
+        *ngIf="!this.editable"
+        (click)="eventOccuredActions('click',$event)"
+        (change)="eventOccuredActions('change',$event)"
+        (focus)="eventOccuredActions('focus',$event)"
+        (focus)="focusTriggered($event)"
+        (focusout)="eventOccuredActions('focusout',$event)"
+        (drag)="eventOccuredActions('drag',$event)"
+        (dragend)="eventOccuredActions('dragend',$event)"
+        (mousemove)="eventOccuredActions('mousemove',$event)"
+        (mouseout)="eventOccuredActions('mouseout',$event)"
+        (mouseover)="eventOccuredActions('mouseover',$event)"
+        (mouseup)="eventOccuredActions('mouseup',$event)"
+        (resize)="eventOccuredActions('resize',$event)"
+        id="{{uuid}}"
+        #selectorField
+        [innerHTML]="this.trustResource(displayValue)">
+  </div>
 
   <div
     *ngIf="this.editable && this.showDeleteButton"

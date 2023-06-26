@@ -374,7 +374,7 @@ export class RuleDesignerComponent extends PageComponent implements OnInit {
     ruleExpressionList.forEach((item, index) => {
 
       if (item.ruleExpressionList != null && item.ruleExpressionList.length > 0) {
-        rulePreview += `<button class="btn" class="col" style="border: 2px solid ${item.childrenColor};background-color: ${item.color}; padding: 6px;"><b style="color: #0c5460">(</b></button>`;
+        rulePreview += `<button class="btn" class="col" style="border: 2px solid ${item.childrenColor};background-color: ${item.color}; padding: 6px;"><b style="color: #4e622b">(</b></button>`;
       }
 
 
@@ -404,14 +404,20 @@ export class RuleDesignerComponent extends PageComponent implements OnInit {
 
         let childrenJoinType = '';
         if (item.childrenJoinType == 'and') {
-          childrenJoinType = `<button class="btn" class="col" style="border: 2px solid ${item.childrenColor};background-color: ${item.color}; padding: 6px;"><b style="color: #0c5460">AND</b></button>`;
+          childrenJoinType = `<button class="btn" class="col" style="border: 2px solid ${item.childrenColor};background-color: ${item.color}; padding: 6px;"><b style="color: #0c5460">AND </b></button>`;
         } else {
-          childrenJoinType = `<button class="btn" class="col" style="border: 2px solid ${item.childrenColor};background-color: ${item.color}; padding: 6px;"><b style="color: #0c5460">OR</b></button>`;
+          childrenJoinType = `<button class="btn" class="col" style="border: 2px solid ${item.childrenColor};background-color: ${item.color}; padding: 6px;"><b style="color: #0c5460">OR </b></button>`;
         }
         rulePreview += childrenJoinType;
+        if( item.ruleExpressionList.length > 1){
+          rulePreview += `<button class="btn" class="col" style="border: 2px solid ${item.childrenColor};background-color: ${item.color}; padding: 6px;"><b style="color: #0c5460">(</b></button>`;
+        }
 
         rulePreview += this.createExpressionPreview(item.ruleExpressionList);
-        rulePreview += `<button class="btn" class="col" style="border: 2px solid ${item.childrenColor};background-color: ${item.color}; padding: 6px;"><b style="color: #0c5460">)</b></button>`;
+        if( item.ruleExpressionList.length > 1){
+          rulePreview += `<button class="btn" class="col" style="border: 2px solid ${item.childrenColor};background-color: ${item.color}; padding: 6px;"><b style="color: #0c5460">)</b></button>`;
+        }
+        rulePreview += `<button class="btn" class="col" style="border: 2px solid ${item.childrenColor};background-color: ${item.color}; padding: 6px;"><b style="color: #4e622b">)</b></button>`;
       }
 
       rulePreview +=
