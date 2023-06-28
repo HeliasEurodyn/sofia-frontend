@@ -64,12 +64,23 @@ export class AppComponent implements OnInit {
     //   this.notificationService.showNotification('top', 'center', 'alert-info', 'fa-thumbs-down', 'Received push notification - ' + notification.toString());
     // });
 
+    // PushNotifications.addListener('pushNotificationActionPerformed', (notification: any) => {
+    //   // Handle action performed on push notification (e.g., tapped)
+    //   //console.log('Push notification action performed: ', notification);
+    //
+    //
+    //   this.notificationService.showNotification('top', 'center', 'alert-info', 'fa-thumbs-down', 'Push notification action performed - ' + JSON.stringify(notification));
+    // });
+
     PushNotifications.addListener('pushNotificationActionPerformed', (notification: any) => {
       // Handle action performed on push notification (e.g., tapped)
-      //console.log('Push notification action performed: ', notification);
+      // console.log('Push notification action performed: ', notification);
 
+      const notificationId = notification.notification.data.notification_id;
+     // const { notification: { data } } = notification;
+      // this.notificationService.showNotification('top', 'center', 'alert-info', 'fa-thumbs-down', 'Push notification action performed - ' + JSON.stringify(data));
+      this.notificationService.showNotification('top', 'center', 'alert-info', 'fa-thumbs-down', 'Push notification action performed - ' + JSON.stringify(notificationId));
 
-      this.notificationService.showNotification('top', 'center', 'alert-info', 'fa-thumbs-down', 'Push notification action performed - ' + JSON.stringify(notification));
     });
 
     localStorage.setItem('serverUrl', environment.serverUrl);
