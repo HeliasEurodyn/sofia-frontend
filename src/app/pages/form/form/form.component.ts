@@ -20,7 +20,7 @@ import {YesNoDialogComponent} from '../../../shared/yes-no-dialog/yes-no-dialog.
 import {FormControlButtonDTO} from '../../../dtos/form/form-control-button-dto';
 import {OkDialogComponent} from '../../../shared/ok-dialog/ok-dialog.component';
 import {PreviousRouteService} from '../../../services/system/previous-route.service';
-import {Title} from '@angular/platform-browser';
+import {DomSanitizer, Title} from '@angular/platform-browser';
 import {FormScriptsService} from '../../../services/system/form-scripts.service';
 import {FormActionButton} from '../../../dtos/form/form-action-button';
 import {DynamicCssScriptLoaderService} from '../../../services/system/dynamic-css-script-loader.service';
@@ -64,7 +64,8 @@ export class FormComponent extends PageComponent implements OnInit, AfterViewIni
               private formTableLinesService: FormTableLinesService,
               private languageService: LanguageService,
               private el: ElementRef,
-              private listSearchService: ListSearchService) {
+              private listSearchService: ListSearchService,
+              private sanitizer: DomSanitizer) {
     super();
   }
 
@@ -163,14 +164,11 @@ export class FormComponent extends PageComponent implements OnInit, AfterViewIni
                       });
                     });
 
-
                 });
             });
         }
-
       }
     )
-
   }
 
   applyLanguageSelection() {
@@ -182,7 +180,15 @@ export class FormComponent extends PageComponent implements OnInit, AfterViewIni
   refreshFormField(code: string): void {
     this.formFields
       .filter((formField: any) => formField.componentPersistEntityDTO.code + '.' + formField.componentPersistEntityFieldDTO.code === code)
-      .forEach((formField: any) => formField.refresh());
+      .forEach((formField: any) => {
+         formField.refresh();
+         console.log(formField);
+      } );
+  }
+
+  findFormField(code: string): void {
+    return this.formFields
+      .find((formField: any) => formField.componentPersistEntityDTO.code + '.' + formField.componentPersistEntityFieldDTO.code  == code);
   }
 
   loadDynamicCssScript(id: any): Promise<any> {
@@ -290,9 +296,9 @@ export class FormComponent extends PageComponent implements OnInit, AfterViewIni
         formActionButton.editable = false;
       });
     }
-
-    if (this.dto.formTabs != null) {
-      this.dto.formTabs
+    const formSections = this.dto.formTabs.concat(this.dto.formPopups);
+    if (formSections != null) {
+      formSections
         .filter(formTab => formTab.formAreas != null)
         .forEach(formTab => {
           formTab.formAreas
@@ -305,10 +311,11 @@ export class FormComponent extends PageComponent implements OnInit, AfterViewIni
                   }
                   if (formControl.type === 'table') {
                     formControl.formControlTable.editable = false;
+                    formControl.formControlTable.formControls.forEach(formControl => formControl.formControlField.editable = false);
                   }
-                  if (formControl.type === 'table') {
-                    formControl.formControlTable.formControlButtons = [];
-                  }
+                  // if (formControl.type === 'table') {
+                  //   formControl.formControlTable.formControlButtons = [];
+                  // }
                 });
             });
         });
@@ -530,15 +537,16 @@ export class FormComponent extends PageComponent implements OnInit, AfterViewIni
       }
     }
   }
-
-  public
-
-  getFromBackendWithCustomHeaders(url: string, customHeaders: [], callback: (n: any, result: boolean) => any) {
+  public getFromBackendWithCustomHeaders(url: string, customHeaders: [], callback: (n: any, result: boolean) => any) {
     this.formScriptsService.getFromBackendWithCustomHeaders(url, customHeaders, callback);
   }
 
   public getFromUrlWithCustomHeaders(url: string, headers: [], callback: (n: any, result: boolean) => any) {
     this.formScriptsService.getFromUrlWithCustomHeaders(url, headers, callback);
+  }
+
+  trustResource(resource) {
+    return this.sanitizer.bypassSecurityTrustHtml(resource);
   }
 
 }

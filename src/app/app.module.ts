@@ -54,7 +54,6 @@ import {ChipsComponent} from './form-controlls/chips/chips.component';
 import {PivotListComponent} from './pages/pivot-list/pivot-list/pivot-list.component';
 import {PivotListWrapperComponent} from './pages/pivot-list/pivot-list-wrapper/pivot-list-wrapper.component';
 import {DashboardWrapperComponent} from './pages/dashboard/dashboard-wrapper/dashboard-wrapper.component';
-import {ChartsModule} from 'ng2-charts';
 import {PasswordInputComponent} from './form-controlls/password-input/password-input.component';
 import {FileSelectorComponent} from './form-controlls/file-selector/file-selector.component';
 import {TimelineComponent} from './pages/timeline/timeline.component';
@@ -63,6 +62,9 @@ import { HtmlTemplatePreviewComponent } from './pages/html-template-preview/html
 import { ImageSelectorComponent } from './form-controlls/image-selector/image-selector.component';
 import { UiPluginComponent } from './pages/ui-plugin/ui-plugin.component';
 import {SetApplicationInterfaceModalComponent} from './modals/set-application-intreface/set-application-interface-modal.component';
+import { RuleDesignerComponent } from './pages/rule-designer/rule-designer.component';
+import { WsNotificationComponent } from './pages/ws-notification/ws-notification.component';
+import { NgChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -105,6 +107,8 @@ import {SetApplicationInterfaceModalComponent} from './modals/set-application-in
     HtmlTemplatePreviewComponent,
     ImageSelectorComponent,
     UiPluginComponent,
+    RuleDesignerComponent,
+    WsNotificationComponent,
     SetApplicationInterfaceModalComponent
   ],
   imports: [
@@ -123,7 +127,7 @@ import {SetApplicationInterfaceModalComponent} from './modals/set-application-in
     NgbDatepickerModule,
     NgbModule,
     AceModule,
-    ChartsModule
+    NgChartsModule
   ],
   providers: [
     DatePipe,

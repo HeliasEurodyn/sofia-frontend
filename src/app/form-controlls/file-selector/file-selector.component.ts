@@ -18,6 +18,7 @@ export class FileSelectorComponent implements OnInit {
   cpeFieldFileName: ComponentPersistEntityFieldDTO = null;
   cpeFieldFileSize: ComponentPersistEntityFieldDTO = null;
   @ViewChild('sidebarImageFileUploader') sidebarImageFileUploader: ElementRef;
+  accept = '';
 
   constructor() {
   }
@@ -37,6 +38,10 @@ export class FileSelectorComponent implements OnInit {
     }
     if (command['fileSize'] != null) {
       this.retrieveFileSizeField(command.fileSize);
+    }
+
+    if (command['accept'] != null) {
+      this.accept = command.accept;
     }
   }
 

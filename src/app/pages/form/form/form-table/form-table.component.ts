@@ -52,47 +52,47 @@ export class FormTableComponent implements OnInit, OnChanges {
     }
   }
 
-  public tableFieldKeyDown(event: KeyboardEvent,
-                           cellId: string,
-                           formControlTableLineDTO: FormControlTableLineDTO,
-                           formControlTableLineDTOS: FormControlTableLineDTO[],
-                           formControlTableDTO: FormControlTableDTO) {
-
-    if (event.ctrlKey && event.key === 'ArrowUp') {
-      this.tableFocusPrevLineSameField(cellId, formControlTableLineDTOS, formControlTableLineDTO);
-    }
-
-    if (event.ctrlKey && event.key === 'ArrowDown') {
-      this.tableFocusNextLineSameField(cellId, formControlTableLineDTOS, formControlTableLineDTO);
-    }
-
-    if (event.ctrlKey && event.key === 'ArrowLeft') {
-      const focused = this.tableFocusPrevField(cellId, formControlTableLineDTO);
-      if (!focused) {
-        this.tableFocusPrevLineLastField(formControlTableLineDTOS, formControlTableLineDTO);
-      }
-    }
-
-    if ((event.ctrlKey && event.key === 'ArrowRight') ||
-      event.key === 'Enter') {
-      const focused = this.tableFocusNextField(cellId, formControlTableLineDTO);
-      if (!focused) {
-        const nextLineFocused = this.tableFocusNextLineFirstField(formControlTableLineDTOS, formControlTableLineDTO);
-        if (!nextLineFocused) {
-          this.tableAddNewLine(formControlTableDTO, formControlTableLineDTOS, formControlTableLineDTO);
-        }
-      }
-    }
-
-    if (event.ctrlKey && event.key === 'Delete') {
-      const focused = this.tableFocusPrevLineFirstField(formControlTableLineDTOS, formControlTableLineDTO);
-      if (!focused) {
-        this.tableFocusNextLineFirstField(formControlTableLineDTOS, formControlTableLineDTO);
-      }
-
-      this.tableDeleteLine(formControlTableDTO, formControlTableLineDTOS, formControlTableLineDTO);
-    }
-  }
+  // public tableFieldKeyDown(event: KeyboardEvent,
+  //                          cellId: string,
+  //                          formControlTableLineDTO: FormControlTableLineDTO,
+  //                          formControlTableLineDTOS: FormControlTableLineDTO[],
+  //                          formControlTableDTO: FormControlTableDTO) {
+  //
+  //   if (event.ctrlKey && event.key === 'ArrowUp') {
+  //     this.tableFocusPrevLineSameField(cellId, formControlTableLineDTOS, formControlTableLineDTO);
+  //   }
+  //
+  //   if (event.ctrlKey && event.key === 'ArrowDown') {
+  //     this.tableFocusNextLineSameField(cellId, formControlTableLineDTOS, formControlTableLineDTO);
+  //   }
+  //
+  //   if (event.ctrlKey && event.key === 'ArrowLeft') {
+  //     const focused = this.tableFocusPrevField(cellId, formControlTableLineDTO);
+  //     if (!focused) {
+  //       this.tableFocusPrevLineLastField(formControlTableLineDTOS, formControlTableLineDTO);
+  //     }
+  //   }
+  //
+  //   if ((event.ctrlKey && event.key === 'ArrowRight') ||
+  //     event.key === 'Enter') {
+  //     const focused = this.tableFocusNextField(cellId, formControlTableLineDTO);
+  //     if (!focused) {
+  //       const nextLineFocused = this.tableFocusNextLineFirstField(formControlTableLineDTOS, formControlTableLineDTO);
+  //       if (!nextLineFocused) {
+  //         this.tableAddNewLine(formControlTableDTO, formControlTableLineDTOS, formControlTableLineDTO);
+  //       }
+  //     }
+  //   }
+  //
+  //   if (event.ctrlKey && event.key === 'Delete') {
+  //     const focused = this.tableFocusPrevLineFirstField(formControlTableLineDTOS, formControlTableLineDTO);
+  //     if (!focused) {
+  //       this.tableFocusNextLineFirstField(formControlTableLineDTOS, formControlTableLineDTO);
+  //     }
+  //
+  //     this.tableDeleteLine(formControlTableDTO, formControlTableLineDTOS, formControlTableLineDTO);
+  //   }
+  // }
 
   public tableAddNewLine(formControlTableDTO: FormControlTableDTO,
                          formControlTableLineDTOS: FormControlTableLineDTO[],
@@ -102,16 +102,22 @@ export class FormTableComponent implements OnInit, OnChanges {
       return;
     }
 
-
     let requiderFieldsFilled = true;
     if (prevFormControlTableLineDTO != null) {
       requiderFieldsFilled = this.checkRequiredFields(prevFormControlTableLineDTO);
     }
 
+    this.formScriptsService.nativeTableButtonNewLineHandler(
+        this.form.dto.id,
+        formControlTableDTO,
+        requiderFieldsFilled
+    );
+
+
     if (requiderFieldsFilled) {
-      const componentPersistEntityDataLine = this.newComponentPersistEntityDataLine(formControlTableDTO.componentPersistEntity);
+      this.newComponentPersistEntityDataLine(formControlTableDTO.componentPersistEntity);
       this.refershTableFields(formControlTableDTO);
-      this.tableFocusNextLineFirstField(formControlTableLineDTOS, prevFormControlTableLineDTO);
+      //this.tableFocusNextLineFirstField(formControlTableLineDTOS, prevFormControlTableLineDTO);
     }
   }
 
@@ -223,8 +229,6 @@ export class FormTableComponent implements OnInit, OnChanges {
 
   public tableAppendNewLine(formControlTableLineDTOS: FormControlTableLineDTO[],
                             formControlTableDTO: FormControlTableDTO) {
-
-
     let prevFormControlTableLineDTO = null;
 
     if (formControlTableLineDTOS.length > 0) {
@@ -235,6 +239,10 @@ export class FormTableComponent implements OnInit, OnChanges {
 
   public tableDeleteLine(formControlTableDTO: FormControlTableDTO,
                          formControlTableLineDTOS: FormControlTableLineDTO[], formControlTableLineDTO: FormControlTableLineDTO) {
+
+    if (!formControlTableDTO.editable) {
+      return;
+    }
 
     let elementPosition = 0;
     for (const curFormControlTableLineDTO of formControlTableLineDTOS) {
@@ -265,145 +273,145 @@ export class FormTableComponent implements OnInit, OnChanges {
     return true;
   }
 
-  public tableFocusPrevLineFirstField(formControlTableLineDTOS: FormControlTableLineDTO[],
-                                      formControlTableLineDTO: FormControlTableLineDTO) {
+  // public tableFocusPrevLineFirstField(formControlTableLineDTOS: FormControlTableLineDTO[],
+  //                                     formControlTableLineDTO: FormControlTableLineDTO) {
+  //
+  //   let controlTableLineDTO: FormControlTableLineDTO = null;
+  //   for (const curFormControlTableLineDTO of formControlTableLineDTOS) {
+  //     if (curFormControlTableLineDTO === formControlTableLineDTO && controlTableLineDTO !== null) {
+  //       const htmlclass =
+  //         controlTableLineDTO.formControlCells[0].id.toString()
+  //       this.focusByClass(htmlclass);
+  //       return true;
+  //     }
+  //
+  //     controlTableLineDTO = curFormControlTableLineDTO;
+  //   }
+  //   return false;
+  // }
 
-    let controlTableLineDTO: FormControlTableLineDTO = null;
-    for (const curFormControlTableLineDTO of formControlTableLineDTOS) {
-      if (curFormControlTableLineDTO === formControlTableLineDTO && controlTableLineDTO !== null) {
-        const htmlclass =
-          controlTableLineDTO.formControlCells[0].id.toString()
-        this.focusByClass(htmlclass);
-        return true;
-      }
+  // public tableFocusPrevLineSameField(cellId: string, formControlTableLineDTOS: FormControlTableLineDTO[],
+  //                                    formControlTableLineDTO: FormControlTableLineDTO) {
+  //
+  //   let prevFormControlTableLineDTO: FormControlTableLineDTO = null;
+  //   for (const CurFormControlTableLineDTO of formControlTableLineDTOS) {
+  //     if (CurFormControlTableLineDTO === formControlTableLineDTO && prevFormControlTableLineDTO !== null) {
+  //
+  //       let formControlId = '';
+  //       for (const formControlCell of CurFormControlTableLineDTO.formControlCells) {
+  //         if (cellId === formControlCell.id) {
+  //           formControlId = formControlCell.formControl.id;
+  //         }
+  //       }
+  //
+  //       for (const formControlCell of prevFormControlTableLineDTO.formControlCells) {
+  //         if (formControlId === formControlCell.formControl.id) {
+  //           this.focusByClass(formControlCell.id.toString());
+  //           return true;
+  //         }
+  //       }
+  //     }
+  //
+  //     prevFormControlTableLineDTO = CurFormControlTableLineDTO;
+  //   }
+  //   return false;
+  // }
 
-      controlTableLineDTO = curFormControlTableLineDTO;
-    }
-    return false;
-  }
+  // public tableFocusNextLineSameField(cellId: string, formControlTableLineDTOS: FormControlTableLineDTO[],
+  //                                    formControlTableLineDTO: FormControlTableLineDTO) {
+  //
+  //   let currentElementIdFound = false;
+  //   let formControlId = '0';
+  //   for (const curFormControlTableLineDTO of formControlTableLineDTOS) {
+  //
+  //     if (currentElementIdFound) {
+  //       for (const formControlCell of curFormControlTableLineDTO.formControlCells) {
+  //         if (formControlId === formControlCell.formControl.id) {
+  //           this.focusByClass(formControlCell.id.toString());
+  //           return true;
+  //         }
+  //       }
+  //     }
+  //
+  //     if (curFormControlTableLineDTO === formControlTableLineDTO) {
+  //       for (const formControlCell of curFormControlTableLineDTO.formControlCells) {
+  //         if (cellId === formControlCell.id) {
+  //           formControlId = formControlCell.formControl.id;
+  //         }
+  //       }
+  //
+  //       currentElementIdFound = true;
+  //     }
+  //   }
+  //   return false;
+  // }
 
-  public tableFocusPrevLineSameField(cellId: string, formControlTableLineDTOS: FormControlTableLineDTO[],
-                                     formControlTableLineDTO: FormControlTableLineDTO) {
+  // public tableFocusPrevField(id: string, formControlTableLineDTO: FormControlTableLineDTO) {
+  //   let prevElementId = '';
+  //   for (const formControlCell of formControlTableLineDTO.formControlCells) {
+  //
+  //     if (id === formControlCell.id && prevElementId !== '') {
+  //       this.focusByClass(prevElementId);
+  //       return true;
+  //     }
+  //
+  //     prevElementId = formControlCell.id.toString();
+  //   }
+  //
+  //   return false;
+  // }
 
-    let prevFormControlTableLineDTO: FormControlTableLineDTO = null;
-    for (const CurFormControlTableLineDTO of formControlTableLineDTOS) {
-      if (CurFormControlTableLineDTO === formControlTableLineDTO && prevFormControlTableLineDTO !== null) {
+  // public tableFocusPrevLineLastField(formControlTableLineDTOS: FormControlTableLineDTO[],
+  //                                    formControlTableLineDTO: FormControlTableLineDTO) {
+  //
+  //   let prevFormControlTableLineDTO: FormControlTableLineDTO = null;
+  //   for (const curFormControlTableLineDTO of formControlTableLineDTOS) {
+  //     if (curFormControlTableLineDTO === formControlTableLineDTO && prevFormControlTableLineDTO !== null) {
+  //       const htmlclass =
+  //         prevFormControlTableLineDTO.formControlCells[prevFormControlTableLineDTO.formControlCells.length - 1].id.toString();
+  //       this.focusByClass(htmlclass);
+  //       return true;
+  //     }
+  //
+  //     prevFormControlTableLineDTO = curFormControlTableLineDTO;
+  //   }
+  //   return false;
+  // }
 
-        let formControlId = '';
-        for (const formControlCell of CurFormControlTableLineDTO.formControlCells) {
-          if (cellId === formControlCell.id) {
-            formControlId = formControlCell.formControl.id;
-          }
-        }
+  // public tableFocusNextField(id: string, formControlTableLineDTO: FormControlTableLineDTO) {
+  //   let currentElementIdFound = false;
+  //   for (const formControlCell of formControlTableLineDTO.formControlCells) {
+  //
+  //     if (currentElementIdFound) {
+  //       this.focusByClass(formControlCell.id.toString());
+  //       return true;
+  //     }
+  //
+  //     if (id === formControlCell.id) {
+  //       currentElementIdFound = true;
+  //     }
+  //   }
+  //   return false;
+  // }
 
-        for (const formControlCell of prevFormControlTableLineDTO.formControlCells) {
-          if (formControlId === formControlCell.formControl.id) {
-            this.focusByClass(formControlCell.id.toString());
-            return true;
-          }
-        }
-      }
-
-      prevFormControlTableLineDTO = CurFormControlTableLineDTO;
-    }
-    return false;
-  }
-
-  public tableFocusNextLineSameField(cellId: string, formControlTableLineDTOS: FormControlTableLineDTO[],
-                                     formControlTableLineDTO: FormControlTableLineDTO) {
-
-    let currentElementIdFound = false;
-    let formControlId = '0';
-    for (const curFormControlTableLineDTO of formControlTableLineDTOS) {
-
-      if (currentElementIdFound) {
-        for (const formControlCell of curFormControlTableLineDTO.formControlCells) {
-          if (formControlId === formControlCell.formControl.id) {
-            this.focusByClass(formControlCell.id.toString());
-            return true;
-          }
-        }
-      }
-
-      if (curFormControlTableLineDTO === formControlTableLineDTO) {
-        for (const formControlCell of curFormControlTableLineDTO.formControlCells) {
-          if (cellId === formControlCell.id) {
-            formControlId = formControlCell.formControl.id;
-          }
-        }
-
-        currentElementIdFound = true;
-      }
-    }
-    return false;
-  }
-
-  public tableFocusPrevField(id: string, formControlTableLineDTO: FormControlTableLineDTO) {
-    let prevElementId = '';
-    for (const formControlCell of formControlTableLineDTO.formControlCells) {
-
-      if (id === formControlCell.id && prevElementId !== '') {
-        this.focusByClass(prevElementId);
-        return true;
-      }
-
-      prevElementId = formControlCell.id.toString();
-    }
-
-    return false;
-  }
-
-  public tableFocusPrevLineLastField(formControlTableLineDTOS: FormControlTableLineDTO[],
-                                     formControlTableLineDTO: FormControlTableLineDTO) {
-
-    let prevFormControlTableLineDTO: FormControlTableLineDTO = null;
-    for (const curFormControlTableLineDTO of formControlTableLineDTOS) {
-      if (curFormControlTableLineDTO === formControlTableLineDTO && prevFormControlTableLineDTO !== null) {
-        const htmlclass =
-          prevFormControlTableLineDTO.formControlCells[prevFormControlTableLineDTO.formControlCells.length - 1].id.toString();
-        this.focusByClass(htmlclass);
-        return true;
-      }
-
-      prevFormControlTableLineDTO = curFormControlTableLineDTO;
-    }
-    return false;
-  }
-
-  public tableFocusNextField(id: string, formControlTableLineDTO: FormControlTableLineDTO) {
-    let currentElementIdFound = false;
-    for (const formControlCell of formControlTableLineDTO.formControlCells) {
-
-      if (currentElementIdFound) {
-        this.focusByClass(formControlCell.id.toString());
-        return true;
-      }
-
-      if (id === formControlCell.id) {
-        currentElementIdFound = true;
-      }
-    }
-    return false;
-  }
-
-  public tableFocusNextLineFirstField(formControlTableLineDTOS: FormControlTableLineDTO[],
-                                      formControlTableLineDTO: FormControlTableLineDTO) {
-
-    let curFormControlLineFound = false;
-    for (const curFormControlLine of formControlTableLineDTOS) {
-      if (curFormControlLineFound) {
-        const htmlclass =
-          curFormControlLine.formControlCells[0].id.toString();
-        this.focusByClass(htmlclass);
-        return true;
-      }
-
-      if (curFormControlLine === formControlTableLineDTO) {
-        curFormControlLineFound = true;
-      }
-    }
-    return false;
-  }
+  // public tableFocusNextLineFirstField(formControlTableLineDTOS: FormControlTableLineDTO[],
+  //                                     formControlTableLineDTO: FormControlTableLineDTO) {
+  //
+  //   let curFormControlLineFound = false;
+  //   for (const curFormControlLine of formControlTableLineDTOS) {
+  //     if (curFormControlLineFound) {
+  //       const htmlclass =
+  //         curFormControlLine.formControlCells[0].id.toString();
+  //       this.focusByClass(htmlclass);
+  //       return true;
+  //     }
+  //
+  //     if (curFormControlLine === formControlTableLineDTO) {
+  //       curFormControlLineFound = true;
+  //     }
+  //   }
+  //   return false;
+  // }
 
   public tableFocusFirstLineFirstField(formControlLines: FormControlTableLineDTO[]) {
     for (const formControlLine of formControlLines) {
@@ -476,4 +484,113 @@ export class FormTableComponent implements OnInit, OnChanges {
       componentPersistEntityDataLine
     );
   }
+
+  filterListRefreshData(event, formControlTable: FormControlTableDTO) {
+    if(event.eventtype !== 'listselected' && event.eventtype !== 'listcleared'){
+      return;
+    }
+
+    this.filtertableLines(event, formControlTable);
+  }
+
+  filterRefreshData(event, formControlTable: FormControlTableDTO) {
+    if (event.key !== 'Enter') {
+      return;
+    }
+
+  this.filtertableLines(event, formControlTable);
+  }
+
+  filtertableLines(event, formControlTable: FormControlTableDTO) {
+    formControlTable.formControlLines.forEach(formControlLine => {
+      let hideLine = false;
+
+      formControlLine.formControlCells.forEach(formControlcell => {
+        if (!formControlcell.componentPersistEntityField.value.toString().includes(formControlcell.formControl.filterValue) &&
+          formControlcell.formControl.filterValue != null  &&
+          formControlcell.formControl.filterValue !== '') {
+          hideLine = true;
+        }
+      });
+
+      formControlLine.hideLine = hideLine;
+    });
+  }
+
+  cellsKeyDown(event, formcontrol: FormControlDto, formControlLine: FormControlTableLineDTO, rowIndex: number, colIndex: number) {
+    const formControlLines = formcontrol.formControlTable.formControlLines;
+
+    if (event.shiftKey && event.key === 'ArrowLeft') {
+      const tds = document.getElementsByClassName('tbl-'+formcontrol.id+'-cell-' + rowIndex + '-' + (colIndex-1) );
+      if (tds.length > 0) {
+        this.focusContorlField((tds[0] as HTMLElement).children);
+      }
+    }
+
+    if (event.shiftKey && event.key === 'ArrowRight') {
+      const tds = document.getElementsByClassName('tbl-'+formcontrol.id+'-cell-' + rowIndex + '-' + (colIndex+1) );
+      if (tds.length > 0) {
+        this.focusContorlField((tds[0] as HTMLElement).children);
+      }
+    }
+
+    if (event.shiftKey && event.key === 'ArrowUp') {
+      const tds = document.getElementsByClassName('tbl-'+formcontrol.id+'-cell-' + (rowIndex-1) + '-' + colIndex );
+      if (tds.length > 0) {
+        this.focusContorlField((tds[0] as HTMLElement).children);
+      }
+    }
+
+    if (event.shiftKey && event.key === 'ArrowDown') {
+      let newRowIndex = rowIndex+1;
+
+      if(newRowIndex == formControlLines.length){
+       this.tableAppendNewLine(formControlLines,formcontrol.formControlTable);
+
+        setTimeout(() => {
+          const tds = document.getElementsByClassName('tbl-'+formcontrol.id+'-cell-' + newRowIndex + '-' + colIndex );
+          console.log('tbl-'+formcontrol.id+'-cell-' + newRowIndex + '-' + colIndex );
+          if (tds.length > 0) {
+            this.focusContorlField((tds[0] as HTMLElement).children);
+          }
+        },500);
+
+       return;
+      }
+
+      const tds = document.getElementsByClassName('tbl-'+formcontrol.id+'-cell-' + newRowIndex + '-' + colIndex );
+      console.log(tds.length);
+      console.log('tbl-'+formcontrol.id+'-cell-' + newRowIndex + '-' + colIndex );
+      if (tds.length > 0) {
+        this.focusContorlField((tds[0] as HTMLElement).children);
+      }
+    }
+
+    if (event.altKey && event.key === 'Delete') {
+      this.tableDeleteLine(formcontrol.formControlTable, formControlLines, formControlLine);
+      const tds = document.getElementsByClassName('tbl-'+formcontrol.id+'-cell-' + (rowIndex-1) + '-' + colIndex );
+      if (tds.length > 0) {
+        this.focusContorlField((tds[0] as HTMLElement).children);
+      }
+    }
+  }
+
+  private focusContorlField(elements: HTMLCollection) {
+    for (let i = 0; i < elements.length; i++) {
+      if (elements[i].classList.contains('ctrl-field')) {
+        (elements[i] as HTMLElement).focus();
+        return true;
+      }
+    }
+
+    for (let i = 0; i < elements.length; i++) {
+      const found = this.focusContorlField((elements[i] as HTMLElement).children);
+      if (found) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
 }

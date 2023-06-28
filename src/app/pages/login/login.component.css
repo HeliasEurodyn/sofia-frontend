@@ -85,3 +85,7 @@
 .password-icon .fa-lock{
   font-size: 13px;
 }
+
+.card-login{
+  box-shadow: #332739 0px 7px 29px 0px;
+}

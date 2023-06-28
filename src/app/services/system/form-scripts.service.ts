@@ -20,6 +20,8 @@ import {DynamicStaticJavascriptLoaderService} from './dynamic-static-javascript-
 import {NotificationService} from './notification.service';
 import {environment} from '../../../environments/environment';
 import {response} from 'express';
+import {ComponentDTO} from "../../dtos/component/componentDTO";
+import {ComponentPersistEntityFieldDTO} from "../../dtos/component/component-persist-entity-field-dto";
 
 /*
  *  Definition functions that passes function pointers.
@@ -129,6 +131,8 @@ declare function nativeFieldEventsHandler(id, entityCode: string, fieldCode: str
 
 declare function nativeTableButtonClickHandler(id, param: string, formControlTable: any, dataLine: any): any;
 
+declare function nativeTableButtonNewLineHandler(id, formControlTable: any, added: boolean): any;
+
 declare function nativeTableFieldEventsHandler(id, entityCode: string, fieldCode: string, eventtype: string, event: any,
                                                formControlTable: any, dataLine: any): any;
 
@@ -237,6 +241,10 @@ export class FormScriptsService {
 
   public tableButtonClickOccured(id, param: string, formControlTable: any, dataLine: any) {
     nativeTableButtonClickHandler(id, param, formControlTable, dataLine);
+  }
+
+  public nativeTableButtonNewLineHandler(id, formControlTable: any, added: boolean) {
+    nativeTableButtonNewLineHandler(id, formControlTable, added);
   }
 
   /*
@@ -749,6 +757,25 @@ export class FormScriptsService {
       .subscribe(data => {
         this.notificationService.showNotification('top', 'center', 'alert-success', 'fa-id-card', data?.message);
       })
+  }
+
+  public getComponentPersistEntityByCode(componentPersistEntityList: ComponentPersistEntityDTO[] , code: string){
+    const componentPersistEntity = componentPersistEntityList.find(entity => entity.code === code);
+    if(componentPersistEntity == undefined){
+      for (const cpe of componentPersistEntityList) {
+        const componentPersistEntity = this.getComponentPersistEntityByCode(cpe.componentPersistEntityList, code);
+        if(componentPersistEntity != null){
+          return componentPersistEntity;
+        }
+      }
+    }
+
+    return componentPersistEntity;
+  }
+
+  public getComponentPersistEntityFieldByCode(componentPersistEntityFieldList: ComponentPersistEntityFieldDTO[] , code: string){
+    const componentPersistEntityField = componentPersistEntityFieldList.find(entity => entity.code === code);
+    return componentPersistEntityField;
   }
 
 }

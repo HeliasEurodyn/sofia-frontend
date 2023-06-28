@@ -36,7 +36,6 @@
             <div ngbDropdownMenu class="dropdown-menu-right">
               <ng-container *ngFor="let subActionButton of actionButton?.formActionButtons">
                 <div *ngIf="subActionButton.editor === '#divider#'" class="dropdown-divider"></div>
-
                 <button ngbDropdownItem
                         class="submenu-button"
                         *ngIf="subActionButton.editor !== '#divider#'"
@@ -115,6 +114,19 @@
             </ng-container>
 
             <ng-container *ngIf="formcontrol.type === 'field'">
+              <ng-container
+                *ngIf="formcontrol.formControlField.componentPersistEntityField.assignment.type === 'html'">
+                <div [ngClass]="{'hidden-field': !formcontrol.formControlField.visible, 'found-by-search-bar' : formcontrol.searchSelected}"
+                     class="{{formcontrol.cssclass}} form-field-{{formcontrol.id}}"
+                     style="{{formcontrol.formControlField.css}}">
+                  <div class="form-group">
+                    <b>{{formcontrol.formControlField.description}}</b>
+                    <div [innerHTML]="trustResource(formcontrol.formControlField.componentPersistEntityField.value)"></div>
+                    <div class="category" [innerHTML]="formcontrol.formControlField.message"></div>
+                  </div>
+                </div>
+              </ng-container>
+
               <ng-container
                 *ngIf="formcontrol.formControlField.componentPersistEntityField.assignment.type === 'varchar'">
                 <div [ngClass]="{'hidden-field': !formcontrol.formControlField.visible, 'found-by-search-bar' : formcontrol.searchSelected}"
@@ -270,7 +282,7 @@
                      style="{{formcontrol.formControlField.css}}">
                   <div class="form-group">
                     <b>{{formcontrol.formControlField.description}}</b>
-                    <app-numeric-input class="form-input-field"
+                    <app-numeric-input #formFields class="form-input-field "
                                        [(inputValue)]="formcontrol.formControlField.componentPersistEntityField.value"
                                        [mask]="(!!formcontrol.formControlField.mask)?formcontrol.formControlField.mask.toString():'0*'"
                                        (eventOccured)="fieldEventOccured($event)"
@@ -311,7 +323,7 @@
                      style="{{formcontrol.formControlField.css}}">
                   <div class="form-group">
                     <b>{{formcontrol.formControlField.description}}</b>
-                    <app-date-picker class="form-input-field"
+                    <app-date-picker #formFields class="form-input-field"
                                      [(inputDate)]="formcontrol.formControlField.componentPersistEntityField.value"
                                      [editable]="formcontrol.formControlField.editable"
                                      [componentPersistEntityDTO]="formcontrol.formControlField.componentPersistEntity"
@@ -378,6 +390,21 @@
                     </app-image-selector>
                     <div class="category" [innerHTML]="formcontrol.formControlField.message"></div>
                   </div>
+                </div>
+              </ng-container>
+              <ng-container
+                *ngIf="formcontrol.formControlField.componentPersistEntityField.assignment.type === 'rule'">
+                <div [ngClass]="{'hidden-field': !formcontrol.formControlField.visible, 'found-by-search-bar' : formcontrol.searchSelected}"
+                     class="{{formcontrol.cssclass}} form-field-{{formcontrol.id}}"
+                     style="{{formcontrol.formControlField.css}}">
+                  <app-rule-designer #formFields
+                    [componentPersistEntityFieldDTO]="formcontrol.formControlField.componentPersistEntityField"
+                    [componentPersistEntityDTO]="formcontrol.formControlField.componentPersistEntity"
+                    [command]="formcontrol.formControlField.componentPersistEntityField.assignment.editor"
+                    [id]="formcontrol.formControlField.componentPersistEntityField.id"
+                    (eventOccured)="fieldEventOccured($event)"
+                    [editable]="formcontrol.formControlField.editable"
+                  ></app-rule-designer>
                 </div>
               </ng-container>
             </ng-container>

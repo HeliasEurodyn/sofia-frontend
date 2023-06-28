@@ -6,6 +6,10 @@ import {NotificationService} from './services/system/notification.service';
 import {SettingsService} from './services/crud/settings.service';
 import { App as CapacitorApp } from '@capacitor/app';
 import {PushNotifications} from "@capacitor/push-notifications";
+import {environment} from "../environments/environment";
+import {WebSocketService} from "./services/system/web-socket.service";
+import {Observable} from "rxjs";
+import {Message} from "@stomp/stompjs";
 
 @Component({
   selector: 'app-root',
@@ -23,10 +27,19 @@ export class AppComponent implements OnInit {
                      private httpErrorResponceService: HttpErrorResponceService,
                      private notificationService: NotificationService,
                      private title: Title,
+                     private webSocketService: WebSocketService,
                      private settingsService: SettingsService) {
   }
 
   ngOnInit(): void {
+
+    const messageObservable: Observable<Message> = this.webSocketService.getMessageObservable2();
+    if(messageObservable != undefined){
+      messageObservable.subscribe((message) => {
+        console.log(' ..1.. '+message.body);
+      });
+    }
+
     this.activatedRoute.queryParamMap.subscribe(params => {
       this.title.setTitle(this.appTitle);
     });
@@ -58,6 +71,8 @@ export class AppComponent implements OnInit {
 
       this.notificationService.showNotification('top', 'center', 'alert-info', 'fa-thumbs-down', 'Push notification action performed - ' + JSON.stringify(notification));
     });
+
+    localStorage.setItem('serverUrl', environment.serverUrl);
   }
 
   listenToHttpErrors(): void {

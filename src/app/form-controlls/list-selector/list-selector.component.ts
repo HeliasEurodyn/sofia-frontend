@@ -6,6 +6,13 @@ import {ComponentPersistEntityFieldDTO} from '../../dtos/component/component-per
 import {TableComponentService} from '../../services/crud/table-component.service';
 import {ComponentDTO} from '../../dtos/component/componentDTO';
 import {ComponentPersistEntityDTO} from '../../dtos/component/component-persist-entity-dto';
+import {DomSanitizer} from "@angular/platform-browser";
+
+class FieldValue {
+  public type: string;
+  public componentPersistEntityField: ComponentPersistEntityFieldDTO;
+  public html: string;
+}
 
 @Component({
   selector: 'app-list-selector',
@@ -22,9 +29,9 @@ export class ListSelectorComponent implements OnInit {
   @Output() keyDownChange: EventEmitter<any> = new EventEmitter<any>();
   @Input() fieldClass: any;
   private uuid = '';
-  displayFieldNames: string[] = [];
+  displayFieldParameters: string[] = [];
   refreshComponentCode = '';
-  componentPersistEntityFieldList: ComponentPersistEntityFieldDTO[] = [];
+  fieldValues: FieldValue[] = [];
   @Input() component: ComponentDTO;
   @Input() lineComponentPersistEntity: ComponentPersistEntityDTO = null;
   componentPersistEntity: ComponentPersistEntityDTO;
@@ -44,7 +51,7 @@ export class ListSelectorComponent implements OnInit {
     private commandParserService: CommandParserService,
     private commandNavigatorService: CommandNavigatorService,
     private componentService: TableComponentService,
-  ) {
+    private sanitizer: DomSanitizer) {
   }
 
   ngOnInit(): void {
@@ -58,6 +65,7 @@ export class ListSelectorComponent implements OnInit {
     this.setComponentDislpayValue();
     this.setDefaultValue();
     this.setDefaultListValue();
+    console.log(this.value);
   }
 
   private setDefaultValue() {
@@ -158,7 +166,7 @@ export class ListSelectorComponent implements OnInit {
   retrieveCommand(): void {
     const commandParts: Map<string, string> = this.commandParserService.parse(this.command);
 
-    this.displayFieldNames = this.commandParserService.parseListPart(commandParts, 'DISPLAY');
+    this.displayFieldParameters = this.commandParserService.parseListPart(commandParts, 'DISPLAY');
     if (commandParts.has('REFRESH')) {
       const componentPersistEntityList = this.defineComponentPersistEntityList();
       this.findPersistEntityOnListTree(componentPersistEntityList, commandParts.get('REFRESH'));
@@ -172,9 +180,13 @@ export class ListSelectorComponent implements OnInit {
     if (commandParts.has('FORM-NEW-TAB')) {
       this.openFormOnNewTab = true;
     }
-    if (commandParts.has('HIDE-DELETE')) {
-      this.showDeleteButton = false;
+
+    if (commandParts.has('HIDE-DELETE') ) {
+      if (commandParts.get('HIDE-DELETE').toString().toUpperCase() === 'YES' ) {
+        this.showDeleteButton = false;
+      }
     }
+
   }
 
   refreshComponent(): void {
@@ -195,15 +207,27 @@ export class ListSelectorComponent implements OnInit {
 
   private setComponentDislpayValue(): void {
     this.displayValue = '';
-    if ( this.componentPersistEntityFieldList.length !== this.displayFieldNames.length) {
-      this.displayValue = ' **** ';
+    if ( this.fieldValues.length !== this.displayFieldParameters.length) {
+      this.displayValue = '';
+      return;
+    }
+
+    const cpefField =
+      this.fieldValues
+      .filter(fieldValue => fieldValue.type === 'cpef')
+      .find(fieldValue => fieldValue.componentPersistEntityField.value != null);
+
+    if(cpefField == null){
+      this.displayValue = '';
       return;
     }
 
     const displayValueArray: string[] = [];
-    this.componentPersistEntityFieldList.forEach(componentPersistEntityField => {
-      if (componentPersistEntityField.value != null) {
-        displayValueArray.push(componentPersistEntityField.value);
+    this.fieldValues.forEach(fieldValue => {
+      if (fieldValue.type == 'cpef') {
+        displayValueArray.push(fieldValue.componentPersistEntityField.value);
+      } else {
+        displayValueArray.push(fieldValue.html);
       }
     });
     this.displayValue = displayValueArray.join('  ');
@@ -247,7 +271,7 @@ export class ListSelectorComponent implements OnInit {
 
   clear() {
     this.value = null;
-    this.componentPersistEntityFieldList = [];
+    this.fieldValues = [];
     this.displayValue = '';
     this.valueChange.emit(this.value);
     if (this.componentPersistEntity != null) {
@@ -337,37 +361,48 @@ export class ListSelectorComponent implements OnInit {
   }
 
   private retrieveDisplayFields(): void {
-    this.componentPersistEntityFieldList = [];
+    this.fieldValues = [];
 
-    this.displayFieldNames
-      .forEach(displayFieldName => {
+    this.displayFieldParameters
+      .forEach(displayFieldParameter => {
         const componentPersistEntityList = this.defineComponentPersistEntityList();
-        this.retrieveDisplayFieldsOnTree(componentPersistEntityList, displayFieldName);
-      });
-  }
+        const cpef =  this.retrieveDisplayCpefOnTree(componentPersistEntityList, displayFieldParameter);
+        const displayField = new FieldValue();
 
-  private retrieveDisplayFieldsOnTree(componentPersistEntityList: ComponentPersistEntityDTO[], displayFieldName: string): boolean {
-
-    componentPersistEntityList
-      .forEach(componentPersistEntity => {
-        componentPersistEntity.componentPersistEntityFieldList
-          .forEach(cpef => {
-            const currentfield = componentPersistEntity.code + '.' + cpef.code;
-            if (displayFieldName === currentfield) {
-              this.componentPersistEntityFieldList.push(cpef);
-              return true;
-            }
-          });
-
-        if (componentPersistEntity.componentPersistEntityList != null) {
-          const found = this.retrieveDisplayFieldsOnTree(componentPersistEntity.componentPersistEntityList, displayFieldName);
-          if (found === true) {
-            return true;
-          }
+        if(cpef != null){
+          displayField.type = 'cpef';
+          displayField.componentPersistEntityField = cpef;
+          this.fieldValues.push(displayField);
+        } else {
+          displayField.type = 'html';
+          displayField.html = displayFieldParameter;
+          this.fieldValues.push(displayField);
         }
       });
 
-    return false;
+    console.log('fieldValues');
+    console.log(this.fieldValues);
+  }
+
+  private retrieveDisplayCpefOnTree(componentPersistEntityList: ComponentPersistEntityDTO[], displayFieldName: string): ComponentPersistEntityFieldDTO {
+    for (const componentPersistEntity of componentPersistEntityList) {
+      for (const cpef of componentPersistEntity.componentPersistEntityFieldList) {
+        const currentField = componentPersistEntity.code + '.' + cpef.code;
+        if (displayFieldName === currentField) {
+          console.log(cpef);
+          return cpef;
+        }
+      }
+
+      if (componentPersistEntity.componentPersistEntityList != null) {
+        const cpef = this.retrieveDisplayCpefOnTree(componentPersistEntity.componentPersistEntityList, displayFieldName);
+        if (cpef != null) {
+          return cpef;
+        }
+      }
+    }
+
+    return null;
   }
 
   eventOccuredActions(eventtype: string, event: any) {
@@ -387,4 +422,7 @@ export class ListSelectorComponent implements OnInit {
     this.focusEvent.emit($event);
   }
 
+  trustResource(resource) {
+    return this.sanitizer.bypassSecurityTrustHtml(resource);
+  }
 }

@@ -8,4 +8,5 @@ export class ComponentDTO extends BaseDTO {
   public componentPersistEntityList: ComponentPersistEntityDTO[] = [];
   public accessControls: AccessControlDto[] = [];
   public accessControlEnabled: Boolean;
+
 }
