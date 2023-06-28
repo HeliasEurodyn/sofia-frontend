@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "31866887935",
+    "project_id": "ship-in-time",
+    "storage_bucket": "ship-in-time.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:31866887935:android:daedc92354c4771fb0f6ca",
+        "android_client_info": {
+          "package_name": "com.ed.sofia"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "31866887935-vtp7al8rn53j6s7g60a27lpmh71aevlf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYy4DaZBqQYIem2hJQeRRDZprvev10xsY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "31866887935-vtp7al8rn53j6s7g60a27lpmh71aevlf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

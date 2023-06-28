@@ -5,6 +5,7 @@ import {HttpErrorResponceService} from './services/system/http-error-responce.se
 import {NotificationService} from './services/system/notification.service';
 import {SettingsService} from './services/crud/settings.service';
 import { App as CapacitorApp } from '@capacitor/app';
+import {PushNotifications} from "@capacitor/push-notifications";
 
 @Component({
   selector: 'app-root',
@@ -42,6 +43,21 @@ export class AppComponent implements OnInit {
       }
     });
 
+    PushNotifications.register();
+
+    // PushNotifications.addListener('pushNotificationReceived', (notification: any) => {
+    //   // Handle received push notification
+    //   console.log('Received push notification: ', notification);
+    //   this.notificationService.showNotification('top', 'center', 'alert-info', 'fa-thumbs-down', 'Received push notification - ' + notification.toString());
+    // });
+
+    PushNotifications.addListener('pushNotificationActionPerformed', (notification: any) => {
+      // Handle action performed on push notification (e.g., tapped)
+      //console.log('Push notification action performed: ', notification);
+
+
+      this.notificationService.showNotification('top', 'center', 'alert-info', 'fa-thumbs-down', 'Push notification action performed - ' + JSON.stringify(notification));
+    });
   }
 
   listenToHttpErrors(): void {
