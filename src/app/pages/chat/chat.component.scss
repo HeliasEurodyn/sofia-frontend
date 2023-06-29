@@ -115,6 +115,9 @@ body{
   float:left;
 }
 
+.messages ul li.sent  {
+    margin-left:-35px;
+}
 
 .messages ul li.replies p {
   background: #AEAEAE;
@@ -128,4 +131,20 @@ body{
   border-radius: 20px;
   max-width: 205px;
   line-height: 130%;
+}
+
+.messages ul li.replies i {
+  float: right;
+  margin: 6px 0 0 8px;
+  color:#AEAEAE;
+}
+
+.messages ul li i {
+  font-size: 20px;
+  float: left;
+  color:#00B2FF;
+}
+
+.messages ul li.sent i {
+  margin: 6px 8px 0 0;
 }

@@ -33,6 +33,7 @@
                 <div class="messages" >
                   <ul>
                     <li [class]="msg.type" *ngFor="let msg of messages">
+                      <i class="fa-regular fa-circle-user"></i>
                       <p>{{msg?.value || ''}}</p>
                     </li>
                   </ul>
