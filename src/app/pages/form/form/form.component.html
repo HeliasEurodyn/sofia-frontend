@@ -1,18 +1,16 @@
 <div class="row formnav">
-  <div class="col-sm-12">
-    <div class="pull-left">
-      <div class="col-12">
+  <div class="col" style="padding-right: 0px;">
         <h3 style="margin-top: 20px;margin: 0px;margin-top: 10px;">
           <i class="fa fa {{this.dto.icon}}" style="padding-right: 5px;"></i>{{this.dto.title}}
         </h3>
         <p style=" margin-bottom: 5px;" [innerHTML]="this.dto.description"></p>
-      </div>
-    </div>
+  </div>
+
+  <div class="col-auto" style="padding-top: 13px;">
     <div class="pull-right">
       <ng-container *ngFor="let actionButton of this.dto?.formActionButtons">
         <ng-container *ngIf="actionButton.visible">
           <button
-            style="margin: 16px 2px 0px !important;"
             *ngIf="actionButton.editor !== '#parent-menu#' && actionButton.editor !== '#parent-menu-min#'"
             [disabled]="!actionButton.editable"
             (click)="headerActionButtonClicked(actionButton)"
@@ -51,6 +49,7 @@
       </ng-container>
     </div>
   </div>
+
 </div>
 <div class="row formnav">
   <div class="col-sm-12">
