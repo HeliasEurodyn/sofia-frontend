@@ -7,7 +7,7 @@
       <ul class="list-group">
         <li class="list-group-item d-flex justify-content-between align-items-center user-list-item" *ngFor="let user of users" (click)="openChat(user)">
            {{user?.username}}
-          <span class="badge unread-message-pill rounded-pill text-white">1</span>
+          <span class="badge unread-message-pill rounded-pill text-white">{{user?.newMessages}}</span>
 
         </li>
       </ul>
@@ -34,7 +34,7 @@
                   <ul>
                     <li [class]="msg.type" *ngFor="let msg of messages">
                       <i class="fa-regular fa-circle-user"></i>
-                      <p>{{msg?.value || ''}}</p>
+                      <p>{{msg?.content || ''}}</p>
                     </li>
                   </ul>
                 </div>
