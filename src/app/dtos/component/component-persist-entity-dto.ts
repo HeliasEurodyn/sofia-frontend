@@ -37,4 +37,5 @@ export class ComponentPersistEntityDTO extends BaseDTO {
     this.componentPersistEntityFieldList = [];
     this.defaultComponentPersistEntityFieldList = [];
   }
+
 }

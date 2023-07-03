@@ -1,14 +1,13 @@
 <ng-container *ngIf="listDto != null">
 <div class="row formnav" *ngIf="showTopHeader()">
-  <div class="col-sm-12">
-    <div class="pull-left">
-      <div class="col-12">
+  <div class="col" style="padding-right: 0px;">
         <h3 style="margin-top: 20px;margin: 0px;margin-top: 10px;">
           <i class="fa fa {{this.listDto.headerIcon}}" style="padding-right: 5px;"></i>{{this.listDto.headerTitle}}
         </h3>
         <p style=" margin-bottom: 5px;" [innerHTML]="this.listDto.headerDescription"></p>
-      </div>
-    </div>
+  </div>
+
+  <div class="col-auto" style="padding-top: 13px;">
     <div class="pull-right">
       <button *ngFor="let actionButton of this.listDto?.listActionButtons"
               (click)="headerActionButtonClicked(actionButton)"
@@ -66,6 +65,7 @@
       </ul>
     </div>
   </div>
+
 </div>
 
 <div class="tab-pane form-area" [ngClass]="{'is-hidden': this.listResultsData == null }">

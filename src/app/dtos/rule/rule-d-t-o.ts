@@ -1,4 +1,6 @@
 import {BaseDTO} from "../common/base-dto";
+import {RuleFieldDTO} from "./rule-field-dto";
+import {RuleOperatorDTO} from "./rule-operator-dto";
 
 export class RuleDTO extends BaseDTO {
 
@@ -11,6 +13,8 @@ export class RuleDTO extends BaseDTO {
   ruleExpressionList: RuleExpressionDTO[] = [];
 
   expressionPreview = '';
+
+  emptyExpressionFound = false;
 
   constructor() {
     super();
@@ -41,6 +45,11 @@ export class RuleExpressionDTO extends BaseDTO {
   joinType: string = "and";
 
   childrenJoinType: string = "and";
+
+
+  ruleField: RuleFieldDTO;
+
+  ruleOperator: RuleOperatorDTO;
 
   constructor() {
     super();

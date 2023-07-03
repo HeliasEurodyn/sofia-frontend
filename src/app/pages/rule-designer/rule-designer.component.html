@@ -1,125 +1,36 @@
-<div class="row formnav">
-  <div class="col-sm-12">
-    <div class="pull-left">
-      <div class="col-12">
-        <h3 style="margin-top: 20px;margin: 0px;margin-top: 10px;">
-          <i class="fa fa-puzzle-piece" style="padding-right: 5px;"></i>
-          {{this.settingsDTO.title}}
-        </h3>
-        <p style=" margin-bottom: 5px;" [innerHTML]="this.trustResource(this.settingsDTO.description)"> </p>
-      </div>
-    </div>
-    <div class="pull-right">
-      <button class="btn btn-outline-success" style="margin-top: 0px;" (click)="save()">
-        <i class="fa fa-save"></i>
-        Save
-      </button>
-      <button class="btn btn-outline-danger" style="margin-top: 0px;" [hidden]="mode === 'new-record'"
-              (click)="delete()">
-        <i class="fa fa-times"></i>
-        Delete
-      </button>
-      <button class="btn btn-outline-primary" style="margin-top: 0px;"
-              *ngIf="showPreviousPageButton()"
-              (click)="navigateToPreviousPage()">
-        <i class="fa fa-chevron-left"></i> Back
-      </button>
-      <button class="btn btn-outline-primary" style="margin-top: 0px;" *ngIf="showNextPageButton()" (click)="navigateToNextPage()">
-        <i class="fa fa-chevron-right"></i> Next
-      </button>
-    </div>
-  </div>
-</div>
 
-<div class="row formnav">
-  <div class="col-sm-12">
-    <div class="pull-left">
-      <button type="button" class="btn btn-outline-default btn-round btn-white header-tab"
-              (click)="setVisibleSection('general');">
-        <i class="fa fa-sliders-h"></i>
-        General
-      </button>
-    </div>
-  </div>
-</div>
-
-<div [ngClass]="{'is-hidden': this.visibleSection !== 'general' }" class="row form-area">
-  <div class="col-md-12">
-    <div class="card card-user">
-      <div class="card-body">
-
-        <div class="row">
-          <div class="col-12">
-            <div class="form-group">
-              <b>Id</b>
-              <input
-                type="text" class="form-control" readonly value="{{dto.id}}">
-              <code></code>
-            </div>
-          </div>
-
-          <div class="col-12">
-            <div class="form-group ">
-              <b>Code</b>
-              <input type="text" class="form-control"   mask="S*"
-                     [(ngModel)]="dto.code">
-              <code>*Required Field</code>
-            </div>
-          </div>
-          <div class="col-12">
-            <div class="form-group ">
-              <b>Name</b>
-              <input type="text" class="form-control" [(ngModel)]="dto.name">
-              <code>*Required Field</code>
-            </div>
-          </div>
-          <div class="col-12">
-            <div class="form-group">
-              <b>Description</b>
-              <textarea
-                class="form-control textarea" name="description" [(ngModel)]="dto.description"></textarea>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="row form-area">
+<div class="row form-area" style="margin-top: 0px;">
   <div class="col-md-12">
     <div class="card">
       <div class="card-header">
         <div class="row">
           <div class="col-12">
-            <div class="pull-left" >
-              <h5 class="card-title" style="margin-bottom: 0px;">
-                <i class="fa-regular fa-clipboard"></i>
-                {{settingsDTO.ruleSectionTitle}}
-              </h5>
-              <p style=" margin-bottom: 5px;" [innerHTML]="this.trustResource(this.settingsDTO.ruleSectionDescription)"> </p>
-            </div>
-
             <div class="pull-right">
-              <button class="btn btn-round btn-outline-primary"
-                      (click)="createPreview()">
-                <i class="fa-solid fa-magnifying-glass"></i>
-                Preview  </button>
-              <button id="openPreviewButton" style="display: none;"
-                      data-target="#expressionPreview" data-toggle="modal">
-                <i class="fa-solid fa-magnifying-glass"></i></button>
-              <button class="btn btn-round btn-outline-success"
+
+              <button class="btn btn-round btn-outline-info"
                       (click)="addMenuField(null)">
                 <i class="fa fa-plus-circle"></i>
                 Expression  </button>
+
+              <button class="btn btn-round btn-outline-default"
+                      (click)="createPreview()">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                Preview  </button>
+
+              <button id="openPreviewButton" style="display: none;"
+                      data-target="#expressionPreview" data-toggle="modal">
+                <i class="fa-solid fa-magnifying-glass"></i></button>
+
+              <span *ngIf="this.showSaveButton"> &nbsp; </span>
+              <button *ngIf="this.showSaveButton" class="btn btn-round btn-outline-success"
+                      (click)="save(null)">
+                <i class="fa fa-save"></i>
+                Save  </button>
             </div>
 
+
           </div>
-
-
-
         </div>
-
       </div>
       <div class="card-body">
         <div class="empty-table-row" *ngIf="dto.ruleExpressionList.length == 0">Empty!</div>
@@ -139,7 +50,6 @@
                               <i style="color: #000000;" class="fa-solid fa-bars-staggered"></i>
                          </span>
                       </div>
-
                       <div class="input-group-prepend">
                         <input type="text"
                                readonly
@@ -147,17 +57,14 @@
                                placeholder="Select Field"
                                (click)="selectField(item)"
                                class="form-control textfield-area expr-unit-type ruleSettings-field"
-                               value="{{item.fieldName}}">
+                               value="{{item?.ruleField?.name}}">
                       </div>
-
-
                       <div class="input-group-prepend">
                          <span [ngStyle]="{'background-color': item.color}"
                                class="input-group-text textfield-button-info expand-button expand-button2 ruleSettings-type-icon">
                               <i style="color: #000000;"  class="fa-solid fa-grip-vertical"></i>
                          </span>
                       </div>
-
                       <div class="input-group-prepend">
                         <input [ngStyle]="{'background-color': item.color}"
                                type="text"
@@ -165,15 +72,14 @@
                                (click)="selectOperator(item)"
                                placeholder="Select Operator"
                                class="form-control textfield-area expr-unit-type ruleSettings-type"
-                               value="{{item.operatorName}}">
-                      </div>
+                               value="{{item?.ruleOperator?.name}}">
 
+                      </div>
                       <div class="input-group-prepend">
                          <span class="input-group-text textfield-button-info expand-button expand-button2 ruleSettings-expression-icon">
                              <i class="fa-solid fa-marker"></i>
                          </span>
                       </div>
-
                       <input type="text"
                              placeholder="Write Expression"
                              class="form-control textfield-area expr-unit-type ruleSettings-expression"
@@ -185,7 +91,6 @@
                 <div class="col-md-auto"
                      *ngIf="!last"
                      style="padding-left: 0px;">
-
                   <div class="btn-group">
                     <button class="btn btn-outline-default"
                             [ngStyle]="{'background-color': item.joinType == 'and' ? item.color : 'white', 'color' : '#404040'}"
@@ -214,17 +119,14 @@
                         class="btn btn-round btn-outline-danger btn-icon btn-sm">
                   <i class="fa fa-times"></i>
                 </button>
-
                 <button (click)="hideChildren(item)" *ngIf="hasChildren(item) && (item.expanded === true)" type="button" title="Compress"
                         class="btn btn-round btn-outline-primary btn-icon btn-sm">
                   <i class="fa fa-compress"></i>
                 </button>
-
                 <button (click)="showChildren(item)" *ngIf="hasChildren(item) && (item.expanded !== true)" type="button" title="Expand"
                         class="btn btn-round btn-outline-primary btn-icon btn-sm last-menu-item-button">
                   <i class="fa fa-expand"></i>
                 </button>
-
                 <div *ngIf="hasChildren(item)" style="padding-left: 5px" class="btn-group">
                   <button class="btn btn-outline-default"
                           [ngStyle]="{'background-color': item.childrenJoinType == 'and' ? item.childrenColor : 'white', 'color' : '#404040'}"
@@ -233,7 +135,6 @@
                           [ngStyle]="{'background-color': item.childrenJoinType == 'or' ? item.childrenColor : 'white', 'color' : '#404040'}"
                           (click)="item.childrenJoinType = 'or';" type="button">Or</button>
                 </div>
-
                 <i class="fa {{item.icon}}"></i>
                 {{item.name}}
               </h6>
@@ -244,8 +145,6 @@
               </ul>
             </li>
           </ng-template>
-
-
           <ng-container
             *ngTemplateOutlet="recursiveList; context:{ $implicit: dto.ruleExpressionList }"></ng-container>
         </ul>

@@ -16,7 +16,7 @@ export class DynamicRequestService {
   }
 
   getHtmlReport(htmlReportId: string, selectionId: string): Observable<any> {
-  
+
     const headers = new HttpHeaders({
       'Content-Type': 'multipart/form-data'
     });

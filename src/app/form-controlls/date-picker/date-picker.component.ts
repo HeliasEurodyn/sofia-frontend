@@ -32,6 +32,10 @@ export class DatePickerComponent implements OnInit {
   }
 
   ngOnInit() {
+   this.refresh();
+  }
+
+  refresh() {
     this.setMaskFormatFromDateFormat();
     this.inputDateToModel();
   }
