@@ -9,16 +9,16 @@
       </ul>
     </div>
 
+<!--    <div class="collapse navbar-collapse justify-content-end" id="navigation">-->
+<!--      <ul class="navbar-nav">-->
+<!--        <li class="nav-item active">-->
+<!--          <a class="nav-link" (click)="openModal()">-->
+<!--            <i class="fa fa-gear"> </i>-->
+<!--          </a>-->
+<!--        </li>-->
+<!--      </ul>-->
+<!--    </div>-->
 
-    <div class="collapse navbar-collapse justify-content-end" id="navigation">
-      <ul class="navbar-nav">
-        <li class="nav-item active">
-          <a class="nav-link" (click)="openModal()">
-            <i class="fa fa-gear"> </i>
-          </a>
-        </li>
-      </ul>
-    </div>
   </div>
 </nav>
 
@@ -31,14 +31,15 @@
             <div class="card-header ">
               <div class="card-header ">
                 <h3 class="header text-center" style="margin-top: 30px;margin-bottom: 17px;">
-                  <img [src]="this.trustResource(this.loginImage)">
+<!--                  <img [src]="this.trustResource(this.loginImage)">-->
+                  <img src="assets/img/logo/shiping_time_logo.png">
                 </h3>
               </div>
             </div>
             <div class="card-body ">
               <div class="input-group">
                 <div class="input-group-prepend">
-                  <span class="input-group-text username-icon">
+                  <span class="input-group-text username-icon" style="border: 1px solid #51cbce;">
                   <i class="fa-regular fa-circle-user" style="color: #236594;"></i>
                   </span>
                 </div>
@@ -47,7 +48,7 @@
               </div>
               <div class="input-group">
                 <div class="input-group-prepend">
-                  <span class="input-group-text password-icon">
+                  <span class="input-group-text password-icon" style="border: 1px solid #51cbce;">
                       <i class="fa fa-lock" style="color: #236594;"></i>
                   </span>
                 </div>
@@ -93,7 +94,7 @@
             </ul>
           </nav>
           <div class="credits ml-auto">
-            <span class="copyright" style="padding-top: 40px;"> © {{currentDate | date: 'yyyy'}}, Shiping Time All Rights Reserved </span>
+            <span class="copyright" style="padding-top: 40px;"> © {{currentDate | date: 'yyyy'}}, <b>Ship In Time</b> All Rights Reserved. </span>
           </div>
         </div>
       </div>

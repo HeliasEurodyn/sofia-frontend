@@ -8,8 +8,10 @@ import {CommandNavigatorService} from '../../services/system/command-navigator.s
 import {SettingsService} from '../../services/crud/settings.service';
 import {DomSanitizer} from '@angular/platform-browser';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {SetApplicationInterfaceModalComponent} from '../../modals/set-application-intreface/set-application-interface-modal.component';
-import {Filesystem, Directory, Encoding} from '@capacitor/filesystem';
+import {
+  SetApplicationInterfaceModalComponent
+} from '../../modals/set-application-intreface/set-application-interface-modal.component';
+import {Directory, Encoding, Filesystem} from '@capacitor/filesystem';
 
 @Component({
   selector: 'app-login',
@@ -42,18 +44,19 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    Filesystem.readFile({
-      path: 'api.txt',
-      directory: Directory.Library,
-      encoding: Encoding.UTF8,
-    }).then(r => {
-      environment.serverUrl = r.data
-    }).then(() => {
-      this.defineLoginLogo();
-    })
-      .catch(ex => {
-        this.notificationService.showNotification('top', 'center', 'alert-danger', 'fa-thumbs-down', ex);
-      })
+
+    // Filesystem.readFile({
+    //   path: 'api.txt',
+    //   directory: Directory.Library,
+    //   encoding: Encoding.UTF8,
+    // }).then(r => {
+    //   environment.serverUrl = r.data
+    // }).then(() => {
+    //   this.defineLoginLogo();
+    // })
+    //   .catch(ex => {
+    //     this.notificationService.showNotification('top', 'center', 'alert-danger', 'fa-thumbs-down', ex);
+    //   })
 
 
     localStorage.setItem('serverUrl', environment.serverUrl);
@@ -126,9 +129,9 @@ export class LoginComponent implements OnInit {
       })
 
     modalReference.result.then((url) => {
-      Filesystem.writeFile({ path: filePath, data: url, directory, encoding })
+      Filesystem.writeFile({path: filePath, data: url, directory, encoding})
         .then(() => {
-          environment.serverUrl =  url;
+          environment.serverUrl = url;
         }).then(() => {
         this.settingsService.getLoginImage().subscribe(icon => {
           if (icon != null) {
