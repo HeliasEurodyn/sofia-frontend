@@ -1,0 +1,29 @@
+.btn-method {
+  &.get {
+    background-color: green;
+    color: white;
+  }
+
+  &.post {
+    background-color: orange;
+    color: white;
+  }
+
+  &.delete {
+    background-color: red;
+    color: white;
+  }
+
+  &.put {
+    background-color: orange;
+    color: white;
+  }
+}
+
+  .btn-chips {
+    border-width: 1px;
+    border-style: solid;
+    padding: 0.25rem 0.50rem;
+  }
+
+
