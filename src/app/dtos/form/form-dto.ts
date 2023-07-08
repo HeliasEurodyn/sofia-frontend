@@ -13,6 +13,7 @@ export class FormDto extends BaseDTO {
   public title: string;
   public description: string;
   public icon: string;
+  public jsonUrl: string;
   public component: ComponentDTO;
   public formTabs: FormTabDto[] = [];
   public formPopups: FormPopupDto[] = [];

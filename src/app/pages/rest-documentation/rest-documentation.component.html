@@ -19,18 +19,18 @@
   </div>
 </div>
 
-<div *ngFor="let column of this.dto?.restDocumentationEndpoints" class="row form-area">
+<div *ngFor="let restDocumentationEndpoint of this.dto?.restDocumentationEndpoints" class="row form-area">
   <div class="col-md-12">
     <div class="card card-user">
       <div class="card-header">
         <h5 class="card-title">
           <i class="fa-regular fa-file-powerpoint"></i>
-          {{column.title}}
+          {{restDocumentationEndpoint.title}}
         </h5>
         <div class="form-group">
           <div class="row">
             <div class="col-sm-6">
-               {{column.description}}
+               {{restDocumentationEndpoint.description}}
               <code></code>
             </div>
           </div>
@@ -41,22 +41,31 @@
           <div class="col-12">
             <div class="form-group">
               <div class="row">
-                <div class="col-sm-1">
+                <div class="col-auto">
                   <div class="d-flex align-items-center flex-column">
                     <label>Method</label>
-                    <button style="margin-top: 0px;" 
-                    [ngClass]="{'btn-outline-success': column.method === 'get', 'btn-outline-warning': column.method === 'post' || column.method === 'put', 'btn-outline-danger': column.method === 'delete'}"
+                    <button style="margin-top: 0px;"
+                            (click)="runResults(restDocumentationEndpoint)"
+                    [ngClass]="{'btn-outline-success': restDocumentationEndpoint.method === 'get', 'btn-so  outline-warning': restDocumentationEndpoint.method === 'post' || restDocumentationEndpoint.method === 'put', 'btn-outline-danger': restDocumentationEndpoint.method === 'delete'}"
                      class="btn btn-method">
-                      {{ column.method.toUpperCase() }}
+                      {{ restDocumentationEndpoint.method.toUpperCase() }}
                     </button>
                   </div>
                 </div>
-                <div class="col-sm-11">
+                <div class="col">
                   <label>JsonUrl</label>
-                  <ng-container *ngIf="column">
-                      <input type="text" readonly class="form-control" [value]="(column.list ? (serverUrl + '/datalist/' + column.list.jsonUrl) : (serverUrl + '/dataset/' + column.form?.jsonUrl))">
+                  <ng-container *ngIf="restDocumentationEndpoint">
+                      <input type="text" readonly class="form-control" [value]="(restDocumentationEndpoint.list ? (serverUrl + '/datalist/' + restDocumentationEndpoint.list.jsonUrl) : (serverUrl + '/dataset/' + restDocumentationEndpoint.form?.jsonUrl))">
                   </ng-container>
                   <code></code>
+                </div>
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label>Results</label>
+                    <textarea
+                      style="font-size: 10px;font-family: Tahoma,Verdana,Segoe,sans-serif;min-height: 350px;"
+                      class="form-control textarea" name="description" [(ngModel)]="restDocumentationEndpoint.restResults"></textarea>
+                  </div>
                 </div>
               </div>
             </div>

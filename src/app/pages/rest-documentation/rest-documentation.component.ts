@@ -5,8 +5,9 @@ import { CommandNavigatorService } from 'app/services/system/command-navigator.s
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { RestDocumentationDto } from 'app/dtos/rest-documentation/rest-documentation-dto';
-import { RestDocumentationEndpoint } from 'app/dtos/rest-documentation/rest-documentation-endpoint';
 import { environment } from 'environments/environment';
+import {RestDocumentationEndpoint} from "../../dtos/rest-documentation/rest-documentation-endpoint";
+import {DynamicRequestService} from "../../services/crud/dynamic-request.service";
 
 @Component({
   selector: 'app-rest-documentation',
@@ -21,7 +22,8 @@ export class RestDocumentationComponent extends PageComponent implements OnInit 
   constructor(private service: RestDocumentationService,
     private activatedRoute: ActivatedRoute,
     private httpClient: HttpClient,
-            private navigatorService: CommandNavigatorService) {
+            private navigatorService: CommandNavigatorService,
+              private dynamicRequestService:  DynamicRequestService) {
   super();
 }
 
@@ -37,6 +39,12 @@ export class RestDocumentationComponent extends PageComponent implements OnInit 
     this.service.getById(locateParams.get('ID')).subscribe(data => {
       this.dto = data;
       //this.dtos = data;
+    });
+  }
+
+  runResults(restDocumentationEndpoint: RestDocumentationEndpoint) {
+    this.dynamicRequestService.getFromBackend('/datalist/'+restDocumentationEndpoint.list.jsonUrl ).subscribe(data => {
+      restDocumentationEndpoint.restResults = JSON.stringify(data, null, 4);
     });
   }
 
