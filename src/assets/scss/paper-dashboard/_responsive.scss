@@ -38,14 +38,14 @@
           }
         }
 
-        .navbar-nav{
-            .nav-item:first-child{
-              margin-top: 10px;
-            }
-            .nav-item:not(:last-child){
-                margin-bottom: 10px;
-            }
-        }
+        //.navbar-nav{
+        //    .nav-item:first-child{
+        //      margin-top: 10px;
+        //    }
+        //    .nav-item:not(:last-child){
+        //        margin-bottom: 10px;
+        //    }
+        //}
 
         .dropdown.show .dropdown-menu{
             display: block;

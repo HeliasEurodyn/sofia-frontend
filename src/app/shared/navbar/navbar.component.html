@@ -37,13 +37,7 @@
         </button>
       </div>
     </div>
-    <button class="navbar-toggler" type="button" (click)="collapse()"
-            [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample">
-      <span class="navbar-toggler-bar navbar-kebab"></span>
-      <span class="navbar-toggler-bar navbar-kebab"></span>
-      <span class="navbar-toggler-bar navbar-kebab"></span>
-    </button>
-    <div class="collapse navbar-collapse justify-content-end" id="collapseExample" [ngbCollapse]="isCollapsed">
+    <div class="justify-content-end">
       <ul class="navbar-nav" *ngIf="this.userDto.headerMenu != null">
         <ng-container *ngFor="let menuField of this.userDto.headerMenu.menuFieldList">
           <app-navbar-ws-notification *ngIf="isWsNotificationMenu(menuField.command)"
@@ -93,7 +87,7 @@
             <a class="nav-link" ngbDropdownToggle id="navbarDropdownMenuLink" href="javascript:void(0)">
               <i style="padding-right: 4px;" class="fas {{menuField.icon}}"></i>
               <p>
-                <span class="d-lg-none d-md-block" style="padding-right: 5px;">{{menuField.name}} </span>
+                <span class="d-none" style="padding-right: 5px;">{{menuField.name}} </span>
               </p>
             </a>
             <div ngbDropdownMenu aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu dropdown-menu-right">
@@ -115,7 +109,7 @@
               <img style="width: 18px; padding-bottom: 4px; margin-right: 4px;"
                    src="../../../assets/img/flags/4x3/{{getCurrentLanguageImage()}}">
               <p>
-                <span class="d-lg-none d-md-block">Languages</span>
+                <span class="d-none ">Languages</span>
               </p>
             </a>
             <div ngbDropdownMenu aria-labelledby="languageDropdownMenuLink" class="dropdown-menu dropdown-menu-right">
@@ -139,7 +133,7 @@
             <a class="nav-link btn-magnify" href="javascript:void(0)" (click)="navigate(menuField.command)">
               <i class="fas {{menuField.icon}}"></i>
               <p style="padding: 0px;">
-                <span class="d-lg-none d-md-block" style="padding-left: 10px;">{{menuField.name}} </span>
+                <span class="d-none" style="padding-left: 10px;">{{menuField.name}} </span>
               </p>
             </a>
           </li>
