@@ -162,7 +162,7 @@
         </ng-container>
         <ng-container
           *ngIf="formComponentCell.formControl.formControlField.componentPersistEntityField.assignment.type === 'list'">
-          <app-list-selector
+          <app-list-selector #formFields
             (eventOccured)="tableEventOccured($event,
             formcontrol.formControlTable.componentPersistEntity,
             formControlLine.componentPersistEntityDataLine)"
@@ -197,7 +197,7 @@
         </ng-container>
         <ng-container
           *ngIf="formComponentCell.formControl.formControlField.componentPersistEntityField.assignment.type === 'datetime'">
-          <app-date-picker
+          <app-date-picker #formFields
             (eventOccured)="tableEventOccured($event,
             formcontrol.formControlTable.componentPersistEntity,
             formControlLine.componentPersistEntityDataLine)"
@@ -214,7 +214,7 @@
         </ng-container>
         <ng-container
           *ngIf="formComponentCell.formControl.formControlField.componentPersistEntityField.assignment.type === 'datetime_det'">
-              <app-date-time-picker class="form-input-field"
+              <app-date-time-picker #formFields class="form-input-field"
                                     [(inputDate)]="formComponentCell.componentPersistEntityField.value"
                                     [editable]="formComponentCell.formControl.formControlField.editable"
                                     [componentPersistEntityDTO]="formComponentCell.formControl.formControlField.componentPersistEntity"

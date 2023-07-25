@@ -35,10 +35,11 @@ export class DatePickerComponent implements OnInit {
    this.refresh();
   }
 
-  refresh() {
+  public refresh() {
     this.setMaskFormatFromDateFormat();
     this.inputDateToModel();
   }
+
 
   setMaskFormatFromDateFormat() {
     const DExp = /D/gi;

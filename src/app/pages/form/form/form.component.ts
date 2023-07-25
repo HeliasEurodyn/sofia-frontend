@@ -39,6 +39,7 @@ import {ListSearchService} from "../../../services/system/list-search.service";
 export class FormComponent extends PageComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @ViewChildren('formFields') formFields: QueryList<any>;
+  @ViewChildren('formTables') formTables: QueryList<any>;
   public dto: FormDto;
   public selectedFormTabId: string;
   public selectedFormPopupCode: string;
@@ -182,9 +183,22 @@ export class FormComponent extends PageComponent implements OnInit, AfterViewIni
       .filter((formField: any) => formField.componentPersistEntityDTO.code + '.' + formField.componentPersistEntityFieldDTO.code === code)
       .forEach((formField: any) => {
          formField.refresh();
-         console.log(formField);
+      } );
+
+    this.formTables
+      .forEach((formTable: any) => {
+        formTable.refreshFormField(code);
       } );
   }
+
+  refreshTableFields(): void {
+    this.formTables
+      .forEach((formTable: any) => {
+        formTable.refreshTableFields(formTable.formcontrol.formControlTable);
+      } );
+  }
+
+
 
   findFormField(code: string): void {
     return this.formFields
@@ -219,28 +233,6 @@ export class FormComponent extends PageComponent implements OnInit, AfterViewIni
       });
     });
   }
-
-  // retrieveCloneAndAssignData(id: string, selectionId: string) {
-  //   this.service.getUiVersion(id)
-  //     .pipe(concatMap(instanceVersion => this.service.getUi(id, instanceVersion))
-  //     ).subscribe(dto => {
-  //     localStorage.setItem('cachedForm' + id, JSON.stringify(dto));
-  //     this.service.getCloneData(id, selectionId).subscribe(componentDTO => {
-  //       dto.component = componentDTO;
-  //       this.dto = dto;
-  //       this.setSelectedComponentPersistEntityFieldsToTables(this.dto.component.componentPersistEntityList);
-  //
-  //       this.dto.component.componentPersistEntityList =
-  //         this.formAssignmentsService.addAssignmentsToTableDataLines(this.dto.component.componentPersistEntityList);
-  //
-  //       this.dto = this.formAssignmentsService.assignComponentFieldsToFormFields(this.dto);
-  //       this.dto = this.formTableLinesService.generateFormTableLines(this.dto);
-  //       this.setDefaultSelectedTab();
-  //       this.formScriptsService.load(this);
-  //       this.defineTitle();
-  //     });
-  //   });
-  // }
 
   defineTitle() {
     if (this.commandShowCustomTitle()) {

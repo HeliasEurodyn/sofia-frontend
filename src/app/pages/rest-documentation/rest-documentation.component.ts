@@ -8,6 +8,7 @@ import { RestDocumentationDto } from 'app/dtos/rest-documentation/rest-documenta
 import { environment } from 'environments/environment';
 import {RestDocumentationEndpoint} from "../../dtos/rest-documentation/rest-documentation-endpoint";
 import {DynamicRequestService} from "../../services/crud/dynamic-request.service";
+import {DomSanitizer} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-rest-documentation',
@@ -23,7 +24,8 @@ export class RestDocumentationComponent extends PageComponent implements OnInit 
     private activatedRoute: ActivatedRoute,
     private httpClient: HttpClient,
             private navigatorService: CommandNavigatorService,
-              private dynamicRequestService:  DynamicRequestService) {
+              private dynamicRequestService:  DynamicRequestService,
+              private sanitizer: DomSanitizer) {
   super();
 }
 
@@ -46,6 +48,10 @@ export class RestDocumentationComponent extends PageComponent implements OnInit 
     this.dynamicRequestService.getFromBackend('/datalist/'+restDocumentationEndpoint.list.jsonUrl ).subscribe(data => {
       restDocumentationEndpoint.restResults = JSON.stringify(data, null, 4);
     });
+  }
+
+  trustResource(resource) {
+    return this.sanitizer.bypassSecurityTrustHtml(resource);
   }
 
 }

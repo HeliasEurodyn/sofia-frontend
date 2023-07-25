@@ -410,7 +410,7 @@
             <ng-container *ngIf="formcontrol.type === 'table'">
               <div class="col-12" *ngIf="formcontrol != null">
 
-                <app-form-table
+                <app-form-table #formTables
                   [refreshUuid]="formcontrol.refreshUuid"
                   [formcontrol]="formcontrol"
                   [component]="this.dto.component"

@@ -250,7 +250,7 @@ export class ListComponent extends PageComponent implements OnInit, OnDestroy, A
     if (command.toUpperCase() !== '') {
       /* Do replacements */
       listDto.listComponentColumnFieldList.forEach((column, index) => {
-        command = command.replace('#' + column.code, row[column.code]);
+        command = command.replace(new RegExp('#' + column.code, 'g'), row[column.code]);
       });
       command = command.replace('$PAGEID', this.pageId);
 
