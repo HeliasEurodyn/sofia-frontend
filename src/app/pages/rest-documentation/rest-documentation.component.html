@@ -43,10 +43,28 @@
                 <div class="col-auto">
                   <div class="d-flex align-items-center flex-column">
                     <label>Method</label>
-                    <button style="margin-top: 0px;"
-                            (click)="runResults(restDocumentationEndpoint)"
-                    [ngClass]="{'btn-outline-success': restDocumentationEndpoint.method === 'get', 'btn-so  outline-warning': restDocumentationEndpoint.method === 'post' || restDocumentationEndpoint.method === 'put', 'btn-outline-danger': restDocumentationEndpoint.method === 'delete'}"
-                     class="btn btn-method">
+                    <button *ngIf="restDocumentationEndpoint.method === 'get'"
+                            style="margin-top: 0px;"
+                            (click)="getResults(restDocumentationEndpoint)"
+                            class="btn btn-method-get">
+                      {{ restDocumentationEndpoint.method.toUpperCase() }}
+                    </button>
+                    <button *ngIf="restDocumentationEndpoint.method === 'delete'"
+                            style="margin-top: 0px;"
+                            (click)="runDelete(restDocumentationEndpoint)"
+                            class="btn btn-method-delete">
+                      {{ restDocumentationEndpoint.method.toUpperCase() }}
+                    </button>
+                    <button *ngIf="restDocumentationEndpoint.method === 'post'"
+                            style="margin-top: 0px;"
+                            (click)="runPost(restDocumentationEndpoint)"
+                            class="btn btn-method-post">
+                      {{ restDocumentationEndpoint.method.toUpperCase() }}
+                    </button>
+                    <button *ngIf="restDocumentationEndpoint.method === 'put'"
+                            style="margin-top: 0px;"
+                            (click)="runPut(restDocumentationEndpoint)"
+                            class="btn btn-method-put">
                       {{ restDocumentationEndpoint.method.toUpperCase() }}
                     </button>
                   </div>
@@ -54,10 +72,67 @@
                 <div class="col">
                   <label>JsonUrl</label>
                   <ng-container *ngIf="restDocumentationEndpoint">
-                      <input type="text" readonly class="form-control" [value]="(restDocumentationEndpoint.list ? (serverUrl + '/datalist/' + restDocumentationEndpoint.list.jsonUrl) : (serverUrl + '/dataset/' + restDocumentationEndpoint.form?.jsonUrl))">
+                    <input type="text" readonly class="form-control" 
+                           [value]="(restDocumentationEndpoint.list ? (serverUrl + '/datalist/' + restDocumentationEndpoint.list.jsonUrl) : 
+                               (restDocumentationEndpoint.method === 'delete' ? (serverUrl + '/dataset/' + restDocumentationEndpoint.form?.jsonUrl + '?selection-id={id}') : 
+                               (serverUrl + '/dataset/' + restDocumentationEndpoint.form?.jsonUrl)))">
+                      
                   </ng-container>
                   <code></code>
                 </div>
+
+                <div class="col-md-12" *ngIf="restDocumentationEndpoint?.method === 'get'">
+                  <table *ngIf="restDocumentationEndpoint?.list?.listComponentFilterFieldList?.length > 0" class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th>Description</th>
+                        <th>Type</th>
+                        <th>Code</th>
+                        <th>Parameter</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <ng-container *ngFor="let parameterField of restDocumentationEndpoint?.list?.listComponentFilterFieldList">
+                        <tr>
+                          <td>{{ parameterField.description }}</td>
+                          <td>{{ parameterField.type }}</td>
+                          <td>{{ parameterField.code }}</td>
+                          <td>
+                            <input type="text" class="form-control" [(ngModel)]="parameterField.fieldValue">
+                          </td>
+                        </tr>
+                      </ng-container>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div class="col-md-12" *ngIf="restDocumentationEndpoint?.method === 'delete'">
+                  <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th>Description</th>
+                        <th>Parameter</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                  
+                        <tr>
+                          <td>Id</td>
+                          <td>
+                            <input type="text" class="form-control" [(ngModel)]="restDocumentationEndpoint.selectionId">
+                          </td>
+                        </tr>
+              
+                    </tbody>
+                  </table>
+                </div>
+
+                <!-- <div *ngFor="let parameterField of restDocumentationEndpoint?.list?.listComponentFilterFieldList" class="col-md-12">
+                  <label>{{parameterField.code}}</label>
+                      <input type="text" class="form-control" [(ngModel)]="parameterField.fieldValue">
+                  <code></code>
+                </div> -->
+
                 <div class="col-md-12">
                   <div class="form-group">
                     <label>Results</label>

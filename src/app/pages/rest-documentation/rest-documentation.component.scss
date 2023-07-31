@@ -1,23 +1,24 @@
-.btn-method {
-  &.get {
-    background-color: green;
-    color: white;
-  }
+.btn-method-get {
+  background-color: #28a745;
+  color: #fff;
+}
 
-  &.post {
-    background-color: orange;
-    color: white;
-  }
 
-  &.delete {
-    background-color: red;
-    color: white;
-  }
+.btn-method-post {
+  background-color: #ffc107;
+  color: #f6f8fb;
+}
 
-  &.put {
-    background-color: orange;
-    color: white;
-  }
+
+.btn-method-put {
+  background-color: #ffc107;
+  color: #fff;
+}
+
+
+.btn-method-delete {
+  background-color: #dc3545;
+  color: #fff;
 }
 
   .btn-chips {

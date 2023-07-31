@@ -18,7 +18,6 @@ import {DomSanitizer} from "@angular/platform-browser";
 export class RestDocumentationComponent extends PageComponent implements OnInit {
 
   dto: RestDocumentationDto = new RestDocumentationDto();
-  //dtos:RestDocumentationEndpoint = new RestDocumentationEndpoint();
   serverUrl = '';
   constructor(private service: RestDocumentationService,
     private activatedRoute: ActivatedRoute,
@@ -40,18 +39,46 @@ export class RestDocumentationComponent extends PageComponent implements OnInit 
     const locateParams = this.getLocateParams();
     this.service.getById(locateParams.get('ID')).subscribe(data => {
       this.dto = data;
-      //this.dtos = data;
     });
   }
 
-  runResults(restDocumentationEndpoint: RestDocumentationEndpoint) {
-    this.dynamicRequestService.getFromBackend('/datalist/'+restDocumentationEndpoint.list.jsonUrl ).subscribe(data => {
+  getResults(restDocumentationEndpoint: RestDocumentationEndpoint) {
+    let url = '/datalist/'+restDocumentationEndpoint.list.jsonUrl + '?';
+
+    restDocumentationEndpoint.list.listComponentFilterFieldList.forEach(field => {
+      url += field.code + '=' + field.fieldValue;
+    });
+
+    this.dynamicRequestService.getFromBackend(url ).subscribe(data => {
       restDocumentationEndpoint.restResults = JSON.stringify(data, null, 4);
     });
   }
 
   trustResource(resource) {
     return this.sanitizer.bypassSecurityTrustHtml(resource);
+  }
+
+  runDelete(restDocumentationEndpoint: RestDocumentationEndpoint) {
+    const url = '/dataset/' + restDocumentationEndpoint.form.jsonUrl + '?selection-id=' + restDocumentationEndpoint.selectionId;
+  
+    this.dynamicRequestService.deleteFromBackend(url).subscribe(
+      (data) => {
+        restDocumentationEndpoint.restResults = JSON.stringify(data, null, 4);
+      },
+      (error) => {
+        console.error('Error deleting data:', error);
+      }
+    );
+  }
+
+  runPost(){
+
+  }
+
+
+  runPut(){
+
+
   }
 
 }
