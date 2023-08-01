@@ -40,6 +40,7 @@ export class HttpRequestErrorInterceptor implements HttpInterceptor {
             const errorMessage = '<b>Code ' + errorResponce.status + '</b> ' + errorResponce.error.message;
             this.httpErrorResponceService.setNewErrorMessage(errorMessage);
             localStorage.removeItem('jwt_token');
+            localStorage.removeItem('refresh_token');
             localStorage.removeItem('loggedin_user');
             sessionStorage.removeItem('sidebarMenu');
             this.router.navigateByUrl(`/login`);
@@ -48,6 +49,7 @@ export class HttpRequestErrorInterceptor implements HttpInterceptor {
           case 403:
             this.httpErrorResponceService.setNewErrorMessage('<b>Code 403</b> Forbidden area.');
             localStorage.removeItem('jwt_token');
+            localStorage.removeItem('refresh_token');
             localStorage.removeItem('loggedin_user');
             sessionStorage.removeItem('sidebarMenu');
             this.router.navigateByUrl(`/login`);

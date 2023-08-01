@@ -60,3 +60,7 @@
 .bg-color:focus {
   background-color: #e8feff;
 }
+
+.hide_border{
+  border-right: 0px;
+}

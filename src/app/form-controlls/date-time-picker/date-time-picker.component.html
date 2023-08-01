@@ -19,6 +19,7 @@
     [specialCharacters]="[ '/' ,']' , '\\' ]"
     mask="{{convertedMask}}"
     class="form-control {{fieldClass}} ctrl-field"
+    style="border-top: 1px solid #51cbce;border-bottom: 1px solid #51cbce;"
     placeholder="{{mask}}"
     [(ngModel)]="dateModel"
     [readonly]="!this.editable"
@@ -43,8 +44,8 @@
       <i class="fa fa-clock" style=""></i>
     </span>
 
-    <input type="text" [(ngModel)]="hourValue" (keypress)="hourKeyCheck($event)" (focusout)="onFocusOut()" [readonly]="!this.editable" class="form-control hour" placeholder="hour">
-    <input type="text" [(ngModel)]="minuteValue" (keypress)="minuteKeyCheck($event)" (focusout)="onFocusOut()" [readonly]="!this.editable" class="form-control hour" placeholder="min">
+    <input  style="border-top: 1px solid #51cbce;border-bottom: 1px solid #51cbce;border-right: 1px solid #51cbce !important;" type="text" [(ngModel)]="hourValue" (keypress)="hourKeyCheck($event)" (focusout)="onFocusOut()" [readonly]="!this.editable" class="form-control hour" placeholder="hour">
+    <input  style="border-top: 1px solid #51cbce;border-bottom: 1px solid #51cbce;border-right: 1px solid #51cbce !important;" type="text" [(ngModel)]="minuteValue" (keypress)="minuteKeyCheck($event)" (focusout)="onFocusOut()" [readonly]="!this.editable" class="form-control hour" placeholder="min">
   </div>
 
   <ng-template #t let-date="date" let-focused="focused">

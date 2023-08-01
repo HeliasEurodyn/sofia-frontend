@@ -288,9 +288,9 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   navigate(command: string) {
     if (command === '#logout#') {
       this.logout();
-      localStorage.removeItem('jwt_token');
-      localStorage.removeItem('loggedin_user');
-      sessionStorage.removeItem('sidebarMenu');
+    //  localStorage.removeItem('jwt_token');
+     // localStorage.removeItem('loggedin_user');
+     // sessionStorage.removeItem('sidebarMenu');
       return;
     }
     if (command === '#clear-cache#') {

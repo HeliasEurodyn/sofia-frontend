@@ -41,27 +41,44 @@ export class LoginComponent implements OnInit {
               private navigatorService: CommandNavigatorService,
               private settingsService: SettingsService,
               private sanitizer: DomSanitizer) {
+
+  //  this.tryRefreshAndLogin();
   }
 
   ngOnInit(): void {
-
-    // Filesystem.readFile({
-    //   path: 'api.txt',
-    //   directory: Directory.Library,
-    //   encoding: Encoding.UTF8,
-    // }).then(r => {
-    //   environment.serverUrl = r.data
-    // }).then(() => {
-    //   this.defineLoginLogo();
-    // })
-    //   .catch(ex => {
-    //     this.notificationService.showNotification('top', 'center', 'alert-danger', 'fa-thumbs-down', ex);
-    //   })
-
-
-    localStorage.setItem('serverUrl', environment.serverUrl);
-
+   localStorage.setItem('serverUrl', environment.serverUrl);
+   localStorage.removeItem('jwt_token');
+   localStorage.removeItem('refresh_token');
+   localStorage.removeItem('loggedin_user');
   }
+
+  // public tryRefreshAndLogin() {
+  //   const jwtToken = localStorage.getItem('jwt_token');
+  //   const refreshToken = localStorage.getItem('refresh_token');
+  //
+  //   if (jwtToken == null || jwtToken == '' || refreshToken == null || refreshToken == '') {
+  //     return;
+  //   }
+  //
+  //   this.userService.refresh().subscribe(
+  //     data => {
+  //       localStorage.setItem('jwt_token', data.accessToken);
+  //       localStorage.setItem('refresh_token', data.refreshToken);
+  //
+  //       let userJson = localStorage.getItem('loggedin_user');
+  //       let user = JSON.parse(userJson);
+  //
+  //       const loginNavCommand = user['loginNavCommand'];
+  //       if (loginNavCommand == null || loginNavCommand === '') {
+  //         this.router.navigateByUrl('/d-dashboard');
+  //       } else {
+  //         this.navigatorService.navigate(loginNavCommand);
+  //       }
+  //
+  //     }
+  //   );
+  //
+  // }
 
   defineLoginLogo() {
     this.settingsService.getLoginImage().subscribe(icon => {
@@ -76,7 +93,6 @@ export class LoginComponent implements OnInit {
   }
 
   authenticateUser(): void {
-
     if (this.username === '') {
       this.notificationService.showNotification('top', 'center', 'alert-danger', 'fa-id-card', '<b>Login Error</b> Please fill in your username');
       return;
@@ -91,6 +107,7 @@ export class LoginComponent implements OnInit {
       data => {
 
         localStorage.setItem('jwt_token', data.accessToken);
+        localStorage.setItem('refresh_token', data.refreshToken);
         localStorage.setItem('loggedin_user', JSON.stringify(data.user));
         localStorage.setItem('uiVersion', '1.1');
         sessionStorage.setItem('sidebarMenu', JSON.stringify(data.user['sidebarMenu']));
@@ -146,6 +163,5 @@ export class LoginComponent implements OnInit {
         });
     });
   }
-
 
 }

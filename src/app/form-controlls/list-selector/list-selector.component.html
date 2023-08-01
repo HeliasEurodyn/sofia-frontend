@@ -58,6 +58,7 @@
   </div>
 
   <div class="input-group-text form-control bg-color {{fieldClass}} ctrl-field"
+       [ngClass]="{'hide_border': this.showDeleteButton}"
         *ngIf="this.editable"
         (keydown)="keyOpenPage($event)"
         (click)="openList()"
@@ -82,6 +83,7 @@
 
   <div class="input-group-text form-control bg-color {{fieldClass}} ctrl-field"
         *ngIf="!this.editable"
+       [ngClass]="{'hide_border': this.showDeleteButton}"
         (click)="eventOccuredActions('click',$event)"
         (change)="eventOccuredActions('change',$event)"
         (focus)="eventOccuredActions('focus',$event)"

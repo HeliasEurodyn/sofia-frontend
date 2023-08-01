@@ -32,6 +32,18 @@ export class UserService extends CrudService<any> {
       loginInfoDTO);
   }
 
+  refresh(): Observable<any> {
+
+    return this.http.post(
+      `${environment.serverUrl}/${this.endpoint}/auth/refresh`, null,
+      {
+        headers: {
+          'no-global-error': 'yes',
+          'no-global-loader': 'yes'
+        }
+      });
+  }
+
   logout(logoutDTO: LogoutDTO): Observable<any> {
     return this.http.post<string>(
       `${environment.serverUrl}/${this.endpoint}/logout`, logoutDTO);

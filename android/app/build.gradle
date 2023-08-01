@@ -1,8 +1,6 @@
 apply plugin: 'com.android.application'
 
 android {
-
-    namespace 'com.ed.sofia'
     compileSdkVersion rootProject.ext.compileSdkVersion
     defaultConfig {
         applicationId "com.ed.sofia"

@@ -65,6 +65,7 @@ import {SetApplicationInterfaceModalComponent} from './modals/set-application-in
 import { RuleDesignerComponent } from './pages/rule-designer/rule-designer.component';
 import { WsNotificationComponent } from './pages/ws-notification/ws-notification.component';
 import { NgChartsModule } from 'ng2-charts';
+import { DefaultComponent } from './pages/default/default.component';
 
 @NgModule({
   declarations: [
@@ -109,7 +110,8 @@ import { NgChartsModule } from 'ng2-charts';
     UiPluginComponent,
     RuleDesignerComponent,
     WsNotificationComponent,
-    SetApplicationInterfaceModalComponent
+    SetApplicationInterfaceModalComponent,
+    DefaultComponent
   ],
   imports: [
     BrowserAnimationsModule,
