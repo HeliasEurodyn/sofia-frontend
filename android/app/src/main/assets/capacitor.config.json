@@ -2,5 +2,10 @@
 	"appId": "com.ed.sofia",
 	"appName": "Ship in Time",
 	"webDir": "dist",
-	"bundledWebRuntime": false
+	"bundledWebRuntime": false,
+	"plugins": {
+		"SplashScreen": {
+			"launchAutoHide": false
+		}
+	}
 }
