@@ -63,8 +63,19 @@ export class DynamicRequestService {
     return this.http.get<any>(`${url}`);
   }
 
+  
   postToBackend(url: string, data: any): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'multipart/form-data'
+    });
     return this.http.post<any>(`${environment.serverUrl}${url}`, data);
+  }
+
+  postToBackendWithTextResponse(url: string, data: any): Observable<any> {
+    let headers = new HttpHeaders();
+  
+    return this.http.post(`${environment.serverUrl}${url}`, data, 
+    { headers, responseType: 'text' as const});
   }
 
   postToUrl(url: string, data: any): Observable<any> {

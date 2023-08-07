@@ -24,12 +24,11 @@
     <div class="card card-user">
       <div class="card-header">
         <h5 class="card-title">
-          <i class="fa-regular fa-file-powerpoint"></i>
           {{restDocumentationEndpoint.title}}
         </h5>
         <div class="form-group">
           <div class="row">
-            <div class="col-sm-6" [innerHTML]="this.trustResource(restDocumentationEndpoint?.description)">
+            <div class="col-sm-4" [innerHTML]="this.trustResource(restDocumentationEndpoint?.description)">
 
             </div>
           </div>
@@ -69,16 +68,10 @@
                     </button>
                   </div>
                 </div>
-                <div class="col">
+
+                <div class="col-md-8">
                   <label>JsonUrl</label>
-                  <ng-container *ngIf="restDocumentationEndpoint">
-                    <input type="text" readonly class="form-control" 
-                           [value]="(restDocumentationEndpoint.list ? (serverUrl + '/datalist/' + restDocumentationEndpoint.list.jsonUrl) : 
-                               (restDocumentationEndpoint.method === 'delete' ? (serverUrl + '/dataset/' + restDocumentationEndpoint.form?.jsonUrl + '?selection-id={id}') : 
-                               (serverUrl + '/dataset/' + restDocumentationEndpoint.form?.jsonUrl)))">
-                      
-                  </ng-container>
-                  <code></code>
+                  <input type="text" readonly class="form-control" [value]="getJsonUrlValue(restDocumentationEndpoint)">
                 </div>
 
                 <div class="col-md-12" *ngIf="restDocumentationEndpoint?.method === 'get'">
@@ -127,18 +120,29 @@
                   </table>
                 </div>
 
-                <!-- <div *ngFor="let parameterField of restDocumentationEndpoint?.list?.listComponentFilterFieldList" class="col-md-12">
-                  <label>{{parameterField.code}}</label>
-                      <input type="text" class="form-control" [(ngModel)]="parameterField.fieldValue">
-                  <code></code>
-                </div> -->
-
-                <div class="col-md-12">
+                <div class="col-md-6" *ngIf="['post', 'put'].includes(restDocumentationEndpoint?.method)">
+                  <div class="form-group">
+                    <label>Body</label>
+                    <textarea
+                      style="font-size: 10px; font-family: Tahoma, Verdana, Segoe, sans-serif; min-height: 200px;"
+                      class="form-control textarea" name="body" [(ngModel)]="restDocumentationEndpoint.jsonString"></textarea>
+                  </div>
+                </div>
+                
+                <div class="col-md-6">
                   <div class="form-group">
                     <label>Results</label>
                     <textarea
-                      style="font-size: 10px;font-family: Tahoma,Verdana,Segoe,sans-serif;min-height: 350px;"
+                      *ngIf="restDocumentationEndpoint?.method !== 'delete' && ['post', 'put'].includes(restDocumentationEndpoint?.method)"
+                      style="font-size: 5px; font-family: Tahoma, Verdana, Segoe, sans-serif; min-height: 100px;"
                       class="form-control textarea" name="description" [(ngModel)]="restDocumentationEndpoint.restResults"></textarea>
+                    <textarea
+                      *ngIf="restDocumentationEndpoint?.method !== 'delete' && !['post', 'put'].includes(restDocumentationEndpoint?.method)"
+                      style="font-size: 10px; font-family: Tahoma, Verdana, Segoe, sans-serif; min-height: 200px;"
+                      class="form-control textarea" name="description" [(ngModel)]="restDocumentationEndpoint.restResults"></textarea>
+                    <div *ngIf="restDocumentationEndpoint?.method === 'delete' && isDeleteCompleted">
+                      Delete Completed
+                    </div>
                   </div>
                 </div>
               </div>
