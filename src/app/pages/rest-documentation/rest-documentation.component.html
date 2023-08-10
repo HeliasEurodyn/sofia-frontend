@@ -44,7 +44,7 @@
                     <label>Method</label>
                     <button *ngIf="restDocumentationEndpoint.method === 'get'"
                             style="margin-top: 0px;"
-                            (click)="getResults(restDocumentationEndpoint)"
+                            (click)="runGetMethodWithCheck(restDocumentationEndpoint)"
                             class="btn btn-method-get">
                       {{ restDocumentationEndpoint.method.toUpperCase() }}
                     </button>
@@ -134,15 +134,15 @@
                     <label>Results</label>
                     <textarea
                       *ngIf="restDocumentationEndpoint?.method !== 'delete' && ['post', 'put'].includes(restDocumentationEndpoint?.method)"
-                      style="font-size: 5px; font-family: Tahoma, Verdana, Segoe, sans-serif; min-height: 100px;"
+                      style="font-size: 12px; font-family: Tahoma, Verdana, Segoe, sans-serif; min-height: 100px;"
                       class="form-control textarea" name="description" [(ngModel)]="restDocumentationEndpoint.restResults"></textarea>
                     <textarea
                       *ngIf="restDocumentationEndpoint?.method !== 'delete' && !['post', 'put'].includes(restDocumentationEndpoint?.method)"
                       style="font-size: 10px; font-family: Tahoma, Verdana, Segoe, sans-serif; min-height: 200px;"
                       class="form-control textarea" name="description" [(ngModel)]="restDocumentationEndpoint.restResults"></textarea>
-                    <div *ngIf="restDocumentationEndpoint?.method === 'delete' && isDeleteCompleted">
-                      Delete Completed
-                    </div>
+                      <div *ngIf="restDocumentationEndpoint?.method === 'delete' && isDeleteCompleted" style="color: red;">
+                        Executed
+                      </div>
                   </div>
                 </div>
               </div>
