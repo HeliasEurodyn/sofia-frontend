@@ -32,7 +32,7 @@
 
               <!-- Groups -->
               <div *ngIf="isGroupContentDivVisible()" style="margin-bottom: 10px;" class="col-12">
-              <div class="card">
+              <div class="card grouping-card {{this.listDto?.groupingClass}}" (click)="handleClick($event, 'grouping')">
                 <div class="card-header">
                   <div class="row formnav">
                     <div class="col-12">
@@ -41,7 +41,7 @@
                           <i class="fas fa-stream"></i>
                           {{this.listDto.groupingTitle}}
                         </h5>
-                        <p style=" margin-bottom: 5px;" [innerHTML]="this.listDto.groupingDescription"> Navigate to <b>Mechanisms
+                        <p class="card-sub-title" style=" margin-bottom: 5px;" [innerHTML]="this.listDto.groupingDescription"> Navigate to <b>Mechanisms
                           of attack</b> categorization <b>tree <i
                           class="fas fa-stream"></i></b> of Capecs</p>
                       </div>
@@ -131,24 +131,23 @@
 
               <!-- Filters -->
               <div *ngIf="this.listDto?.filterVisible" style="margin-bottom: 10px;" class="col-12">
-              <div class="card">
+              <div class="card filter-card {{this.listDto?.filterClass}}" (click)="handleClick($event, 'filter')" >
                 <div class="card-header">
                   <div class="row formnav">
-                    <div class="col-12">
+                    <div class="col-12 card-header-col">
                       <div class="pull-left">
                         <h5 class="card-title" style="margin-bottom: 0px;">
                           <i class="fas fa-filter"></i>
                           Φίλτρα
                         </h5>
-                        <p style=" margin-bottom: 5px;"> Επιλέξτε και πατήστε <b>Αναζήτηση</b></p>
+                        <p class="card-sub-title" style=" margin-bottom: 5px;"> Επιλέξτε και πατήστε <b>Αναζήτηση</b></p>
                       </div>
                       <div class="pull-right">
                         <button
                           (click)="getListResultData();"
                           class="btn btn-outline-success"
-                          style="margin-top: 0px;">
+                          style="margin-top: 0px;padding: 10px;padding-bottom: 7px;">
                           <i class="fa fa-filter"></i>
-                          Αναζήτηση
                         </button>
                       </div>
                     </div>
@@ -264,11 +263,11 @@
                   <div class="col-12">
                     <div class="pull-left">
                       <h5 class="card-title" style="margin-bottom: 0px;">
-                        <i *ngIf="this.listDto.icon != null && this.listDto.icon != ''"
+                        <i *ngIf="this.listDto.icon != null && this.listDto.title != ''"
                            class="fa {{this.listDto.icon}}"></i>
                         {{this.listDto.title}}
                       </h5>
-                      <p style="margin-bottom: 5px;" [innerHTML]="this.listDto.description"></p>
+                      <p style="margin-bottom: 5px;" *ngIf="this.listDto.description != ''" [innerHTML]="this.listDto.description"></p>
                     </div>
                     <div class="pull-right">
                       <button *ngIf="this.listDto?.exportExcel" type="button" title="Excel" (click)="dataExcel()"

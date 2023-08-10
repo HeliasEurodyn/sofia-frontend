@@ -35,7 +35,7 @@ declare function calcPivotValueBranch(id, field, rows: Array<string[]>, leftArra
 
 declare function pivotCellClick(id, field): any;
 
-
+declare function areaClickOccured(id, area, classListArray): any;
 
 @Injectable({
   providedIn: 'root'
@@ -172,6 +172,7 @@ export class ListScriptsService {
   }
 
 
-
-
+  areaClickOccured(id: string, area, classListArray: unknown[]) {
+    areaClickOccured(id, area, classListArray);
+  }
 }

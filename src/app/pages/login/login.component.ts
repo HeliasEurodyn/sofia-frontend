@@ -41,7 +41,6 @@ export class LoginComponent implements OnInit {
               private navigatorService: CommandNavigatorService,
               private settingsService: SettingsService,
               private sanitizer: DomSanitizer) {
-
   //  this.tryRefreshAndLogin();
   }
 
@@ -93,6 +92,8 @@ export class LoginComponent implements OnInit {
   }
 
   authenticateUser(): void {
+
+
     if (this.username === '') {
       this.notificationService.showNotification('top', 'center', 'alert-danger', 'fa-id-card', '<b>Login Error</b> Please fill in your username');
       return;
@@ -105,7 +106,6 @@ export class LoginComponent implements OnInit {
 
     this.authService.login(this.username, this.password).subscribe(
       data => {
-
         localStorage.setItem('jwt_token', data.accessToken);
         localStorage.setItem('refresh_token', data.refreshToken);
         localStorage.setItem('loggedin_user', JSON.stringify(data.user));
@@ -145,23 +145,23 @@ export class LoginComponent implements OnInit {
         modalReference.componentInstance.url = '';
       })
 
-    modalReference.result.then((url) => {
-      Filesystem.writeFile({path: filePath, data: url, directory, encoding})
-        .then(() => {
-          environment.serverUrl = url;
-        }).then(() => {
-        this.settingsService.getLoginImage().subscribe(icon => {
-          if (icon != null) {
-            this.loginImage = icon;
-          } else {
-            this.loginImage = './assets/img/sofia.png';
-          }
-        });
-      })
-        .catch((ex) => {
-          this.notificationService.showNotification('top', 'center', 'alert-danger', 'fa-id-card', ex);
-        });
-    });
+    // modalReference.result.then((url) => {
+    //   Filesystem.writeFile({path: filePath, data: url, directory, encoding})
+    //     .then(() => {
+    //       environment.serverUrl = url;
+    //     }).then(() => {
+    //     this.settingsService.getLoginImage().subscribe(icon => {
+    //       if (icon != null) {
+    //         this.loginImage = icon;
+    //       } else {
+    //         this.loginImage = './assets/img/sofia.png';
+    //       }
+    //     });
+    //   })
+    //     .catch((ex) => {
+    //       this.notificationService.showNotification('top', 'center', 'alert-danger', 'fa-id-card', ex);
+    //     });
+    // });
   }
 
 }

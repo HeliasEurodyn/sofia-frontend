@@ -15,6 +15,7 @@ export class ListDTO extends BaseDTO {
   public headerIcon = '';
   public groupingTitle = '';
   public groupingDescription = '';
+  public groupingClass: string = '';
   public title = '';
   public description = '';
   public icon = '';
@@ -26,6 +27,8 @@ export class ListDTO extends BaseDTO {
   public autoRun: Boolean = false;
   public listVisible: Boolean = true;
   public filterVisible: Boolean = false;
+  public filterClass: string = '';
+
   public hasPagination: Boolean;
   public totalPages: number;
   public currentPage: number;

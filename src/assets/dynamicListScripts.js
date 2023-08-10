@@ -19,6 +19,12 @@ function pivotCellClick(id, field) {
   }
 }
 
+function areaClickOccured(id, area, classListArray) {
+  if (typeof listDynamicScripts[id].areaClickOccured == "function"){
+    listDynamicScripts[id].areaClickOccured(area, classListArray);
+  }
+}
+
 function defineListGetFromBackend(id, getFromBackend) {
   if (typeof listDynamicScripts[id].defineGetFromBackend == "function"){
     listDynamicScripts[id].defineGetFromBackend(getFromBackend);

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">sofia</string>
-    <string name="title_activity_main">sofia</string>
+    <string name="app_name">Ship In Time</string>
+    <string name="title_activity_main">Ship In Time</string>
     <string name="package_name">com.ed.sofia</string>
     <string name="custom_url_scheme">com.ed.sofia</string>
 </resources>

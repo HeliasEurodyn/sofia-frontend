@@ -10,7 +10,6 @@ import {environment} from "../../../environments/environment";
   styleUrls: ['./default.component.scss']
 })
 export class DefaultComponent implements OnInit {
-
   constructor(private userService: UserService,
               private router: Router,
               private navigatorService: CommandNavigatorService) {

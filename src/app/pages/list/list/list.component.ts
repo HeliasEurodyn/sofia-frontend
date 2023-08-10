@@ -734,4 +734,13 @@ export class ListComponent extends PageComponent implements OnInit, OnDestroy, A
   trustResource(resource) {
     return this.sanitizer.bypassSecurityTrustResourceUrl(resource);
   }
+
+  filterAreaClicked() {
+    alert('filterAreaClicked');
+  }
+
+  handleClick(event: any, area: string) {
+    const classListArray = Array.from(event.target.classList);
+    this.listScriptsService.areaClickOccured(this.listDto.id, area, classListArray)
+  }
 }

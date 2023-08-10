@@ -1,5 +1,5 @@
 <div class="row formnav">
-  <div class="col-sm-12">
+  <div class="col">
     <div class="pull-left">
       <div class="col-12">
         <h3 style="margin-top: 20px;margin: 0px;margin-top: 10px;">
@@ -9,35 +9,42 @@
         <p style=" margin-bottom: 5px;"> {{timelineDTO?.description}} </p>
       </div>
     </div>
+  </div>
+  <div class="col-auto">
     <div class="pull-right">
-      <div class="row filter-row">
+      <div class="row" style="padding-left: 10px; padding-right: 10px;">
         <ng-container *ngFor="let filter of this?.timelineDTO?.filterList">
-            <div *ngIf="filter.type === 'datetime'" class="form-group col-3" style="min-width: 300px;">
-              <app-date-picker [(inputDate)]="filter.fieldValue"
-                               [mask]="'dd/MM/yyyy'"
-                               [editable]="filter.editable">
-              </app-date-picker>
-              <div class="category">{{filter.description}}</div>
-            </div>
-            <div *ngIf="filter.type === 'list'" class="form-group col-3" style="min-width: 300px;">
-              <app-list-selector
-                [(value)]="filter.fieldValue"
-                [command]="filter.editor"
-                [defaultValue]="filter.defaultValue"
-                [displayValue]="filter.displayValue"
-                [editable]="filter.editable"></app-list-selector>
-              <div class="category">{{filter.description}}</div>
-            </div>
-          </ng-container>
+          <div class="col" style="padding-left: 0px; padding-right: 0px;">
+          <div *ngIf="filter.type === 'datetime'" class="form-group">
+            <app-date-picker [(inputDate)]="filter.fieldValue"
+                             [mask]="'dd/MM/yyyy'"
+                             [editable]="filter.editable">
+            </app-date-picker>
+            <div class="category">{{filter.description}}</div>
+          </div>
+          <div *ngIf="filter.type === 'list'" class="form-group col-3" style="min-width: 300px;">
+            <app-list-selector
+              [(value)]="filter.fieldValue"
+              [command]="filter.editor"
+              [defaultValue]="filter.defaultValue"
+              [displayValue]="filter.displayValue"
+              [editable]="filter.editable"></app-list-selector>
+            <div class="category">{{filter.description}}</div>
+          </div>
+          </div>
+        </ng-container>
+        <div class="col col-auto">
         <button *ngIf="this?.timelineDTO?.filterList.length > 0"
                 (click)="refreshByFilters()"
                 class="btn btn-outline-info  btn-round btn-icon">
           <i class="fa fa-filter"></i>
         </button>
+        </div>
       </div>
     </div>
   </div>
 </div>
+
 
 <div class="main-content">
   <div class="row">
