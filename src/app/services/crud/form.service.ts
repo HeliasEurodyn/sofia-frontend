@@ -11,7 +11,7 @@ import {ComponentDTO} from '../../dtos/component/componentDTO';
 })
 export class FormService extends CrudService<FormDto> {
 
-  protected cachedDtos = new Map();
+  // protected cachedDtos = new Map();
 
   constructor(public http: HttpClient) {
     super(http, 'form');

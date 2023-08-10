@@ -6,6 +6,7 @@ function registerFormDynamicScript(id, form) {
 }
 
 function nativeButtonClickHandler(id, fieldCode) {
+  if (typeof formDynamicScripts[id].nativeButtonClickHandler == "function")
   formDynamicScripts[id].nativeButtonClickHandler(fieldCode);
 }
 

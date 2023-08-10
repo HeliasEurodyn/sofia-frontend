@@ -26,8 +26,7 @@ export class CommandNavigatorService {
   ) {
   }
 
-  public navigate(command: string) {
-
+  public navigate(command: string){
     if (this.componentRefOnNavigation != null) {
       command = this.commandParserService.mapToCommand(command, '$PAGEID', this.componentRefOnNavigation.instance.pageId);
     }

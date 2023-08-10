@@ -10,7 +10,7 @@ import {Observable} from 'rxjs';
 })
 export class ListService extends CrudService<any> {
 
-  protected cachedDtos = new Map();
+ // protected cachedDtos = new Map();
 
   constructor(public http: HttpClient) {
     super(http, 'list');

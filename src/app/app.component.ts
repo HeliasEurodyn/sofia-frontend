@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, NgZone, OnInit} from '@angular/core';
 import {Title} from '@angular/platform-browser';
 import {ActivatedRoute} from '@angular/router';
 import {HttpErrorResponceService} from './services/system/http-error-responce.service';
@@ -11,6 +11,8 @@ import {WebSocketService} from "./services/system/web-socket.service";
 import {Observable} from "rxjs";
 import {Message} from "@stomp/stompjs";
 import {TokenService} from "./services/system/token.service";
+import {FCM} from "@capacitor-community/fcm";
+import {CommandNavigatorService} from "./services/system/command-navigator.service";
 
 @Component({
   selector: 'app-root',
@@ -30,19 +32,21 @@ export class AppComponent implements OnInit {
                      private title: Title,
                      private webSocketService: WebSocketService,
                      private settingsService: SettingsService,
-                     private tokenRefresherService: TokenService) {
+                     private tokenRefresherService: TokenService,
+                     private navigatorService: CommandNavigatorService,
+                     private ngZone: NgZone) {
     //tokenRefresherService.doRefreshToken();
     tokenRefresherService.refreshTokenTimerStart();
   }
 
   ngOnInit(): void {
 
-    const messageObservable: Observable<Message> = this.webSocketService.getMessageObservable2();
-    if(messageObservable != undefined){
-      messageObservable.subscribe((message) => {
-        console.log(' ..1.. '+message.body);
-      });
-    }
+    // const messageObservable: Observable<Message> = this.webSocketService.getMessageObservable2();
+    // if(messageObservable != undefined){
+    //   messageObservable.subscribe((message) => {
+    //     console.log(' ..1.. '+message.body);
+    //   });
+    // }
 
     this.activatedRoute.queryParamMap.subscribe(params => {
       this.title.setTitle(this.appTitle);
@@ -60,30 +64,50 @@ export class AppComponent implements OnInit {
       }
     });
 
-    PushNotifications.register();
+    PushNotifications.requestPermissions();
+  //  PushNotifications.register();
 
-    // PushNotifications.addListener('pushNotificationReceived', (notification: any) => {
-    //   // Handle received push notification
-    //   console.log('Received push notification: ', notification);
-    //   this.notificationService.showNotification('top', 'center', 'alert-info', 'fa-thumbs-down', 'Received push notification - ' + notification.toString());
-    // });
+    PushNotifications.register().then(() => {
+      console.log('Push notifications registered.');
 
-    // PushNotifications.addListener('pushNotificationActionPerformed', (notification: any) => {
-    //   // Handle action performed on push notification (e.g., tapped)
-    //   //console.log('Push notification action performed: ', notification);
-    //
-    //
-    //   this.notificationService.showNotification('top', 'center', 'alert-info', 'fa-thumbs-down', 'Push notification action performed - ' + JSON.stringify(notification));
-    // });
+      // Listen for token updates
+      PushNotifications.addListener('registration', (token) => {
+      //  alert('Push token:' +token.value);
+        // You can now use 'token.value' to send push notifications to this device.
+      });
+    }).catch(error => {
+      console.error('Error initializing push notifications:', error);
+    });
+
+    FCM.subscribeTo({ topic: "devices" });
+
+      //.then((r) => alert(`subscribed to topic`))
+     // .catch((err) => console.log(err));
+
+    PushNotifications.addListener('pushNotificationReceived', (notification: any) => {
+      // this.ngZone.run(() => {
+      //   this.notificationService.showNotification('top', 'center', 'alert-info', 'fa-thumbs-down', 'pushNotificationReceived');
+      //   console.log('Received push notification: ', notification);
+      // });
+
+   //   this.notificationService.showNotification('top', 'center', 'alert-info', 'fa-thumbs-down', 'Received push notification - ' + notification.toString());
+    });
 
     PushNotifications.addListener('pushNotificationActionPerformed', (notification: any) => {
-      // Handle action performed on push notification (e.g., tapped)
-      // console.log('Push notification action performed: ', notification);
 
-      const notificationId = notification.notification.data.notification_id;
-     // const { notification: { data } } = notification;
-      // this.notificationService.showNotification('top', 'center', 'alert-info', 'fa-thumbs-down', 'Push notification action performed - ' + JSON.stringify(data));
-      this.notificationService.showNotification('top', 'center', 'alert-info', 'fa-thumbs-down', 'Push notification action performed - ' + JSON.stringify(notificationId));
+      this.ngZone.run(() => {
+        console.log('notification.notification')
+        console.log(notification.notification)
+
+          const navigate = notification.notification.data.navigate;
+          // const id = notification.notification.data.id;
+
+          if(navigate != null){
+           // const navigationStr = JSON.stringify(navigate);
+            this.navigatorService.navigate(navigate);
+              // this.navigatorService.navigate('{"COMMAND-TYPE":"FORM","LOCATE":{"ID":"b29b0d21-4948-490e-9595-197474b2e3f6","SELECTION-ID":"'+id+'"}}');
+          }
+      });
 
     });
 
