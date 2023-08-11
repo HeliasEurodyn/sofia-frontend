@@ -55,4 +55,16 @@ export class UserService extends CrudService<any> {
     return this.http.put<UserDto>(`${environment.serverUrl}/${this.endpoint}/change-password`, changePasswordRequest);
   }
 
+  refresh(): Observable<any> {
+
+    return this.http.post(
+      `${environment.serverUrl}/${this.endpoint}/auth/refresh`, null,
+      {
+        headers: {
+          'no-global-error': 'yes',
+          'no-global-loader': 'yes'
+        }
+      });
+  }
+
 }

@@ -8,6 +8,7 @@ import {environment} from "../environments/environment";
 import {WebSocketService} from "./services/system/web-socket.service";
 import {Observable} from "rxjs";
 import {Message} from "@stomp/stompjs";
+import {TokenService} from "./services/system/token.service";
 
 @Component({
   selector: 'app-root',
@@ -25,7 +26,9 @@ export class AppComponent implements OnInit {
                      private notificationService: NotificationService,
                      private title: Title,
                      private webSocketService: WebSocketService,
-                     private settingsService: SettingsService) {
+                     private settingsService: SettingsService,
+                     private tokenService: TokenService ) {
+    tokenService.refreshTokenTimerStart();
   }
 
   ngOnInit(): void {

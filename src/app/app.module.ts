@@ -66,6 +66,7 @@ import { WsNotificationComponent } from './pages/ws-notification/ws-notification
 import { NgChartsModule } from 'ng2-charts';
 import { ChatComponent } from './pages/chat/chat.component';
 import { RestDocumentationComponent } from './pages/rest-documentation/rest-documentation.component';
+import { DefaultComponent } from './pages/default/default.component';
 
 
 
@@ -115,6 +116,7 @@ import { RestDocumentationComponent } from './pages/rest-documentation/rest-docu
     ChatComponent,
     UiPluginComponent,
     RestDocumentationComponent,
+    DefaultComponent,
   ],
   imports: [
     BrowserAnimationsModule,
