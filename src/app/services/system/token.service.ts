@@ -7,8 +7,8 @@ import {Router} from "@angular/router";
 })
 export class TokenService {
   private timerSubscription: Subscription;
-  // intervalTime = 1800000;
-  intervalTime = 5000;
+  intervalTime = 1800000;
+  // intervalTime = 5000;
 
   constructor(private userService: UserService,
               private router: Router) {
