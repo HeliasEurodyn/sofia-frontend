@@ -7,9 +7,15 @@ import {EmptyComponent} from "./pages/empty/empty.component";
 import {DefaultComponent} from "./pages/default/default.component";
 
 export const AppRoutes: Routes = [
+  // {
+  //   path: '',
+  //   component: DefaultComponent
+  // },
   {
     path: '',
-    component: DefaultComponent
+    // component: LoginComponent
+    redirectTo: 'login',
+    pathMatch: 'full',
   },
   {path: 'callback', component: CallBackComponent},
   {

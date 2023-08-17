@@ -13,6 +13,8 @@ import {Message} from "@stomp/stompjs";
 import {TokenService} from "./services/system/token.service";
 import {FCM} from "@capacitor-community/fcm";
 import {CommandNavigatorService} from "./services/system/command-navigator.service";
+import {PushNotificationService} from "./services/crud/push-notification.service";
+import {SplashScreen} from "@capacitor/splash-screen";
 
 @Component({
   selector: 'app-root',
@@ -41,13 +43,6 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
 
-    // const messageObservable: Observable<Message> = this.webSocketService.getMessageObservable2();
-    // if(messageObservable != undefined){
-    //   messageObservable.subscribe((message) => {
-    //     console.log(' ..1.. '+message.body);
-    //   });
-    // }
-
     this.activatedRoute.queryParamMap.subscribe(params => {
       this.title.setTitle(this.appTitle);
     });
@@ -68,12 +63,9 @@ export class AppComponent implements OnInit {
   //  PushNotifications.register();
 
     PushNotifications.register().then(() => {
-      console.log('Push notifications registered.');
-
-      // Listen for token updates
       PushNotifications.addListener('registration', (token) => {
-      //  alert('Push token:' +token.value);
-        // You can now use 'token.value' to send push notifications to this device.
+       // this.pushNotificationService.register(token.value).subscribe();
+        localStorage.setItem('device_token', token.value);
       });
     }).catch(error => {
       console.error('Error initializing push notifications:', error);
@@ -81,35 +73,31 @@ export class AppComponent implements OnInit {
 
     FCM.subscribeTo({ topic: "devices" });
 
-      //.then((r) => alert(`subscribed to topic`))
-     // .catch((err) => console.log(err));
-
     PushNotifications.addListener('pushNotificationReceived', (notification: any) => {
-      // this.ngZone.run(() => {
-      //   this.notificationService.showNotification('top', 'center', 'alert-info', 'fa-thumbs-down', 'pushNotificationReceived');
-      //   console.log('Received push notification: ', notification);
-      // });
-
-   //   this.notificationService.showNotification('top', 'center', 'alert-info', 'fa-thumbs-down', 'Received push notification - ' + notification.toString());
+      this.ngZone.run(() => {
+        const popup_notification = notification.notification.data.popup_notification;
+        if(popup_notification != null) {
+          this.notificationService.showNotification('top', 'center', 'alert-info', 'fa-truck-fast', popup_notification);
+        }
+      });
     });
 
     PushNotifications.addListener('pushNotificationActionPerformed', (notification: any) => {
 
       this.ngZone.run(() => {
-        console.log('notification.notification')
-        console.log(notification.notification)
 
           const navigate = notification.notification.data.navigate;
-          // const id = notification.notification.data.id;
-
           if(navigate != null){
-           // const navigationStr = JSON.stringify(navigate);
             this.navigatorService.navigate(navigate);
-              // this.navigatorService.navigate('{"COMMAND-TYPE":"FORM","LOCATE":{"ID":"b29b0d21-4948-490e-9595-197474b2e3f6","SELECTION-ID":"'+id+'"}}');
           }
       });
 
     });
+
+    setTimeout(() => {
+      // Hide the splash screen after 3 seconds
+      SplashScreen.hide();
+    }, 3000);
 
     localStorage.setItem('serverUrl', environment.serverUrl);
   }

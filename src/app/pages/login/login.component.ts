@@ -12,6 +12,7 @@ import {
   SetApplicationInterfaceModalComponent
 } from '../../modals/set-application-intreface/set-application-interface-modal.component';
 import {Directory, Encoding, Filesystem} from '@capacitor/filesystem';
+import {PushNotificationService} from "../../services/crud/push-notification.service";
 
 @Component({
   selector: 'app-login',
@@ -40,7 +41,8 @@ export class LoginComponent implements OnInit {
               private router: Router,
               private navigatorService: CommandNavigatorService,
               private settingsService: SettingsService,
-              private sanitizer: DomSanitizer) {
+              private sanitizer: DomSanitizer,
+              private pushNotificationService: PushNotificationService) {
   //  this.tryRefreshAndLogin();
   }
 
@@ -50,34 +52,6 @@ export class LoginComponent implements OnInit {
    localStorage.removeItem('refresh_token');
    localStorage.removeItem('loggedin_user');
   }
-
-  // public tryRefreshAndLogin() {
-  //   const jwtToken = localStorage.getItem('jwt_token');
-  //   const refreshToken = localStorage.getItem('refresh_token');
-  //
-  //   if (jwtToken == null || jwtToken == '' || refreshToken == null || refreshToken == '') {
-  //     return;
-  //   }
-  //
-  //   this.userService.refresh().subscribe(
-  //     data => {
-  //       localStorage.setItem('jwt_token', data.accessToken);
-  //       localStorage.setItem('refresh_token', data.refreshToken);
-  //
-  //       let userJson = localStorage.getItem('loggedin_user');
-  //       let user = JSON.parse(userJson);
-  //
-  //       const loginNavCommand = user['loginNavCommand'];
-  //       if (loginNavCommand == null || loginNavCommand === '') {
-  //         this.router.navigateByUrl('/d-dashboard');
-  //       } else {
-  //         this.navigatorService.navigate(loginNavCommand);
-  //       }
-  //
-  //     }
-  //   );
-  //
-  // }
 
   defineLoginLogo() {
     this.settingsService.getLoginImage().subscribe(icon => {
@@ -112,6 +86,8 @@ export class LoginComponent implements OnInit {
         localStorage.setItem('uiVersion', '1.1');
         sessionStorage.setItem('sidebarMenu', JSON.stringify(data.user['sidebarMenu']));
 
+        this.registerPushNotificationDeviceTokenToBackend();
+        
         const loginNavCommand = data.user['loginNavCommand'];
         if (loginNavCommand == null || loginNavCommand === '') {
           this.router.navigateByUrl('/d-dashboard');
@@ -120,6 +96,10 @@ export class LoginComponent implements OnInit {
         }
       }
     );
+  }
+
+  registerPushNotificationDeviceTokenToBackend(){
+     this.pushNotificationService.register(localStorage.getItem('device_token')).subscribe();
   }
 
   trustResource(resource) {
@@ -144,24 +124,6 @@ export class LoginComponent implements OnInit {
       .catch(ex => {
         modalReference.componentInstance.url = '';
       })
-
-    // modalReference.result.then((url) => {
-    //   Filesystem.writeFile({path: filePath, data: url, directory, encoding})
-    //     .then(() => {
-    //       environment.serverUrl = url;
-    //     }).then(() => {
-    //     this.settingsService.getLoginImage().subscribe(icon => {
-    //       if (icon != null) {
-    //         this.loginImage = icon;
-    //       } else {
-    //         this.loginImage = './assets/img/sofia.png';
-    //       }
-    //     });
-    //   })
-    //     .catch((ex) => {
-    //       this.notificationService.showNotification('top', 'center', 'alert-danger', 'fa-id-card', ex);
-    //     });
-    // });
   }
 
 }
