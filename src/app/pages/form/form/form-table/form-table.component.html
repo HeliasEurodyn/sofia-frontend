@@ -83,6 +83,12 @@
             [ngClass]="{'hidden-field': !formComponentCell.formControl.formControlField.visible}">
           </app-varchar-input>
         </ng-container>
+
+        <ng-container
+          *ngIf="formComponentCell.formControl.formControlField.componentPersistEntityField.assignment.type === 'html'">
+          <div [innerHTML]="trustResource(formComponentCell.componentPersistEntityField.value)"></div>
+        </ng-container>
+
         <ng-container
           *ngIf="formComponentCell.formControl.formControlField.componentPersistEntityField.assignment.type === 'combo'">
           <app-combo-box (eventOccured)="tableEventOccured($event,

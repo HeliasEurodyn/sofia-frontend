@@ -29,7 +29,7 @@ import {FormAssignmentsService} from './services/form-assignments.service';
 import {FormTableLinesService} from './services/form-table-lines.service';
 import {LanguageService} from "../../../services/system/language.service";
 import {ListSearchService} from "../../../services/system/list-search.service";
-
+import {DateConverterService} from "../../../services/system/date-converter.service";
 
 @Component({
   selector: 'app-form',
@@ -65,7 +65,8 @@ export class FormComponent extends PageComponent implements OnInit, AfterViewIni
               private languageService: LanguageService,
               private el: ElementRef,
               private listSearchService: ListSearchService,
-              private sanitizer: DomSanitizer) {
+              private sanitizer: DomSanitizer,
+              private dateConverterService: DateConverterService) {
     super();
   }
 
@@ -219,28 +220,6 @@ export class FormComponent extends PageComponent implements OnInit, AfterViewIni
       });
     });
   }
-
-  // retrieveCloneAndAssignData(id: string, selectionId: string) {
-  //   this.service.getUiVersion(id)
-  //     .pipe(concatMap(instanceVersion => this.service.getUi(id, instanceVersion))
-  //     ).subscribe(dto => {
-  //     localStorage.setItem('cachedForm' + id, JSON.stringify(dto));
-  //     this.service.getCloneData(id, selectionId).subscribe(componentDTO => {
-  //       dto.component = componentDTO;
-  //       this.dto = dto;
-  //       this.setSelectedComponentPersistEntityFieldsToTables(this.dto.component.componentPersistEntityList);
-  //
-  //       this.dto.component.componentPersistEntityList =
-  //         this.formAssignmentsService.addAssignmentsToTableDataLines(this.dto.component.componentPersistEntityList);
-  //
-  //       this.dto = this.formAssignmentsService.assignComponentFieldsToFormFields(this.dto);
-  //       this.dto = this.formTableLinesService.generateFormTableLines(this.dto);
-  //       this.setDefaultSelectedTab();
-  //       this.formScriptsService.load(this);
-  //       this.defineTitle();
-  //     });
-  //   });
-  // }
 
   defineTitle() {
     if (this.commandShowCustomTitle()) {
@@ -513,10 +492,7 @@ export class FormComponent extends PageComponent implements OnInit, AfterViewIni
       event.event);
   }
 
-  mapTreeToArrays(data
-                    :
-                    Map<any, any>
-  ) {
+  mapTreeToArrays(data: Map<any, any>) {
     return this.service.mapTreeToArrays(data);
   }
 
@@ -537,6 +513,7 @@ export class FormComponent extends PageComponent implements OnInit, AfterViewIni
       }
     }
   }
+
   public getFromBackendWithCustomHeaders(url: string, customHeaders: [], callback: (n: any, result: boolean) => any) {
     this.formScriptsService.getFromBackendWithCustomHeaders(url, customHeaders, callback);
   }
@@ -546,6 +523,7 @@ export class FormComponent extends PageComponent implements OnInit, AfterViewIni
   }
 
   trustResource(resource) {
+    resource = this.dateConverterService.replaceIsoToClientDateFormatsInText(resource.toString());
     return this.sanitizer.bypassSecurityTrustHtml(resource);
   }
 
