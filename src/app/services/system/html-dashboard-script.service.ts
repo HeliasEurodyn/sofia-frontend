@@ -53,7 +53,7 @@ export class HtmlDashboardScriptService {
           defineHtmlDashboardPutToUrl(htmlDashboard.dto.id, this.putToUrl);
           defineHtmlDashboardDeleteFromBackend(htmlDashboard.dto.id, this.deleteFromBackend);
           defineHtmlDashboardDeleteFromUrl(htmlDashboard.dto.id, this.deleteFromUrl);
-          this.triggerInfoCardEvent(htmlDashboard.dto.id, 'onInfoCardOpen', '');
+          this.triggerInfoCardEvent(htmlDashboard.dto.id, 'onHtmlDashboardOpen', '');
           resolve({script: 'htmlDashboardScript', loaded: true, status: 'Loaded'});
         }).catch(error => console.log(error));
       });

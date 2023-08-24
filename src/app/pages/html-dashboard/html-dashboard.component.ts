@@ -15,7 +15,7 @@ export class HtmlDashboardComponent implements OnInit {
 
   @Input() id: number;
   @Input() public extraParamsMap: Map<any, any>;
-  public instanceId = uuid.v4();
+ // public instanceId = uuid.v4();
   public dto: HtmlDashboardDTO;
 
   constructor(private service: HtmlDashboardService,
