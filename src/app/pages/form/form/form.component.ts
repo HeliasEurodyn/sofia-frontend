@@ -1,13 +1,4 @@
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  OnDestroy,
-  OnInit,
-  QueryList,
-  ViewChild,
-  ViewChildren
-} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren} from '@angular/core';
 import {PageComponent} from '../../page/page-component';
 import {FormService} from '../../../services/crud/form.service';
 import {CommandNavigatorService} from '../../../services/system/command-navigator.service';
@@ -27,14 +18,12 @@ import {DynamicCssScriptLoaderService} from '../../../services/system/dynamic-cs
 import {concatMap} from 'rxjs/operators';
 import {FormAssignmentsService} from './services/form-assignments.service';
 import {FormTableLinesService} from './services/form-table-lines.service';
-import {LanguageService} from "../../../services/system/language.service";
-import {ListSearchService} from "../../../services/system/list-search.service";
-import {DateConverterService} from "../../../services/system/date-converter.service";
+import {LanguageService} from '../../../services/system/language.service';
+import {ListSearchService} from '../../../services/system/list-search.service';
+import {DateConverterService} from '../../../services/system/date-converter.service';
 
 @Component({
-  selector: 'app-form',
-  templateUrl: './form.component.html',
-  styleUrls: ['./form.component.css']
+  selector: 'app-form', templateUrl: './form.component.html', styleUrls: ['./form.component.css']
 })
 export class FormComponent extends PageComponent implements OnInit, AfterViewInit, OnDestroy {
 
@@ -51,22 +40,7 @@ export class FormComponent extends PageComponent implements OnInit, AfterViewIni
   clonedData = false;
   searchSubject;
 
-  constructor(private activatedRoute: ActivatedRoute,
-              private service: FormService,
-              private location: Location,
-              private previousRouteService: PreviousRouteService,
-              private navigatorService: CommandNavigatorService,
-              private dynamicCssScriptLoader: DynamicCssScriptLoaderService,
-              public datepipe: DatePipe,
-              private title: Title,
-              public formScriptsService: FormScriptsService,
-              private formAssignmentsService: FormAssignmentsService,
-              private formTableLinesService: FormTableLinesService,
-              private languageService: LanguageService,
-              private el: ElementRef,
-              private listSearchService: ListSearchService,
-              private sanitizer: DomSanitizer,
-              private dateConverterService: DateConverterService) {
+  constructor(private activatedRoute: ActivatedRoute, private service: FormService, private location: Location, private previousRouteService: PreviousRouteService, private navigatorService: CommandNavigatorService, private dynamicCssScriptLoader: DynamicCssScriptLoaderService, public datepipe: DatePipe, private title: Title, public formScriptsService: FormScriptsService, private formAssignmentsService: FormAssignmentsService, private formTableLinesService: FormTableLinesService, private languageService: LanguageService, private el: ElementRef, private listSearchService: ListSearchService, private sanitizer: DomSanitizer, private dateConverterService: DateConverterService) {
     super();
   }
 
@@ -109,67 +83,62 @@ export class FormComponent extends PageComponent implements OnInit, AfterViewIni
   applyHeaderSearchFilter() {
     this.searchSubject = this.listSearchService.listSearchEmmiter.subscribe((searchVaule: string) => {
 
-        if (this.dto.formTabs != null) {
-          this.dto.formTabs
-            .filter(formTab => formTab.formAreas != null)
-            .forEach(formTab => {
-              formTab.searchSelected = false;
-              formTab.formAreas
-                .filter(formArea => formArea.formControls != null)
-                .forEach(formArea => {
+      if (this.dto.formTabs != null) {
+        this.dto.formTabs
+          .filter(formTab => formTab.formAreas != null)
+          .forEach(formTab => {
+            formTab.searchSelected = false;
+            formTab.formAreas
+              .filter(formArea => formArea.formControls != null)
+              .forEach(formArea => {
 
-                  formArea.formControls
-                    .filter(formControl => formControl.type === 'field')
-                    .forEach(formControl => {
-                      const value = formControl.formControlField.componentPersistEntityField.value == null ? "" : formControl.formControlField.componentPersistEntityField.value;
-                      const fieldDescription = formControl.formControlField.description == null ? "" : formControl.formControlField.description;
-                      formControl.searchSelected = false;
-                      if ((value.toString().toLowerCase().includes(searchVaule.toLowerCase()) ||
-                          fieldDescription.toString().toLowerCase().includes(searchVaule.toLowerCase()))
-                        && searchVaule !== '') {
-                        formControl.searchSelected = true;
+                formArea.formControls
+                  .filter(formControl => formControl.type === 'field')
+                  .forEach(formControl => {
+                    const value = formControl.formControlField.componentPersistEntityField.value == null ? '' : formControl.formControlField.componentPersistEntityField.value;
+                    const fieldDescription = formControl.formControlField.description == null ? '' : formControl.formControlField.description;
+                    formControl.searchSelected = false;
+                    if ((value.toString().toLowerCase().includes(searchVaule.toLowerCase()) || fieldDescription.toString().toLowerCase().includes(searchVaule.toLowerCase())) && searchVaule !== '') {
+                      formControl.searchSelected = true;
+                      formTab.searchSelected = true;
+                    }
+                  });
+
+                formArea.formControls
+                  .filter(formControl => formControl.type === 'table')
+                  .forEach(formControl => {
+                    formControl.formControlTable.formControlLines
+                      .forEach(formControlLine => {
+                        formControlLine.formControlCells.forEach(formControlCell => {
+                          const value = formControlCell.componentPersistEntityField.value == null ? '' : formControlCell.componentPersistEntityField.value;
+                          const fieldDescription = formControlCell.formControl.formControlField.description == null ? '' : formControlCell.formControl.formControlField.description;
+                          formControlCell.searchSelected = false;
+                          if ((value.toString().toLowerCase().includes(searchVaule.toLowerCase()) || fieldDescription.toString().toLowerCase().includes(searchVaule.toLowerCase())) && searchVaule !== '') {
+                            formControlCell.searchSelected = true;
+                            formTab.searchSelected = true;
+                          }
+                        });
+                      });
+                  });
+
+                formArea.formControls
+                  .filter(formControl => formControl.type === 'table')
+                  .forEach(formControl => {
+                    formControl.formControlTable.formControls.forEach(tableFieldComponent => {
+
+                      const fieldDescription = tableFieldComponent.formControlField.description == null ? '' : tableFieldComponent.formControlField.description;
+                      tableFieldComponent.searchSelected = false;
+                      if (fieldDescription.toString().toLowerCase().includes(searchVaule.toLowerCase()) && searchVaule !== '') {
+                        tableFieldComponent.searchSelected = true;
                         formTab.searchSelected = true;
                       }
                     });
+                  });
 
-                  formArea.formControls
-                    .filter(formControl => formControl.type === 'table')
-                    .forEach(formControl => {
-                      formControl.formControlTable.formControlLines
-                        .forEach(formControlLine => {
-                          formControlLine.formControlCells.forEach(formControlCell => {
-                            const value = formControlCell.componentPersistEntityField.value == null ? "" : formControlCell.componentPersistEntityField.value;
-                            const fieldDescription = formControlCell.formControl.formControlField.description == null ? "" : formControlCell.formControl.formControlField.description;
-                            formControlCell.searchSelected = false;
-                            if ((value.toString().toLowerCase().includes(searchVaule.toLowerCase()) ||
-                                fieldDescription.toString().toLowerCase().includes(searchVaule.toLowerCase()))
-                              && searchVaule !== '') {
-                              formControlCell.searchSelected = true;
-                              formTab.searchSelected = true;
-                            }
-                          });
-                        });
-                    });
-
-                  formArea.formControls
-                    .filter(formControl => formControl.type === 'table')
-                    .forEach(formControl => {
-                      formControl.formControlTable.formControls.forEach(tableFieldComponent => {
-
-                        const fieldDescription = tableFieldComponent.formControlField.description == null ? "" : tableFieldComponent.formControlField.description;
-                        tableFieldComponent.searchSelected = false;
-                        if ( fieldDescription.toString().toLowerCase().includes(searchVaule.toLowerCase()) && searchVaule !== '') {
-                          tableFieldComponent.searchSelected = true;
-                          formTab.searchSelected = true;
-                        }
-                      });
-                    });
-
-                });
-            });
-        }
+              });
+          });
       }
-    )
+    })
   }
 
   applyLanguageSelection() {
@@ -182,14 +151,14 @@ export class FormComponent extends PageComponent implements OnInit, AfterViewIni
     this.formFields
       .filter((formField: any) => formField.componentPersistEntityDTO.code + '.' + formField.componentPersistEntityFieldDTO.code === code)
       .forEach((formField: any) => {
-         formField.refresh();
-         console.log(formField);
-      } );
+        formField.refresh();
+        console.log(formField);
+      });
   }
 
   findFormField(code: string): void {
     return this.formFields
-      .find((formField: any) => formField.componentPersistEntityDTO.code + '.' + formField.componentPersistEntityFieldDTO.code  == code);
+      .find((formField: any) => formField.componentPersistEntityDTO.code + '.' + formField.componentPersistEntityFieldDTO.code == code);
   }
 
   loadDynamicCssScript(id: any): Promise<any> {
@@ -201,16 +170,14 @@ export class FormComponent extends PageComponent implements OnInit, AfterViewIni
     const languageId = language == null ? 0 : language.id;
 
     this.service.getUiVersion(id)
-      .pipe(concatMap(instanceVersion => this.service.getUi(id, languageId, instanceVersion))
-      ).subscribe(dto => {
+      .pipe(concatMap(instanceVersion => this.service.getUi(id, languageId, instanceVersion))).subscribe(dto => {
       localStorage.setItem('cachedForm' + id + '-' + languageId, JSON.stringify(dto));
       this.service.getData(id, selectionId, languageId, this.clonedData).subscribe(componentDTO => {
         dto.component = componentDTO;
         this.dto = dto;
         this.setSelectedComponentPersistEntityFieldsToTables(this.dto.component.componentPersistEntityList);
 
-        this.dto.component.componentPersistEntityList =
-          this.formAssignmentsService.addAssignmentsToTableDataLines(this.dto.component.componentPersistEntityList);
+        this.dto.component.componentPersistEntityList = this.formAssignmentsService.addAssignmentsToTableDataLines(this.dto.component.componentPersistEntityList);
 
         this.dto = this.formAssignmentsService.assignComponentFieldsToFormFields(this.dto);
         this.dto = this.formTableLinesService.generateFormTableLines(this.dto);
@@ -332,8 +299,7 @@ export class FormComponent extends PageComponent implements OnInit, AfterViewIni
           value = cpef.value;
         }
 
-        componentPersistEntityMap.set(cpef.code,
-          value);
+        componentPersistEntityMap.set(cpef.code, value);
       }
     }
 
@@ -388,10 +354,8 @@ export class FormComponent extends PageComponent implements OnInit, AfterViewIni
     for (const componentPersistEntity of componentPersistEntityList) {
       if (componentPersistEntity.multiDataLine) {
         if (componentPersistEntity.componentPersistEntityDataLines.length > 0) {
-          componentPersistEntity.componentPersistEntityList =
-            componentPersistEntity.componentPersistEntityDataLines[0].componentPersistEntityList;
-          componentPersistEntity.componentPersistEntityFieldList =
-            componentPersistEntity.componentPersistEntityDataLines[0].componentPersistEntityFieldList;
+          componentPersistEntity.componentPersistEntityList = componentPersistEntity.componentPersistEntityDataLines[0].componentPersistEntityList;
+          componentPersistEntity.componentPersistEntityFieldList = componentPersistEntity.componentPersistEntityDataLines[0].componentPersistEntityFieldList;
         }
       }
 
@@ -474,22 +438,12 @@ export class FormComponent extends PageComponent implements OnInit, AfterViewIni
 
   }
 
-  setSelectedActionButton(actionButton
-                            :
-                            FormActionButton
-  ) {
+  setSelectedActionButton(actionButton: FormActionButton) {
     this.selectedActionButton = actionButton;
   }
 
-  fieldEventOccured(event
-                      :
-                      any
-  ) {
-    this.formScriptsService.fieldEventOccured(this.dto.id,
-      event.entityCode,
-      event.fieldCode,
-      event.eventtype,
-      event.event);
+  fieldEventOccured(event: any) {
+    this.formScriptsService.fieldEventOccured(this.dto.id, event.entityCode, event.fieldCode, event.eventtype, event.event);
   }
 
   mapTreeToArrays(data: Map<any, any>) {
@@ -502,9 +456,7 @@ export class FormComponent extends PageComponent implements OnInit, AfterViewIni
       for (const formArea of formTab.formAreas) {
         for (const formControl of formArea.formControls) {
           if (formControl.type === 'field') {
-            const curFieldCode = formControl.formControlField.componentPersistEntity.code +
-              '.' +
-              formControl.formControlField.componentPersistEntityField.code;
+            const curFieldCode = formControl.formControlField.componentPersistEntity.code + '.' + formControl.formControlField.componentPersistEntityField.code;
             if (fieldCode === curFieldCode) {
               return formControl.formControlField;
             }
@@ -523,7 +475,8 @@ export class FormComponent extends PageComponent implements OnInit, AfterViewIni
   }
 
   trustResource(resource) {
-    resource = this.dateConverterService.replaceIsoToClientDateFormatsInText(resource.toString());
+    resource = (resource == null ? '' : resource.toString());
+    resource = this.dateConverterService.replaceIsoToClientDateFormatsInText(resource);
     return this.sanitizer.bypassSecurityTrustHtml(resource);
   }
 

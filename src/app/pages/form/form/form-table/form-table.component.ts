@@ -13,13 +13,11 @@ import {FormComponent} from '../form.component';
 import {FormAssignmentsService} from '../services/form-assignments.service';
 import {ComponentObjService} from '../services/component-obj.service';
 import {FormScriptsService} from '../../../../services/system/form-scripts.service';
-import {DomSanitizer} from "@angular/platform-browser";
-import {DateConverterService} from "../../../../services/system/date-converter.service";
+import {DomSanitizer} from '@angular/platform-browser';
+import {DateConverterService} from '../../../../services/system/date-converter.service';
 
 @Component({
-  selector: 'app-form-table',
-  templateUrl: './form-table.component.html',
-  styleUrls: ['./form-table.component.css']
+  selector: 'app-form-table', templateUrl: './form-table.component.html', styleUrls: ['./form-table.component.css']
 })
 export class FormTableComponent implements OnInit, OnChanges {
   @Input() form: FormComponent;
@@ -27,12 +25,7 @@ export class FormTableComponent implements OnInit, OnChanges {
   @Input() component: ComponentDTO;
   @Input() refreshUuid: string;
 
-  constructor(private commandNavigatorService: CommandNavigatorService,
-              private formAssignmentsService: FormAssignmentsService,
-              private componentObjService: ComponentObjService,
-              private formScriptsService: FormScriptsService,
-              private sanitizer: DomSanitizer,
-              private dateConverterService: DateConverterService) {
+  constructor(private commandNavigatorService: CommandNavigatorService, private formAssignmentsService: FormAssignmentsService, private componentObjService: ComponentObjService, private formScriptsService: FormScriptsService, private sanitizer: DomSanitizer, private dateConverterService: DateConverterService) {
   }
 
   ngOnInit(): void {
@@ -56,9 +49,7 @@ export class FormTableComponent implements OnInit, OnChanges {
     }
   }
 
-  public tableAddNewLine(formControlTableDTO: FormControlTableDTO,
-                         formControlTableLineDTOS: FormControlTableLineDTO[],
-                         prevFormControlTableLineDTO: FormControlTableLineDTO) {
+  public tableAddNewLine(formControlTableDTO: FormControlTableDTO, formControlTableLineDTOS: FormControlTableLineDTO[], prevFormControlTableLineDTO: FormControlTableLineDTO) {
 
     if (!formControlTableDTO.editable) {
       return;
@@ -69,11 +60,7 @@ export class FormTableComponent implements OnInit, OnChanges {
       requiderFieldsFilled = this.checkRequiredFields(prevFormControlTableLineDTO);
     }
 
-    this.formScriptsService.nativeTableButtonNewLineHandler(
-        this.form.dto.id,
-        formControlTableDTO,
-        requiderFieldsFilled
-    );
+    this.formScriptsService.nativeTableButtonNewLineHandler(this.form.dto.id, formControlTableDTO, requiderFieldsFilled);
 
 
     if (requiderFieldsFilled) {
@@ -92,8 +79,7 @@ export class FormTableComponent implements OnInit, OnChanges {
       formControlTableLineDTO.componentPersistEntity = new ComponentPersistEntityDTO();
       formControlTableLineDTO.componentPersistEntity.id = formControlTableDTO.componentPersistEntity.id;
       formControlTableLineDTO.componentPersistEntity.componentPersistEntityList = componentPersistEntityDataLine.componentPersistEntityList;
-      formControlTableLineDTO.componentPersistEntity.componentPersistEntityFieldList =
-        componentPersistEntityDataLine.componentPersistEntityFieldList;
+      formControlTableLineDTO.componentPersistEntity.componentPersistEntityFieldList = componentPersistEntityDataLine.componentPersistEntityFieldList;
       formControlTableLineDTO.componentPersistEntityDataLine = componentPersistEntityDataLine;
 
       // ReCreate FormControlTableCellDTO for FormControlTableLineDTOs
@@ -112,9 +98,7 @@ export class FormTableComponent implements OnInit, OnChanges {
         }
 
         if (!cellFound) {
-          const formControlTableCellDTO =
-            this.createTableCellOfFormControlFromComponentPEDataLine(formControl,
-              componentPersistEntityDataLine.componentPersistEntityList);
+          const formControlTableCellDTO = this.createTableCellOfFormControlFromComponentPEDataLine(formControl, componentPersistEntityDataLine.componentPersistEntityList);
           if (formControlTableCellDTO != null) {
             formControlTableLineDTO.formControlCells.push(formControlTableCellDTO);
           }
@@ -125,8 +109,7 @@ export class FormTableComponent implements OnInit, OnChanges {
     }
   }
 
-  public createTableCellOfFormControlFromComponentPEDataLine(formControl: FormControlTableControlDTO,
-                                                             componentPersistEntityList: ComponentPersistEntityDTO[]) {
+  public createTableCellOfFormControlFromComponentPEDataLine(formControl: FormControlTableControlDTO, componentPersistEntityList: ComponentPersistEntityDTO[]) {
 
     for (const componentPersistEntity of componentPersistEntityList) {
       for (const componentPersistEntityField of componentPersistEntity.componentPersistEntityFieldList) {
@@ -140,8 +123,7 @@ export class FormTableComponent implements OnInit, OnChanges {
       }
 
       if (componentPersistEntity.componentPersistEntityList != null) {
-        const formControlTableCellDTO =
-          this.createTableCellOfFormControlFromComponentPEDataLine(formControl, componentPersistEntity.componentPersistEntityList);
+        const formControlTableCellDTO = this.createTableCellOfFormControlFromComponentPEDataLine(formControl, componentPersistEntity.componentPersistEntityList);
         if (formControlTableCellDTO != null) {
           return formControlTableCellDTO;
         }
@@ -161,13 +143,11 @@ export class FormTableComponent implements OnInit, OnChanges {
 
     /* Clone component and assign to componentPersistEntityDataLines.component */
     if (componentPersistEntity.defaultComponentPersistEntityFieldList != null) {
-      componentPersistEntityDataLine.componentPersistEntityFieldList =
-        JSON.parse(JSON.stringify(componentPersistEntity.defaultComponentPersistEntityFieldList));
+      componentPersistEntityDataLine.componentPersistEntityFieldList = JSON.parse(JSON.stringify(componentPersistEntity.defaultComponentPersistEntityFieldList));
     }
 
     if (componentPersistEntity.defaultComponentPersistEntityList != null) {
-      componentPersistEntityDataLine.componentPersistEntityList =
-        JSON.parse(JSON.stringify(componentPersistEntity.defaultComponentPersistEntityList));
+      componentPersistEntityDataLine.componentPersistEntityList = JSON.parse(JSON.stringify(componentPersistEntity.defaultComponentPersistEntityList));
     }
 
     componentPersistEntity.componentPersistEntityDataLines.push(componentPersistEntityDataLine);
@@ -175,22 +155,19 @@ export class FormTableComponent implements OnInit, OnChanges {
     return componentPersistEntityDataLine;
   }
 
-  public setSelectedTableLineComponentTreeAndRefreshFormAssignments(componentPersistEntity: ComponentPersistEntityDTO,
-                                                                    componentPersistEntityDataLine: ComponentPersistEntityDataLineDTO) {
+  public setSelectedTableLineComponentTreeAndRefreshFormAssignments(componentPersistEntity: ComponentPersistEntityDTO, componentPersistEntityDataLine: ComponentPersistEntityDataLineDTO) {
     componentPersistEntity.componentPersistEntityFieldList = componentPersistEntityDataLine.componentPersistEntityFieldList;
     componentPersistEntity.componentPersistEntityList = componentPersistEntityDataLine.componentPersistEntityList;
     const ids = this.componentObjService.getChildPersistEntityIds(componentPersistEntity.componentPersistEntityList, []);
     this.formAssignmentsService.assignComponentFieldsToTableFieldsByPersistEntityIds(this.form.dto, ids);
   }
 
-  public setSelectedTableLineComponentTree(componentPersistEntity: ComponentPersistEntityDTO,
-                                           componentPersistEntityDataLine: ComponentPersistEntityDataLineDTO) {
+  public setSelectedTableLineComponentTree(componentPersistEntity: ComponentPersistEntityDTO, componentPersistEntityDataLine: ComponentPersistEntityDataLineDTO) {
     componentPersistEntity.componentPersistEntityFieldList = componentPersistEntityDataLine.componentPersistEntityFieldList;
     componentPersistEntity.componentPersistEntityList = componentPersistEntityDataLine.componentPersistEntityList;
   }
 
-  public tableAppendNewLine(formControlTableLineDTOS: FormControlTableLineDTO[],
-                            formControlTableDTO: FormControlTableDTO) {
+  public tableAppendNewLine(formControlTableLineDTOS: FormControlTableLineDTO[], formControlTableDTO: FormControlTableDTO) {
     let prevFormControlTableLineDTO = null;
 
     if (formControlTableLineDTOS.length > 0) {
@@ -199,8 +176,7 @@ export class FormTableComponent implements OnInit, OnChanges {
     this.tableAddNewLine(formControlTableDTO, formControlTableLineDTOS, prevFormControlTableLineDTO);
   }
 
-  public tableDeleteLine(formControlTableDTO: FormControlTableDTO,
-                         formControlTableLineDTOS: FormControlTableLineDTO[], formControlTableLineDTO: FormControlTableLineDTO) {
+  public tableDeleteLine(formControlTableDTO: FormControlTableDTO, formControlTableLineDTOS: FormControlTableLineDTO[], formControlTableLineDTO: FormControlTableLineDTO) {
 
     if (!formControlTableDTO.editable) {
       return;
@@ -220,15 +196,10 @@ export class FormTableComponent implements OnInit, OnChanges {
 
   public checkRequiredFields(formControlTableLineDTO: FormControlTableLineDTO) {
 
-    const formControlCells = Object.assign([], formControlTableLineDTO.formControlCells).filter(
-      formControlCell => formControlCell.formControl.type === 'field'
-    );
+    const formControlCells = Object.assign([], formControlTableLineDTO.formControlCells).filter(formControlCell => formControlCell.formControl.type === 'field');
 
     for (const formControlCell of formControlCells) {
-      if ((formControlCell.componentPersistEntityField.value === null ||
-        formControlCell.componentPersistEntityField.value === '') &&
-        formControlCell.formControl.formControlField.required === true
-      ) {
+      if ((formControlCell.componentPersistEntityField.value === null || formControlCell.componentPersistEntityField.value === '') && formControlCell.formControl.formControlField.required === true) {
         return false;
       }
     }
@@ -237,8 +208,7 @@ export class FormTableComponent implements OnInit, OnChanges {
 
   public tableFocusFirstLineFirstField(formControlLines: FormControlTableLineDTO[]) {
     for (const formControlLine of formControlLines) {
-      const htmlclass =
-        formControlLine.formControlCells[0].id.toString()
+      const htmlclass = formControlLine.formControlCells[0].id.toString()
       this.focusByClass(htmlclass);
 
       return true;
@@ -256,17 +226,9 @@ export class FormTableComponent implements OnInit, OnChanges {
     return false;
   }
 
-  formButtonClicked(tableFormControlButton: FormControlTableControlDTO,
-                    formControlLine: FormControlTableLineDTO,
-                    formControlLines: FormControlTableLineDTO[],
-                    formcontrol: FormControlDto,
-                    formControlTable: FormControlTableDTO) {
+  formButtonClicked(tableFormControlButton: FormControlTableControlDTO, formControlLine: FormControlTableLineDTO, formControlLines: FormControlTableLineDTO[], formcontrol: FormControlDto, formControlTable: FormControlTableDTO) {
 
-    this.formScriptsService.tableButtonClickOccured(
-      this.form.dto.id,
-      tableFormControlButton.formControlButton.code,
-      formcontrol.formControlTable,
-      formControlLine.componentPersistEntityDataLine);
+    this.formScriptsService.tableButtonClickOccured(this.form.dto.id, tableFormControlButton.formControlButton.code, formcontrol.formControlTable, formControlLine.componentPersistEntityDataLine);
 
     let command = tableFormControlButton.formControlButton.editor;
 
@@ -276,8 +238,7 @@ export class FormTableComponent implements OnInit, OnChanges {
     }
 
     if (command === '#selectLine') {
-      this.setSelectedTableLineComponentTreeAndRefreshFormAssignments(formcontrol.formControlTable.componentPersistEntity,
-        formControlLine.componentPersistEntityDataLine);
+      this.setSelectedTableLineComponentTreeAndRefreshFormAssignments(formcontrol.formControlTable.componentPersistEntity, formControlLine.componentPersistEntityDataLine);
       return;
     }
 
@@ -286,29 +247,18 @@ export class FormTableComponent implements OnInit, OnChanges {
     }
 
     formControlLine.formControlCells.forEach((formControlCell, index) => {
-      command = command.replace('#' + formControlCell.componentPersistEntityField.code,
-        formControlCell.componentPersistEntityField.value);
+      command = command.replace('#' + formControlCell.componentPersistEntityField.code, formControlCell.componentPersistEntityField.value);
     });
 
     this.commandNavigatorService.navigate(command);
   }
 
-  tableEventOccured(fieldParameters: any,
-                    componentPersistEntity: ComponentPersistEntityDTO,
-                    componentPersistEntityDataLine: ComponentPersistEntityDataLineDTO) {
-    this.formScriptsService.tableFieldEventOccured(
-      this.form.dto.id,
-      fieldParameters['entityCode'],
-      fieldParameters['fieldCode'],
-      fieldParameters['eventtype'],
-      fieldParameters['event'],
-      componentPersistEntity,
-      componentPersistEntityDataLine
-    );
+  tableEventOccured(fieldParameters: any, componentPersistEntity: ComponentPersistEntityDTO, componentPersistEntityDataLine: ComponentPersistEntityDataLineDTO) {
+    this.formScriptsService.tableFieldEventOccured(this.form.dto.id, fieldParameters['entityCode'], fieldParameters['fieldCode'], fieldParameters['eventtype'], fieldParameters['event'], componentPersistEntity, componentPersistEntityDataLine);
   }
 
   filterListRefreshData(event, formControlTable: FormControlTableDTO) {
-    if(event.eventtype !== 'listselected' && event.eventtype !== 'listcleared'){
+    if (event.eventtype !== 'listselected' && event.eventtype !== 'listcleared') {
       return;
     }
 
@@ -320,7 +270,7 @@ export class FormTableComponent implements OnInit, OnChanges {
       return;
     }
 
-  this.filtertableLines(event, formControlTable);
+    this.filtertableLines(event, formControlTable);
   }
 
   filtertableLines(event, formControlTable: FormControlTableDTO) {
@@ -328,9 +278,7 @@ export class FormTableComponent implements OnInit, OnChanges {
       let hideLine = false;
 
       formControlLine.formControlCells.forEach(formControlcell => {
-        if (!formControlcell.componentPersistEntityField.value.toString().includes(formControlcell.formControl.filterValue) &&
-          formControlcell.formControl.filterValue != null  &&
-          formControlcell.formControl.filterValue !== '') {
+        if (!formControlcell.componentPersistEntityField.value.toString().includes(formControlcell.formControl.filterValue) && formControlcell.formControl.filterValue != null && formControlcell.formControl.filterValue !== '') {
           hideLine = true;
         }
       });
@@ -343,46 +291,46 @@ export class FormTableComponent implements OnInit, OnChanges {
     const formControlLines = formcontrol.formControlTable.formControlLines;
 
     if (event.shiftKey && event.key === 'ArrowLeft') {
-      const tds = document.getElementsByClassName('tbl-'+formcontrol.id+'-cell-' + rowIndex + '-' + (colIndex-1) );
+      const tds = document.getElementsByClassName('tbl-' + formcontrol.id + '-cell-' + rowIndex + '-' + (colIndex - 1));
       if (tds.length > 0) {
         this.focusContorlField((tds[0] as HTMLElement).children);
       }
     }
 
     if (event.shiftKey && event.key === 'ArrowRight') {
-      const tds = document.getElementsByClassName('tbl-'+formcontrol.id+'-cell-' + rowIndex + '-' + (colIndex+1) );
+      const tds = document.getElementsByClassName('tbl-' + formcontrol.id + '-cell-' + rowIndex + '-' + (colIndex + 1));
       if (tds.length > 0) {
         this.focusContorlField((tds[0] as HTMLElement).children);
       }
     }
 
     if (event.shiftKey && event.key === 'ArrowUp') {
-      const tds = document.getElementsByClassName('tbl-'+formcontrol.id+'-cell-' + (rowIndex-1) + '-' + colIndex );
+      const tds = document.getElementsByClassName('tbl-' + formcontrol.id + '-cell-' + (rowIndex - 1) + '-' + colIndex);
       if (tds.length > 0) {
         this.focusContorlField((tds[0] as HTMLElement).children);
       }
     }
 
     if (event.shiftKey && event.key === 'ArrowDown') {
-      let newRowIndex = rowIndex+1;
+      let newRowIndex = rowIndex + 1;
 
-      if(newRowIndex == formControlLines.length){
-       this.tableAppendNewLine(formControlLines,formcontrol.formControlTable);
+      if (newRowIndex == formControlLines.length) {
+        this.tableAppendNewLine(formControlLines, formcontrol.formControlTable);
 
         setTimeout(() => {
-          const tds = document.getElementsByClassName('tbl-'+formcontrol.id+'-cell-' + newRowIndex + '-' + colIndex );
-          console.log('tbl-'+formcontrol.id+'-cell-' + newRowIndex + '-' + colIndex );
+          const tds = document.getElementsByClassName('tbl-' + formcontrol.id + '-cell-' + newRowIndex + '-' + colIndex);
+          console.log('tbl-' + formcontrol.id + '-cell-' + newRowIndex + '-' + colIndex);
           if (tds.length > 0) {
             this.focusContorlField((tds[0] as HTMLElement).children);
           }
-        },500);
+        }, 500);
 
-       return;
+        return;
       }
 
-      const tds = document.getElementsByClassName('tbl-'+formcontrol.id+'-cell-' + newRowIndex + '-' + colIndex );
+      const tds = document.getElementsByClassName('tbl-' + formcontrol.id + '-cell-' + newRowIndex + '-' + colIndex);
       console.log(tds.length);
-      console.log('tbl-'+formcontrol.id+'-cell-' + newRowIndex + '-' + colIndex );
+      console.log('tbl-' + formcontrol.id + '-cell-' + newRowIndex + '-' + colIndex);
       if (tds.length > 0) {
         this.focusContorlField((tds[0] as HTMLElement).children);
       }
@@ -390,7 +338,7 @@ export class FormTableComponent implements OnInit, OnChanges {
 
     if (event.altKey && event.key === 'Delete') {
       this.tableDeleteLine(formcontrol.formControlTable, formControlLines, formControlLine);
-      const tds = document.getElementsByClassName('tbl-'+formcontrol.id+'-cell-' + (rowIndex-1) + '-' + colIndex );
+      const tds = document.getElementsByClassName('tbl-' + formcontrol.id + '-cell-' + (rowIndex - 1) + '-' + colIndex);
       if (tds.length > 0) {
         this.focusContorlField((tds[0] as HTMLElement).children);
       }
@@ -416,7 +364,8 @@ export class FormTableComponent implements OnInit, OnChanges {
   }
 
   trustResource(resource) {
-    resource = this.dateConverterService.replaceIsoToClientDateFormatsInText(resource.toString());
+    resource = (resource == null ? '' : resource.toString());
+    resource = this.dateConverterService.replaceIsoToClientDateFormatsInText(resource);
     return this.sanitizer.bypassSecurityTrustHtml(resource);
   }
 
