@@ -21,6 +21,7 @@ import {RuleDesignerComponent} from "../../pages/rule-designer/rule-designer.com
 import {WsNotificationComponent} from "../../pages/ws-notification/ws-notification.component";
 import { RestDocumentationComponent } from "../../pages/rest-documentation/rest-documentation.component";
 import {ChatComponent} from '../../pages/chat/chat.component';
+import {CalendarComponent} from '../../pages/calendar/calendar.component';
 
 export const AdminLayoutRoutes: Routes = [
   {path: 'user', component: UserComponent, canActivate: [AuthGuard]},
@@ -44,8 +45,9 @@ export const AdminLayoutRoutes: Routes = [
   {path: 'ws-notification', component: WsNotificationComponent, canActivate: [AuthGuard]},
   {path: 'chat', component: ChatComponent, canActivate: [AuthGuard]},
   {path: 'ui-plugin', component: UiPluginComponent, canActivate: [AuthGuard]},
-  {path: 'rest-documentation', component: RestDocumentationComponent, canActivate: [AuthGuard]}
-  
+  {path: 'rest-documentation', component: RestDocumentationComponent, canActivate: [AuthGuard]},
+  {path: 'calendar', component: CalendarComponent, canActivate: [AuthGuard]}
+
 ];
 
 CommandNavigatorService.NavPages = AdminLayoutRoutes;

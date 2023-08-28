@@ -67,6 +67,9 @@ import { NgChartsModule } from 'ng2-charts';
 import { ChatComponent } from './pages/chat/chat.component';
 import { RestDocumentationComponent } from './pages/rest-documentation/rest-documentation.component';
 import { DefaultComponent } from './pages/default/default.component';
+import { CalendarComponent } from './pages/calendar/calendar.component';
+import { MonthCalendarComponent } from './pages/calendar/month-calendar/month-calendar.component';
+import { MonthCalendarEventsComponent } from './pages/calendar/month-calendar/month-calendar-events/month-calendar-events.component';
 
 
 
@@ -117,6 +120,9 @@ import { DefaultComponent } from './pages/default/default.component';
     UiPluginComponent,
     RestDocumentationComponent,
     DefaultComponent,
+    CalendarComponent,
+    MonthCalendarComponent,
+    MonthCalendarEventsComponent,
   ],
   imports: [
     BrowserAnimationsModule,
