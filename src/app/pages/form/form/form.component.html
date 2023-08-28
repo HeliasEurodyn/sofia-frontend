@@ -74,7 +74,6 @@
     *ngTemplateOutlet="recursiveSection; context:{ $implicit: formTab }"></ng-container>
 
 </div>
-
 <ng-template #recursiveSection let-formSection>
   <div *ngFor="let formArea of formSection.formAreas" class="{{formArea.cssclass}} form-area form-area-{{formArea.id}}">
     <div class="card">

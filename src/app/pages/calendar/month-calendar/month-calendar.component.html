@@ -1,0 +1,66 @@
+
+    <ng-template #defaultWeekNamesHeaderTemplate let-cell>
+      <span [ngClass]="{ 'cal-header-weekname': true }">{{ cell.weekName }}</span>
+    </ng-template>
+
+    <ng-template #weekNamesHeader let-weeknames>
+     <div class="cal-week-names-header">
+        <div
+          [ngClass]="{ 'cal-week-names-header-cell': true, 'cal-grid-cell-last': last }"
+          *ngFor="let weekName of weeknames; let last = last; let first = first"
+        >
+         <ng-container
+           *ngTemplateOutlet="
+             defaultWeekNamesHeaderTemplate;
+             context: {
+               $implicit: { weekName: weekName, last: last, first: first }
+              }
+            "
+         >
+            Week Header
+         </ng-container>
+        </div>
+     </div>
+    </ng-template>
+
+    <ng-template #defaultWeekHeaderTemplate let-cell>
+      <span
+       [ngClass]="{
+          'cal-week-cell-title': true,
+          'cal-not-current-month': !cell.isCurrentMonth,
+         'cal-current-day': cell.isCurrentDay
+       }"
+     >{{ cell.day }}</span
+     >
+    </ng-template>
+
+    <ng-template #calendarWeekHeaderRow let-data>
+     <div class="cal-week-header">
+        <div [ngClass]="{ 'cal-week-header-cell': true, 'cal-grid-cell-last': last }" *ngFor="let calDay of data.week; let last = last">
+         <ng-container
+           *ngTemplateOutlet="
+              weekHeaderTemplate ? weekHeaderTemplate : defaultWeekHeaderTemplate;
+              context: {
+               $implicit: calDay
+             }
+           "
+          >
+           Month Calendar Cell Header
+         </ng-container>
+        </div>
+     </div>
+    </ng-template>
+
+    <div class="cal-calendar">
+     <ng-container *ngTemplateOutlet="weekNamesHeader; context: {$implicit: weekHeaders()}">Week Names Header</ng-container>
+     <div class="cal-container">
+       <div
+          [ngClass]="{ 'cal-week': true, 'cal-grid-row-last': last }"
+          *ngFor="let week of weeks(); index as rowId; let last = last"
+        >
+          <ng-container *ngTemplateOutlet="calendarWeekHeaderRow; context: {$implicit: {week: week, rowId: rowId, last: last}}">Week Row Header</ng-container>
+         <app-month-calendar-events [week]="week" [last]="last" [rowId]="rowId" [events]="events" [monthCalendarService]="calendarService"></app-month-calendar-events>
+       </div>
+     </div>
+    </div>
+

@@ -1,0 +1,62 @@
+
+.cal-controls {
+  min-height: 50px;
+  display: grid;
+  grid-template-columns: auto 20%;
+}
+
+.cal-controls .cal-title {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  height: 100%;
+  padding-left: 5px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+  'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji',
+  'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  font-weight: 700;
+  font-size: x-large;
+}
+
+.cal-controls .controls {
+  display: flex;
+  justify-content: right;
+}
+
+.button {
+  margin: 3px;
+  padding: 0;
+  min-width: 90px;
+  height: 36px;
+  border: 1px solid slategray;
+  background-color: white;
+}
+
+.button:hover {
+  background-color: lightslategray;
+  color: white;
+}
+
+.app {
+  display: grid;
+  grid-template-rows: auto calc(100vh - 66px);
+}
+
+.background-white {
+  background-color: white;
+}
+
+.button-previous {
+  background-color: #77635e; /* Set the color you want */
+  color: white;
+}
+
+.button-today {
+  background-color: #5b725c; /* Set the color you want */
+  color: white;
+}
+
+.button-next {
+  background-color: #76858f; /* Set the color you want */
+  color: white;
+}

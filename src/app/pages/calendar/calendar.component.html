@@ -1,0 +1,69 @@
+<div class="row formnav">
+  <div class="col-sm-12">
+    <div class="numbers pull-left">  </div>
+    <div class="pull-left">
+      <div class="col-12">
+        <h3 style="margin-top: 20px;margin: 0px;margin-top: 10px;">
+          <i class="fa fa-calendar-days" style="padding-right: 5px;"></i>
+          Calendar
+        </h3>
+        <p style=" margin-bottom: 5px;">Daily Calendar</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <div class="card">
+
+
+    <div class="card-header">
+
+      <div class="col-12">
+
+        <div class="pull-left">
+         <ng-template #customWeekHeaderTemplate let-cell>
+         <span
+            [ngClass]="{
+             'cal-week-cell-title': true,
+            'cal-not-current-month': !cell.isCurrentMonth,
+             'cal-current-day': cell.isCurrentDay
+           }"
+         >{{ cell.day }}</span
+         >
+       </ng-template>
+
+          <div class="col-12">
+            <h3 style="margin-top: 20px;margin: 0px;margin-top: 10px;">
+              <div class="cal-title">{{ viewDate.longMonth() + ' ' + viewDate.year() }}</div>
+            </h3>
+            <p style=" margin-bottom: 5px;"> Month/Year </p>
+          </div>
+
+        </div>
+
+        <div class="pull-right">
+
+            <button (click)="onPreviousMonth()" class="btn btn-outline-primary"><i class="fa fa-plus-circle"></i> Previous</button>
+            <button (click)="onToday()" class="btn btn-outline-primary"><i class="fa fa-plus-circle"></i> Today</button>
+            <button (click)="onNextMonth()" class="btn btn-outline-primary"><i class="fa fa-plus-circle"></i> Next</button>
+
+
+        </div>
+      </div>
+
+
+    </div>
+
+
+
+    <div class="card-body">
+        <app-month-calendar
+          [weekHeaderTemplate]="customWeekHeaderTemplate"
+          [viewDate]="viewDate.toDate()"
+          [weekStart]="weekStart"
+           [events]="events">
+        </app-month-calendar>
+    </div>
+  </div>
+
+

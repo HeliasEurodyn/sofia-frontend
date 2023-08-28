@@ -1,0 +1,107 @@
+:root {
+  --cal-background: white;
+  --cal-border-color: #7e7979;
+  --cal-grid-line-color: #7e7979;
+  --cal-default-font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+  'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji',
+  'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+
+  --cal-weekheader-font-family: var(--cal-default-font);
+  --cal-weekheader-font-size: 0.8em;
+  --cal-weekheader-font-weight: normal;
+
+  --cal-daynumber-font-family: var(--cal-default-font);
+  --cal-daynumber-font-size: 0.9rem;
+  --cal-daynumber-font-weight: 400;
+  --cal-daynumber-font-color: slategray;
+  --cal-daynumber-outofbounds-font-color: lightgray;
+  --cal-daynumber-currentyday-font-color: white;
+  --cal-daynumber-currentyday-background-color: rgb(64, 116, 214);
+
+  --cal-event-font-family: var(--cal-default-font);
+  --cal-event-font-size: 0.8em;
+  --cal-event-font-weight: light;
+}
+
+.cal-calendar {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.cal-week-names-header {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.cal-week-names-header-cell {
+  font-family: var(--cal-weekheader-font-family);
+  font-size: var(--cal-weekheader-font-size);
+  font-weight: var(--cal-weekheader-font-weight);
+  align-items: center;
+  text-align: center;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.cal-container {
+  background-color: var(--cal-background);
+  border-top: 1px solid #7e7979;
+  display: grid;
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: relative;
+}
+
+.cal-grid-row-last {
+  border-bottom: #7e7979;
+}
+
+.cal-grid-cell-last {
+  border-right: #7e7979;
+}
+
+.cal-week {
+  display: grid;
+  grid-template-rows: 30px minmax(80px, auto);
+  border-left: 1px solid #7e7979;
+  border-right: 1px solid #7e7979;
+}
+
+.cal-week-header {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.cal-week-header-cell {
+  border-right: 1px solid #7e7979;
+}
+
+.cal-week-cell-title {
+  font-family: var(--cal-daynumber-font);
+  font-size: var(--cal-daynumber-font-size);
+  font-weight: var(--cal-daynumber-font-weight);
+  color: #7e7979;
+  display: block;
+  width: 20px;
+  height: 18px;
+  text-align: center;
+  padding: 3px;
+  margin-left: 2px;
+  margin-top: 2px;
+}
+
+.cal-not-current-month {
+  color: var(--cal-daynumber-outofbounds-font-color);
+}
+
+.cal-current-day {
+  border-radius: 10%;
+  background: var(--cal-daynumber-currentyday-background-color);
+  color: var(--cal-daynumber-currentyday-font-color);
+}
+
+.background-white {
+  background-color: white;
+}
+

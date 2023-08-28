@@ -1,0 +1,27 @@
+<ng-template #defaultEventsTemplate let-eventTracks>
+  <div class="cal-event-track" *ngFor="let track of eventTracks">
+    <ng-container *ngFor="let event of track; let idx = index">
+      <div
+        *ngIf="event"
+        [ngClass]="{
+          'cal-event': true,
+          'cal-event-start': event.start,
+          'cal-event-end': event.end
+        }"
+        [ngStyle]="{ backgroundColor: event.color, gridColumn: (idx + 1) + ' / span ' + event.length}"
+      >
+        <div class="cal-event-label" *ngIf="(event.start || idx === 0)">{{event.name}}</div>
+      </div>
+    </ng-container>
+  </div>
+</ng-template>
+
+<div #parentContainer class="cal-week-events">
+  <div #eventsContainer class="cal-events-container">
+    <ng-container *ngTemplateOutlet="defaultEventsTemplate; context: {$implicit: getEventTracks()}">Events</ng-container>
+  </div>
+  <div #calendarGridRowBg class="cal-week-content-grid-bg">
+    <div [ngClass]="{ 'cal-week-content-grid-bg-cell': true, 'cal-grid-cell-last': last }" *ngFor="let calDay of week; let last = last">
+    </div>
+  </div>
+</div>

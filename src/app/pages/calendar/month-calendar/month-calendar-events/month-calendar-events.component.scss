@@ -1,0 +1,57 @@
+.cal-week-events {
+  min-height: 80px;
+}
+
+.cal-week-content-grid-bg {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  border-bottom: 1px solid #7e7979;
+  min-height: 80px;
+  width: 100%;
+}
+
+.cal-week-content-grid-bg-cell {
+  border-right: 1px solid #7e7979;
+}
+
+.cal-events-container {
+  width: 100%;
+  min-height: 80px;
+  position: absolute;
+  padding-top: 5px;
+  padding-bottom: 10px;
+}
+
+.cal-event-track {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  min-height: 20px;
+  width: calc(100% - 2px);
+}
+
+.cal-event {
+  background-color: #1e90ff;
+  min-height: 20px;
+  max-height: 40px;
+  display: flex;
+  justify-content: left;
+  align-items: flex-start;
+  font-family: var(--cal-event-font-family);
+  font-size: var(--cal-event-font-size);
+  font-weight: var(--cal-event-font-weight);
+  margin-bottom: 3px;
+  margin-left: 3px;
+  margin-right: 3px;
+  padding-left: 5px;
+  padding-right: 2px;
+  padding-top: 5px;
+  padding-bottom: 1px;
+  overflow: hidden;
+  opacity: 0.8;
+}
+
+.cal-event-label {
+  font-family: var(--cal-default-font);
+  font-weight: 300;
+  color: white;
+}
