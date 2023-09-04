@@ -4,6 +4,8 @@ import {CommandNavigatorService} from './command-navigator.service';
 import {DynamicStaticJavascriptLoaderService} from './dynamic-static-javascript-loader.service';
 import {DynamicRequestService} from '../crud/dynamic-request.service';
 import {environment} from "../../../environments/environment";
+import {YesNoDialogService} from "../../shared/yes-no-dialog/yes-no-dialog.service";
+import {OkDialogService} from "../../shared/ok-dialog/ok-dialog.service";
 
 declare function registerListDynamicScript(id, list): any;
 
@@ -45,7 +47,9 @@ export class ListScriptsService {
   constructor(private dynamicJavaScriptLoader: DynamicJavaScriptLoaderService,
               private dynamicRequestService: DynamicRequestService,
               private navigatorService: CommandNavigatorService,
-              private staticJavascriptLoader: DynamicStaticJavascriptLoaderService) {
+              private staticJavascriptLoader: DynamicStaticJavascriptLoaderService,
+              private yesNoDialogService: YesNoDialogService,
+              private okDialogService: OkDialogService) {
   }
 
   loadWithPromise(list: any): Promise<any> {
@@ -171,8 +175,37 @@ export class ListScriptsService {
     });
   }
 
-
   areaClickOccured(id: string, area, classListArray: unknown[]) {
     areaClickOccured(id, area, classListArray);
   }
+
+  public openYesNoDialog(title: string,
+                         description: string,
+                         btnOkText: string = 'Ok',
+                         btnCancelText: string = 'Cancel',
+                         dialogSize: 'sm'|'lg' = 'sm',
+                         callback: (n: string) => any) {
+    this.yesNoDialogService.openPopup(
+        title,
+        description,
+        btnOkText,
+        btnCancelText,
+        dialogSize,
+        callback);
+  }
+
+  public openOkDialog(title: string,
+                      description: string,
+                      btnOkText: string = 'Ok',
+                      dialogSize: 'sm'|'lg' = 'sm',
+                      callback: (n: string) => any) {
+    this.okDialogService.openPopup(
+        title,
+        description,
+        btnOkText,
+        dialogSize,
+        callback
+    );
+  }
+
 }
