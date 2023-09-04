@@ -1,33 +1,13 @@
-<button
-  type="button"
-  id="{{uuid}}"
-  data-target="#okModal"
-  data-toggle="modal"
-  style="display: none;">
-</button>
-
-<div aria-labelledby="ModalLabel" class="modal fade" id="okModal" role="dialog" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" style="max-width: 700px !important;">
-    <div class="modal-content">
-      <div class="modal-header justify-content-center">
-        <h4 style="margin-top: 0px;" class="title title-up modal-title">
-          {{title}}</h4>
-      </div>
-      <div class="modal-body ">
-        <div class="row">
-          <div class="col-12">
-            <h6>
-              {{description}}
-            </h6>
-          </div>
-        </div>
-
-      </div>
-      <div class="modal-footer">
-        <div class="left-side">
-          <button class="btn btn-outline-success" data-dismiss="modal" type="button">Ok</button>
-        </div>
-      </div>
-    </div>
-  </div>
+<div class="modal-header">
+  <h4 class="modal-title" [innerHTML]="this.trustResource(title)"></h4>
+  <button type="button" style="visibility: hidden" ></button>
+  <button type="button" class="close" aria-label="Close" (click)="this.dismissClicked()" >
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body" [innerHTML]="this.trustResource(description)">
+  {{description}}
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-primary" (click)="this.yesClicked()" [innerHTML]="this.trustResource(this.btnOkText)"></button>
 </div>

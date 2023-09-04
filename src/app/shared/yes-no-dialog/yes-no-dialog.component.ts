@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import * as uuid from 'uuid';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {DomSanitizer} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-yes-no-dialog',
@@ -7,31 +8,37 @@ import * as uuid from 'uuid';
   styleUrls: ['./yes-no-dialog.component.css']
 })
 export class YesNoDialogComponent implements OnInit {
-  public uuid = '';
+
   public title = '';
   public description = '';
-  public callback: any;
+  public btnOkText: string;
+  public btnCancelText: string;
+  public callback: (n: string) => any
 
-  constructor() {
+  constructor(private activeModal: NgbActiveModal, private sanitizer: DomSanitizer) {
   }
 
   ngOnInit(): void {
-    this.uuid = uuid.v4();
-  }
-
-  public openPopup(title: string, description: string, callback: (n: boolean) => any): void {
-    this.title = title;
-    this.description = description;
-    this.callback = callback;
-    document.getElementById(this.uuid).click();
+    //  this.uuid = uuid.v4();
   }
 
   yesClicked() {
-    this.callback(true);
+    this.callback('yes');
+    this.activeModal.dismiss();
   }
 
   noClicked() {
-    this.callback(false);
+    this.callback('no');
+    this.activeModal.dismiss();
+  }
+
+  dismissClicked() {
+    this.callback('dismiss');
+    this.activeModal.dismiss();
+  }
+
+  trustResource(resource) {
+    return this.sanitizer.bypassSecurityTrustHtml(resource);
   }
 
 }

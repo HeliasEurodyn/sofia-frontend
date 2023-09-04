@@ -22,6 +22,8 @@ import {environment} from '../../../environments/environment';
 import {response} from 'express';
 import {ComponentDTO} from "../../dtos/component/componentDTO";
 import {ComponentPersistEntityFieldDTO} from "../../dtos/component/component-persist-entity-field-dto";
+import {YesNoDialogService} from "../../shared/yes-no-dialog/yes-no-dialog.service";
+import {OkDialogService} from "../../shared/ok-dialog/ok-dialog.service";
 
 /*
  *  Definition functions that passes function pointers.
@@ -151,7 +153,9 @@ export class FormScriptsService {
               private formObjService: FormObjService,
               private navigatorService: CommandNavigatorService,
               private staticJavascriptLoader: DynamicStaticJavascriptLoaderService,
-              private notificationService: NotificationService) {
+              private notificationService: NotificationService,
+              private yesNoDialogService: YesNoDialogService,
+              private okDialogService: OkDialogService) {
   }
 
   public load(form: FormComponent) {
@@ -776,6 +780,35 @@ export class FormScriptsService {
   public getComponentPersistEntityFieldByCode(componentPersistEntityFieldList: ComponentPersistEntityFieldDTO[] , code: string){
     const componentPersistEntityField = componentPersistEntityFieldList.find(entity => entity.code === code);
     return componentPersistEntityField;
+  }
+
+  public openYesNoDialog(title: string,
+                         description: string,
+                         btnOkText: string = 'Ok',
+                         btnCancelText: string = 'Cancel',
+                         dialogSize: 'sm'|'lg' = 'sm',
+                         callback: (n: string) => any) {
+    this.yesNoDialogService.openPopup(
+        title,
+        description,
+        btnOkText,
+        btnCancelText,
+        dialogSize,
+        callback);
+  }
+
+  public openOkDialog(title: string,
+                         description: string,
+                         btnOkText: string = 'Ok',
+                         dialogSize: 'sm'|'lg' = 'sm',
+                         callback: (n: string) => any) {
+    this.okDialogService.openPopup(
+        title,
+        description,
+        btnOkText,
+        dialogSize,
+        callback
+        );
   }
 
 }

@@ -16,7 +16,14 @@ import {AdminLayoutComponent} from './layouts/admin-layout/admin-layout.componen
 import {FormsModule} from '@angular/forms';
 import {LoginComponent} from './pages/login/login.component';
 import {ListComponent} from './pages/list/list/list.component';
-import {NgbDateAdapter, NgbDateParserFormatter, NgbDatepickerModule, NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {
+  NgbActiveModal,
+  NgbDateAdapter,
+  NgbDateParserFormatter,
+  NgbDatepickerModule,
+  NgbModalModule,
+  NgbModule
+} from '@ng-bootstrap/ng-bootstrap';
 import {DatePickerComponent} from './form-controlls/date-picker/date-picker.component';
 import {NgbDateFRParserFormatter} from './form-controlls/date-picker/ngb-date-frparser-formatter';
 import {NgbUTCStringAdapter} from './form-controlls/date-picker/ngb-utcstring-adapter';
@@ -131,7 +138,8 @@ import { UnderMaintenanceComponent } from './pages/under-maintenance/under-maint
     NgbDatepickerModule,
     NgbModule,
     AceModule,
-    NgChartsModule
+    NgChartsModule,
+    NgbModalModule
   ],
   providers: [
     DatePipe,
@@ -146,7 +154,8 @@ import { UnderMaintenanceComponent } from './pages/under-maintenance/under-maint
     {provide: HTTP_INTERCEPTORS, useClass: AuthenticationHeaderInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: HttpRequestLoadingInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: HttpRequestErrorInterceptor, multi: true},
-    Title
+    Title,
+    NgbActiveModal
   ],
   exports: [RouterModule],
   bootstrap: [AppComponent]

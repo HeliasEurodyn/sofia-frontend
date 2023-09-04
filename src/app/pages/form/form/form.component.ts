@@ -7,10 +7,7 @@ import {FormTabDto} from '../../../dtos/form/form-tab-dto';
 import {ActivatedRoute} from '@angular/router';
 import {DatePipe, Location} from '@angular/common';
 import {ComponentPersistEntityDTO} from '../../../dtos/component/component-persist-entity-dto';
-import {YesNoDialogComponent} from '../../../shared/yes-no-dialog/yes-no-dialog.component';
 import {FormControlButtonDTO} from '../../../dtos/form/form-control-button-dto';
-import {OkDialogComponent} from '../../../shared/ok-dialog/ok-dialog.component';
-import {PreviousRouteService} from '../../../services/system/previous-route.service';
 import {DomSanitizer, Title} from '@angular/platform-browser';
 import {FormScriptsService} from '../../../services/system/form-scripts.service';
 import {FormActionButton} from '../../../dtos/form/form-action-button';
@@ -31,8 +28,6 @@ export class FormComponent extends PageComponent implements OnInit, AfterViewIni
   public dto: FormDto;
   public selectedFormTabId: string;
   public selectedFormPopupCode: string;
-  @ViewChild('yesNoDialog') yesNoDialog: YesNoDialogComponent;
-  @ViewChild('okDialog') okDialog: OkDialogComponent;
   public selectedActionButton: FormActionButton
   id = '';
   selectionId = '';
@@ -40,7 +35,20 @@ export class FormComponent extends PageComponent implements OnInit, AfterViewIni
   clonedData = false;
   searchSubject;
 
-  constructor(private activatedRoute: ActivatedRoute, private service: FormService, private location: Location, private previousRouteService: PreviousRouteService, private navigatorService: CommandNavigatorService, private dynamicCssScriptLoader: DynamicCssScriptLoaderService, public datepipe: DatePipe, private title: Title, public formScriptsService: FormScriptsService, private formAssignmentsService: FormAssignmentsService, private formTableLinesService: FormTableLinesService, private languageService: LanguageService, private el: ElementRef, private listSearchService: ListSearchService, private sanitizer: DomSanitizer, private dateConverterService: DateConverterService) {
+  constructor(private activatedRoute: ActivatedRoute,
+              private service: FormService,
+              private location: Location,
+              private navigatorService: CommandNavigatorService,
+              private dynamicCssScriptLoader: DynamicCssScriptLoaderService,
+              public datepipe: DatePipe,
+              private title: Title,
+              public formScriptsService: FormScriptsService,
+              private formAssignmentsService: FormAssignmentsService,
+              private formTableLinesService: FormTableLinesService,
+              private languageService: LanguageService,
+              private listSearchService: ListSearchService,
+              private sanitizer: DomSanitizer,
+              private dateConverterService: DateConverterService) {
     super();
   }
 

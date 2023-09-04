@@ -153,3 +153,11 @@
 .tab-found-by-search-bar, .table-found-by-search-bar{
   color: #007e36;
 }
+
+ngb-modal-backdrop {
+  z-index: 1000!important;
+}
+
+.modal-title{
+  margin-top: 0px;
+}

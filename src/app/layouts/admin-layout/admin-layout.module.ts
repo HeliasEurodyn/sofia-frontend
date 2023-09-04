@@ -8,6 +8,7 @@ import {AdminLayoutRoutes} from './admin-layout.routing';
 import {UserComponent} from '../../pages/user/user.component';
 import {TableComponent} from '../../pages/table/table.component';
 import {ACE_CONFIG, AceConfigInterface, AceModule} from 'ngx-ace-wrapper';
+import {NgbModalModule} from "@ng-bootstrap/ng-bootstrap";
 
 const DEFAULT_ACE_CONFIG: AceConfigInterface = {
 };
@@ -17,7 +18,8 @@ const DEFAULT_ACE_CONFIG: AceConfigInterface = {
     CommonModule,
     RouterModule.forChild(AdminLayoutRoutes),
     FormsModule,
-    AceModule
+    AceModule,
+    NgbModalModule
   ],
   declarations: [
     UserComponent,

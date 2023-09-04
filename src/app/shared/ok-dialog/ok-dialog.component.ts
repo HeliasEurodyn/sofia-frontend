@@ -1,25 +1,36 @@
 import {Component, OnInit} from '@angular/core';
-import * as uuid from 'uuid';
+import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
+import {DomSanitizer} from "@angular/platform-browser";
 
 @Component({
-  selector: 'app-ok-dialog',
-  templateUrl: './ok-dialog.component.html',
-  styleUrls: ['./ok-dialog.component.css']
+  selector: 'app-ok-dialog', templateUrl: './ok-dialog.component.html', styleUrls: ['./ok-dialog.component.css']
 })
 export class OkDialogComponent implements OnInit {
-  public uuid = '';
+
   public title = '';
   public description = '';
+  public btnOkText: string;
+  public callback: (n: string) => any
 
-  constructor() { }
+  constructor(private activeModal: NgbActiveModal, private sanitizer: DomSanitizer) {
+  }
 
   ngOnInit(): void {
-    this.uuid = uuid.v4();
+    //  this.uuid = uuid.v4();
   }
 
-  public openPopup(title: string, description: string): void {
-    this.title = title;
-    this.description = description;
-    document.getElementById(this.uuid).click();
+  yesClicked() {
+    this.callback('yes');
+    this.activeModal.dismiss();
   }
+
+  dismissClicked() {
+    this.callback('dismiss');
+    this.activeModal.dismiss();
+  }
+
+  trustResource(resource) {
+    return this.sanitizer.bypassSecurityTrustHtml(resource);
+  }
+
 }
