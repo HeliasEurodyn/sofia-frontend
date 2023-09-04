@@ -227,7 +227,7 @@
                   <div class="form-group">
                     <b>{{formcontrol.formControlField.description}}</b>
 
-                    <app-combo-box class="form-input-field"
+                    <app-combo-box  #formFields class="form-input-field"
                                    [componentPersistEntityDTO]="formcontrol.formControlField.componentPersistEntity"
                                    [componentPersistEntityFieldDTO]="formcontrol.formControlField.componentPersistEntityField"
                                    (eventOccured)="fieldEventOccured($event)"

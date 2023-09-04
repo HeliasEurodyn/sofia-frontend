@@ -20,19 +20,18 @@
             <div class="card-header ">
               <div class="card-header ">
                 <h3 class="header text-center" style="margin-top: 30px;margin-bottom: 17px;">
-<!--                  <img [src]="this.trustResource(this.loginImage)">-->
                   <img src="assets/img/logo/shiping_time_logo.png">
                 </h3>
               </div>
             </div>
-            <div class="card-body ">
+            <div class="card-body" *ngIf="!maintenanceActive">
               <div class="input-group">
                 <div class="input-group-prepend">
                   <span class="input-group-text username-icon" style="border: 1px solid #51cbce;">
                   <i class="fa-regular fa-circle-user" style="color: #236594;"></i>
                   </span>
                 </div>
-                <input class="form-control" placeholder="Username" name="username" type="text" [(ngModel)]="username"
+                <input class="form-control" placeholder="Username" type="text" [(ngModel)]="username"
                        (keyup.enter)="onEnterMethod()">
               </div>
               <div class="input-group">
@@ -41,12 +40,22 @@
                       <i class="fa fa-lock" style="color: #236594;"></i>
                   </span>
                 </div>
-                <input class="form-control" placeholder="Password" name="password" [(ngModel)]="password"
+                <input class="form-control" placeholder="Password" [(ngModel)]="password"
                        type="password" (keyup.enter)="onEnterMethod()">
               </div>
               <br>
             </div>
-            <div class="card-footer">
+
+            <div class="card-body" *ngIf="maintenanceActive">
+
+              <p class="description text-center" style="color: #1b1e21;font-size: 13px;">
+                Πραγματοποιούμε προσωρινές εργασίες συντήρησης <br> Το Ship In Time θα είναι σε λίγο ξανά μαζί σας.
+              </p>
+
+              <br>
+            </div>
+
+            <div class="card-footer" *ngIf="!maintenanceActive">
               <a class="btn btn-outline-success btn-block mb-3" href="javascript:void(0)" (click)="authenticateUser()">
                 <i class="fa fa-sign-in"> </i>
                 Login

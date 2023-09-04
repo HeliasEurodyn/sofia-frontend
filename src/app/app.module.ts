@@ -66,6 +66,7 @@ import { RuleDesignerComponent } from './pages/rule-designer/rule-designer.compo
 import { WsNotificationComponent } from './pages/ws-notification/ws-notification.component';
 import { NgChartsModule } from 'ng2-charts';
 import { DefaultComponent } from './pages/default/default.component';
+import { UnderMaintenanceComponent } from './pages/under-maintenance/under-maintenance.component';
 
 @NgModule({
   declarations: [
@@ -111,7 +112,8 @@ import { DefaultComponent } from './pages/default/default.component';
     RuleDesignerComponent,
     WsNotificationComponent,
     SetApplicationInterfaceModalComponent,
-    DefaultComponent
+    DefaultComponent,
+    UnderMaintenanceComponent
   ],
   imports: [
     BrowserAnimationsModule,

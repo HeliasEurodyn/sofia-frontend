@@ -12,6 +12,13 @@ export class DynamicCssScriptLoaderService {
   }
 
   public addScript(scriptId: string, type: string): Promise<any> {
+
+    if (this.checkIfScriptExists(scriptId, type)) {
+      return new Promise((resolve, reject) => {
+        resolve({script: name, loaded: true, status: 'Loaded'});
+      });
+    }
+
     return Promise.resolve(this.loadScript(scriptId, type));
   }
 
@@ -45,7 +52,7 @@ export class DynamicCssScriptLoaderService {
   //   }
   // }
 
-  public checkIfScriptExists(scriptId: number, type: string) {
+  public checkIfScriptExists(scriptId, type: string) {
     if (document.getElementById(type + '-dynamic-cssscript_' + scriptId) != null) {
       return true;
     }

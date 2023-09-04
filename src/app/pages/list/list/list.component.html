@@ -345,9 +345,13 @@
 
                           <button *ngIf="field.editor !== '#parent-menu#'" type="button" title="{{field.description}}"
                                   (click)="listRowButtonClick(row, listDto,  field)"
-                                  style="margin-top: 4px;"
+                                  style="margin-top: 4px; padding-left: 10px; padding-right: 10px;"
+                                  [ngClass]="{'btn-icon': !field.showLabelOnButton}"
                                   class="btn {{field.bclass}} {{field.code}} btn-icon btn-sm">
                             <i class="fa {{field.defaultValue}}"></i>
+                            <ng-container *ngIf="field.showLabelOnButton">
+                              {{field.description}}
+                            </ng-container>
                           </button>
 
                           <div *ngIf="field.editor === '#parent-menu#'" ngbDropdown class="d-inline-block"
@@ -460,9 +464,7 @@
                 </table>
                 <!-- Pagination -->
                 <ul *ngIf="this.listDto?.hasPagination" class="pagination pull-right">
-                  <li class="page-item page-item-label">
-                   Page
-                  </li>
+
                   <li class="page-item">
                     <a aria-label="First" (click)="navigateToPage(0)"
                        class="page-link"
@@ -503,7 +505,7 @@
                     </a>
                   </li>
                   <li class="page-item page-item-label">
-                    of Total {{this.listResultsData?.totalPages}} Pages
+                    απο συνολικά {{this.listResultsData?.totalPages}}
                   </li>
                 </ul>
               </div>

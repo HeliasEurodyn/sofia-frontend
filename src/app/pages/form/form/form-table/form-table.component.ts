@@ -207,10 +207,9 @@ export class FormTableComponent implements OnInit, OnChanges {
   }
 
   public tableFocusFirstLineFirstField(formControlLines: FormControlTableLineDTO[]) {
-    for (const formControlLine of formControlLines) {
-      const htmlclass = formControlLine.formControlCells[0].id.toString()
-      this.focusByClass(htmlclass);
-
+    if (formControlLines.length > 0 && formControlLines[0].formControlCells.length > 0) {
+      const htmlClass = formControlLines[0].formControlCells[0].id.toString();
+      this.focusByClass(htmlClass);
       return true;
     }
     return false;
@@ -312,27 +311,27 @@ export class FormTableComponent implements OnInit, OnChanges {
     }
 
     if (event.shiftKey && event.key === 'ArrowDown') {
-      let newRowIndex = rowIndex + 1;
+      const newRowIndex = rowIndex + 1;
 
-      if (newRowIndex == formControlLines.length) {
+      if (newRowIndex === formControlLines.length) {
         this.tableAppendNewLine(formControlLines, formcontrol.formControlTable);
 
         setTimeout(() => {
-          const tds = document.getElementsByClassName('tbl-' + formcontrol.id + '-cell-' + newRowIndex + '-' + colIndex);
+          const tdElements = document.getElementsByClassName('tbl-' + formcontrol.id + '-cell-' + newRowIndex + '-' + colIndex);
           console.log('tbl-' + formcontrol.id + '-cell-' + newRowIndex + '-' + colIndex);
-          if (tds.length > 0) {
-            this.focusContorlField((tds[0] as HTMLElement).children);
+          if (tdElements.length > 0) {
+            this.focusContorlField((tdElements[0] as HTMLElement).children);
           }
         }, 500);
 
         return;
       }
 
-      const tds = document.getElementsByClassName('tbl-' + formcontrol.id + '-cell-' + newRowIndex + '-' + colIndex);
-      console.log(tds.length);
+      const tdElements = document.getElementsByClassName('tbl-' + formcontrol.id + '-cell-' + newRowIndex + '-' + colIndex);
+      console.log(tdElements.length);
       console.log('tbl-' + formcontrol.id + '-cell-' + newRowIndex + '-' + colIndex);
-      if (tds.length > 0) {
-        this.focusContorlField((tds[0] as HTMLElement).children);
+      if (tdElements.length > 0) {
+        this.focusContorlField((tdElements[0] as HTMLElement).children);
       }
     }
 

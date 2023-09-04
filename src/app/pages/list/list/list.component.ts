@@ -126,7 +126,7 @@ export class ListComponent extends PageComponent implements OnInit, OnDestroy, A
         this.listHeaderVisible = this.listDto.listVisible;
         this.filterHeaderVisible = this.listDto.filterVisible;
 
-        this.setDafaultCommandParams();
+        this.setDefaultCommandParams();
         this.dynamicCssScriptLoader.addScript(id, 'list');
         this.defineTitle();
         this.focusElement();
@@ -656,7 +656,7 @@ export class ListComponent extends PageComponent implements OnInit, OnDestroy, A
     this.getListResultData(false);
   }
 
-  private setDafaultCommandParams() {
+  private setDefaultCommandParams() {
     this.getParams('DEFAULTS')
       .forEach((value: string, key: string) => {
         this.listDto

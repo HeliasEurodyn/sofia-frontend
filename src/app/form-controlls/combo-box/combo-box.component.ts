@@ -23,6 +23,10 @@ export class ComboBoxComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.refresh();
+  }
+
+  public refresh(): void {
 
     if (this.componentPersistEntityFieldDTO != null) {
       this.comboOptions = JSON.parse(this.componentPersistEntityFieldDTO.assignment.editor);

@@ -34,6 +34,8 @@ export class LoginComponent implements OnInit {
   keyrockURL = environment.serverUrl + '/oauth2/authorization/keyrock?redirect_uri=' + location.origin + '/callback';
   loginImage = '';
 
+  maintenanceActive = false;
+
   constructor(private authService: AuthService,
               private modalService: NgbModal,
               private notificationService: NotificationService,
@@ -43,7 +45,7 @@ export class LoginComponent implements OnInit {
               private settingsService: SettingsService,
               private sanitizer: DomSanitizer,
               private pushNotificationService: PushNotificationService) {
-  //  this.tryRefreshAndLogin();
+  // this.tryRefreshAndLogin();
   }
 
   ngOnInit(): void {
@@ -51,6 +53,14 @@ export class LoginComponent implements OnInit {
    localStorage.removeItem('jwt_token');
    localStorage.removeItem('refresh_token');
    localStorage.removeItem('loggedin_user');
+
+   if(localStorage.getItem('def_u') !== null){
+     var ub64 = localStorage.getItem('def_u');
+     var pb64 = localStorage.getItem('def_p');
+     this.username = atob(ub64);
+     this.password = atob(pb64);
+   }
+
   }
 
   defineLoginLogo() {
@@ -66,7 +76,6 @@ export class LoginComponent implements OnInit {
   }
 
   authenticateUser(): void {
-
 
     if (this.username === '') {
       this.notificationService.showNotification('top', 'center', 'alert-danger', 'fa-id-card', '<b>Login Error</b> Please fill in your username');
@@ -86,8 +95,14 @@ export class LoginComponent implements OnInit {
         localStorage.setItem('uiVersion', '1.1');
         sessionStorage.setItem('sidebarMenu', JSON.stringify(data.user['sidebarMenu']));
 
+        var ub64 = btoa(this.username);
+        var pb64 = btoa(this.password);
+        localStorage.setItem('def_u', ub64);
+        localStorage.setItem('def_p', pb64);
+
+
         this.registerPushNotificationDeviceTokenToBackend();
-        
+
         const loginNavCommand = data.user['loginNavCommand'];
         if (loginNavCommand == null || loginNavCommand === '') {
           this.router.navigateByUrl('/d-dashboard');

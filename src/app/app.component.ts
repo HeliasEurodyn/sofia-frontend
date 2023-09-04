@@ -36,8 +36,8 @@ export class AppComponent implements OnInit {
                      private settingsService: SettingsService,
                      private tokenRefresherService: TokenService,
                      private navigatorService: CommandNavigatorService,
-                     private ngZone: NgZone) {
-    //tokenRefresherService.doRefreshToken();
+                     private ngZone: NgZone,
+                     private pushNotificationService: PushNotificationService) {
     tokenRefresherService.refreshTokenTimerStart();
   }
 
@@ -48,8 +48,13 @@ export class AppComponent implements OnInit {
     });
 
     this.listenToHttpErrors();
-    this.defineIcon();
-    this.defineTitle();
+
+    setTimeout(() => {
+      // Hide the splash screen after 3 seconds
+      SplashScreen.hide();
+    }, 3000);
+
+    localStorage.setItem('serverUrl', environment.serverUrl);
 
     CapacitorApp.addListener('backButton', ({canGoBack}) => {
       if (!canGoBack) {
@@ -60,11 +65,10 @@ export class AppComponent implements OnInit {
     });
 
     PushNotifications.requestPermissions();
-  //  PushNotifications.register();
 
     PushNotifications.register().then(() => {
       PushNotifications.addListener('registration', (token) => {
-       // this.pushNotificationService.register(token.value).subscribe();
+      // this.pushNotificationService.register(token.value).subscribe();
         localStorage.setItem('device_token', token.value);
       });
     }).catch(error => {
@@ -75,9 +79,12 @@ export class AppComponent implements OnInit {
 
     PushNotifications.addListener('pushNotificationReceived', (notification: any) => {
       this.ngZone.run(() => {
-        const popup_notification = notification.notification.data.popup_notification;
+        console.log('pushNotificationReceived');
+        console.log(notification);
+        const popup_notification = notification.data.popup_notification;
+        const navigate = notification.data.navigate;
         if(popup_notification != null) {
-          this.notificationService.showNotification('top', 'center', 'alert-info', 'fa-truck-fast', popup_notification);
+          this.notificationService.showNotificationAndNav('top', 'center', 'alert-info', 'fa-truck-fast', popup_notification, navigate );
         }
       });
     });
@@ -85,7 +92,8 @@ export class AppComponent implements OnInit {
     PushNotifications.addListener('pushNotificationActionPerformed', (notification: any) => {
 
       this.ngZone.run(() => {
-
+        console.log('pushNotificationActionPerformed');
+        console.log(notification);
           const navigate = notification.notification.data.navigate;
           if(navigate != null){
             this.navigatorService.navigate(navigate);
@@ -94,12 +102,7 @@ export class AppComponent implements OnInit {
 
     });
 
-    setTimeout(() => {
-      // Hide the splash screen after 3 seconds
-      SplashScreen.hide();
-    }, 3000);
 
-    localStorage.setItem('serverUrl', environment.serverUrl);
   }
 
   listenToHttpErrors(): void {

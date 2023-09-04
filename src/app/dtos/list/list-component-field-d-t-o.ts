@@ -27,6 +27,7 @@ export class ListComponentFieldDTO extends BaseDTO {
   css: string;
   fieldValue: any;
   formulaType: string;
+  showLabelOnButton: Boolean;
   public listComponentActionFieldList: ListComponentFieldDTO[] = [];
 
   public translations: ListComponentFieldTranslationDTO[] = [];

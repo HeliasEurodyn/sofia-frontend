@@ -19,9 +19,9 @@ export class TokenService {
   }
 
   public refreshTokenTimerStart() {
-    this.timerSubscription = interval(this.intervalTime).subscribe(() => {
+ /* this.timerSubscription = interval(this.intervalTime).subscribe(() => {
       this.doRefreshToken();
-    });
+    }); */
   }
 
   public doRefreshToken() {
